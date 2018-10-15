@@ -1,0 +1,5 @@
+package com.bemea.web.adm;
+
+public class AdminCtrl {
+
+}
