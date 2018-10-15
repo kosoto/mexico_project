@@ -1,0 +1,10 @@
+@charset "UTF-8";
+.imgRow {
+        display : flex;
+        flex-flow : row nowrap;
+        align-items : stretch;
+        width : 100%;
+        div {    
+          margin : auto;
+        } 		
+} 
