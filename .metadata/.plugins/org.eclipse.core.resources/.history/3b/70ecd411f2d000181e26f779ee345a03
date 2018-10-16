@@ -1,0 +1,89 @@
+@main_color_red : #bb1d1e; //rgb(187, 29, 30)
+@main_color_yellow : #fdcf33;  //rgb(253, 207, 51)
+
+/* remove scrollbar(view) */
+div::-webkit-scrollbar { 
+    display: none; 
+}
+
+/* 이미지위에 글씨 올리기 */
+.carousel-inner {
+	position : relative;
+	margin-bottom:50px;
+	overflow:visible
+}
+.item {
+	cursor : pointer;
+	> span {
+		div {
+		display : inline-block;
+		position : absolute;
+		bottom:0%;
+		text-align : center;
+		color : @main_color_red;
+		font-size : 20px;
+		z-index:51;
+		}
+	}
+}
+
+.carousel-title {
+	font-size : 1.5em;
+	color : @main_color_red;
+	margin-left:7%;
+	margin-top:0px;
+	margin-bottom:0px;
+	
+}
+
+.carousel-control {
+	width : 7%;
+}
+.img_hover {
+	transform:scale(1);
+	transition : all 0.3s ease-in-out;
+	
+}
+.img_hover:hover {
+		transform : scale(1.5);
+		position:relative;
+		z-index : 50;
+	}
+
+.evaluate_content_list {
+	display : flex;
+	flex-flow : row wrap;
+	justify-content : space-around;
+}
+
+footer {
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 280px;
+  background: 
+  /* color overlay */ 
+    linear-gradient(
+      rgba(187, 29, 30, 0.45), 
+      rgba(0, 0, 0, 0.45)
+    ),
+    /* image to overlay */
+    url(/web/resources/img/cmm/footer.jpg);
+  background-repeat: no-repeat;
+  background-size :100% 100%;
+  
+}
+
+
+.footer-container {
+  width: auto;
+  max-width: 680px;
+  padding: 0 15px;
+  .text-muted {
+ 	 margin: 20px 0;
+  }
+}
+.footertext {
+  color: #ffffff;
+}
+
