@@ -243,7 +243,7 @@ bemeal.compo=(()=>{
 		}
 		let $inner = $('<div/>').addClass('carousel-inner').appendTo($div);
 		for(let i=0;i<arr.length;i++){
-			let $temp = $('<div/>').addClass('item').appendTo($inner);
+			let $temp = $('<div/>').addClass('carousel-item').appendTo($inner);
 			let $span = $('<span/>').appendTo($temp);
 			if(i == 0) $temp.addClass('active');
 			for(let j=i;j<(i+1);j++){
