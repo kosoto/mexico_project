@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 GitRepositoriesView.GitDirectories=C\:\\Users\\1027\\project_workspace\\.git;
+=======
+GitRepositoriesView.GitDirectories=C\:\\Users\\hb1005\\projectWorkspace\\.git;
+>>>>>>> yoonho
 GitRepositoriesView.GitDirectories.relative=.git;
 core_autoIgnoreDerivedResources=false
 eclipse.preferences.version=1
