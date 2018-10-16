@@ -3,7 +3,29 @@ var yoonho = yoonho || {};
 		
 yoonho.service=(()=>{
 	var list =x=>{
+		alert('여기에 list넣자!')
+		$.getScript("/web/resources/js/ui/y_item_detail_modal.js",()=>{
+			$.magnificPopup.open({
+				closeBtnInside:true,
+				closeOnContentClick:false,
+				alignTop: false,
+				fixedBgPos: true,
+				fixedContentPos:false,
+				items:{src:
+					y_item_detail_modalUI()
+				},
+				midClick:true,
+				overflowY:'auto',
+				removalDelay:'0',
+				type:'inline'
+				}); 
+			$('.btn').on('click',function(){
+				alert($('#code').val());
+			});
 		
+				
+		})
+		return false;
 	};
 	var retrieve = x=>{
 		$.magnificPopup.open({
@@ -13,6 +35,7 @@ yoonho.service=(()=>{
 			fixedBgPos: true,
 			fixedContentPos:false,
 			items:{src:
+
 				yoonho.service.popup()
 			},
 			midClick:true,
@@ -26,47 +49,68 @@ yoonho.service=(()=>{
 		return false;
 	};
 	var popup =x=>{
+		let $carousel = $('<div/>').attr({id:'yhkTest','data-ride':'carousel'}).addClass('carousel slide y text-center')
+						.append(
+							$('<ol/>').addClass('carousel-indicators')
+							.append($('<li/>').addClass('active').attr({'data-target':'#carouselExampleIndicators','data-slide-to':'0'}))
+							.append($('<li/>').attr({'data-target':'#carouselExampleIndicators','data-slide-to':'1'}))
+							.append($('<li/>').attr({'data-target':'#carouselExampleIndicators','data-slide-to':'2'}))
+						)
+						.append(
+							$('<div/>').addClass('carousel-inner')
+							.append($('<div/>').addClass('carousel-item active').append($('<img/>').attr({src:'/web/resources/img/yoonho/cubestake_piliph.jpg','alt':'First slide'}).addClass('carousel-img y')))
+							.append($('<div/>').addClass('carousel-item').append($('<img/>').attr({src:'/web/resources/img/yoonho/donchi.jpg','alt':'Second slide'}).addClass('carousel-img y')))
+							.append($('<div/>').addClass('carousel-item').append($('<img/>').attr({src:'/web/resources/img/yoonho/maehwa_chicken.jpg','alt':'Third slide'}).addClass('carousel-img y')))
+						)
+						.append(
+							$('<a/>').addClass('carousel-control-prev').attr({href:'#yhkTest','role':'button','data-slide':'prev'})
+							.append($('<span/>').addClass('carousel-control-prev-icon').attr({'aria-hidden':'true'}))
+							.append($('<span/>').addClass('sr-only').html('prev'))
+						)
+						.append(
+							$('<a/>').addClass('carousel-control-next').attr({href:'#yhkTest','role':'button','data-slide':'next'})
+							.append($('<span/>').addClass('carousel-control-next-icon').attr({'aria-hidden':'true'}))
+							.append($('<span/>').addClass('sr-only').html('next'))
+						)
+		
 		let $div1 = $('<div/>').attr({id:'y_item_detailUI'}).addClass('yh-mfp-wrap yh-white-popup');// white-popup .attr({id:'y_item_detailUI'})
-		let $div2 = $('<div/>').addClass('col-sm-12 yh-mfp-container detail-main text-center').appendTo($div1);//
-		let $div3 = $('<div/>').addClass('col-sm-8 mgt50-mgba yh-mfp-content text-left').appendTo($div2);//
-		let $div4 = $('<div/>').addClass('mg0a').appendTo($div3);
-		let $div5 = $('<div/>').addClass('col-lg-12')
+		let $div2 = $('<div/>').addClass('yh-mfp-container detail-main')
 					.append($('<span/>').addClass('col-lg-5 text-center mgt70')
-						.append($('<img src="/web/resources/img/yoonho/maehwa_chicken.jpg"/>').addClass('img-rounded y_img_popup')))//.appendTo($div4)
-					.append($('<span/>').addClass('col-lg-6 mgt50')
-						.append($('<div/>').addClass('col-lg-8 mgt50-mgb100')
-							.append($('<h2/>').html('dropdown & carosel'))
-								.append($('<div/>').addClass('dropdown')		
-									.append($('<button/>').addClass('dropbtn').html('같은 종류의 도시락').click(e=>{
-										$('#myDropdown').classList.toggle("show");
-										// Close the dropdown if the user clicks outside of it
-										$('#myDropdown').click(e=>{
-											if (!e.target.matches(".dropbtn")) {
-												var dropdowns = document.getElementsByClassName("dropdown-content");
-												var i;
-												for (i = 0; i < dropdowns.length; i++) {
-													var openDropdown = dropdowns[i];
-													if (openDropdown.classList.contains("show")) {
-														openDropdown.classList.remove("show");
-													}
-												}
-											}	
-										})
-									})
-									.append($('<div/>').attr({id:'myDropdown'}).addClass('dropdown-content')
-											.append($('<a href="#home"/>').html('같은 종류의 도시락'))
-											.append($('<a href="#about"/>').html('20대가 많이 산 도시락'))
-											.append($('<a href="#about"/>').html('이달의 도시락'))
-										))
-									)
-							))
+						.append($('<img src="/web/resources/img/yoonho/maehwa_chicken.jpg"/>').addClass('rounded y_img_popup')
+								
+						))
+						.append($('<span/>').addClass('col-lg-6 mgt50')
+										.append($('<div/>').addClass('col-lg-6 mgt50-mgb100')
+											.append($('<h2/>').html('dropdown & carosel'))
+												.append($('<div aria-haspopup="true" aria-expanded="false"/>').addClass('btn-group yh').attr({type:'button'}) 
+													.append($('<button data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"/>').attr({type:'button'}).addClass('btn btn-warning dropdown-toggle').html('도시락 카테고리'))
+													.append($('<div/>').addClass('dropdown-menu')
+															.append($('<a/>').addClass('dropdown-item').attr({href:'#'}).html('같은 종류의 도시락'))
+															.append($('<a/>').addClass('dropdown-item').attr({href:'#'}).html('20대가 많이 산 도시락'))
+															.append($('<a/>').addClass('dropdown-item').attr({href:'#'}).html('이달의 도시락'))
+														)
+													
+												)
+											))//span end
+											.append($('<div/>')
+												.html($carousel))
+						.append($('<button/>').html('장바구니').addClass('btn btn-warning mgt10-mgb10 mgr10-mgr10'))
+						.append($('<button/>').html('맛있어요').addClass('btn btn-warning mgt10-mgb10 mgr10-mgr10'))
+					
+		.appendTo($div1);// detail-main col-lg-12
+		let $div3 = $('<div/>').addClass('mgt50-mgba text-left')//<p style="font-size:20px">
+						
+						.appendTo($div2);
+		let $div4 = $('<div/>').addClass('mg0a').appendTo($div3);
+		let $div5 = $('<div/>').addClass('col-lg-6')
+					
 							.appendTo($div4)
 		let $div4_1 = $('<div/>').addClass('col-lg-8 mgt50-mgb100').html('<h4>2개의 댓글이 작성되었습니다.</h4>').appendTo($div3);
 		let $div5_1 = $('<div/>').addClass('single_comment_area').appendTo($div4_1);
-		let $span6_1 = $('<span/>').addClass('col-lg-8 mgt50-mgb50')// y_img_popup_div
+		let $span6_1 = $('<div/>').addClass('col-lg-8 mgt50-mgb50')// y_img_popup_div
 						.append( 
 							$('<img src="/web/resources/img/yoonho/img_avatar1.png"/>')
-							.addClass('img-circle y_img_popup_pr')
+							.addClass('rounded-circle y_img_popup_pr')
 							)
 							.appendTo($div5_1);
 		let $div6_1_1 = $('<div/>')
@@ -98,10 +142,10 @@ yoonho.service=(()=>{
 							.append($('<a/>').addClass('btn btn-warning').html('수정'))
 							).appendTo($span6_1)
 
-		let $span6_2 = $('<span/>').addClass('col-lg-8 mgt50-mgb50')// y_img_popup_div
+		let $span6_2 = $('<div/>').addClass('col-lg-8 mgt50-mgb50')// y_img_popup_div
 						.append( 
 							$('<img src="/web/resources/img/yoonho/img_avatar3.png"/>')
-							.addClass('img-circle y_img_popup_pr')
+							.addClass('rounded-circle y_img_popup_pr')
 							)
 							.appendTo($div5_1);
 		
@@ -134,16 +178,19 @@ yoonho.service=(()=>{
 							.append($('<a/>').addClass('btn btn-warning').html('신고'))
 							).appendTo($span6_2)
 						
-			let $div4_3 = $('<div/>').addClass('col-lg-8 mgt50-mgb100').appendTo($div3);
-			let $div5_3 = $('<div/>').append('<h3>Comment</h3>').appendTo($div4_3);
+			let $div4_3 = $('<div/>').appendTo($div3);
+			let $div5_3 = $('<div/>').addClass('col-lg-8 mgt50-mgb100').append('<h3>Comment</h3>').appendTo($div4_3);
 			let $form6_3 = $('<form action="#" method="post"/>').appendTo($div5_3);
-			let $div7_3 = $('<div/>').append('<textarea textarea class="comment-testbox" name="message" id="message" cols="30" rows="10" placeholder="댓글을 입력하세요">').addClass('comment-testbox').appendTo($form6_3);
+			let $div7_3 = $('<div/>')
+			.append('<textarea textarea class="comment-testbox" name="message" id="message" cols="30" rows="10" placeholder="댓글을 입력하세요">')
+			.append($('<a/>').addClass('btn btn-warning').html('submit'))
+			.addClass('comment-testbox').appendTo($form6_3);
 			
-			let $div2_4 = $('<div/>').addClass('col-sm-5 mg0-pd0 detail-right mfp-navi').appendTo($div1);
+			let $div2_4 = $('<div/>').addClass('col-sm-5 mg0-pd0 detail-right yh-mfp-navi').appendTo($div1);
 			let $div3_4 = $('<div/>').addClass('container-fluid').appendTo($div2_4);
 			let $div4_4 = $('<div/>').addClass('row').appendTo($div3_4);
 			let $div5_4 = $('<div/>').addClass('col-lg-12 y_bg_popup_gr')
-							.append($('<h1/>').addClass('text-center').html('매화 (치킨, 연어구이)'))
+							.append($('<h2/>').addClass('text-center').html('매화 (치킨, 연어구이)'))
 							.append($('<p/>').addClass('text-center').html('사각 도시락'))
 							.appendTo($div4_4);
 			let $span6_4 = $('<span/>').addClass('star-input')
@@ -168,65 +215,28 @@ yoonho.service=(()=>{
 			
 			let $div4_5 = $('<div/>').addClass('row').appendTo($div3_4)
 			let $div5_5 = $('<div/>').addClass('col-lg-12 y_bg_popup_bg').appendTo($div4_5)
-			let $tbl6_5 = $('<table/>').addClass('table').appendTo($div5_5)
-			let $tbody7_5 = $('<tbody/>')
-							.append(
-								$('<tr/>')
-									.append(
-										$('<td/>').addClass('text-left')
-										.append($('<h5/>').html('업체'))
-									)
-									.append(
-										$('<td/>').addClass('text-right')
-										.append($('<h5/>').html('오봉도시락'))
-									)
-								)
-							.append(
-								$('<tr/>')
-									.append(
-										$('<td/>').addClass('text-left')
-										.append($('<h5/>').html('칼로리'))
-									)
-									.append(
-										$('<td/>').addClass('text-right')
-										.append($('<h5/>').html('405.5Kcal'))
-									)
-								)
-							.append(
-								$('<tr/>')
-									.append(
-										$('<td/>').addClass('text-left')
-										.append($('<h5/>').html('가  격'))
-									)
-									.append(
-										$('<td/>').addClass('text-right')
-										.append($('<h5/>').html('10,000 원'))
-									)
-								)
-							.append(
-								$('<tr/>')
-									.append(
-										$('<td/>').addClass('text-left')
-										.append($('<h5/>').html('알러지정보'))
-									)
-								)
-							.append(
-								$('<tr/>')
-									.append(
-										$('<td/>').addClass('text-left')
-										.append($('<img src="/web/resources/img/yoonho/maehwa_chicken.jpg"/>').addClass('img-rounded y_img_popup_alg'))
-									)
-									.append(
-										$('<td/>').addClass('text-left')
-										.append($('<p role="button"/>').addClass('text-right').html('#고소'))
-										.append($('<p role="button"/>').addClass('text-right').html('#달콤'))
-									)
-								)
-							.append(
-								$('<p/>').addClass('text-left').html('베스트 & 스테디셀러 SINCE 2007] 12가지 다양한 반찬으로 구성된 프리미엄 도시락입니다. 푸짐한 반찬과 함께 촉촉하고 부드러운 연어구이와 치킨이 구성되어 있어 부족하지 않고 든든하게 드실 수 있는 도시락 입니다. 생수와 조미 김이 함께 제공 됩니다.')	
-								)
-							.appendTo($tbl6_5)
-							
+			
+			let $tbl6_5 = $('<div/>').addClass('row').appendTo($div5_5)
+			let $tbody7_5 = $('<div/>').html('업체').addClass('col-sm text-left mgt10-mgb10').appendTo($tbl6_5)
+			let $tbody7_5_1 = $('<div/>').html('오봉도시락').addClass('col-sm  mgt10-mgb10').appendTo($tbl6_5)
+			
+			let $tbl6_6 = $('<div/>').addClass('row').appendTo($div5_5)
+			let $tbody7_6 = $('<div/>').html('칼로리').addClass('col-sm text-left mgt10-mgb10').appendTo($tbl6_6)
+			let $tbody7_6_1 = $('<div/>').html('405.5Kcal').addClass('col-sm  mgt10-mgb10').appendTo($tbl6_6)
+			
+			let $tbl6_7 = $('<div/>').addClass('row').appendTo($div5_5)
+			let $tbody7_7 = $('<div/>').html('가격').addClass('col-sm text-left mgt10-mgb10').appendTo($tbl6_7)
+			let $tbody7_7_1 = $('<div/>').html('10,000원').addClass('col-sm  mgt10-mgb10').appendTo($tbl6_7)
+			
+			let $tbl6_8 = $('<div/>').addClass('col text-left').append($('<div/>').html('알러지정보').addClass('row mgt10-mgb10')).appendTo($div5_5)
+			let $tbody7_8 = $('<div/>').addClass('row').appendTo($tbl6_8)
+			let $tbody7_8_1 = $('<div/>').append($('<img src="/web/resources/img/yoonho/allergy1.png">').addClass('rounded y_img_popup_alg')).appendTo($tbody7_8 )
+			let $tbody7_8_2 = $('<div/>').append($('<img src="/web/resources/img/yoonho/allergy2.png">').addClass('rounded y_img_popup_alg')).appendTo($tbody7_8 )
+			let $tbody7_8_3 = $('<div/>').append($('<img src="/web/resources/img/yoonho/allergy3.png">').addClass('rounded y_img_popup_alg')).appendTo($tbody7_8 )
+			
+			let $tbl6_9 = $('<div/>').addClass('row').appendTo($div5_5)
+			let $tbody7_9 = $('<div/>').html('[베스트 & 스테디셀러 SINCE 2007] 12가지 다양한 반찬으로 구성된 프리미엄 도시락입니다. 푸짐한 반찬과 함께 촉촉하고 부드러운 연어구이와 치킨이 구성되어 있어 부족하지 않고 든든하게 드실 수 있는 도시락 입니다. 생수와 조미 김이 함께 제공 됩니다.').addClass('col-sm text-left mgt10-mgb10').appendTo($tbl6_9)
+			/* */				
 			
 		return $div1;
 	};

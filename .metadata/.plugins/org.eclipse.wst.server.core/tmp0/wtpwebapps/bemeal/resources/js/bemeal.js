@@ -14,6 +14,7 @@ bemeal = (()=>{
 bemeal.main = (()=>{
 	var init =()=>{
 		onCreate();
+		
 	};
 	var onCreate=()=>{
 		setContentView();
