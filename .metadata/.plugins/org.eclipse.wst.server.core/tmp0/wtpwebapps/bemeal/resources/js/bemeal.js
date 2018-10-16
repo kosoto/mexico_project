@@ -187,20 +187,20 @@ bemeal.compo=(()=>{
 		let $ol = $('<ol/>').addClass('carousel-indicators').appendTo($div);
 		let navi_size = x.arr.length/row_size;
 		for(let i=0;i<navi_size;i++){
-			let $li = $('<li/>').attr({'data-target':"#"+x.id,'data-slide-to':i});
-			if(i == 0) $li.addClass('active');
-			$li.appendTo($ol);
+			$('<li/>').attr({'data-target':"#"+x.id,'data-slide-to':i}).addClass((i==0)?'active':'')
+			.appendTo($ol);
 		}
+		//
 		let $inner = $('<div/>').addClass('carousel-inner').appendTo($div);
 		for(let i=0;i<navi_size;i++){
-			let $temp = $('<div/>').addClass('item').appendTo($inner);
+			let $temp = $('<div/>').addClass('carousel-item'+((i==0)?' active':'')).appendTo($inner);
 			let $span = $('<span/>').appendTo($temp);
-			if(i == 0) $temp.addClass('active');
 			for(let j=i*row_size;j<(i+1)*row_size;j++){
 				$('<div/>').text(arr[j].itemName).appendTo($span);
 				$('<img/>').attr({
 					src:arr[j].image,
-					alt:arr[j].itemName,
+					alt:arr[j].itemName
+					,
 					style:"width:"+(100/row_size)+"%;height:150px"
 				})
 				.click(e=>{
@@ -213,12 +213,12 @@ bemeal.compo=(()=>{
 				.appendTo($span);
 			}
 		}
-		let arrows = [['left','prev'],['right','next']]
+		let arrows = ['prev','next'];
 		for(let i=0;i<2;i++){
-			$('<a/>').addClass(arrows[i][0]+' carousel-control').attr({href:'#'+x.id,'data-slide':arrows[i][1]})
+			$('<a/>').addClass('carousel-control-'+arrows[i]).attr({href:'#'+x.id,'data-slide':arrows[i], roll:'button'})
 			.append(
-					$('<span/>').addClass('glyphicon glyphicon-chevron-'+arrows[i][0]),
-					$('<span/>').addClass('sr-only').text(arrows[i][1])
+					$('<span/>').addClass('carousel-control-'+arrows[i]+'-icon').attr('aria-hidden','true'),
+					$('<span/>').addClass('sr-only').text(arrows[i])
 			)
 			.appendTo($div);
 		}
@@ -233,19 +233,16 @@ bemeal.compo=(()=>{
 	var banner = x=>{ /* x.id, x.arr 배너에 보여줄 이미지들*/
 		let $div = $('<div/>').attr({id:x.id,'data-ride':'carousel'}).addClass('carousel slide')
 					.append($('<h5/>').addClass('carousel-title').append($('<span/>').text(''))); /* text : 배너 제목*/
-		
 		let $ol = $('<ol/>').addClass('carousel-indicators').appendTo($div);
 		let arr = x.arr;
 		for(let i=0;i<arr.length;i++){
-			let $li = $('<li/>').attr({'data-target':"#"+x.id,'data-slide-to':i});
-			if(i == 0) $li.addClass('active');
-			$li.appendTo($ol);
+			$('<li/>').attr({'data-target':"#"+x.id,'data-slide-to':i}).addClass((i==0)?'active':'')
+			.appendTo($ol);
 		}
 		let $inner = $('<div/>').addClass('carousel-inner').appendTo($div);
 		for(let i=0;i<arr.length;i++){
-			let $temp = $('<div/>').addClass('carousel-item').appendTo($inner);
+			let $temp = $('<div/>').addClass('carousel-item'+((i==0)?' active':'')).appendTo($inner);
 			let $span = $('<span/>').appendTo($temp);
-			if(i == 0) $temp.addClass('active');
 			for(let j=i;j<(i+1);j++){
 				$('<div/>').text('').appendTo($span); /*text : 배너 내용*/
 				$('<img/>').attr({
@@ -258,12 +255,12 @@ bemeal.compo=(()=>{
 				.appendTo($span);
 			}
 		}
-		let arrows = [['left','prev'],['right','next']]
+		let arrows = ['prev','next'];
 		for(let i=0;i<2;i++){
-			$('<a/>').addClass(arrows[i][0]+' carousel-control').attr({href:'#'+x.id,'data-slide':arrows[i][1]})
+			$('<a/>').addClass('carousel-control-'+arrows[i]).attr({href:'#'+x.id,'data-slide':arrows[i],roll:'button'})
 			.append(
-					$('<span/>').addClass('glyphicon glyphicon-chevron-'+arrows[i][0]),
-					$('<span/>').addClass('sr-only').text(arrows[i][1])
+					$('<span/>').addClass('carousel-control-'+arrows[i]+'-icon').attr('aria-hidden','true'),
+					$('<span/>').addClass('sr-only').text(arrows[i])
 			)
 			.appendTo($div);
 		}

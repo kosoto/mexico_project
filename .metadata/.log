@@ -3472,3 +3472,9 @@ java.lang.NegativeArraySizeException
 
 !ENTRY org.eclipse.ui 2 2 2018-10-16 10:35:02.051
 !MESSAGE Invalid preference category path: org.springframework.tooling.boot.java.ls.preferences (bundle: org.springframework.ide.eclipse.boot.dash, page: org.springframework.ide.eclipse.boot.dash.prefs.RemoteAppsPrefsPage)
+
+!ENTRY org.eclipse.jface.text 2 0 2018-10-16 12:09:47.174
+!MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.boolean'
+
+!ENTRY org.eclipse.help 4 0 2018-10-16 15:39:34.742
+!MESSAGE Required attribute "href" missing from "topic" element in "/org.eclipse.wst.jsdt.doc/ui-contexts.xml" (skipping element)
