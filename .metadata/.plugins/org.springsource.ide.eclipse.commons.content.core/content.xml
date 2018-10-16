@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <descriptors>
+<descriptor id="org.springframework.templates.mvc" kind="template" local="true" name="Spring MVC Project" requiresbundle="org.eclipse.m2e.core" size="0" version="3.2.2">
+<description>A new Spring MVC web application development project</description>
+</descriptor>
 <descriptor id="com.springsource.sts.org.apache.tomcat" kind="server" local="false" name="Apache Tomcat 6.0.20" size="6282517" url="http://dist.springsource.com/release/STS/help/com.springsource.sts.org.apache.tomcat-6.0.20.20090615-0000.zip" version="6.0.20.20090615-0000">
 <description/>
 </descriptor>
@@ -129,8 +132,5 @@
 </descriptor>
 <descriptor id="org.springframework.integration.sts.template.war" kind="template" local="false" name="Spring Integration Project (War)" requires="[0.0.0,3.0.0)" size="56242" url="https://raw.github.com/SpringSource/spring-integration-templates/master/si-sts-templates/builds/si-template-war-1.0.0.M2.zip" version="1.0.0.M2">
 <description>Creates a Spring Integration project that runs within a servlet container. Uses the Spring Integration Twitter adapter. Deprecated, please update STS to version 3.2+ for the latest template version</description>
-</descriptor>
-<descriptor id="org.springframework.templates.mvc" kind="template" local="true" name="Spring MVC Project" requiresbundle="org.eclipse.m2e.core" size="0" version="3.2.2">
-<description>A new Spring MVC web application development project</description>
 </descriptor>
 </descriptors>

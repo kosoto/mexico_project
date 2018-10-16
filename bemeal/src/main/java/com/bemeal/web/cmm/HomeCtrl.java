@@ -15,6 +15,7 @@ public class HomeCtrl {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model, HttpServletRequest request) {
+		System.out.println("-------------------------------");
 		model.addAttribute("context", request.getContextPath());
 		return "main";
 	}
