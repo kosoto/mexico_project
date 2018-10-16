@@ -24,7 +24,6 @@ kaeun.main=(()=>{
 
 kaeun.home = {
            mytaste :()=>{ //첫화면
-               alert("home 들어옴");
                $.when(	 $.getScript($.script()+"/ui/k_aside.js"),
                           $.getScript($.script()+"/ui/k_Home.js"),
                           $.Deferred(y=>{
@@ -32,6 +31,7 @@ kaeun.home = {
                           })
                     ).done(x=>{
                     	  $('header').remove();	
+                    	  $('footer').remove();
                           $('#content').html(k_HomeUI());
                            $('#side_grid').html(asideUI());
                           //side menu시작
@@ -209,7 +209,14 @@ kaeun.payments = {
 					c7: "사용완료or<br/>선물(to.Id)"	
 				});
 			}); //each완료
-			$('<div/>').html("★페이지네이션 자리").addClass("grid_footer").attr({id:"footer"}).appendTo($('#content_grid')); 
+			// ★ 페이지네이션
+			$('<div/>').html('<ul class="pagination pagination-sm">'
+					+'<li class="page-item"><a class="page-link" href="#">Previous</a></li>'
+					+'<li class="page-item"><a class="page-link" href="#">1</a></li>'
+					+'<li class="page-item"><a class="page-link" href="#">2</a></li>'
+					+'<li class="page-item"><a class="page-link" href="#">3</a></li>'
+					+'<li class="page-item"><a class="page-link" href="#">Next</a></li>'
+					+'</ul>').addClass("grid_footer").attr({id:"footer"}).appendTo($('#content_grid')); 
 			})//getscript지우기
 		},
 		gift : ()=>{ //read some
@@ -217,7 +224,13 @@ kaeun.payments = {
 			ui.content_g();
 			$('#title_l').append('받은선물함');
 			$('#title_r').append('');    
-			$('#content_g').append('블라블라');
+			$('#content_g').append('<div class="col"><div id="gift_slid" class="card-group"/></div>'); //card-deck쓰면 떨어짐
+			$('#gift_slid').append(ui.img_card({url:'https://images.pexels.com/photos/884596/pexels-photo-884596.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+				txt:'From.★',id:'gift1'}));
+			$('#gift_slid').append(ui.img_card({url:'https://images.pexels.com/photos/884596/pexels-photo-884596.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+				txt:'From.가은',id:'gift2'}));
+			$('#gift_slid').append(ui.img_card({url:'https://images.pexels.com/photos/884596/pexels-photo-884596.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+				txt:'From.ㅎㅎ',id:'gift3'}));
 			})//getscript지우기
 		},
 		write : ()=>{ //taste write
@@ -233,12 +246,42 @@ kaeun.payments = {
 
 kaeun.tastes = {
 		analysis : ()=>{ //취향분석
-			$.getScript($.script()+'/comp.js',()=>{
 			ui.content_g();
 			$('#title_l').append('취향분석');
 			$('#title_r').append('');    
-			$('#content_g').append('블라블라');  
-			}) //getscript지우기
+			$('#content_g').append('<div id="content_t" class=col><div class="taste-background">'
+					+'<div class="row">'
+					+'<div class="col-md-auto">'
+					+'<div class="mytaste_text">'
+					+'M <br/>'
+					+'Y <br/>'
+					+' 　<br/>'
+					+'　T <br/>'
+					+'A <br/>'
+					+'S <br/>'
+					+'T <br/>'
+					+'E <br/>'
+					+'</div>'
+					+'</div>'
+					+'<div id="content_anlz" class="col-sm">'
+					+'두번째롤'
+					+'</div>' //두번째롤끝
+					+'</div>'//row끝
+					+'</div></div>');  
+			$('#content_anlz').html(ui.a_col({id:"anlyz1",claz:"anlyz_form"}));
+			$('#anlyz1').html('dom첫번째취향첫번째취향첫번째취향첫번째취향첫번째취향첫번째취향첫번째취향첫번째취향첫번째취향첫번째취향첫번째취향첫번째취향첫번째취향');
+			$('#content_anlz').append(ui.a_col({id:"anlyz2",claz:"anlyz_form"}));
+			$('#anlyz2').html('두번째취향두번째취향두번째취향두번째취향두번째취향두번째취향두번째취향두번째취향');
+			$('#content_anlz').append(ui.a_col({id:"anlyz3",claz:"anlyz_form"}));
+			$('#anlyz3').html('세번째취향');
+			$('#content_anlz').append(ui.a_col({id:"anlyz4",claz:"anlyz_form"}));
+			$('#anlyz4').html('네번째취향');
+			$('#content_anlz').append(ui.a_col({id:"anlyz5",claz:"anlyz_form"}));
+			$('#anlyz5').html('다번째취향');
+			$('#content_anlz').append(ui.a_col({id:"anlyz6",claz:"anlyz_form"}));
+			$('#anlyz6').html('여번째취향');
+			$('#content_anlz').append(ui.a_col({id:"anlyz7",claz:"anlyz_form"}));
+			$('#anlyz7').html('일번째취향');
 		},
          collect : ()=>{ //콜렉션
         	 ui.content_g();

@@ -4,8 +4,13 @@ codemix.dont.show.upsell.until=1541491315322
 configurationInstallLocation=/C\:/sts-3.9.6.RELEASE/
 eclipse.preferences.version=1
 iconcolormode=primary
+<<<<<<< HEAD
 last.download.attempt.time=1539590517738
 lastConfiguration=1539647468210
+=======
+last.download.attempt.time=1539645823619
+lastConfiguration=1539675100580
+>>>>>>> kaeun
 newinstall=false
 showWelcomeDialog=false
 workbench.theme=Dark Gray

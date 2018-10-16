@@ -3,6 +3,10 @@ INDEX VERSION 1.4+C:\Users\1027\project_workspace\.metadata\.plugins\org.eclipse
 2383036892.index
 2057716452.index
 2993855878.index
+<<<<<<< HEAD
+=======
+3527760721.index
+>>>>>>> kaeun
 2303395486.index
 3574094080.index
 2745177694.index
