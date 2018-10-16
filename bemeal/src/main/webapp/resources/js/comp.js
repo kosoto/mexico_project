@@ -26,6 +26,20 @@ ui = {
 		},
 		stndlayout : x=>{
 		},
+		a_col : x=>{ //ui.a_col({claz:'',id:''});
+			return  '<div class="'+x.claz+'">'
+			+'<div class="row">'
+			+'<div class="col">'
+			+'<div id="'+x.id+'">'
+			+'</div>'
+			+'</div>'
+			+'</div>'
+			+'</div>';			
+			/*$('<div/>').addClass(x.claz).html(
+					$('<div/>').addClass("row").html(
+							$('<div/>').addClass("col").attr({id:x.id})
+							));*/
+		},
 		n_div : x=>{ // kui.n_div({clazz:'',html:'',to:''});
 			return $('<div/>').addClass(x.clazz).html(x.html).appendTo(x.to);
 		},
@@ -40,6 +54,14 @@ ui = {
 				 + ui.n_div({clazz:'iteminfo',html:x.c5,to:t})
 				 + ui.n_div({clazz:'iteminfo',html:x.c6,to:t})
 				 + ui.n_div({clazz:'iteminfo',html:x.c7,to:t});
+		},
+		img_card : x=>{ //ui.img_card({url:'',txt:'',id:''});
+			return '<span id="'+x.id+'" class="card" style="width: 16rem;">'
+			+'<img class="card-img-top" src="'+x.url+'/100px180/?text=Image cap" alt="Card image cap">'
+			+'<div class="card-body">'
+			+'<p class="card-text">'+x.txt+'</p>'
+			+'</div>'
+			+'</span>';
 		}
 };
 
