@@ -5,7 +5,117 @@
   <link rel="self" href="https://spring.io/blog.atom" />
   <id>http://spring.io/blog.atom</id>
   <icon>https://spring.io/favicon.ico</icon>
-  <updated>2018-10-15T14:55:00Z</updated>
+  <updated>2018-10-16T07:03:13Z</updated>
+  <entry>
+    <title>Spring Noticias en Espa?ol, 16 de octubre 2018</title>
+    <link rel="alternate" href="https://spring.io/blog/2018/10/16/spring-noticias-en-espa-ol-16-de-octubre-2018" />
+    <category term="engineering" label="Engineering" />
+    <author>
+      <name>Mark Heckler</name>
+    </author>
+    <id>tag:spring.io,2018-10-16:3430</id>
+    <updated>2018-10-16T07:03:13Z</updated>
+    <content type="html">&lt;div class="imageblock"&gt;
+&lt;div class="content"&gt;
+&lt;img src="https://www.thehecklers.com/content/images/2018/10/SNES.png" alt="SNES logo"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Bienvenidos a todos a la segunda edici?n de Spring Noticias en Espa?ol!!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Como siempre, env?ame noticias de tus logros en &lt;a href="https://twitter.com/mkheck"&gt;@mkheck en Twitter&lt;/a&gt;, &lt;a href="mailto:mark@losheckler.com"&gt;mark@losheckler.com&lt;/a&gt;, o &lt;a href="mailto:mheckler@pivotal.io"&gt;mheckler@pivotal.io&lt;/a&gt; y los compartir? con la comunidad.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Para esta edici?n, aqu? tienes unos art?culos muy interesantes:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Este art?culo (en dos partes!) combina dos amores m?os: Spring Boot y Kotlin! Otra tutorial excelente por &lt;a href="https://twitter.com/chuchip"&gt;Profesor P&lt;/a&gt; sobre crear una aplicaci?n CRUD con REST en Kotlin y Spring Boot:&lt;/p&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="http://www.profesor-p.com/2018/10/11/aplicacion-crud-en-kotlin-con-springboot/"&gt;1ra parte&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="http://www.profesor-p.com/2018/10/11/aplicacion-crud-en-kotlin-y-springboot-2a-parte/"&gt;2ra parte&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Me encanta esta serie intensiva por &lt;a href="https://twitter.com/chuucksc"&gt;Carlos Salazar&lt;/a&gt; en &lt;a href="https://twitter.com/CodesoltBlog"&gt;el blog Codesolt&lt;/a&gt; sobre como crear y probar una aplicaci?n web con Spring Framework 4:&lt;/p&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="https://codesolt.com/tutoriales/springrest4/construccion-spring4-maven/"&gt;Tutorial Spring REST 1/9 ? Construcci?n de proyecto Web en Spring 4 con Maven&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="https://codesolt.com/tutoriales/springrest4/restapi-spring4/"&gt;Tutorial Spring REST 2/9 ? Configuraci?n de un servicio REST con Spring 4&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="https://codesolt.com/tutoriales/springrest4/oauth2-spring4/"&gt;Tutorial Spring REST 3/9 ? Configurar OAUTH2 en un proyecto REST de Spring 4&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="https://codesolt.com/tutoriales/springrest4/hibernate-validator-spring4/"&gt;Tutorial Spring REST 4/9 ? Configuraci?n de Hibernate Validator con Spring 4&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="https://codesolt.com/tutoriales/springrest4/spring-4-jpa/"&gt;Tutorial Spring REST 5/9 ? Acceso a bases de datos SQL con Spring 4 y JPA&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="https://codesolt.com/tutoriales/springrest4/swagger2-spring4/"&gt;Tutorial Spring REST 6/9 ? Configuraci?n de Swagger 2 en Spring 4&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="https://codesolt.com/tutoriales/springrest4/spring4-junit/"&gt;Tutorial Spring REST 7/9 ? Testing en Servicios REST con JUnit&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="https://codesolt.com/tutoriales/springrest4/tomcat-en-maven/"&gt;Tutorial Spring REST 8/9 ? Tomcat embebido en Maven&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="https://codesolt.com/tutoriales/springrest4/rest-test-postman/"&gt;Tutorial Spring REST 9/9 ? Probando tu servicio REST desde Postman&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;En otras noticias:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Despu?s de compartir en la edici?n previa el art?culo por &lt;a href="https://twitter.com/geovanny0401"&gt;Geovanny Mendoza&lt;/a&gt; sobre como &lt;a href="http://geovanny0401.blogspot.com/2018/08/construir-una-aplicacion-web-con-vaadin.html"&gt;Construir Una Aplicaci?n Web Con Vaadin Flow Utilizando Spring Boot, Spring Data Jpa Con Base De Datos MySQL&lt;/a&gt;, hab?a una reuni?n del &lt;a href="https://twitter.com/JUGBAQ"&gt;Barranquilla JUG&lt;/a&gt; sobre el tema! Aqu? est?n unos tuits y fotos para tu disfrute:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="https://twitter.com/JUGBAQ/status/1051240076934635520" class="bare"&gt;https://twitter.com/JUGBAQ/status/1051240076934635520&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="https://twitter.com/geovanny0401/status/1051469546941542400" class="bare"&gt;https://twitter.com/geovanny0401/status/1051469546941542400&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Es todo por ahora! Pero si te gustar?a ver tus proyectos/noticias en este bolet?n y ayudar tus compa?eros, env?amelos! Mis datos de contacto son:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="https://twitter.com/mkheck"&gt;@mkheck en Twitter&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="mailto:mark@losheckler.com"&gt;mark@losheckler.com&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="mailto:mheckler@pivotal.io"&gt;mheckler@pivotal.io&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Ay?dame a extender tu voz y compartir tus conocimientos! Hasta la pr?xima edici?n&amp;#8230;&amp;#8203;&lt;/p&gt;
+&lt;/div&gt;</content>
+  </entry>
   <entry>
     <title>Spring Data Lovelace SR1, Kay SR11, and Ingalls SR16 released</title>
     <link rel="alternate" href="https://spring.io/blog/2018/10/15/spring-data-lovelace-sr1-kay-sr11-and-ingalls-sr16-released" />
@@ -1985,265 +2095,5 @@ If you are at &lt;a href="https://springoneplatform.io"&gt;Spring One Platform&l
 &lt;p&gt;If you want to get started with 2.1 and try out the new features, you can bootstrap a new project on &lt;a href="https://start.spring.io"&gt;https://start.spring.io&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;We hope to release a release candidate mid-October and the 2.1 GA towards the end of October.&lt;/p&gt;
 &lt;p&gt;&lt;a href="http://projects.spring.io/spring-boot/"&gt;Project Page&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-boot"&gt;GitHub&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-boot/issues"&gt;Issues&lt;/a&gt; | &lt;a href="http://docs.spring.io/spring-boot/docs/2.1.0.M4/reference/htmlsingle"&gt;Documentation&lt;/a&gt; | &lt;a href="http://stackoverflow.com/questions/tagged/spring-boot"&gt;Stack Overflow&lt;/a&gt; | &lt;a href="https://gitter.im/spring-projects/spring-boot"&gt;Gitter&lt;/a&gt;&lt;/p&gt;</content>
-  </entry>
-  <entry>
-    <title>Hands on with Spring Vault 2.1</title>
-    <link rel="alternate" href="https://spring.io/blog/2018/09/24/hands-on-with-spring-vault-2-1" />
-    <category term="engineering" label="Engineering" />
-    <author>
-      <name>Mark Paluch</name>
-    </author>
-    <id>tag:spring.io,2018-09-18:3397</id>
-    <updated>2018-09-24T21:27:03Z</updated>
-    <content type="html">&lt;div class="paragraph"&gt;
-&lt;p&gt;Spring Vault 2.1 is already in sight. I would like to use this post to take a deeper look at the changes and features that are in the upcoming release.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The team has been working on a whole bunch of new features:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="ulist"&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Extending infrastructure-based authentication to support Google Cloud IAM and Azure Managed Service Identity&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Integrating Vault&amp;#8217;s versioned Key-Value backend&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Wrapping API support&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Java 11 compatibility&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Spring Vault supports HashiCorp Vault versions 0.5 up to 0.11.
-You can find the Spring Vault and Spring Cloud Vault &lt;a href="https://github.com/mp911de/spring-cloud-vault-config-samples"&gt;examples repository on GitHub&lt;/a&gt;. Now, let&amp;#8217;s dive into the Spring Vault 2.1 features!&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="sect1"&gt;
-&lt;h2 id="google-cloud-authentication"&gt;&lt;a class="anchor" href="#google-cloud-authentication"&gt;&lt;/a&gt;Google Cloud Authentication&lt;/h2&gt;
-&lt;div class="sectionbody"&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;With version 0.8.1, Vault introduced authentication support for Google Cloud. GCP authentication uses GCP&amp;#8217;s IAM service to use one of the following authentication workflows:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="ulist"&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;IAM Login using service account credentials to generate a signed token&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;GCE Login using GCP&amp;#8217;s metadata service to retrieve a signed token&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Spring Vault supports both methods. While using IAM authentication requires credentials to be set up (either through the environment or by using a credentials file), GCE authentication uses the platform as an identity provider, so GCE authentication has fewer requirements regarding the initial setup.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="sect2"&gt;
-&lt;h3 id="iam-login"&gt;&lt;a class="anchor" href="#iam-login"&gt;&lt;/a&gt;IAM Login&lt;/h3&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;IAM authentication uses Google&amp;#8217;s IAM service to generate a signed token by using the signature from Google&amp;#8217;s credentials. The signed token is passed on to Vault to verify the token. This authentication method requires credentials to be either provided through the &lt;code&gt;GOOGLE_APPLICATION_CREDENTIALS&lt;/code&gt; environment variable or configured through &lt;code&gt;GcpIamAuthenticationOptions&lt;/code&gt;. &lt;code&gt;GcpIamAuthentication&lt;/code&gt; uses Google&amp;#8217;s service API SDK (&lt;code&gt;google-api-services-iam&lt;/code&gt;) to interact with IAM. A client configuration could look like the following code sample:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;@Configuration
-class VaultConfiguration extends AbstractVaultConfiguration {
-
-  @Override
-  public ClientAuthentication clientAuthentication() {
-
-    try {
-
-      GcpIamAuthenticationOptions options = GcpIamAuthenticationOptions.builder()
-        .role("my-role")
-        .credential(GoogleCredential.getApplicationDefault())
-        .build();
-      return new GcpIamAuthentication(options, restOperations());
-
-    } catch (IOException e) {
-      throw new IllegalStateException(e);
-    }
-  }
-
-  // ・
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;By default, the IAM authentication method derives project ID and service account Id from the credential. You can also configure specific values if you want to authenticate on behalf of a specific service account.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;For more information, see the &lt;a href="https://docs.spring.io/spring-vault/docs/2.1.0.RC1/reference/html/#vault.authentication.gcpiam"&gt;reference documentation&lt;/a&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="sect2"&gt;
-&lt;h3 id="gce-login"&gt;&lt;a class="anchor" href="#gce-login"&gt;&lt;/a&gt;GCE Login&lt;/h3&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The GCE (Google Compute Engine) authentication workflow is suitable for VM instances. It uses the metadata service (compute metadata) to obtain a signed token. The signed identity is passed on to Vault to verify the VM instance. A client configuration could look like the following code sample:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;@Configuration
-class VaultConfiguration extends AbstractVaultConfiguration {
-
-  @Override
-  public ClientAuthentication clientAuthentication() {
-
-    GcpComputeAuthenticationOptions options = GcpComputeAuthenticationOptions
-        .builder().path("my-role").build();
-
-    return new GcpComputeAuthentication(options, restOperations());
-  }
-
-  // ・
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;For more information, see the &lt;a href="https://docs.spring.io/spring-vault/docs/2.1.0.RC1/reference/html/#vault.authentication.gcpgce"&gt;reference documentation&lt;/a&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="sect1"&gt;
-&lt;h2 id="azure-authentication"&gt;&lt;a class="anchor" href="#azure-authentication"&gt;&lt;/a&gt;Azure Authentication&lt;/h2&gt;
-&lt;div class="sectionbody"&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;With version 0.10.0, Vault introduced authentication support for Azure. Applications running on Azure virtual machines can authenticate against Vault by using &lt;a href="https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview"&gt;managed service identities&lt;/a&gt;. A managed service identity (MSI) can be activated for a virtual machine that does not require provisioning of upfront credentials.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Spring Vault obtains MSI credentials from the Azure Instance Metadata Service (IMDS). Vault requires additional details (subscriptionId, resource group name, VM name) to perform the authentication. By default, these values are also obtained from IMDS and passed on to Vault, along with the identity token.
-A possible client configuration could look like the following code sample:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;@Configuration
-class VaultConfiguration extends AbstractVaultConfiguration {
-
-  @Override
-  public ClientAuthentication clientAuthentication() {
-
-    AzureMsiAuthenticationOptions options = AzureMsiAuthenticationOptions.builder()
-        .role("my-role").build();
-    return new AzureMsiAuthentication(options, restOperations());
-  }
-
-  // ・
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;For more information, see the &lt;a href="https://docs.spring.io/spring-vault/docs/2.1.0.RC1/reference/html/#vault.authentication.azuremsi"&gt;reference documentation&lt;/a&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="sect1"&gt;
-&lt;h2 id="key-value-api"&gt;&lt;a class="anchor" href="#key-value-api"&gt;&lt;/a&gt;Key-Value API&lt;/h2&gt;
-&lt;div class="sectionbody"&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Vault introduced with version 0.10 a versioned variant of its Key-Value backend (which was also known as the generic secret backend a few versions ago). This change introduces another backend type with a similar external API regarding its operations (list, get, put, delete) but a different API implementation.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;To unify versioned and non-versioned API access, we introduced a common API with &lt;code&gt;VaultKeyValueOperations&lt;/code&gt;. &lt;code&gt;VaultKeyValueOperations&lt;/code&gt; exposes common functionality that you can use in a version-agnostic style if you do not want to interact with versioning metadata. The following example shows how you might use it:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;VaultOperations vaultOperations = ・
-VaultKeyValueOperations operations = vaultOperations.opsForKeyValue("secret", KeyValueBackend.unversioned());
-
-Map&amp;lt;String, Object&amp;gt; secret = new HashMap&amp;lt;&amp;gt;();
-secret.put("key", "value");
-secret.put("ttl", "5");
-
-operations.put("key", secret);
-
-operations.put("key", new Person(・));
-
-VaultResponseSupport&amp;lt;Person&amp;gt; person = operations.get("key", Person.class);&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The variant shown above ignores versioning specifics even if they are provided by the targeted secret backend. You can obtain a versioned Key-Value API to interact with versions.
-&lt;code&gt;VaultVersionedKeyValueOperations&lt;/code&gt; exposes version-specific operations such as retrieval of a specific secret version or compare-and-set. Take a look at the following example:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;VaultOperations vaultOperations = ・
-VaultVersionedKeyValueOperations operations = vaultOperations.opsForVersionedKeyValue("versioned");
-
-Map&amp;lt;String, Object&amp;gt; secret = new HashMap&amp;lt;&amp;gt;();
-secret.put("key", "value");
-secret.put("ttl", "5");
-
-Metadata metadata = operations.put("key", secret);
-
-Versioned&amp;lt;Map&amp;lt;String, Object&amp;gt;&amp;gt; versioned = operations.get("key", Version.from(42));
-
-Map&amp;lt;String, Object&amp;gt; update = new HashMap&amp;lt;&amp;gt;();
-update.put("key", "new-key");
-update.put("ttl", "5");
-
-Versioned&amp;lt;Map&amp;lt;String, Object&amp;gt;&amp;gt; compareAndSet = Versioned.create(secret, versioned.getVersion());
-
-operations.put("key", compareAndSet);
-
-operations.delete("key", Version.from(42));&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Requests and responses to versioned secrets wrap their content along with versioning metadata in a &lt;code&gt;Versioned&lt;/code&gt; object to attach a versioning context.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="sect1"&gt;
-&lt;h2 id="wrapping-api-support"&gt;&lt;a class="anchor" href="#wrapping-api-support"&gt;&lt;/a&gt;Wrapping API Support&lt;/h2&gt;
-&lt;div class="sectionbody"&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;A core concept in Vault is to wrap responses and return a token to obtain the actual response body. Response wrapping is now supported by a dedicated API with &lt;code&gt;VaultWrappingOperations&lt;/code&gt;. Wrapping support allows lookup of wrapped responses. You can read these and rewrap the content. &lt;code&gt;VaultWrappingOperations&lt;/code&gt; does not support response wrapping of Spring Vault API calls. You can use &lt;code&gt;RestTemplate&lt;/code&gt; through &lt;code&gt;VaultOperations.doWithSession(・)&lt;/code&gt; directly if you need to create wrapped responses.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The following example provides an overview of &lt;code&gt;VaultWrappingOperations&lt;/code&gt; use:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code class="language-java" data-lang="java"&gt;VaultOperations vaultOperations = ・
-VaultWrappingOperations operations = vaultOperations.opsForWrapping();
-
-VaultToken wrappingToken = VaultToken.of(・);
-
-// Metadata encapsulated TTL and Creation Time
-WrappedMetadata lookup = operations.lookup(wrappingToken);
-
-// Read the response as generic Map
-VaultResponse response = operations.read(wrappingToken);
-
-// Read the response applying a type hint.
-VaultResponseSupport&amp;lt;SocialSecurityNumber&amp;gt; response = operations.read(
-        wrappingToken, SocialSecurityNumber.class);
-
-// You can also wrap user-supplied data and get a token in return
-Map&amp;lt;String, String&amp;gt; map = Collections.singletonMap("key", "value");
-WrappedMetadata metadata = wrappingOperations.wrap(map, Duration.ofSeconds(100));&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="sect1"&gt;
-&lt;h2 id="java-11-compatibility"&gt;&lt;a class="anchor" href="#java-11-compatibility"&gt;&lt;/a&gt;Java 11 Compatibility&lt;/h2&gt;
-&lt;div class="sectionbody"&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Spring Vault fully supports Java 11 as its next long-term support release. In fact, we strongly recommend that you upgrade your Spring Vault version to the 2.1 release (in combination with Spring Framework 5.1) if you are developing for JDK 11, as it will give you a warning-free experience of Spring&amp;#8217;s libraries. All HTTP client integrations have JDK 11 support.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="sect1"&gt;
-&lt;h2 id="outlook"&gt;&lt;a class="anchor" href="#outlook"&gt;&lt;/a&gt;Outlook&lt;/h2&gt;
-&lt;div class="sectionbody"&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;We are working towards the next Spring Vault 2.2 release to ship with annotation-based configuration for the versioned Vault key-value backend. We keep observing the Vault project and continue to work to provide integrations for features that make sense from an application perspective. Cheers, and stay tuned!&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</content>
   </entry>
 </feed>

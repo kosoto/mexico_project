@@ -33,24 +33,35 @@ junghoon.member = {
 						alert('잘가 잘가 잘가로봇');
 						junghoon.member.add();
 					})
-				$('#login_submit_btn').click(e=>{
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					$('#login_submit_btn').click(e=>{
 					alert('aa');
-					$('#info').html(
-							'<li><a href="#" id="logout">로그아웃</a></li>'
-							+'<li><a href="#" id="mypage">마이페이지</a></li>'
-							+'<li><a href="#" id="comment">코멘트 테스트 페이지</a></li>'
-					); 
-					$('#logout').click(e=>{
-					bemeal.main.init();
-					});
-					$('#mypage').click(e=>{
-					alert('마이페이지 클릭');
+					$('#info').empty();
+					$('<li/>').append($('<a/>').attr({id:"login_form", href:"#"}).html('마이페이지')).appendTo($('#info'))
+					.click(e=>{
 						junghoon.service.mypage();
 					});
-					$('#comment').click(e=>{
-						alert('코멘트 테스트 페이지');
-							junghoon.service.comment();
-						});
+					$('<li/>').append($('<a/>').attr({href:"#"}).html('로그아웃')).appendTo($('#info'))
+					.click(e=>{
+						bemeal.main.init();
+					});
+					$('<li/>').append($('<a/>').attr({href:"#"}).html('댓글 테스트')).appendTo($('#info'))
+					.click(e=>{
+						junghoon.service.comment();
+					});
+					$('<li/>').append($('<a/>').attr({href:"#"}).html('검색 테스트')).appendTo($('#info'))
+					.click(e=>{
+						junghoon.service.search();
+					});
 				})
 			});
 		}
@@ -58,13 +69,29 @@ junghoon.member = {
 
 junghoon.service = {
 		
+	/*	practice : x => {
+			alert('안녕');
+			$('content').empty();
+			$.getScript($.script()+'/compo.js' , ()=>{
+				$(<'div/'>).attr({id:"login_form"});	
+			});
+		
+			},*/
+		
+		search : x => {
+			alert('st');
+			$.getScript($.script()+'/ui/search.js', ()=>{
+				$('#content').empty().html(searchUI())
+			})
+
+		},
+		
 		mypage : x => {
 			alert('mp');
 			$.getScript($.script()+'/ui/j_mbrupdate.js', ()=>{
 					$('#content').empty().html(modifyUI())
 				})
-	
-		},
+	},
 		comment : x => {
 			alert('cmt');
 			$.getScript($.script()+'/ui/j_comment.js', ()=>{

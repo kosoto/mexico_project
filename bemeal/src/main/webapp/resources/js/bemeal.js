@@ -160,6 +160,14 @@ bemeal.router = {
 						junghoon.member.add();
 					})
 				});
+				$('#testSearch').click(e=>{
+					alert('testSearch click');
+					$.getScript($.script()+"/junghoon.js",()=>{
+						/*가야 할 곳은 개인이 알아서*/
+						junghoon.service.search();
+					})
+				});
+				
 				$('#evaluate').click(e=>{
 					alert('evaluate 클릭');
 					bemeal.evaluate.main();
