@@ -29,8 +29,8 @@
 
 @media screen and (max-height:600px) and (max-width:600px) {
    .detail-main, .detail-right {
-    width:30%; /* The width is 100%, when the viewport is 800px or smaller */
-  	height:30%;
+    width:100%; /* The width is 100%, when the viewport is 800px or smaller */
+  	height:100%;
   }
 }
 
@@ -784,7 +784,7 @@ img.yh-mfp-img {
 .y_img_popup{
 	height:60%;
 	width:30%;
-	float:top;
+	float:center;
 	margin:20px auto;
 }
 .y_img_popup_div{
@@ -813,7 +813,7 @@ img.yh-mfp-img {
 }
 
 
-/* carousel class */
+/* carousel modal class : list와 통합후 삭제 */
 .carousel.slide.y{
 	height:100px;
 	width:200px;
@@ -824,3 +824,12 @@ img.yh-mfp-img {
 	width:100px;
 }
 
+/* carousel list class  */
+.controls-top.y{
+	float:center;
+} 
+
+/* card */
+.card.y{
+	
+}
