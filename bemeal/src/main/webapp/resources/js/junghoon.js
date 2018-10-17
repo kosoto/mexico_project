@@ -71,16 +71,67 @@ junghoon.service = {
 		search : x => {
 			alert('st');
 			$.getScript($.script()+'/ui/search.js', ()=>{
+				$('header').remove();
 				$('#content').empty().html(searchUI())
+					$('#tag2search').click(e=>{
+						alert('hello');
+						junghoon.service.search2();
+					})
 			})
 
 		},
+		search2 : x => {
+			alert('st2');
+			$.getScript($.script()+'/ui/search2.js', ()=>{
+				$('#content').empty().html(search2UI())
+					$('#search2tag').click(e=>{
+						alert('hello');
+						junghoon.service.search();
+					})
+					$('#clickTheSearchBox').focus(e=>{
+						
+					})
+					$('#clickTheSearchBox').blur(e=>{
+						
+					})
+					$('#popular_searches').click(e=>{
+						alert('인기검색어 클릭');
+						$('#popular_search_time').html(
+								+'                <ul id="popular_search_time">'
+								+'                    <li>1위 GS도시락</li>'
+								+'                    <li>2위 치킨도시락</li>'
+								+'                    <li>3위 한솥도시락</li>'
+								+'                    <li>4위 라면</li>'
+								+'                    <li>5위 양념치킨</li>'
+								+'                </ul>'
+								+''
+								+'    </div>'
+								);
+					})
+					$('#myage_popular').click(e=>{
+						alert('내 연령대 정보 클릭');
+						$('#popular_search_time').html(
+								+'                <ul id="popular_search_age">'
+								+'                    <li>1위 로그인 한</li>'
+								+'                    <li>2위 내 정보의</li>'
+								+'                    <li>3위 연령대가</li>'
+								+'                    <li>4위 관심있는</li>'
+								+'                    <li>5위 검색어</li>'
+								+'                </ul>'
+								+''
+								+'    </div>'
+						);
+					})
+				
+			})
 		
+
+		},
 		mypage : x => {
 			alert('mp');
 			$.getScript($.script()+'/ui/j_mbrupdate.js', ()=>{
 					$('#content').empty().html(modifyUI())
-				})
+				});
 	},
 		comment : x => {
 			alert('cmt');

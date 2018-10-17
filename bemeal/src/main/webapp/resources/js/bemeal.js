@@ -50,13 +50,14 @@ bemeal.router = {
 								arr:[{image:"/web/resources/img/cmm/banner1.jpg"},{image:"/web/resources/img/cmm/banner2.jpg"}]
 							})
 					),
-					$('<div/>').attr({id:'content'}),
-					$('<footer/>')
+					$('<div/>').attr({id:'content'})
+					/*,
+					$('<footer/>')*/
 				);
-				
+				/*footer 삭제
 				$.getScript($.script()+"/ui/footer.js",()=>{
 					$('footer').append(footerUI());
-				});
+				});*/
 				
 				let $content = $('#content');
 				let $carousels = $('<div/>').appendTo($content);
@@ -124,10 +125,12 @@ bemeal.router = {
 				
 				
 				$('#logo').click(e=>{
+					e.preventDefault();
 					bemeal.router.main();
 				});
 
 				$('#taste').click(e=>{
+					e.preventDefault();
 					alert('taste click');
 					$.getScript($.script()+"/kaeun.js",()=>{
 						/*가야 할 곳은 개인이 알아서*/
@@ -136,6 +139,7 @@ bemeal.router = {
 					})
 				});
 				$('#menu').click(e=>{
+					e.preventDefault();
 					alert('1.menu click');
 					$.getScript($.script()+"/yoonho.js",()=>{
 						/*가야 할 곳은 개인이 알아서*/
@@ -145,6 +149,7 @@ bemeal.router = {
 					})
 				});
 				$('#login').click(e=>{
+					e.preventDefault();
 					alert('login click');
 					$.getScript($.script()+"/junghoon.js",(e)=>{
 						/*가야 할 곳은 개인이 알아서*/
@@ -153,6 +158,7 @@ bemeal.router = {
 					})
 				});
 				$('#join').click(e=>{
+					e.preventDefault();
 					alert('join click');
 					$.getScript($.script()+"/junghoon.js",()=>{
 						/*가야 할 곳은 개인이 알아서*/
@@ -162,18 +168,28 @@ bemeal.router = {
 				});
 				
 				$('#testSearch').click(e=>{
+					e.preventDefault();
 					alert('testSearch click');
 					$.getScript($.script()+"/junghoon.js",()=>{
 						/*가야 할 곳은 개인이 알아서*/
 						junghoon.service.search();
 					})
 				});
-				
+				$('#testSearch2').click(e=>{
+					e.preventDefault();
+					alert('testSearch click');
+					$.getScript($.script()+"/junghoon.js",()=>{
+						/*가야 할 곳은 개인이 알아서*/
+						junghoon.service.search2();
+					})
+				});
 				$('#evaluate').click(e=>{
+					e.preventDefault();
 					alert('evaluate 클릭');
 					bemeal.evaluate.main();
 				});
 				$('#sam').click(e=>{
+					e.preventDefault();
 					alert('sam click');
 					$.getScript($.script()+"/sam.js",()=>{
 						$window.off('scroll');

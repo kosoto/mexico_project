@@ -10,13 +10,14 @@ public class Item {
 	private int itemSeq;
 	private String itemName;
 	private String brand;
+	private String category;
 	private int price;
 	private double salePercent;
 	private boolean event;
 	private boolean newItem;
 	private String image;
 	private String explains;
-	private int colorie;
+	private int calorie;
 	
 	
 	
