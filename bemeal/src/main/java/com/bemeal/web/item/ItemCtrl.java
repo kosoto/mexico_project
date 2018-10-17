@@ -164,7 +164,7 @@ public class ItemCtrl {
 		};
 		String category;
 		int price,calorie;
-		for(int i=1;i<1000;i++) {//1000개의 더미데이터 생성하기
+		for(int i=1;i<=400;i++) {//400개의 더미데이터 생성하기
 			item = new Item();
 			//아이템 번호
 			item.setItemSeq(i);
@@ -192,6 +192,8 @@ public class ItemCtrl {
 			map.put("item", item);
 			map.put("img", img);
 			tx.insert(map);
+			logger.info(item.toString());
+			logger.info(img.toString());
 			
 		}
 		

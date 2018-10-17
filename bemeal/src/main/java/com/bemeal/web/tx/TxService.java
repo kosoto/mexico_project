@@ -24,7 +24,6 @@ public class TxService {
 		Image img = (Image) p.get("img");
 		itemMapper.post(item);
 		imageMapper.post(img);
-		
 	}
 	
 }

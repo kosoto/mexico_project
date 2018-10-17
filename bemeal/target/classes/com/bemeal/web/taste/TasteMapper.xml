@@ -3,6 +3,11 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.bemeal.web.taste.TasteMapper">
-  
+  	<insert id="post">
+  		INSERT INTO TASTE
+  		(QUANTITY,DIR_NAME,GRADE,FLAG,MEMBER_ID,ITEM_SEQ)
+  		VALUES
+  		(#{quantity},#{dirName},#{grade},#{flag},#{memberId},#{itemSeq})
+  	</insert>
   
   </mapper>

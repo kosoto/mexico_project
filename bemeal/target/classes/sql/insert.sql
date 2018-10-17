@@ -2,10 +2,9 @@
 INSERT INTO MEMBER 
 (MEMBER_ID,PASSWORD,NAME,AGE,SSN,GENDER,ADDRESS,E_MAIL,PHONE_NUM)
 VALUES
-('KST','123','김승태',30,'891111-1233220','남','경기도 파주시','kstad@naver.com','010-5359-3559'),
-('KYH','123','김윤호',31,'881111-1232220','남','서울시 신촌','yoonho@naver.com','010-1533-1235'),
-('KJH','123','김정훈',23,'971111-1231120','남','인천시','junghoon@naver.com','010-4567-1856'),
-('OGE','123','오가은',29,'901111-2203420','녀','서울시','gaeun@naver.com','010-2435-6756');
+('test1','1','김승태',30,'891111-1233220','남','경기도 파주시','kstad@naver.com','010-5359-3559'),
+('test2','1','김윤호',31,'881111-1232220','남','서울시 신촌','yoonho@naver.com','010-1533-1235'),
+('test3','1','김정훈',23,'971111-1231120','남','인천시','junghoon@naver.com','010-4567-1856');
 
 <!-- ingredient -->
 INSERT INTO ingredient (ING_NAME) VALUES
