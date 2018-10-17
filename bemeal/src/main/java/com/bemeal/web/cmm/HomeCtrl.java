@@ -27,7 +27,7 @@ public class HomeCtrl {
 		model.addAttribute("context", request.getContextPath());
 		//itemctrl.dummy(); //item dummy data
 		//mbrCtrl.dummy(); //member dummy data
-		tCtrl.dummy(); //taste dummy data
+		//tCtrl.dummy(); //taste dummy data
 		return "main";
 	}
 }
