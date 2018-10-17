@@ -174,7 +174,8 @@ kaeun.payments = {
 									+'<div id="cart_header_end" class="item_header">내역</div></div>');
 			ui.n_div({clazz:'panel panel-default',html:$('<div id="pay_panel"/>').addClass("panel-body"),to:$('#pay_Search')}); //search
 			
-			$('#pay_panel').html('<div class="grid_layout">'
+			$('#pay_panel').html('<div class="card">'
+					//'<div class="grid_layout">'
 					  +'<div class="grid_title_l"><div id="search_form">'
 					  +'구매기간:　<input class="form-control" type="date" value="2018-07-19" id="example-date-input">'
 						+'　　~　　<input class="form-control" type="date" value="2018-10-19" id="example-date-input">'
