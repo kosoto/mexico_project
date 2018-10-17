@@ -37,6 +37,8 @@
 <!-- MDB -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.11/js/mdb.min.js"></script>
 	<div id="wrapper"></div>
+
+
 	<script>
 		bemeal.init('${context}');
 	</script> 
