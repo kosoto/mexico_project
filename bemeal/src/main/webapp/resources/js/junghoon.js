@@ -71,6 +71,7 @@ junghoon.service = {
 		search : x => {
 			alert('st');
 			$.getScript($.script()+'/ui/search.js', ()=>{
+				$('header').remove();
 				$('#content').empty().html(searchUI())
 			})
 
@@ -80,7 +81,7 @@ junghoon.service = {
 			alert('mp');
 			$.getScript($.script()+'/ui/j_mbrupdate.js', ()=>{
 					$('#content').empty().html(modifyUI())
-				})
+				});
 	},
 		comment : x => {
 			alert('cmt');
