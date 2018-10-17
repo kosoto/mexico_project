@@ -1,5 +1,5 @@
 function asideUI (){
-	return '<div class="mini-submenu">'
+	return /*'<div class="mini-submenu">'
 	+'    <span class="icon-bar"></span>'
 	+'    <span class="icon-bar"></span>'
 	+'    <span class="icon-bar"></span>'
@@ -31,5 +31,5 @@ function asideUI (){
 	+'        <i class="glyphicon glyphicon-tags"></i>  콜렉션'
 	+'    </a>'
 	+'</div>        '
-	+'</div>'
+	+'</div>'*/''
 ;}

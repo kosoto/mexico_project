@@ -183,7 +183,7 @@ junghoon.service = {
 		search : x => {
 			alert('st');
 			$.getScript($.script()+'/ui/search.js', ()=>{
-				
+				$('header').remove();
 				$('#content').empty().html(searchUI())
 					$('#tag2search').click(e=>{
 						alert('hello');
@@ -243,7 +243,7 @@ junghoon.service = {
 			alert('mp');
 			$.getScript($.script()+'/ui/j_mbrupdate.js', ()=>{
 					$('#content').empty().html(modifyUI())
-				})
+				});
 	},
 		comment : x => {
 			alert('cmt');
