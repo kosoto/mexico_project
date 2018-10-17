@@ -43,6 +43,11 @@
 	     } 
 	 }
 	}
+	.btn-group{
+		margin: 0 auto;
+		border-radius: 20px;
+		
+	}
 	/* Set a style for all buttons */
 	.j_button {
 	    background-color: #4CAF50;
@@ -57,11 +62,11 @@
 	.ss_btn {
 	    background-color: #bb1d1e;
 	    color: white;
-	    padding: 15px 15px;
+	    padding: 15px;
 	    margin: 0px auto;
 	    border: none;
 	    cursor: pointer;
-	    width: 49%;
+	    width: 44%;	
 	    overflow: hidden;
 	}
 	.search_submit {
@@ -180,9 +185,11 @@
 
 .j_scbox {
   display:none; 
+  margin : 5%;
+  padding-left : 5px;
 }
 .rounded{
-	border-radius: 20px;
+	border-radius: 40px;
 	
 }
 .search-box{
@@ -203,8 +210,11 @@
 .search_title{
 	text-align:center;	
 	color:#bb1d1e;
+	font-family : sans-serif ;
 }
- 
+.j_goSearch {
+		float: right;
+}
 .search-list h3{
     background: #eee;
     padding: 3%;
@@ -223,14 +233,14 @@
 
 /* The slider itself */
 .slider {
-    -webkit-appearance: none;  /* Override default CSS styles */
-    appearance: none;
-    width: 100%; /* Full-width */
-    height: 25px; /* Specified height */
-    background: #000000; /* Grey background */
-    outline: none; /* Remove outline */
-    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    border-radius: 5px;   
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
     transition: opacity .2s;
 }
 
@@ -245,7 +255,7 @@
     appearance: none;
     width: 25px; /* Set a specific slider handle width */
     height: 25px; /* Slider handle height */
-    background: #4CAF50; /* Green background */
+    background: #bb1d1e; /* Green background */
     cursor: pointer; /* Cursor on hover */
 }
 
