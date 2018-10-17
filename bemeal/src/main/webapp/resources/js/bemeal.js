@@ -177,6 +177,17 @@ bemeal.router = {
 						junghoon.service.search2();
 					})
 				});
+				$('#testSearch3').click(e=>{
+					e.preventDefault();
+					alert('testSearch3 click');
+					$.getScript($.script()+"/junghoon.js",()=>{
+						/*가야 할 곳은 개인이 알아서*/
+						junghoon.service.search3();
+					})
+				});
+				
+				
+				
 				$('#evaluate').click(e=>{
 					alert('evaluate 클릭');
 					bemeal.evaluate.main();
