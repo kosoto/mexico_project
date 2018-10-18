@@ -64,61 +64,61 @@ kaeun.home = {
                         		});
                         	//content_home 시작
                         		 $('#content_grid').html('<div class="accordian">'
-                     				    +'<ul>'
-                    				    +'<li>'
-                    				    +'<div class="image_title">'
-                    				    +'	<a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">KungFu Panda</a>'
-                    				    +'</div> '
-                    				    +'<a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
-                    				    +'	<img src="http://thecodeplayer.com/uploads/media/3yiC6Yq.jpg"/>'
-                    				    +'</a>'
-                    				    +'</li>'
-                    				    +'<li>'
-                    				    +'<div class="image_title">'
-                    				    +'	<a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">Toy Story 2</a>'
-                    				    +'</div>'
-                    				    +'<a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
-                    				    +'	<img src="http://thecodeplayer.com/uploads/media/40Ly3VB.jpg"/>'
-                    				    +'</a>'
-                    				    +'</li>'
-                    				    +'<li>'
-                    				    +'<div class="image_title">'
-                    				    +'	<a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">Wall-E</a>'
-                    				    +'</div>'
-                    				    +'<a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
-                    				    +'	<img src="http://thecodeplayer.com/uploads/media/00kih8g.jpg"/>'
-                    				    +'</a>'
-                    				    +'</li>'
-                    				    +'<li>'
-                    				    +'<div class="image_title">'
-                    				    +'	<a href="#">Up</a>'
-                    				    +'</div>'
-                    				    +'<a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
-                    				    +'	<img src="http://thecodeplayer.com/uploads/media/2rT2vdx.jpg"/>'
-                    				    +'</a>'
-                    				    +'</li>'
-                    				    +'<li>'
-                    				    +'<div class="image_title">'
-                    				    +'	<a href="#">Cars 2</a>'
-                    				    +'</div>'
-                    				    +'<a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
-                    				    +'	<img src="http://thecodeplayer.com/uploads/media/8k3N3EL.jpg"/>'
-                    				    +'</a>'
-                    				    +'</li>'
-                    				    +'</ul>'
-                    				    +'</div>');                   
+                        				 +'        <ul>'
+                        				 +'        <li>'
+                        				 +'        <div class="image_title">'
+                        				 +'          <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">장바구니</a>'
+                        				 +'        </div> '
+                        				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
+                        				 +'          <img class="k_home_img" src="https://cdn.pixabay.com/photo/2014/08/14/14/21/shish-kebab-417994_960_720.jpg"/>'
+                        				 +'        </a>'
+                        				 +'        </li>'
+                        				 +'        <li>'
+                        				 +'        <div class="image_title">'
+                        				 +'          <a href="">구매내역</a>'
+                        				 +'        </div>'
+                        				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
+                        				 +'          <img class="k_home_img" src="https://images.pexels.com/photos/749353/pexels-photo-749353.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"/>'
+                        				 +'        </a>'
+                        				 +'        </li>'
+                        				 +'        <li>'
+                        				 +'        <div class="image_title">'
+                        				 +'          <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">선물함</a>'
+                        				 +'        </div>'
+                        				 +'        <a href="">'
+                        				 +'          <img class="k_home_img" src="https://images.pexels.com/photos/1050244/pexels-photo-1050244.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"/>'
+                        				 +'        </a>'
+                        				 +'        </li>'
+                        				 +'        <li>'
+                        				 +'        <div class="image_title">'
+                        				 +'          <a href="#">취향분석</a>'
+                        				 +'        </div>'
+                        				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
+                        				 +'          <img class="k_home_img" src="https://cdn.pixabay.com/photo/2014/12/08/11/49/love-560783_960_720.jpg"/>'
+                        				 +'        </a>'
+                        				 +'        </li>'
+                        				 +'        <li>'
+                        				 +'        <div class="image_title">'
+                        				 +'          <a href="#">콜렉션</a>'
+                        				 +'        </div>'
+                        				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
+                        				 +'           <img class="k_home_img" src="https://cdn.pixabay.com/photo/2017/04/05/01/16/food-2203732_960_720.jpg"/>'
+                        				 +'        </a>'
+                        				 +'        </li>'
+                        				 +'        </ul>'
+                        				 +'        </div>');                   
                         	}) //done끝나는지점
            }
            };
 //payment관련 해서 : cart, payHis, present
-kaeun.payment = (()=>{
+kaeun.payment = (x=>{ //kaeun.payment(cart); kaeun.payment(payHis);
 	var ctx;
 	var init= ()=>{
-		ctx = $.ctx();
 		onCreate();
 	};
 	var onCreate = ()=>{
 		setContentView();
+		//그린다음에 이벤트 
 	};
 	var setContentView=()=>{ //들어오는 값에 따라... 
 		
@@ -182,8 +182,11 @@ kaeun.payments = {
 				});
 				ui.btn({id:'cart_order_btn'+i,size:'mini',color:'black',txt:'구매하기'}).appendTo($('#cart_btns'+i));
 				$('#cart_btns'+i).append('<br/>').append(ui.btn({id:'cart_gift_btn'+i,size:'mini',color:'red',txt:'선물하기'}))
-				.append('<br/>').append(ui.btn({id:'cart_delete_btn'+i,size:'mini',color:'white',txt:'삭제하기'}));
+				.append('<br/>').append(ui.btn({id:'cart_delete_btn'+i,size:'mini',color:'white',txt:'삭제하기'}))
+				.click(e=>{}); //유령
+				;
 			}); //each문끝
+			
 			ui.grid_list({ 
 				to: $('#cart_grid'),
 				c1:"",
@@ -223,10 +226,15 @@ kaeun.payments = {
 					fixedContentPos:false,
 					items:{src:
 						'<form class="white-popup">'
-						+'선물하기 팝업//' //선택 선물하기 화면 짜야함 
+						+'선물하기' //선물하기 팝업
 						+	'<div class="form-group">'
-						+       '<label for="text">Access Code:</label>'
-				    	+		'<input type="text" class="form-control" id="code">'
+						+       '<label for="text">To.Id:</label>'
+				    	+		'<input type="text" class="form-control" id="gift_toid">' //아이디가 없으면 없다고 떠야함
+				    	  +   '<div class="form-group">'
+							+		'<label for="pwd">Message:</label>'
+							+		'<textarea type="text" class="form-control" rows="3" id="gift_msg"/>'
+						    +   '</div>'
+						    +	'<button type="submit" class="btn btn-default">Submit</button>'
 			    		+	'</div>'
 						+'</form>'
 					},
