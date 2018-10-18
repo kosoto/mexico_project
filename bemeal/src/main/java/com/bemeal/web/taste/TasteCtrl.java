@@ -38,8 +38,8 @@ public class TasteCtrl {
 				tasteMapper.post(taste);
 			}	
 		}*/
-		//400명이 특정 1개 아이템9개 평점매기기
-		List<Member> mbrList = mbrMapper.listAll();
+		//400명이 특정 1개 아이템9개 평점매기기 - 완료
+		/*List<Member> mbrList = mbrMapper.listAll();
 		ArrayList<Integer> itemSeqList;
 		int temp;
 		for(int i=1;i<=400;i++) {
@@ -60,7 +60,7 @@ public class TasteCtrl {
 				taste.setItemSeq(temp);
 				tasteMapper.post(taste);
 			}
-		}
+		}*/
 		
 		//구매목록
 		//특정 3인이 100개 구매 - 완료
@@ -86,5 +86,27 @@ public class TasteCtrl {
 				tasteMapper.post(taste);
 			}	
 		}*/
+		//400명이 10개씩 구매 - 완료
+	     /* List<Member> mbrList = mbrMapper.listAll();
+	      logger.info(mbrList.toString());
+	      ArrayList<Integer> itemSeqList;
+	      int temp;
+	      for(int i=1;i<=400;i++) {
+	         System.out.println("회전수 : "+i);
+	         itemSeqList = new ArrayList<>();
+	         taste = new Taste();
+	         taste.setMemberId(mbrList.get(i).getMemberId());
+	         taste.setFlag("buy");
+	         taste.setQuantity(1);
+	         for(int c=1;c<=10;c++) {
+	            do {
+	               temp = (int)(Math.random()*400+1);
+	            } while(itemSeqList.contains(temp));
+	            itemSeqList.add(temp);
+	            taste.setItemSeq(temp);
+	            tasteMapper.post(taste);
+	            logger.info(taste.toString());
+	         }
+	      }*/
 	}
 }

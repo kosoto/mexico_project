@@ -9,5 +9,9 @@
   		VALUES
   		(#{quantity},#{dirName},#{grade},#{flag},#{memberId},#{itemSeq})
   	</insert>
-  
+ 	<select id="listAll" resultType="com.bemeal.web.mbr.Member">
+        SELECT 
+           MEMBER_ID AS "MEMBERID",PASSWORD,NAME,AGE,SSN,GENDER,ADDRESS,E_MAIL AS "EMAIL",PHONE_NUM AS PHONENUM 
+        FROM MEMBER
+    </select>
   </mapper>

@@ -2,48 +2,41 @@
 INSERT INTO MEMBER 
 (MEMBER_ID,PASSWORD,NAME,AGE,SSN,GENDER,ADDRESS,E_MAIL,PHONE_NUM)
 VALUES
-('test1','1','김승태',30,'891111-1233220','남','경기도 파주시','kstad@naver.com','010-5359-3559'),
-('test2','1','김윤호',31,'881111-1232220','남','서울시 신촌','yoonho@naver.com','010-1533-1235'),
-('test3','1','김정훈',23,'971111-1231120','남','인천시','junghoon@naver.com','010-4567-1856');
+('test1','1','김승태',30,'891111-1','남','경기도 파주시','kstad@naver.com','010-5359-3559'),
+('test2','1','김윤호',31,'881111-1','남','서울시 신촌','yoonho@naver.com','010-1533-1235'),
+('test3','1','김정훈',23,'971111-1','남','인천시','junghoon@naver.com','010-4567-1856');
 
-<!-- ingredient -->
-INSERT INTO ingredient (ING_NAME) VALUES
-('닭고기'),
-('소고기'),
-('돼지고기'),
-('계란'),
-('햄'),
-('생선'),
-('야채'),
-('치즈');
-
-<!-- ITEM -->
-INSERT INTO ITEM 
-(ITEM_NAME, PRICE)
-VALUES 
-('매화',4000),
-('백종원 도시락',3000),
-('치킨마요',3500),
-('와사비마요',3000),
-('제육볶음',4500);
-
-<!-- item_ingredient -->
-INSERT INTO item_ingredient 
-(ING_SEQ,ITEM_SEQ)
-VALUES
-(1,1),
-(4,1),
-(2,2),
-(6,2),
-(3,5);
-
-<!-- TAG -->
-INSERT INTO TAG (TAG_NAME) VALUES
-('고소'),
-('단맛'),
-('짠맛'),
-('달콤'),
-('매운맛');
+<!-- TAG 재료:19개 -->
+INSERT INTO TAG (TAG_FLAG,TAG_NAME) VALUES
+('재료','닭'),
+('재료','오리'),
+('재료','오징어'),
+('재료','소고기'),
+('재료','버섯'),
+('재료','김치'),
+('재료','계란'),
+('재료','더덕'),
+('재료','새우'),
+('재료','고등어'),
+('재료','갈치'),
+('재료','문어'),
+('재료','장어'),
+('재료','감자'),
+('재료','고구마'),
+('재료','어묵'),
+('재료','소시지'),
+('재료','돼지'),
+('재료','치즈')
+;
+<!-- TAG 맛:개 -->
+INSERT INTO TAG (TAG_FLAG,TAG_NAME) VALUES
+('맛','고소한맛'),
+('맛','단맛'),
+('맛','짠맛'),
+('맛','달콤한맛'),
+('맛','매운맛'),
+('맛','신맛');
+;
 
 <!-- keyword -->
 INSERT INTO keyword (KEYWORD) VALUES
@@ -77,11 +70,4 @@ VALUES
 ('테스트4','테스트4',1,'KST',4),
 ('테스트5','테스트5',1,'KYH',1);
 
-INSERT INTO TASTE 
-(GRADE,ITEM_SEQ,MEMBER_ID,FLAG)
-VALUES
-(3,1,'KST','GRADE'),
-(2,2,'KST','GRADE'),
-(3.5,3,'KST','GRADE'),
-(4,4,'KST','GRADE'),
-(5,1,'KYH','GRADE');
+
