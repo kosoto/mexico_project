@@ -210,7 +210,7 @@
 .btn-two.red       {background-color: #bb1d1e;}
 .btn-two.white {background-color: #ffffff;
                      color:#4d4d4d;}
-.btn-two.yellowp {background-color: #ffffb3;}
+.btn-two.yellowp {background-color: #ffd633;}
 .btn-two.blue     {background-color: #7fccde;}
 .btn-two.redp {background-color: #ea7b7b;}
 .btn-two.greenp {background-color: #ffe066;}
@@ -350,7 +350,7 @@
     bottom:0;
 }
 .gift_details h2 { /*아이템이름*/
-    color:#000;
+    color:#fff;
     margin:0;
     padding:0;
     font-size:30px;

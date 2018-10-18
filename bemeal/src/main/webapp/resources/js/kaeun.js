@@ -13,7 +13,7 @@ kaeun.main=(()=>{
      var init =()=>{  //session값 가져올꺼임
            onCreate(); 
      };
-     var onCreate =()=>{ 
+     var onCreate =()=>{  //여기서 그리드를 그려도 되나..?
            setContentView();
      };
      var setContentView =()=>{ 
@@ -133,7 +133,7 @@ kaeun.payments = {
 			ui.content_g();
 			//$('<div/>').html("footer").addClass("grid_footer").attr({id:"footer"}).appendTo($('#content_grid'));
 			$('#title_l').addClass('cart_title').append('<h2>장바구니<h2>');
-			$('#title_r').append('<div class="cart_process">' //장바구니-결제-완료
+			$('#title_r').append(/*'<div class="cart_process">' //장바구니-결제-완료
 		            +'<div class="row bs-wizard" style="border-bottom:0;">'
 		            +'<div class="col-xs-3 bs-wizard-step complete">'
 		            //"https://t1.daumcdn.net/cfile/tistory/21522A4E5537613D33">
@@ -156,7 +156,7 @@ kaeun.payments = {
 		            +'</div>  '
 		            +'</div> '
 		            +'</div>'
-		            +'</div>');
+		            +'</div>'*/);
 			ui.checkbox({id:'cart_all_chk',txt:'선택'}).appendTo($('#content_g'));
 			ui.btn({id:'cart_delteall_btn',size:'mini',color:'white',txt:'선택삭제'}).appendTo($('#content_g'));
 			$('#content_g').append('<div id="cart_grid" class=list-grid-container>' 
@@ -209,14 +209,35 @@ kaeun.payments = {
 				//선택상품만 다음화면으로 넘기는 방법.
 				//.form-check-input이 체크되어있는것들 id를 뽑을수있남?
 				//attr(id) 를 하면 그값들에대한 id를 알수있지...? 
-				//만약 리턴된 아이디가 cart_chk1이면, 1번제품 제품번호를 알수있음=id로가져와.
-				//1 -  cart_chk1 1번이냐 2번이냐 3번이냐를 가져와서 
-				//2 -  cart_chk2
-				//3 -  cart_chk3
+				//만약 리턴된 아이디가 cart_chk1이면, 
+				//1 -  cart_chk제품번호 ㄴ 체크뒤에 들어가는 이름은 제품번호임 
+				//2 -  cart_chk제품번호
+				//3 -  cart_chk제품번호
 			})
 			$('#cart_gift_submit').click(e=>{
-				//선택상품 선물
-				alert('선택선물');
+				$.magnificPopup.open({
+					closeBtnInside:true,
+					closeOnContentClick:false,
+					alignTop: true,
+					fixedBgPos:true,
+					fixedContentPos:false,
+					items:{src:
+						'<form class="white-popup">'
+						+'선물하기 팝업//' //선택 선물하기 화면 짜야함 
+						+	'<div class="form-group">'
+						+       '<label for="text">Access Code:</label>'
+				    	+		'<input type="text" class="form-control" id="code">'
+			    		+	'</div>'
+						+'</form>'
+					},
+					midClick:true,
+					overflowY:'auto',
+					removalDelay:'0',
+					type:'inline'}); 
+				$('.btn').on('click',function(){
+					alert($('#code').val());
+				});
+				return false;
 			})
 		},
 		payHis : ()=>{ //read some
