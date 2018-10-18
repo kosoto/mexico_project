@@ -13,7 +13,7 @@ kaeun.main=(()=>{
      var init =()=>{  //session값 가져올꺼임
            onCreate(); 
      };
-     var onCreate =()=>{ 
+     var onCreate =()=>{  //여기서 그리드를 그려도 되나..?
            setContentView();
      };
      var setContentView =()=>{ 
@@ -59,20 +59,66 @@ kaeun.home = {
                         		$('#collect_btn').click(e=>{	
                         			kaeun.tastes.collect();
                         		});
-                        		//content_home 시작
-                        		 $('#content_grid').html("Home");                   
+                        		$('#k_home_btn').click(e=>{
+                        			 kaeun.main.init();
+                        		});
+                        	//content_home 시작
+                        		 $('#content_grid').html('<div class="accordian">'
+                        				 +'        <ul>'
+                        				 +'        <li>'
+                        				 +'        <div class="image_title">'
+                        				 +'          <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">장바구니</a>'
+                        				 +'        </div> '
+                        				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
+                        				 +'          <img class="k_home_img" src="https://cdn.pixabay.com/photo/2014/08/14/14/21/shish-kebab-417994_960_720.jpg"/>'
+                        				 +'        </a>'
+                        				 +'        </li>'
+                        				 +'        <li>'
+                        				 +'        <div class="image_title">'
+                        				 +'          <a href="">구매내역</a>'
+                        				 +'        </div>'
+                        				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
+                        				 +'          <img class="k_home_img" src="https://images.pexels.com/photos/749353/pexels-photo-749353.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"/>'
+                        				 +'        </a>'
+                        				 +'        </li>'
+                        				 +'        <li>'
+                        				 +'        <div class="image_title">'
+                        				 +'          <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">선물함</a>'
+                        				 +'        </div>'
+                        				 +'        <a href="">'
+                        				 +'          <img class="k_home_img" src="https://images.pexels.com/photos/1050244/pexels-photo-1050244.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"/>'
+                        				 +'        </a>'
+                        				 +'        </li>'
+                        				 +'        <li>'
+                        				 +'        <div class="image_title">'
+                        				 +'          <a href="#">취향분석</a>'
+                        				 +'        </div>'
+                        				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
+                        				 +'          <img class="k_home_img" src="https://cdn.pixabay.com/photo/2014/12/08/11/49/love-560783_960_720.jpg"/>'
+                        				 +'        </a>'
+                        				 +'        </li>'
+                        				 +'        <li>'
+                        				 +'        <div class="image_title">'
+                        				 +'          <a href="#">콜렉션</a>'
+                        				 +'        </div>'
+                        				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
+                        				 +'           <img class="k_home_img" src="https://cdn.pixabay.com/photo/2017/04/05/01/16/food-2203732_960_720.jpg"/>'
+                        				 +'        </a>'
+                        				 +'        </li>'
+                        				 +'        </ul>'
+                        				 +'        </div>');                   
                         	}) //done끝나는지점
            }
            };
 //payment관련 해서 : cart, payHis, present
-kaeun.payment = (()=>{
+kaeun.payment = (x=>{ //kaeun.payment(cart); kaeun.payment(payHis);
 	var ctx;
 	var init= ()=>{
-		ctx = $.ctx();
 		onCreate();
 	};
 	var onCreate = ()=>{
 		setContentView();
+		//그린다음에 이벤트 
 	};
 	var setContentView=()=>{ //들어오는 값에 따라... 
 		
@@ -84,11 +130,10 @@ kaeun.payment = (()=>{
 //cart,payHis,present
 kaeun.payments = {
 		cart : ()=>{ //read some
-			$.getScript($.script()+'/comp.js',()=>{
 			ui.content_g();
 			//$('<div/>').html("footer").addClass("grid_footer").attr({id:"footer"}).appendTo($('#content_grid'));
 			$('#title_l').addClass('cart_title').append('<h2>장바구니<h2>');
-			$('#title_r').append('<div class="cart_process">' //장바구니-결제-완료
+			$('#title_r').append(/*'<div class="cart_process">' //장바구니-결제-완료
 		            +'<div class="row bs-wizard" style="border-bottom:0;">'
 		            +'<div class="col-xs-3 bs-wizard-step complete">'
 		            //"https://t1.daumcdn.net/cfile/tistory/21522A4E5537613D33">
@@ -111,9 +156,9 @@ kaeun.payments = {
 		            +'</div>  '
 		            +'</div> '
 		            +'</div>'
-		            +'</div>');
+		            +'</div>'*/);
 			ui.checkbox({id:'cart_all_chk',txt:'선택'}).appendTo($('#content_g'));
-			ui.btn({id:'cart_delteall_btn',size:'mini',color:'white',txt:'전체삭제'}).appendTo($('#content_g'));
+			ui.btn({id:'cart_delteall_btn',size:'mini',color:'white',txt:'선택삭제'}).appendTo($('#content_g'));
 			$('#content_g').append('<div id="cart_grid" class=list-grid-container>' 
 					+'<div class="item_headerinfo">상품정보</div>'
 					+'<div class="item_header">수량</div>' 
@@ -129,16 +174,19 @@ kaeun.payments = {
 					to: $('#cart_grid'),
 					c1:ui.checkbox({id:'cart_chk'+i,txt:''}),
 					c2:'<img class="cart_img" src="http://tong.joins.com/wp-content/uploads/sites/3/2017/05/2017-05-25-11.01.25-1_resized_.jpg">',
-					c3:j.name+'<br/>'+j.info,
+					c3:j.name+'<br/>'+j.info,//제품코드도 들어가야해
 					c4:j.num,
 					c5:j.price,
 					c6:j.total,
 					c7: $('<div/>').attr({id:'cart_btns'+i})	
 				});
-				ui.btn({id:'cart_order_btn'+i,size:'mini',color:'red',txt:'구매하기'}).appendTo($('#cart_btns'+i));
-				$('#cart_btns'+i).append('<br/>').append(ui.btn({id:'cart_gift_btn'+i,size:'mini',color:'redp',txt:'선물하기'}))
-				.append('<br/>').append(ui.btn({id:'cart_delete_btn'+i,size:'mini',color:'white',txt:'삭제하기'}));
-			});
+				ui.btn({id:'cart_order_btn'+i,size:'mini',color:'black',txt:'구매하기'}).appendTo($('#cart_btns'+i));
+				$('#cart_btns'+i).append('<br/>').append(ui.btn({id:'cart_gift_btn'+i,size:'mini',color:'red',txt:'선물하기'}))
+				.append('<br/>').append(ui.btn({id:'cart_delete_btn'+i,size:'mini',color:'white',txt:'삭제하기'}))
+				.click(e=>{}); //유령
+				;
+			}); //each문끝
+			
 			ui.grid_list({ 
 				to: $('#cart_grid'),
 				c1:"",
@@ -150,21 +198,66 @@ kaeun.payments = {
 				c7:"100000원"
 			})
 			$('#cart_grid').append('<div class="item_result"><div id="cart_pay"></div></div>'); //주문결제	
-			ui.btn({id:'cart_gift_btn',size:'big',color:'redp',txt:'선물하기'}).appendTo($('#cart_pay'));
-			ui.btn({id:'cart_order_btn',size:'big',color:'red',txt:'구매하기'}).appendTo($('#cart_pay'));
-			/*$('#cart_pay').append(ui.btn({id:'cart_order_btn',size:'big',color:'grey',txt:'주문하기'}));*/
-		});
+			ui.btn({id:'cart_gift_submit',size:'big',color:'red',txt:'선물하기'}).appendTo($('#cart_pay'));
+			ui.btn({id:'cart_order_submit',size:'big',color:'black',txt:'구매하기'}).appendTo($('#cart_pay'));
+			// $('#cart_pay').append(ui.btn({id:'cart_order_btn',size:'big',color:'grey',txt:'주문하기'}));
+			/*이벤트들 모음*/
+			$('#cart_all_chk').change(function () {
+			    $('.form-check-input').prop('checked',this.checked);
+			});
+			$('#cart_delteall_btn').click(e=>{
+				//선택삭제
+			})
+			$('#cart_order_submit').click(e=>{
+				//선택상품만 다음화면으로 넘기는 방법.
+				//.form-check-input이 체크되어있는것들 id를 뽑을수있남?
+				//attr(id) 를 하면 그값들에대한 id를 알수있지...? 
+				//만약 리턴된 아이디가 cart_chk1이면, 
+				//1 -  cart_chk제품번호 ㄴ 체크뒤에 들어가는 이름은 제품번호임 
+				//2 -  cart_chk제품번호
+				//3 -  cart_chk제품번호
+			})
+			$('#cart_gift_submit').click(e=>{
+				$.magnificPopup.open({
+					closeBtnInside:true,
+					closeOnContentClick:false,
+					alignTop: true,
+					fixedBgPos:true,
+					fixedContentPos:false,
+					items:{src:
+						'<form class="white-popup">'
+						+'선물하기' //선물하기 팝업
+						+	'<div class="form-group">'
+						+       '<label for="text">To.Id:</label>'
+				    	+		'<input type="text" class="form-control" id="gift_toid">' //아이디가 없으면 없다고 떠야함
+				    	  +   '<div class="form-group">'
+							+		'<label for="pwd">Message:</label>'
+							+		'<textarea type="text" class="form-control" rows="3" id="gift_msg"/>'
+						    +   '</div>'
+						    +	'<button type="submit" class="btn btn-default">Submit</button>'
+			    		+	'</div>'
+						+'</form>'
+					},
+					midClick:true,
+					overflowY:'auto',
+					removalDelay:'0',
+					type:'inline'}); 
+				$('.btn').on('click',function(){
+					alert($('#code').val());
+				});
+				return false;
+			})
 		},
 		payHis : ()=>{ //read some
 			//$('#content_grid').html('<h2>구매함</h2><br><div>날짜선택: 목록보기:(구매완료/사용중) </div><br>');
 			$.getScript($.script()+'/comp.js',()=>{
 			ui.content_g();
-			$('#title_l').append('구매 ｜선물');
+			$('#title_l').append('구매함');
 			$('#title_r'); 
-			$('#content_g').append('★받은선물함'); //슬라이드
-			$('<div/>').html("구매내역").addClass("grid_main").attr({id:"content_g2"}).appendTo($('#content_g'));
+			/*$('#content_g') 
+			$('<div/>').html("구매내역").addClass("grid_main").attr({id:"content_g"}).appendTo($('#content_g'));*/
 			//contentG2 : 구매내역에 대한코딩
-			$('#content_g2').append('<div id="pay_Search"></div>'
+			$('#content_g').append('<div id="pay_Search"></div>'
 									+'<div id="pay_list" class=list-grid-container>' 
 									+'<div class="item_header">구매날짜</div>' 
 									+'<div class="item_headerinfo_pay">상품정보</div>'
@@ -173,23 +266,50 @@ kaeun.payments = {
 									+'<div class="item_header">총액</div>'
 									+'<div id="cart_header_end" class="item_header">내역</div></div>');
 			ui.n_div({clazz:'panel panel-default',html:$('<div id="pay_panel"/>').addClass("panel-body"),to:$('#pay_Search')}); //search
-			
-			$('#pay_panel').html('<div class="grid_layout">'
-					  +'<div class="grid_title_l"><div id="search_form">'
-					  +'구매기간:　<input class="form-control" type="date" value="2018-07-19" id="example-date-input">'
-						+'　　~　　<input class="form-control" type="date" value="2018-10-19" id="example-date-input">'
-						+'<br>'
-						+'상품명　:　<input type="text" class="form-control" id="usr">'
-						+'　상태 :　<select class="form-control" id="sel1">'
-						+'<option>사용완료</option>'
-						+'<option>사용중</option>'
-					    +'<option>선물</option>'
-						+'</select>'
-					  +'</div></div>' 
-					  +'<div class="grid_title_r"><div id="search_btn">'
-					  +'★검색버튼'
-					  +'</div></div>'
-					  +'</div>');
+			$('#pay_panel').html('<div class="card">'
+					+'<div class="card-body">'
+					+'<div class ="row">'
+					+' <div class = "col-8" id="pay_search">'
+					+' <form>'
+					+'<div class="form-row">'
+					+'  <div class="col-md-auto">'
+					+'Date :　'
+					+'  </div>'
+					+'  <div class="col-md-auto">'
+					+'    <input type="date" value="2011-08-19" class="form-control-sm" placeholder="First name">'
+					+'  </div>'
+					+'  <p>~</p>' 
+					+'  <div class="col">'
+					+'    <input type="date" value="2011-08-19" class="form-control-sm" placeholder="Last name">'
+					+'  </div>'
+					+'</div>    '
+					/*+'<div class="col-md-auto">'*/
+					+'<div class="row">' //상품선택+search input
+					+'  <div class="col-md-auto">'
+					+'상세 : '
+					+'  </div>'
+					+'<div class="col-md-auto">'
+					+'<select class="form-control-sm" id="pay_status" >' //상태선택
+				    +'<option>구매내역　　　</option>'
+				    +'<option>사용중</option>'
+				    +'<option>사용완료</option>'
+				    +'<option>선물</option>'
+				    +'</select>'
+				    +'</div>' //col끝
+				    +'<div class="col-md">'
+					+'<div class="md-form active-pink-2 mb-3 mt-0">' //search input
+					+'<input class="pay_search_input" type="text" placeholder="상품명" aria-label="Search">'
+					+'</div>'
+					+'</div>' //col끝
+					+'</div>' //row끝
+					+'</form>  '
+					+'  </div>'
+					+'  <div class = "col">'
+					+'    <button id="pay_search_btn">Search버튼</button>'
+					+'  </div>'
+					+'</div>'
+					+'</div>' 
+					+'</div>');
 			/*('#pay_panel_grid')
 			.html('<div class="grid_layout"><div class="grid_title_l><div id="search_form">ㅎㅎ</div></div><div class="grid_title_r><div id="search_btn">ㅎㅎ</div></div></div>')
 			.appendTo($('#pay_panel'));*/
@@ -220,18 +340,36 @@ kaeun.payments = {
 			})//getscript지우기
 		},
 		gift : ()=>{ //read some
-			$.getScript($.script()+'/comp.js',()=>{
 			ui.content_g();
 			$('#title_l').append('받은선물함');
 			$('#title_r').append('');    
-			$('#content_g').append('<div class="col"><div id="gift_slid" class="card-group"/></div>'); //card-deck쓰면 떨어짐
-			$('#gift_slid').append(ui.img_card({url:'https://images.pexels.com/photos/884596/pexels-photo-884596.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-				txt:'From.★',id:'gift1'}));
-			$('#gift_slid').append(ui.img_card({url:'https://images.pexels.com/photos/884596/pexels-photo-884596.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-				txt:'From.가은',id:'gift2'}));
-			$('#gift_slid').append(ui.img_card({url:'https://images.pexels.com/photos/884596/pexels-photo-884596.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-				txt:'From.ㅎㅎ',id:'gift3'}));
-			})//getscript지우기
+			$('#content_g').append('<div id="gift_content" class="container"/>')
+			// .append('<div class="col"><div id="gift_slid" class="card-group"/></div>'); //card-deck쓰면 떨어짐
+			for(let i=1;i<5;i++){
+				$('#gift_content').append($('<div>').addClass('col').append($('<div/>').addClass('card_row').append($('<div/>').attr({id:'gift_slid'+i}).addClass('card-group'))));
+				for(let j=1;j<5;j++){	
+					/*$('#gift_slid'+i).append(ui.img_card({url:'https://images.pexels.com/photos/884596/pexels-photo-884596.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+						txt:'From.★',id:'gift'+i+'_'+j}));*/
+				$('#gift_slid'+i).append(      '<div class="card gift_c">'
+						+'            <div class="gift_img"><img src="https://images.pexels.com/photos/884596/pexels-photo-884596.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"></div>'
+						+'            <div class="gift_details">'
+						+'                <h2>아이템이름 <br><span>From.★</span></h2>'
+						+'                <div class="gift_msg">'
+						+'                    <p>메세지 Lorem Ipsum has been the industrys standard, when an unknown printer took a galley '
+						+'                        remaining essentially unchanged...</p>'
+						+'                </div>'
+						+'                <div class="gift_link">'
+						+'                    <h4>공유하기</h4>'
+						+'                    <ul>'
+						+'                        <li><img src="https://lh3.ggpht.com/yVfPv-yLjIuBjpKj41NLkLXmuVv8XzH0m2hf-_sz9lQDv9WB9SX0McB8Jn4bQe4w5Q=s180"></li>'
+						+'                        <li><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7RW2RsbPREvGOUDjo8tGC8maxYImJJ7n5v1HKnz6wmlTLlLhI"></li>'
+						+'                    </ul>'
+						+'                </div>'
+						+'            </div>'
+						+'        </div>');
+				}
+			}
+			// ★ 페이지네이션
 		},
 		write : ()=>{ //taste write
 			
@@ -287,6 +425,6 @@ kaeun.tastes = {
         	 ui.content_g();
 			$('#title_l').append('콜렉션');
 			$('#title_r').append('');    
-			$('#content_g').append('블라블라');
+			$('#content_g').append('');
          }
 };

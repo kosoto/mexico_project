@@ -4,10 +4,16 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.bemeal.web.item.ItemMapper">
   	<insert id="post">
-  		INSERT ITEM
+  		INSERT INTO ITEM
   		(ITEM_SEQ,ITEM_NAME,BRAND,CATEGORY,PRICE,CALORIE,EXPLAINS)
   		VALUES
 	  	(#{itemSeq},#{itemName},#{brand},#{category},#{price},#{calorie},#{explains})
   	</insert>
-  
+  	<select id="listAll" resultType="com.bemeal.web.item.Item">
+  		SELECT 
+  			ITEM_SEQ AS "ITEMSEQ",
+  			ITEM_NAME AS "ITEMNAME"
+		FROM 
+			ITEM
+  	</select>
   </mapper>

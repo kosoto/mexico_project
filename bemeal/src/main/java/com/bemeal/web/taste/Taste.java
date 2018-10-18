@@ -16,7 +16,6 @@ public class Taste {
 	private Date tasteDate;
 	private Date tasteTime;
 	private String flag;
-	private int tagSeq;
 	private String memberId;
 	private int itemSeq;
 }

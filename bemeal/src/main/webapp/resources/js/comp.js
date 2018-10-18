@@ -11,7 +11,7 @@ ui = {
 		},
 		checkbox : x=>{ //kui.checkbox({id:'',txt:''})
 			let p = $('<span/>').addClass('form-check');
-			$('<input/>').attr({type:'checkbox', id:x.id})
+			$('<input/>').attr({type:'checkbox', id:x.id}).prop("checked", true)
 			.addClass('form-check-input').appendTo(p);
 			$('<label/>').attr({type:'label'})
 			.addClass('form-check-label').html(x.txt+"　").appendTo(p);
