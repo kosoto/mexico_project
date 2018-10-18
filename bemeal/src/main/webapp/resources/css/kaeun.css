@@ -68,7 +68,8 @@
 .grid_rightside { grid-area: right; }
 .grid_title_l { grid-area: title_l;}
 .grid_title_r { grid-area: title_r;}
-.grid_footer { grid-area: footer; }
+.grid_footer { grid-area: footer; 
+		}
 
 .grid-layout {
   display: grid;
@@ -216,6 +217,7 @@
 .btn-two.purple {background-color: #cb99c5;}
 .btn-two.yellow {background-color: #fdcf33;}
 .btn-two.grey {background-color: #cccccc;}
+.btn-two.black {background-color: #000000;}
 .btn-two.mini{
   padding: 4px 11px;  
   font-size: 11px;
@@ -250,14 +252,17 @@
   max-width : 150px;
   display:inline;
 } */
-.pay_search_grid {
+
+/* .pay_search_grid {
   display: grid;
   grid-template-areas:
     'auto auto'
   grid-gap: 2px;
   background-color: #ffffff;
   padding: 8px;
-}
+} */
+
+
 
 /* taste */
 .taste-background {
@@ -285,3 +290,192 @@
   background-color: rgba(255,255,255,0.6);
   font: 30px;
 }
+
+/* gift 선물함 */
+.card_row{
+	 margin-top: 10px;
+}
+@import url('https://fonts.googleapis.com/css?family=Nanum+Pen+Script');
+
+.gift_c {
+   /*  position:absolute; */
+    /* top:50%;
+    left:50%; */
+    /* transform:translate(-50%,-50%); */
+    width:300px;
+    height:250px;
+    background:#ffffff;
+    overflow:hidden;
+    box-shadow:0 5px 10px rgba(0,0,0,0.5);
+    font-family: 'Nanum Pen Script', cursive!important;
+}
+.gift_c .gift_img {
+    position:relative;
+    overflow:hidden;
+}
+.gift_c .gift_img:before {
+    content:'';
+    position:absolute;
+    bottom:-182px;
+    left:0;
+    width:100%;
+    height:100%;
+    background: linear-gradient(0deg, #ffffff 50%, transparent);
+    transition:0.5s;
+    z-index:1;
+}
+.gift_c:hover .gift_img:before {
+    bottom:0;
+}
+.gift_c .gift_img img {
+    width:100%;
+    transition:0.5s;
+}
+.gift_c:hover .gift_img img {
+    filter:blur(5px);
+    transform:translateY(-50px);
+}
+.gift_details { /* message */
+    position:absolute;
+    padding:20px;
+    width:100%;
+    height:100%;
+    bottom:-152px;
+    left:0;
+    box-sizing:border-box;
+    transition:0.5s;
+    z-index:2;
+}
+.gift_c:hover .gift_details {
+    bottom:0;
+}
+.gift_details h2 { /*아이템이름*/
+    color:#000;
+    margin:0;
+    padding:0;
+    font-size:30px;
+}
+.gift_details h2 span {  /*From.★*/
+    font-size:26px;
+    color:#000;
+}
+
+.gift_msg {
+    color:#000;
+}
+.gift_msg p {
+    margin:15px 0 10px;
+}
+.gift_link {
+    position:relative;
+}
+.gift_link h4 {
+    margin:0;
+    padding:0;
+    font-size:20px;
+    color:#000;
+}
+.gift_link ul {
+    padding:0;
+    display:flex;
+}
+.gift_link ul li {
+    list-style:none;
+    width:35px;
+    height:35px;
+    background:#fff;
+    border-radius:50%;
+    overflow:hidden;
+    margin-right:6px;
+    border:2px solid #fff;
+}
+.gift_link ul li img {
+    width:100%;
+}
+
+
+/* 앨범 화면 */
+/*Now the styles*/
+* {
+    margin: 0; 
+	padding: 0;
+}
+/* body {
+	background: #ccc; 
+	font-family: arial, verdana, tahoma;
+} */
+
+/*Time to apply widths for accordian to work
+Width of image = 640px
+total images = 5
+so width of hovered image = 640px
+width of un-hovered image = 40px - you can set this to anything
+so total container width = 640 + 40*4 = 800px;
+default width = 800/5 = 160px;
+*/
+
+.accordian {
+	width: 805px; height: 320px;
+	overflow: hidden;
+	
+	/*Time for some styling*/
+	margin: 100px auto;
+	box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.35);
+	-webkit-box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.35);
+	-moz-box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.35);
+}
+
+/*A small hack to prevent flickering on some browsers*/
+.accordian ul {
+	width: 1200px;
+	/*This will give ample space to the last item to move
+	instead of falling down/flickering during hovers.*/
+}
+
+.accordian li {
+	position: relative;
+	display: block;
+	width: 160px;
+	float: left;
+	
+	border-left: 1px solid #888;
+	
+	box-shadow: 0 0 25px 10px rgba(0, 0, 0, 0.5);
+	-webkit-box-shadow: 0 0 25px 10px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 0 0 25px 10px rgba(0, 0, 0, 0.5);
+	
+	/*Transitions to give animation effect*/
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+	/*If you hover on the images now you should be able to 
+	see the basic accordian*/
+}
+
+/*Reduce with of un-hovered elements*/
+.accordian ul:hover li {width: 40px;}
+/*Lets apply hover effects now*/
+/*The LI hover style should override the UL hover style*/
+.accordian ul li:hover {width: 640px;}
+
+
+.accordian li img {
+	display: block;
+}
+
+/*Image title styles*/
+.image_title {
+	background: rgba(0, 0, 0, 0.5);
+	position: absolute;
+	left: 0; bottom: 0;	
+width: 640px;	
+
+}
+.image_title a {
+	display: block;
+	color: #fff;
+	text-decoration: none;
+	padding: 20px;
+	font-size: 16px;
+}
+/* 앨범 화면 끝 */

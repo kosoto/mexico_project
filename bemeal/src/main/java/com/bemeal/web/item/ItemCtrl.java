@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bemeal.web.img.Image;
-import com.bemeal.web.tx.TxService;
+
 
 @RestController
 public class ItemCtrl {
@@ -23,7 +23,7 @@ public class ItemCtrl {
 	@Autowired Item item;
 	@Autowired Image img;
 	@Autowired ItemMapper itemMapper;
-	@Autowired TxService tx;
+	/*@Autowired TxService tx;*/
 	@Autowired HashMap<String,Object> map;
 	
 	@GetMapping("/item/list/{option}")
@@ -191,7 +191,7 @@ public class ItemCtrl {
 			map.clear();
 			map.put("item", item);
 			map.put("img", img);
-			tx.insert(map);
+			/*tx.insert(map);*/
 			
 		}
 		
