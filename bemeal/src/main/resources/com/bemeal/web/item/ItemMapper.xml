@@ -9,5 +9,11 @@
   		VALUES
 	  	(#{itemSeq},#{itemName},#{brand},#{category},#{price},#{calorie},#{explains})
   	</insert>
-  
+  	<select id="listAll" resultType="com.bemeal.web.item.Item">
+  		SELECT 
+  			ITEM_SEQ AS "ITEMSEQ",
+  			ITEM_NAME AS "ITEMNAME"
+		FROM 
+			ITEM
+  	</select>
   </mapper>
