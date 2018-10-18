@@ -27,7 +27,6 @@ public class HomeCtrl {
 		//itemctrl.dummy(); //item dummy data
 		//mbrCtrl.dummy(); //member dummy data
 		//tCtrl.dummy(); //taste dummy data
-		itemctrl.tagDummy();
 		return "main";
 	}
 }
