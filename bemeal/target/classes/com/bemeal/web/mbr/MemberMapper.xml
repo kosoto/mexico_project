@@ -3,6 +3,15 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.bemeal.web.mbr.MemberMapper">
-  
-  
+  	<insert id="post">
+  		INSERT INTO MEMBER
+  		(MEMBER_ID,PASSWORD,NAME,AGE,SSN,GENDER,ADDRESS,E_MAIL,PHONE_NUM)
+  		VALUES
+	  	(#{memberId},#{password},#{name},#{age},#{ssn},#{gender},#{address},#{eMail},#{phoneNum})
+  	</insert>
+  	<select id="listAll" resultType="com.bemeal.web.mbr.Member">
+        SELECT 
+           MEMBER_ID AS "MEMBERID",PASSWORD,NAME,AGE,SSN,GENDER,ADDRESS,E_MAIL AS "EMAIL",PHONE_NUM AS PHONENUM 
+        FROM MEMBER
+    </select>
   </mapper>

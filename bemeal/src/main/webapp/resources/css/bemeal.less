@@ -12,13 +12,16 @@ div::-webkit-scrollbar {
 }
 
 .top-nav-collapse {
-    background-color: #4285F4;
+    background-color: #ffc107;
 }
 
 @media only screen and (max-width: 768px) {
     .navbar {
         background-color: #4285F4;
     }
+}
+#content, header  {
+	padding-top : 64px;
 }
 /* /navi */
 
@@ -61,17 +64,29 @@ div::-webkit-scrollbar {
 	
 }
 .img_hover:hover {
-		transform : scale(1.5);
-		position:relative;
-		z-index : 50;
-	}
+	transform : scale(1.5);
+	position:relative;
+	z-index : 50;
+} 
 
+/* evaluate page 보류?*/
 .evaluate_content_list {
 	display : flex;
 	flex-flow : row wrap;
 	justify-content : space-around;
+	.evaluate_content {
+		position : relative;
+		.evaluative_img {
+			
+		}
+		.evaluative_title {
+			
+		}
+	}
+	
 }
 
+/* footer */
 footer {
   bottom: 0;
   width: 100%;

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bemeal.web.img.Image;
+import com.bemeal.web.tx.TxService;
 
 
 @RestController
@@ -23,7 +24,7 @@ public class ItemCtrl {
 	@Autowired Item item;
 	@Autowired Image img;
 	@Autowired ItemMapper itemMapper;
-	/*@Autowired TxService tx;*/
+	@Autowired TxService tx;
 	@Autowired HashMap<String,Object> map;
 	
 	@GetMapping("/item/list/{option}")
@@ -164,7 +165,7 @@ public class ItemCtrl {
 		};
 		String category;
 		int price,calorie;
-		for(int i=1;i<1000;i++) {//1000개의 더미데이터 생성하기
+		for(int i=1;i<=400;i++) {//400개의 더미데이터 생성하기
 			item = new Item();
 			//아이템 번호
 			item.setItemSeq(i);
@@ -191,7 +192,10 @@ public class ItemCtrl {
 			map.clear();
 			map.put("item", item);
 			map.put("img", img);
-			/*tx.insert(map);*/
+			tx.insert(map);
+			logger.info(item.toString());
+			logger.info(img.toString());
+
 			
 		}
 		
