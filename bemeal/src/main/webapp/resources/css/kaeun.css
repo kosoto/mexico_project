@@ -416,8 +416,7 @@ default width = 800/5 = 160px;
 
 .accordian {
 	width: 805px; height: 320px;
-	overflow: hidden;
-	
+	overflow: hidden;	
 	/*Time for some styling*/
 	margin: 100px auto;
 	box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.35);
@@ -463,6 +462,10 @@ default width = 800/5 = 160px;
 	display: block;
 }
 
+.k_home_img{
+  height: 320px;
+  width : 805px;
+}
 /*Image title styles*/
 .image_title {
 	background: rgba(0, 0, 0, 0.5);
