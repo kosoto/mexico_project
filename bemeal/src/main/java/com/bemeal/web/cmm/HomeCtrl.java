@@ -18,7 +18,6 @@ public class HomeCtrl {
 	@Autowired ItemCtrl itemctrl;
 	@Autowired MemberCtrl mbrCtrl;
 	@Autowired TasteCtrl tCtrl;
-	@Autowired Dummy dummy;
 	private static final Logger logger = LoggerFactory.getLogger(HomeCtrl.class);
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
