@@ -169,28 +169,14 @@ bemeal.router = {
 				
 				$('#testSearch').click(e=>{
 					e.preventDefault();
-					alert('testSearch click');
+					
 					$.getScript($.script()+"/junghoon.js",()=>{
 						/*가야 할 곳은 개인이 알아서*/
+						alert('testSearch click');
 						junghoon.service.search();
 					})
 				});
-				$('#testSearch2').click(e=>{
-					e.preventDefault();
-					alert('testSearch click');
-					$.getScript($.script()+"/junghoon.js",()=>{
-						/*가야 할 곳은 개인이 알아서*/
-						junghoon.service.search2();
-					})
-				});
-				$('#testSearch3').click(e=>{
-					e.preventDefault();
-					alert('testSearch3 click');
-					$.getScript($.script()+"/junghoon.js",()=>{
-						/*가야 할 곳은 개인이 알아서*/
-						junghoon.service.search3();
-					})
-				});
+			
 				
 				
 				
