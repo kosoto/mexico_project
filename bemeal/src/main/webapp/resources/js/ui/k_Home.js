@@ -4,7 +4,7 @@ function k_HomeUI(){
 	+'<div class="k_aside">　' //왼쪽사이드 
 	+'<div class="k_navi">　'//여기서부터가 네비들어갈자리
 	+'<div class="list-group">'
-	+'HOME'
+	+'<div id="k_home_btn">HOME</div>'
 	/*+'<button id="cart_btn" type="button" class="list-group-item list-group-item-action list-group-item-warning">장바구니</button>'
 	+'<button id="payHis_btn" type="button" class="list-group-item list-group-item-action list-group-item-warning">구매함</button>'
 	+'<button id="gift_btn" type="button" class="list-group-item list-group-item-action list-group-item-warning">선물함</button>'

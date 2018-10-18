@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bemeal.web.img.Image;
 import com.bemeal.web.tx.TxService;
 
+
 @RestController
 public class ItemCtrl {
 	private static final Logger logger = LoggerFactory.getLogger(ItemCtrl.class);
@@ -194,6 +195,7 @@ public class ItemCtrl {
 			tx.insert(map);
 			logger.info(item.toString());
 			logger.info(img.toString());
+
 			
 		}
 		
