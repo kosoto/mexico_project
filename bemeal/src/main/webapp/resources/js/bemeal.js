@@ -132,6 +132,8 @@ bemeal.router = {
 				$('#taste').click(e=>{
 					e.preventDefault();
 					alert('taste click');
+					$('.nav-item').removeClass('active');
+					$('#taste').parent().addClass('active');
 					$.getScript($.script()+"/kaeun.js",()=>{
 						/*가야 할 곳은 개인이 알아서*/
 						$window.off('scroll');
@@ -141,6 +143,8 @@ bemeal.router = {
 				$('#menu').click(e=>{
 					e.preventDefault();
 					alert('1.menu click');
+					$('.nav-item').removeClass('active');
+					$('#menu').parent().addClass('active');
 					$.getScript($.script()+"/yoonho.js",()=>{
 						/*가야 할 곳은 개인이 알아서*/
 						$window.off('scroll');
@@ -160,6 +164,8 @@ bemeal.router = {
 				$('#join').click(e=>{
 					e.preventDefault();
 					alert('join click');
+					$('.nav-item').removeClass('active');
+					$('#join').parent().addClass('active');
 					$.getScript($.script()+"/junghoon.js",()=>{
 						/*가야 할 곳은 개인이 알아서*/
 						$window.off('scroll');
@@ -176,13 +182,11 @@ bemeal.router = {
 						junghoon.service.search();
 					})
 				});
-			
-				
-				
-				
 				$('#evaluate').click(e=>{
 					e.preventDefault();
 					alert('evaluate 클릭');
+					$('.nav-item').removeClass('active');
+					$('#evaluate').parent().addClass('active');
 					bemeal.evaluate.main();
 				});
 				$('#sam').click(e=>{
@@ -296,28 +300,34 @@ bemeal.compo=(()=>{
 
 bemeal.evaluate=(()=>{
 	var main=x=>{
-		$('header').remove();
-		let $header = $('<div/>').addClass('evaluate_header').append(
-				$('<div/>').addClass('evaluate_header_count').text('10')  //text에 개인이 평가한 갯수 표시
-		);
+		let $evaluate_progress = $('header').empty().addClass('evaluate_progress');
+		let $evaluate_progress_ratings_count = $('<div/>').addClass('evaluate_progress_ratings_count').appendTo($evaluate_progress);
+		let $evaluate_progress_message = $('<div/>').addClass('evaluate_progress_message').appendTo($evaluate_progress);
+		let $evaluate_progress_bar= $('<div/>').addClass('evaluate_progress_bar').appendTo($evaluate_progress);
+		let $evaluate_progress_value= $('<div/>').addClass('evaluate_progress_value').appendTo($evaluate_progress_bar);
+		
+		
+		
+		
+		//content_list는 가져다 쓰자
 		let $content_list = $('<div/>').addClass('evaluate_content_list');
 		let page = 1;
-		$.getJSON($.ctx()+'/item/evaluate/id/'+page,d=>{//id는 로그인한 사람의 아이디
+		$.getJSON($.ctx()+'/item/evaluate/id/'+page,d=>{//id는 로그인한 사람의 아이디, pagination하기
 			console.log(d.list);
 			$.each(d.list,(i,j)=>{
 				let $content = $('<div/>').addClass('evaluate_content').appendTo($content_list);
-				let $img = $('<img/>').addClass('evaluate_img').attr({src:j.image});
-				$img.appendTo($content);
-				let overlay = $('<div/>').addClass('evaluate_overlay').appendTo($content)
-					.append(
-							$('<div/>').addClass('evaluate_title'),
-							$('<div/>').addClass('star-rating')
-					);
+				let $img = $('<img/>').addClass('evaluate_img').attr({src:j.image}).appendTo($content);
+				let $overlay = $('<div/>').addClass('evaluate_overlay').appendTo($content);
+				let $evaluate_title = $('<div/>').addClass('evaluate_title').appendTo($overlay);
+				let $star_rating = $('<div/>').addClass('star_rating').appendTo($overlay);
+				let $star_rating_container = $('<div/>').addClass('star_rating_container').appendTo($star_rating);
+				let $span = $('<span/>').appendTo($star_rating_container);
+				let $star_rating_rated_star = $('<div/>').addClass('star_rating_rated_star').appendTo($star_rating_container);
 			});
 		});
 		page++; //페이지수 증가
 		$('#content').empty().append(
-				$header,$content_list
+				$content_list
 		);
 	};
 	return {main:main}; 

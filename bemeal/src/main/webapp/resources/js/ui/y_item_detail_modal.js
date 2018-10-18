@@ -229,8 +229,7 @@ function y_item_detail_modalUI(){
 	+'								<img src="/web/resources/img/yoonho/maehwa_chicken.jpg" class="img-rounded" height="70" width="70">'
 	+'							</td>'
 	+'							<td class="text-left">'
-	+'								<p role="button" class="text-right">#고소</p>'
-	+'								<p role="button" class="text-right">#달콤</p>'
+
 	+'							</td>'
 	+'						</tr>'
 	+'						</tbody>'
