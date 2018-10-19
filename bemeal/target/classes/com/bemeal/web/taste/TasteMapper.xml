@@ -9,5 +9,4 @@
   		VALUES
   		(#{quantity},#{dirName},#{grade},#{flag},#{memberId},#{itemSeq})
   	</insert>
- 	
   </mapper>

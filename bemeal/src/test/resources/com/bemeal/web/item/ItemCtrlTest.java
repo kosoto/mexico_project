@@ -182,6 +182,7 @@ public class ItemCtrlTest {
 				do {
 					tagName = favList[(int)(Math.random()*10)];
 				}while(tempList.contains(tagName));
+				tempList.add(tagName);
 				map.put("tagName", tagName);
 				logger.info(map.toString());
 				cmmMapper.postTag(map);
@@ -191,6 +192,7 @@ public class ItemCtrlTest {
 				do {
 					tagName = feelList[(int)(Math.random()*24)];
 				}while(tempList.contains(tagName));
+				tempList.add(tagName);
 				map.put("tagName", tagName);
 				logger.info(map.toString());
 				cmmMapper.postTag(map);
@@ -202,6 +204,7 @@ public class ItemCtrlTest {
 			if(itemName.contains("치즈")) {
 				map.put("tagName", "치즈");
 				logger.info(map.toString());
+				tempList.add("치즈");
 				cmmMapper.postTag(map);
 			}
 			//아이템 이름에 맞추어서 재료 넣기
@@ -232,6 +235,7 @@ public class ItemCtrlTest {
 					case 22 :map.put("tagName", "소시지"); break;	//소시지
 					}
 					logger.info(map.toString());
+					tempList.add(nameArrMain[k]);
 					cmmMapper.postTag(map);
 				}
 			}
@@ -239,14 +243,14 @@ public class ItemCtrlTest {
 				do {
 					tagName = ingList[(int)(Math.random()*19)];
 				}while(tempList.contains(tagName));
+				tempList.add(tagName);
 				map.put("tagName", tagName);
 				logger.info(map.toString());
 				cmmMapper.postTag(map);
 			}
+			logger.info(itemName+" : "+tempList.toString());
 		}
 	}
-	
-
 }
 
 

@@ -6,7 +6,7 @@
   	<insert id="postTag">
   		INSERT INTO TAG_ITEM
   		(TAG_SEQ,ITEM_SEQ)
-  		VALUES
+  		VALUES 
   		(
   		(SELECT TAG_SEQ
   		FROM TAG

@@ -1,6 +1,9 @@
 var bemeal = bemeal || {};
 bemeal = (()=>{
 	var init =x=>{
+		/*$(window).resize(()=>{ 브라우저의 사이즈 변화감지
+			console.log("window 폭:"+$(window).width());
+		});*/
 		bemeal.router.init(x);
 	};
 	var onCreate =()=>{
@@ -305,12 +308,55 @@ bemeal.evaluate=(()=>{
 		let $evaluate_progress_message = $('<div/>').addClass('evaluate_progress_message').appendTo($evaluate_progress);
 		let $evaluate_progress_bar= $('<div/>').addClass('evaluate_progress_bar').appendTo($evaluate_progress);
 		let $evaluate_progress_value= $('<div/>').addClass('evaluate_progress_value').appendTo($evaluate_progress_bar);
+		///가져온 코드
+		let $content =  $('#content').empty();
+		for(let i=1;i<5;i++){
+			let $gift_slid = $('<div/>').attr({id:'gift_slid'+i}).addClass('card-group');
+			$content.append(
+					$('<div>').addClass('col').append(
+							$('<div/>').addClass('card_row').append(
+									$gift_slid
+							)
+					)
+			);
+			for(let j=1;j<5;j++){
+				let $gift_c = $('<div/>').addClass('card gift_c');
+				let $gift_img = $('<div/>').addClass('gift_img').append(
+						$('<img/>').attr({src:'https://images.pexels.com/photos/884596/pexels-photo-884596.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'})
+				).appendTo($gift_c);
+				let $gift_details = $('<div/>').addClass('gift_details').appendTo($gift_c);
+				let $h2 = $('<h2/>').addClass('evaluative_title').text('아이템이름').appendTo($gift_details);
+				let $star_rating_container = $('<div/>').addClass('star_rating_container').appendTo($gift_details).append(
+						$('<span/>').text('☆☆☆☆☆').attr({style:"font-size:32px;color : rgb(255,183,99);"}),
+						$('<div/>').addClass('star_rating_rated_star').text('★★★★★').attr({style:"font-size:32px"})
+				);
+			
+				$gift_slid.append($gift_c);
+				$gift_c.hover(e=>{
+					
+				});
+				/*$gift_slid.append($(
+						'<div class="card gift_c">'
+						+'            <div class="gift_img"><img src="https://images.pexels.com/photos/884596/pexels-photo-884596.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"></div>'
+						+'            <div class="gift_details">'
+						+'                <h2 style="text-align:center; color:black;">아이템이름 <br><span>☆☆☆☆☆</span></h2>'
+						+'                <div class="gift_msg">'
+						+'                    <p>메세지 Lorem Ipsum has been the industrys standard, when an unknown printer took a galley '
+						+'                        remaining essentially unchanged...</p>'
+						+'                </div>' //평가페이지에선 지울까? 제품 설명을 넣을까?
+						+'            </div>'
+						+'        </div>'		
+				));*/
+			}
+			
+		}
 		
 		
 		
 		
-		//content_list는 가져다 쓰자
-		let $content_list = $('<div/>').addClass('evaluate_content_list');
+		
+		//content_list는 가져다 쓰자, 내 코드 시작
+		/*let $content_list = $('<div/>').addClass('evaluate_content_list');
 		let page = 1;
 		$.getJSON($.ctx()+'/item/evaluate/id/'+page,d=>{//id는 로그인한 사람의 아이디, pagination하기
 			console.log(d.list);
@@ -328,7 +374,8 @@ bemeal.evaluate=(()=>{
 		page++; //페이지수 증가
 		$('#content').empty().append(
 				$content_list
-		);
+		);*/
+		//내 코드끝 
 	};
 	return {main:main}; 
 })();
