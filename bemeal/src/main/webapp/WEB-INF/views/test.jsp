@@ -34,18 +34,46 @@
 <!--  kaeun font -->
 <link href="https://fonts.googleapis.com/css?family=Do+Hyeon|Gothic+A1|Nanum+Pen+Script" rel="stylesheet">
 <!-- Rate Yo -->
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script> -->
-<!-- star-rating-svg -->
-<script src="${context}/resources/js/jquery/star-rating-svg.js"></script>
-<link rel="stylesheet" type="text/css" href="${context}/resources/css/star-rating-svg.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 </head>
 <body>
 <!-- MDB -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.11/js/mdb.min.js"></script>
-	<div id="wrapper"></div>
+	<div class="wrapper"></div>
+	<div class="wrapper"></div>
 	<script>
-		bemeal.init('${context}');
+		$('.wrapper').rateYo({
+		    starWidth: "40px",//폭
+		    rating:2.5,
+		    normalFill: "#A0A0A0", //배경색
+		    ratedFill: "#ffb763",  //채워질 색 (단일색)
+		    spacing   : "0px", //별 간격
+		    numStars: 5, //별 갯수
+		    minvalue:0.5,
+		    maxValue: 5, // 최댓값
+		    halfStar: true, //반쪽 별쓰기, 0.5단위로 별이 그려짐
+		    onInit: function (rating, rateYoInstance) {
+		       $.getJSON("",function(){
+		          if(d!==undefined){
+		      //id를 가지고 db을 검색해서 입력된 rating정보가 있으면 setter로 별갯수 입력  
+		      }else{
+		      //입력된 rating이 없으면 default 값으로 0  
+		      }
+		       });
+		     
+		    },
+		    onSet: function (rating, rateYoInstance) {
+		      if($(this).rateYo("option","rating")==0){
+		      $.ajax();// 입력된 rating정보가 없으면 id와 rating을 가지고가서 db에 입력하기  
+		        //그리고 세팅된 rating으로 별을 다시 그리기 setter 메소드 사용하기
+		      }else{
+		        $.ajax();
+		        $(this).rateYo("option","rating","0");
+		        //이미 입력된 정보가 있으면 별을 지우고 DB에서도 정보를 지우기
+		      }
+		    }
+		  });
 	</script> 
 </body>
 </html>

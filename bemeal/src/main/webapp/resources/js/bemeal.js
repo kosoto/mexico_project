@@ -52,7 +52,7 @@ bemeal.router = {
 								id:'banner',
 								arr:[{image:"/web/resources/img/cmm/banner1.jpg"},{image:"/web/resources/img/cmm/banner2.jpg"}]
 							})
-					),
+					),					
 					$('<div/>').attr({id:'content'})
 					/*,
 					$('<footer/>')*/
@@ -61,7 +61,6 @@ bemeal.router = {
 				$.getScript($.script()+"/ui/footer.js",()=>{
 					$('footer').append(footerUI());
 				});*/
-				
 				let $content = $('#content');
 				let $carousels = $('<div/>').appendTo($content);
 
@@ -326,15 +325,16 @@ bemeal.evaluate=(()=>{
 				).appendTo($gift_c);
 				let $gift_details = $('<div/>').addClass('gift_details').appendTo($gift_c);
 				let $h2 = $('<h2/>').addClass('evaluative_title').text('아이템이름').appendTo($gift_details);
-				let $star_rating_container = $('<div/>').addClass('star_rating_container').appendTo($gift_details).append(
-						$('<span/>').text('☆☆☆☆☆').attr({style:"font-size:32px;color : rgb(255,183,99);"}),
-						$('<div/>').addClass('star_rating_rated_star').text('★★★★★').attr({style:"font-size:32px"})
-				);
+				let $star_rating_container = $('<div/>').appendTo($gift_details)
+				.starRating({
+					  starSize: 32,  //width속성값
+					  initialRating: 0,
+					  strokeColor: '#894A00',
+					  strokeWidth: 10
+					 
+					});
 			
 				$gift_slid.append($gift_c);
-				$gift_c.hover(e=>{
-					
-				});
 				/*$gift_slid.append($(
 						'<div class="card gift_c">'
 						+'            <div class="gift_img"><img src="https://images.pexels.com/photos/884596/pexels-photo-884596.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"></div>'
@@ -379,6 +379,7 @@ bemeal.evaluate=(()=>{
 	};
 	return {main:main}; 
 })();
+
 
 
 
