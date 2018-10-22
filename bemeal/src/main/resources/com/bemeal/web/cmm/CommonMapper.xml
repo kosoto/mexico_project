@@ -46,6 +46,18 @@
 	  	#{itemSeq}	
 		)
   	</insert>
+  	<select id="existGrade" resultType="int">
+  		SELECT COUNT(*) FROM TASTE 
+  		WHERE MEMBER_ID LIKE #{id}
+  			AND ITEM_SEQ LIKE 1
+  			AND FLAG LIKE 'star'
+  	</select>
+  	<select id="countRatingsById" resultType="int">
+  	SELECT COUNT(*)
+  	FROM TASTE
+  	WHERE FLAG LIKE 'STAR'
+  		AND MEMBER_ID LIKE #{id}
+  	</select>
  	<select id="gradList" resultMap="result">
 	  	SELECT *
 		FROM

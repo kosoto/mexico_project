@@ -3,6 +3,7 @@ package com.bemeal.web.cmm;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.slf4j.Logger;
@@ -17,6 +18,8 @@ import com.bemeal.web.item.Item;
 import com.bemeal.web.item.ItemMapper;
 import com.bemeal.web.mbr.Member;
 import com.bemeal.web.mbr.MemberMapper;
+import com.bemeal.web.page.PageProxy;
+import com.bemeal.web.page.Pagination;
 import com.bemeal.web.taste.Taste;
 import com.bemeal.web.taste.TasteMapper;
 
@@ -31,15 +34,58 @@ public class CommonCtrl {
 	@Autowired TasteMapper tasteMapper;
 	@Autowired MemberMapper mbrMapper;
 	@Autowired HashMap<String, Object> map;
-	
-	// Taste
-	@GetMapping("/grade/{id}")
-	public @ResponseBody boolean existGrade(@PathVariable String id) {
-		Function<String, Boolean> f = x->{
-			return (tasteMapper.existGrade(id)==1);
+	/*Taste - evaluate*/
+	@GetMapping("/evaluate/{id}/{pageNum}")
+	public @ResponseBody HashMap<String,Object> evaluate(
+			@PathVariable String id,
+			@PathVariable String pageNum){
+		map.clear();
+		logger.info("넘어온 id {}",id);
+		logger.info("넘어온 page {}",pageNum);
+		PageProxy pxy = new PageProxy();
+		map.put("pageNum", pageNum);
+		map.put("count", 0);
+		map.put("pageSize", 5);
+		map.put("blockSize", 4);
+		pxy.carryOut(map);
+		Pagination page = pxy.getPagination();
+		Function<String, ArrayList<HashMap<String,Object>>> f=x->{
+			
+			return null;
 		};
-		return false;
+		f.apply(id+"/"+page);
+		map.put("page", 1);
+		return map;
+	}
+	/*/Taste - evaluate*/
+	
+	/*Taste - grade CRUD + exist*/
+	@GetMapping("/grade/exist/{id}/{itemSeq}")
+	public @ResponseBody boolean existGrade(
+			@PathVariable String id,
+			@PathVariable String itemSeq) {
+		logger.info("넘어온 id {}",id);
+		logger.info("넘어온 itemSeq {}",itemSeq);
+		Function<String, Boolean> f = x->{
+			x.split("/");
+			int flag = cmmMapper.existGrade(id,itemSeq);
+			logger.info("평점 정보가 있나? {}",flag);
+			return (flag==1);
+		};
+		return f.apply(id+"/"+itemSeq);
 	} 
+	@GetMapping("/grade/add/{id}/{itemSeq}")
+	public void addGrade(
+			@PathVariable String id,
+			@PathVariable String itemSeq) {
+		logger.info("넘어온 id {}",id);
+		logger.info("넘어온 itemSeq {}",itemSeq);
+		Consumer<String> c = x->{
+			
+		};
+	} 
+	
+	/* /Taste - grade*/
 	
 	//  Item
 	@GetMapping("/item/list/{option}")
@@ -66,31 +112,4 @@ public class CommonCtrl {
 		map.put("list", f.apply(option));
 		return map;
 	}
-	
-	@GetMapping("/item/evaluate/{id}/{page}")
-	public @ResponseBody Map<String,Object> evaluate(
-			@PathVariable String id,@PathVariable String page){
-		map.clear();
-		logger.info("넘어온 id {}",id);
-		logger.info("넘어온 page {}",page);
-		/* DB에서 해당 id가 평가하지 않는 아이템 목록을 뽑아옴 
-		 * page로 pagination하기
-		 */
-		Function<String,ArrayList<Item>> f = x->{
-			ArrayList<Item> temp = new ArrayList<>();
-			for(int i=0;i<20;i++) {
-				item = new Item();
-				int n = ((int) (Math.random()*10))+1;
-				item.setImage("/web/resources/img/cmm/image"+n+".jpg");
-				item.setItemName("도시락"+n);
-				temp.add(item);
-			}
-			return temp;
-		};
-		/* 더미 데이터 끝*/
-		map.put("page", page);
-		map.put("list", f.apply(page));
-		return map;
-	}
-	
 }
