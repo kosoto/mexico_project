@@ -7,60 +7,121 @@ junghoon.board = (()=>{
 	};
 	return{comment:comment};
 })();
-junghoon.member = {
-		add : () => {
-			$.getScript($.script()+'/ui/j_add.js', ()=>{
+
+
+junghoon.member = (()=>{
+	var add =()=>{
+		$.getScript($.script()+'/comp.js',()=>{
+			$.getScript($.script()+'/login.js',()=>{
 				$('header').remove();
-				$('#content').empty().append(
-					$('<div/>').addClass('add').html(addUI())
-				);
-				$('#join_submit_btn').click(e=>{
-					alert('join_submit_btn');
-				});
+				$('#content').empty().append($('<div/>').addClass('add').html(addUI()));
+				
 				$('#join_to_login').click(e=>{
 					alert('안녕 안녕 안녕로봇');	
 					junghoon.member.login();
 				})
+				
+				$('#join_submit_btn').click(e=>{
+					$.ajax({
+						url:$.ctx()+'/mbr/add',
+						method:'post',
+						contentType:'application/json',
+						data:JSON.stringify({
+							memberId:$('#memberId').val(),
+							password:$('#password').val(),
+							name:$('#name').val(),
+							ssn:$('#ssn').val(),
+							address:$('#address').val(),
+							eMail:$('#eMail').val(),
+							phoneNum:$('#phoneNum').val()
+						}),
+						success:d=>{console.log('JOIN SUCESS :: '+d.memberId)},
+						error:(x,y,z)=>{console.log('error :: '+z)}
+					});
+				});
 			})
-		},
-		login : () => {
-			$.getScript($.script()+'/ui/j_login.js', ()=>{
+		})
+		
+		
+	};
+	var login =x=>{
+		$.getScript($.script()+'/comp.js',()=>{
+			$.getScript($.script()+'/login.js',()=>{
 				$('header').remove();
-				$('#content').empty().append(
-					$(loginUI())
-				);
+				$('#content').empty().append($(loginUI()));
+				
 				$('#login_to_join').click(e=>{
-						alert('잘가 잘가 잘가로봇');
-						junghoon.member.add();
-					});
-					$('#login_submit_btn').click(e=>{
-					alert('aa');
-					$('#info').empty();
-					$('<li/>').append($('<a/>').attr({id:"login_form", href:"#"}).html('마이페이지')).appendTo($('#info'))
-					.click(e=>{
-						junghoon.service.mypage();
-					});
-					$('<li/>').append($('<a/>').attr({href:"#"}).html('로그아웃')).appendTo($('#info'))
-					.click(e=>{
-						bemeal.main.init();
-					});
-					$('<li/>').append($('<a/>').attr({href:"#"}).html('댓글 테스트')).appendTo($('#info'))
-					.click(e=>{
-						junghoon.service.comment();
-					});
-					$('<li/>').append($('<a/>').attr({href:"#"}).html('검색 테스트')).appendTo($('#info'))
-					.click(e=>{
-						junghoon.service.search();
-					});
+					alert('잘가 잘가 잘가로봇');
+					junghoon.member.add();
+				});
+				
+				$('#login_submit_btn').click(e=>{
+					$.ajax({
+						url : $.ctx()+'/mbr/login',
+						method : 'post',
+						contentType : 'application/json',
+						data : JSON.stringify({ memberId : $('#memberId').val(), password : $('#password').val()}),
+						success : d => {
+							
+							$.cookie("loginID", d.member.memberId);
+							
+							alert('aa');
+							$('#info').empty();
+							$('<li/>').append($('<a/>').attr({id:"login_form", href:"#"}).html('마이페이지')).appendTo($('#info'))
+							.click(e=>{
+								junghoon.service.mypage();
+							});
+							$('<li/>').append($('<a/>').attr({href:"#"}).html('로그아웃')).appendTo($('#info'))
+							.click(e=>{
+								bemeal.main.init();
+							});
+							$('<li/>').append($('<a/>').attr({href:"#"}).html('댓글 테스트')).appendTo($('#info'))
+							.click(e=>{
+								junghoon.service.comment();
+							});
+							$('<li/>').append($('<a/>').attr({href:"#"}).html('검색 테스트')).appendTo($('#info'))
+							.click(e=>{
+								junghoon.service.search();
+							});
+						}
+					})
 				})
 			});
-		}
-};
-/*
+		});
+			}
+	return{login:login,
+		   add:add};
+})();
+
+		
 junghoon.service2 = (()=>{
 	
-	var search = x => {
+	var login1 = x => {
+	let $j_login = $('<div/>').attr({id:"login_form"});
+	let $j_login1 = $('<div/>').addClass('j_container').appendTo($j_login);
+	let $j_login2 = $('<label/>').attr({id:"j_login_Id"}).html('<b>아이디<b/>').appendTo($j_login1);
+	let $j_login3 = $('<input/>').attr({type:"text", placeholder:"Enter UserName", required}).appendTo($j_login1);
+	let $j_login4 = $('<label/>').attr({id:"j_login_Pw"}).html('<b>비밀번호<b/>').appendTo($j_login1);
+	let $j_login5 = $('<label/>').attr({type:"password", placeholder:"Enter PassWord", required}).appendTo($j_login1);
+	let $j_login6 = $('<p/>').html('계정이 없으신가요?<a id ="login_to_join" href="#"  style="color:dodgerblue"> 여기서 </a>회원가입하세요.').appendTo($j_login1);
+	let $j_login7 = $('<button/>').addClass('j_button').attr({type:"submit",id:"login_submit_btn"}).html('Login').appendTo($j_login1);
+	
 		
+		
+	};
+	
+	var join1 =x=> {
+		let $j_join = $('<div/>').addClass('add').attr({id:"add_form"});
+		let $j_join1 = $('<form/>').attr({id:"join_form"})
+	};
+	
+	
+// let $j_div1 =
+// $('<div/>').attr({id:'search_the_SachalGod'}).addClass("container
+// search-table");
+	
+	
+	var search = x => {
 		$.magnificPopup.open({
 			closeBtnInside:true,
 			closeOnContentClick:false,
@@ -114,12 +175,11 @@ junghoon.service2 = (()=>{
 	}	
 		
 	} 
-})*/
+})
 // 
 
 junghoon.service = {
 			search : x =>{
-				
 					$.magnificPopup.open({
 								closeBtnInside:true,
 								closeOnContentClick:false,
@@ -164,7 +224,6 @@ junghoon.service = {
 								type:'inline'}); 
 				
 					$('#popular_searches').click(e=>{
-				
 						$('#popular_search_time').html(
 								'                    <li>1위 GS도시락</li>'
 								+ '                    <li>2위 치킨도시락</li>'
@@ -177,7 +236,6 @@ junghoon.service = {
 						);
 					}),
 					$('#myage_popular').click(e=>{
-					
 						$('#popular_search_time').html(
 								 '                    <li>1위 로그인 한</li>'
 								+'                    <li>2위 내 정보의</li>'
@@ -196,10 +254,19 @@ junghoon.service = {
 								+'                <div class="row">'
 								+'                    <div class="col-md-3">'
 								+'					<img src="/web/resources/img/junghoon/j_tag.jpg" height="100%" width="100%" margin="5px auto"/>'
-								/*+'				<button class="j_img" id="search2keyWord"><img src="/web/resources/img/junghoon/j_search.jpg" height="100%" width="100%"></button> '*/
+								/*
+								 * +' <button class="j_img" id="search2keyWord"><img
+								 * src="/web/resources/img/junghoon/j_search.jpg"
+								 * height="100%" width="100%"></button> '
+								 */
 								+'                    </div>'
 								+'                    <div class="col-md-3">'
-								/*+'					<img src="/web/resources/img/junghoon/j_tag.jpg" height="100%" width="100%" margin="5px auto"/>'*/
+								/*
+								 * +' <img
+								 * src="/web/resources/img/junghoon/j_tag.jpg"
+								 * height="100%" width="100%" margin="5px
+								 * auto"/>'
+								 */
 								+'					<img src="/web/resources/img/junghoon/j_search.jpg" id="tag2search" height="100%" width="100%" margin="5px auto"/>'
 								+'                    </div>'
 								+'            </div>'
@@ -349,36 +416,5 @@ junghoon.service = {
 			$.getScript($.script()+'/ui/j_mbrupdate.js', ()=>{
 					$('#content').empty().html(modifyUI())
 				});
-	},
-		comment : x => {
-			alert('cmt');
-			$.getScript($.script()+'/ui/j_comment.js', ()=>{
-				$('#content').html(commentUI());
-				$('edit_comment').click(e=>{
-					alert('edit_comment1');
-				});
-				$('report_comment').click(e=>{
-					alert('report_comment1');
-				});
-				$('respect_comment').click(e=>{
-					alert('respect_comment1');
-				});
-				$('submit_comment').click(e=>{
-					alert('submit_comment1');
-				});
-			})
-			$('edit_comment').click(e=>{
-				alert('edit_comment');
-			});
-			$('report_comment').click(e=>{
-				alert('report_comment');
-			});
-			$('respect_comment').click(e=>{
-				alert('respect_comment');
-			});
-			$('submit_comment').click(e=>{
-				alert('submit_comment');
-			});
-		}
-		
+	}
 }
