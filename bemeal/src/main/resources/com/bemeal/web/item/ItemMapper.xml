@@ -22,5 +22,21 @@
   		VALUES
 	  	(#{itemSeq},#{itemName},#{brand},#{category},#{price},#{calorie},#{explains})
   	</insert>
-  	
+  	<select id="listAll" resultType="com.bemeal.web.item.Item">
+  		SELECT 
+  			ITEM_SEQ AS "ITEMSEQ",
+  			ITEM_NAME AS "ITEMNAME"
+		FROM 
+			ITEM
+  	</select>
+ 	<select id="listSome" resultType="com.bemeal.web.item.Item">
+  		SELECT 
+  			*
+		FROM 
+			ITEM
+		WHERE
+			BRAND LIKE #{brand}
+		AND
+			CATEGORY LIKE #{category}
+  	</select>
   </mapper>

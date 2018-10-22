@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bemeal.web.cmm.CommonMapper;
 import com.bemeal.web.img.Image;
 import com.bemeal.web.tx.TxService;
 
@@ -22,7 +21,7 @@ public class ItemCtrlTest {
 	@Autowired Image img;
 	@Autowired TxService tx;
 	@Autowired ItemMapper itemMapper;
-	@Autowired CommonMapper cmmMapper;
+	
 	@Test
 	public void dummy() {
 		map.clear();
@@ -117,7 +116,7 @@ public class ItemCtrlTest {
 		for(int i=1;i<=400;i++) {//400개의 더미데이터 생성하기
 			item = new Item();
 			//아이템 번호
-			item.setItemSeq(i);
+/*			item.setItemSeq(i);
 			//아이템이름 결정
 			item.setItemName(nameArrPrefix[(int)(Math.random()*23)]+nameArrMain[(int)(Math.random()*23)]+nameArrPostfix[(int)(Math.random()*20)]);
 			//브랜드 결정
@@ -143,7 +142,7 @@ public class ItemCtrlTest {
 			map.put("img", img);
 			tx.insert(map);
 			logger.info(item.toString());
-			logger.info(img.toString());
+			logger.info(img.toString());*/
 
 			
 		}

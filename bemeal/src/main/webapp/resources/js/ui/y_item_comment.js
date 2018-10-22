@@ -176,28 +176,3 @@ function y_item_cDelUI(){
 	+'    </div>'
 	+'</div>';
 }
-//안됨
-function y_item_cStarUI(){
-	return '<div class="rating-container rating-md rating-animate">'
-	+'<div class="clear-rating clear-rating-active" title="Clear">'
-	+'<i class="glyphicon glyphicon-minus-sign"></i></div><div class="rating-stars" title="Not Rated">'
-	+'<span class="empty-stars"><span class="star"><i class="glyphicon glyphicon-star-empty"></i></span>'
-	+'<span class="star"><i class="glyphicon glyphicon-star-empty"></i></span>'
-	+'<span class="star"><i class="glyphicon glyphicon-star-empty"></i></span>'
-	+'<span class="star"><i class="glyphicon glyphicon-star-empty"></i></span>'
-	+'<span class="star"><i class="glyphicon glyphicon-star-empty"></i></span>'
-	+'</span>'
-	+'<span class="filled-stars" style="width: 0%;">'
-	+'<span class="star"><i class="glyphicon glyphicon-star"></i></span>'
-	+'<span class="star"><i class="glyphicon glyphicon-star"></i></span>'
-	+'<span class="star"><i class="glyphicon glyphicon-star"></i></span>'
-	+'<span class="star"><i class="glyphicon glyphicon-star"></i></span>'
-	+'<span class="star"><i class="glyphicon glyphicon-star"></i></span>'
-	+'</span>'
-	+'<input id="input-2ba" type="text" class="rating rating-input" data-min="0" data-max="5" data-step="0.5" data-stars="5" data-symbol="" data-default-caption="{rating} +\'hearts" data-star-captions="{}" title="">'
-	+'</div>'
-	+'<div class="caption">'
-	+'<span class="label label-default badge-secondary">Not Rated</span>'
-	+'</div>'
-	+'</div>';
-}

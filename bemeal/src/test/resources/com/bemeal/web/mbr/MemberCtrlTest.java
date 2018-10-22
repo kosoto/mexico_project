@@ -33,12 +33,12 @@ public class MemberCtrlTest {
 		for(int i=1;i<=1000;i++) {//회원 1천명
 			member = new Member();
 			//아이디
-			member.setMemberId(dummy.getRandomPassword((int)((Math.random()*3)+6)));
+/*			member.setMemberId(dummy.getRandomPassword((int)((Math.random()*3)+6)));
 			//비번
 			member.setPassword("1");
 			//이름
 			name = dummy.randomHangulName();
-			member.setName(name);
+			member.setName(name);*/
 			//주민 번호 & 나이 & 성별
 			String year = "";
 			String month = "";
@@ -54,7 +54,7 @@ public class MemberCtrlTest {
 			}
 			month = String.format("%02d", (int)(Math.random()*12+1));
 			day = String.format("%02d", (int)(Math.random()*28+1));
-			member.setAge(119-temp);
+/*			member.setAge(119-temp);
 			ssn = year+month+day+"-"+gen;
 			member.setSsn(ssn);
 			member.setGender((gen.equals("1") || gen.equals("3"))?"남":"여");
@@ -64,7 +64,7 @@ public class MemberCtrlTest {
 			phone = String.format("010-%04d-%04d", (int)(Math.random()*10000),(int)(Math.random()*10000));
 			member.setPhoneNum(phone);
 			//주소
-			member.setAddress(addrArr[(int)(Math.random()*66)]);
+			member.setAddress(addrArr[(int)(Math.random()*66)]);*/
 			logger.info(member.toString());
 			mbrMapper.post(member);
 		}

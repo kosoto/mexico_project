@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bemeal.web.item.Item;
-import com.bemeal.web.item.ItemCtrl;
 import com.bemeal.web.item.ItemMapper;
 import com.bemeal.web.mbr.Member;
 import com.bemeal.web.mbr.MemberMapper;
