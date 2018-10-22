@@ -31,7 +31,7 @@ function naviUI (){
 		+'<li class="nav-item dropdown">'
 		    +'<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> '
 		        +'</a>'
-		    +'<div class="dropdown-menu dropdown-menu-right dropdown-unique" aria-labelledby="navbarDropdownMenuLink">'
+		    +'<div id="info" class="dropdown-menu dropdown-menu-right dropdown-unique" aria-labelledby="navbarDropdownMenuLink">'
 		        +'<a class="dropdown-item" href="#" id="login">로그인</a>'
 		    +'</div>'
 		+'</li>'
