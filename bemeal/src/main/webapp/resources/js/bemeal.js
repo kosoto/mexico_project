@@ -137,7 +137,7 @@ bemeal.router = {
 					$.getScript($.script()+"/kaeun.js",()=>{
 						/*가야 할 곳은 개인이 알아서*/
 						$window.off('scroll');
-						kaeun.init();
+						kaeun.main.init();
 					})
 				});
 				$('#menu').click(e=>{

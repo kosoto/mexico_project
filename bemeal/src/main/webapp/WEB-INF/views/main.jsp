@@ -33,6 +33,8 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.7.1/less.min.js"></script>
 <!--  kaeun font -->
 <link href="https://fonts.googleapis.com/css?family=Do+Hyeon|Gothic+A1|Nanum+Pen+Script" rel="stylesheet">
+<!-- kaeun chart -->
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
 <!-- MDB -->

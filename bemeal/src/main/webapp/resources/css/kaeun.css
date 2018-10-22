@@ -1,5 +1,5 @@
-
-/* 사이드바 */
+/* 
+사이드바
 .mini-submenu{
   display:none;  
   background-color: rgba(0, 0, 0, 0);  
@@ -33,18 +33,33 @@
   padding: 0 8px;
   border-radius: 4px;
   cursor: pointer;
-}
+} */
 
-/* Mytaste Layout Grid */
-.grid_menu { grid-area: menu;
-            display:inline;
-            }
-.k_aside {
-   width: 100%;
-  height: 100vh;
-/*   background: url(https://images.pexels.com/photos/32246/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
- */
+
+/* Kaeun Layout */
+.k_biglot {
+  display: grid;
+  grid-template-areas:
+    'menu main main main main right';
+  grid-gap: 0px;
+  background-color: #ffffff;
+  padding: 0px;
 }
+.k_biglot > div {
+  /* padding: 20px 0; */
+}
+.k_leftlot { grid-area: menu;
+            display:inline;
+              width: 100%;
+  height: 100vh;
+            }
+
+.k_contentlot { grid-area: main;
+				background-color: #fdd734;}
+.k_rightlot { grid-area: right; 
+				background-color: #fdd734;}
+
+/*  navi */
 .k_navi{
   display: inline;
   text-align: center;
@@ -52,7 +67,10 @@
   margin-left : 5%;
   /* text-align: center; */
 }
-	/*  navi 버튼 */
+
+.navi_home{
+	
+}
 .b01_simple_rollover {
     color: #000000;
     padding: 10px;
@@ -64,26 +82,12 @@
     background-color: rgb(0, 0, 0);
 }
 
-.grid_main { grid-area: main; }
-.grid_rightside { grid-area: right; }
+
+
 .grid_title_l { grid-area: title_l;}
 .grid_title_r { grid-area: title_r;}
 .grid_footer { grid-area: footer; 
 		}
-
-.grid-layout {
-  display: grid;
-  grid-template-areas:
-    'menu main main main main right'
-;
-  grid-gap: 20px;
-  background-color: #ffffff;
-  padding: 10px;
-}
-.grid-layout > div {
-  background-color: rgba(255, 255, 255);
-  /* padding: 20px 0; */
-}
 
 /*Cart layout Grid */
 .grid_layout {
@@ -95,6 +99,7 @@
   grid-gap: 5px;
   background-color: #ffffff;
   padding: 8px;
+  background-color: #fdd734;
 }
 .grid_layout > div {
   background-color: rgba(255, 255, 255, 0.8);

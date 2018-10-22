@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bemeal.web.cmm.CommonMapper;
 import com.bemeal.web.img.Image;
 import com.bemeal.web.tx.TxService;
 
@@ -26,7 +25,6 @@ public class ItemCtrl {
 	private static final Logger logger = LoggerFactory.getLogger(ItemCtrl.class);
 	@Autowired Item item;
 	@Autowired Image img;
-	@Autowired CommonMapper cmmMapper;
 	@Autowired ItemMapper itemMapper;
 	@Autowired TxService tx;
 	@Autowired HashMap<String,Object> map;
