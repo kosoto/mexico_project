@@ -18,10 +18,10 @@ ui = {
 			return p;
 		},
 		content_g : x=>{ // kui.content_g();
-			return $('#content_grid').empty().html('<div class="grid_layout">'
+			return $('#k_contentlot').empty().html('<div class="container">'
 					  +'<div class="grid_title_l"><div id="title_l"/></div>' 
 					  +'<div class="grid_title_r"><div id="title_r"/></div>'
-					  +'<div class="grid_main"><div id="content_g"/></div>'
+					  +'<div class="k_contentlot"><div id="content_g"/></div>'
 					  +'</div>');
 		},
 		stndlayout : x=>{
@@ -43,7 +43,9 @@ ui = {
 		n_div : x=>{ // kui.n_div({clazz:'',html:'',to:''});
 			return $('<div/>').addClass(x.clazz).html(x.html).appendTo(x.to);
 		},
-		div : x=>{return $('<div/>').attr({id:x});}, // kui.div("id");
+		div : x=>{// ui.div({id:"",clazz:""})
+			return $('<div/>').addClass(x.clazz).attr({id:x.id});
+			}, 
 		span : x=>{return $('<span/>').attr({id:x});}, // kui.span("id"};
 		grid_list : x=>{ //kui.cart_list({c1:"",c2:"",c3:"",c4:"",c5:"",c6:"",c7:""})
 			let t = x.to; 

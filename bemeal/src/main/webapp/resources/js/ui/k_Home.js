@@ -1,10 +1,9 @@
 function k_HomeUI(){
-	return 	'<div class="grid-layout">'
-	+'<div id="side_grid" class="grid_menu">' //맨처음에나뉨
-	+'<div class="k_aside">　' //왼쪽사이드 
+	return 	'<div id="k_biglot" class="k_biglot">'
+	+'<div id="k_leftlot" class="k_leftlot">' 
 	+'<div class="k_navi">　'//여기서부터가 네비들어갈자리
 	+'<div class="list-group">'
-	+'<div id="k_home_btn">HOME</div>'
+	+'<div class="navi_home" id="k_home_btn">HOME</div>'
 	/*+'<button id="cart_btn" type="button" class="list-group-item list-group-item-action list-group-item-warning">장바구니</button>'
 	+'<button id="payHis_btn" type="button" class="list-group-item list-group-item-action list-group-item-warning">구매함</button>'
 	+'<button id="gift_btn" type="button" class="list-group-item list-group-item-action list-group-item-warning">선물함</button>'
@@ -18,13 +17,10 @@ function k_HomeUI(){
 	+'</div>' //list끝
 	+'</div>' //여기까지네비
 	+'</div>'
-	+'</div>'
-	+'<div class="grid_main">'
-	+'<div id="content_grid">'
+	+'<div id="k_contentlot" class="k_contentlot">'
 	+'<h2>content지롱</h2><br>말<br>말<br>말<br>말<br>말<br>말'
 	+'</div>'
-	+'</div>'
-	+'<div id="side_grid" class="grid_rightside">'
+	+'<div id="k_rightlot" class="k_rightlot">'
 	+'</div>';}
 /*<div class="grid-layout">
 <div id="side_grid" class="grid_menu">

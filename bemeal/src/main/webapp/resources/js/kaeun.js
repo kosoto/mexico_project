@@ -1,115 +1,43 @@
 "use strict"
 var kaeun = kaeun || {};
-kaeun = (()=>{
-     var init =x=>{
-      /*alert("스크립 "+ $.script() +" web:"+$.ctx());
-          kaeun.router.init(x);*/
-      kaeun.main.init();
-     };
-     return {init:init}
-})();
 kaeun.main=(()=>{
 	 var user;
      var init =()=>{  //session값 가져올꺼임
            onCreate(); 
      };
-     var onCreate =()=>{  //여기서 그리드를 그려도 되나..?
+     var onCreate =()=>{  
            setContentView();
+           //navi btn 
+     		$('#cart_btn').click(e=>{
+     			kaeun.payments.cart();
+     		});
+     		$('#payHis_btn').click(e=>{	
+     			kaeun.payments.payHis();
+     		});
+     		$('#gift_btn').click(e=>{	
+     			kaeun.payments.gift();
+     		});
+     		$('#analysis_btn').click(e=>{	
+     			kaeun.tastes.analysis();
+     		});
+     		$('#collect_btn').click(e=>{	
+     			kaeun.tastes.collect();
+     		});
+     		$('#k_home_btn').click(e=>{
+     			 kaeun.main.init();
+     		});
+     		$('#test_btn').click(e=>{
+     			kaeun.tastes.test();
+    		});
+     		//home 화면에 있는 코딩 
      };
      var setContentView =()=>{ 
-    	 kaeun.home.mytaste();
+    	 kaeun.lot.set();
+    	 kaeun.ui.main();
      };
      return {init:init};
 })();
 
-kaeun.home = {
-           mytaste :()=>{ //첫화면
-               $.when(	 $.getScript($.script()+"/ui/k_aside.js"),
-                          $.getScript($.script()+"/ui/k_Home.js"),
-                          $.Deferred(y=>{
-                               $(y.resolve);
-                          })
-                    ).done(x=>{
-                    	  $('header').remove();	
-                    	  $('footer').remove();
-                          $('#content').html(k_HomeUI());
-                           $('#side_grid').html(asideUI());
-                          //side menu시작
-                           $('#slide-submenu').on('click',function() {				        
-                        	        $(this).closest('.list-group').fadeOut('slide',function(){
-                        	        	$('.mini-submenu').fadeIn();	
-                        	        });
-                        	      });
-                        		$('.mini-submenu').on('click',function() {
-                        	        $(this).next('.list-group').toggle('slide');
-                        	        $('.mini-submenu').hide();
-                        		});
-                        		$('#cart_btn').click(e=>{
-                        			kaeun.payments.cart();
-                        		});
-                        		$('#payHis_btn').click(e=>{	
-                        			kaeun.payments.payHis();
-                        		});
-                        		$('#gift_btn').click(e=>{	
-                        			kaeun.payments.gift();
-                        		});
-                        		$('#analysis_btn').click(e=>{	
-                        			kaeun.tastes.analysis();
-                        		});
-                        		$('#collect_btn').click(e=>{	
-                        			kaeun.tastes.collect();
-                        		});
-                        		$('#k_home_btn').click(e=>{
-                        			 kaeun.main.init();
-                        		});
-                        	//content_home 시작
-                        		 $('#content_grid').html('<div class="accordian">'
-                        				 +'        <ul>'
-                        				 +'        <li>'
-                        				 +'        <div class="image_title">'
-                        				 +'          <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">장바구니</a>'
-                        				 +'        </div> '
-                        				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
-                        				 +'          <img class="k_home_img" src="https://cdn.pixabay.com/photo/2014/08/14/14/21/shish-kebab-417994_960_720.jpg"/>'
-                        				 +'        </a>'
-                        				 +'        </li>'
-                        				 +'        <li>'
-                        				 +'        <div class="image_title">'
-                        				 +'          <a href="">구매내역</a>'
-                        				 +'        </div>'
-                        				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
-                        				 +'          <img class="k_home_img" src="https://images.pexels.com/photos/749353/pexels-photo-749353.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"/>'
-                        				 +'        </a>'
-                        				 +'        </li>'
-                        				 +'        <li>'
-                        				 +'        <div class="image_title">'
-                        				 +'          <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">선물함</a>'
-                        				 +'        </div>'
-                        				 +'        <a href="">'
-                        				 +'          <img class="k_home_img" src="https://images.pexels.com/photos/1050244/pexels-photo-1050244.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"/>'
-                        				 +'        </a>'
-                        				 +'        </li>'
-                        				 +'        <li>'
-                        				 +'        <div class="image_title">'
-                        				 +'          <a href="#">취향분석</a>'
-                        				 +'        </div>'
-                        				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
-                        				 +'          <img class="k_home_img" src="https://cdn.pixabay.com/photo/2014/12/08/11/49/love-560783_960_720.jpg"/>'
-                        				 +'        </a>'
-                        				 +'        </li>'
-                        				 +'        <li>'
-                        				 +'        <div class="image_title">'
-                        				 +'          <a href="#">콜렉션</a>'
-                        				 +'        </div>'
-                        				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
-                        				 +'           <img class="k_home_img" src="https://cdn.pixabay.com/photo/2017/04/05/01/16/food-2203732_960_720.jpg"/>'
-                        				 +'        </a>'
-                        				 +'        </li>'
-                        				 +'        </ul>'
-                        				 +'        </div>');                   
-                        	}) //done끝나는지점
-           }
-           };
 //payment관련 해서 : cart, payHis, present
 kaeun.payment = (x=>{ //kaeun.payment(cart); kaeun.payment(payHis);
 	var ctx;
@@ -126,12 +54,100 @@ kaeun.payment = (x=>{ //kaeun.payment(cart); kaeun.payment(payHis);
 	return{init:init};
 	})();
 
+kaeun.lot = {
+		set : ()=>{
+		   $('header').remove();	
+       	   $('footer').remove();
+       	   $('#content').html(
+       			  ui.div({id:"k_biglot",clazz:"k_biglot"}).html(
+       				ui.div({id:"k_leftlot",clazz:"k_leftlot"})
+       			  )
+       	   );
+       	   $('#k_biglot').append(
+   				ui.div({id:"k_contentlot",clazz:"k_contentlot"}),
+   				ui.div({id:"k_rightlot",clazz:"k_rightlot"})
+   		   );
+       	   $('#k_leftlot').append(
+       			  ui.div({id:"k_navi",clazz:"k_navi"}).html(
+       					  $('<div>').addClass("list-group").html(
+       							 ui.div({id:'k_home_btn',clazz:'navi_home'}).html("HOME")	
+       					  )
+       			  )
+       	   )
+       	   $('#k_navi').append(
+       			ui.div({id:"cart_btn",clazz:"button_base b01_simple_rollover"}).html("장바구니"),
+       			ui.div({id:"payHis_btn",clazz:"button_base b01_simple_rollover"}).html("구매함"),
+       			ui.div({id:"gift_btn",clazz:"button_base b01_simple_rollover"}).html("선물함"),
+       			ui.div({id:"analysis_btn",clazz:"button_base b01_simple_rollover"}).html("취향분석"),
+       			ui.div({id:"collect_btn",clazz:"button_base b01_simple_rollover"}).html("콜렉션"),
+       			ui.div({id:"test_btn",clazz:"button_base b01_simple_rollover"}).html("테스트")
+       	   )
+       	   $('#k_contentlot').append(
+       			   //content자리
+       	   )
+		},
+		setContent : ()=>{
+			
+		}
+};
+
+kaeun.ui = { 
+		  main : ()=>{
+      		//home화면
+      		 $('#k_contentlot').html('<div class="accordian">'
+    				 +'        <ul>'
+    				 +'        <li>'
+    				 +'        <div class="image_title">'
+    				 +'          <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">장바구니</a>'
+    				 +'        </div> '
+    				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
+    				 +'          <img class="k_home_img" src="https://cdn.pixabay.com/photo/2014/08/14/14/21/shish-kebab-417994_960_720.jpg"/>'
+    				 +'        </a>'
+    				 +'        </li>'
+    				 +'        <li>'
+    				 +'        <div class="image_title">'
+    				 +'          <a href="">구매내역</a>'
+    				 +'        </div>'
+    				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
+    				 +'          <img class="k_home_img" src="https://images.pexels.com/photos/749353/pexels-photo-749353.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"/>'
+    				 +'        </a>'
+    				 +'        </li>'
+    				 +'        <li>'
+    				 +'        <div class="image_title">'
+    				 +'          <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">선물함</a>'
+    				 +'        </div>'
+    				 +'        <a href="">'
+    				 +'          <img class="k_home_img" src="https://images.pexels.com/photos/1050244/pexels-photo-1050244.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"/>'
+    				 +'        </a>'
+    				 +'        </li>'
+    				 +'        <li>'
+    				 +'        <div class="image_title">'
+    				 +'          <a href="#">취향분석</a>'
+    				 +'        </div>'
+    				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
+    				 +'          <img class="k_home_img" src="https://cdn.pixabay.com/photo/2014/12/08/11/49/love-560783_960_720.jpg"/>'
+    				 +'        </a>'
+    				 +'        </li>'
+    				 +'        <li>'
+    				 +'        <div class="image_title">'
+    				 +'          <a href="#">콜렉션</a>'
+    				 +'        </div>'
+    				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
+    				 +'           <img class="k_home_img" src="https://cdn.pixabay.com/photo/2017/04/05/01/16/food-2203732_960_720.jpg"/>'
+    				 +'        </a>'
+    				 +'        </li>'
+    				 +'        </ul>'
+    				 +'        </div>'); 
+		  }
+          };
+
+
 
 //cart,payHis,present
 kaeun.payments = {
 		cart : ()=>{ //read some
 			ui.content_g();
-			//$('<div/>').html("footer").addClass("grid_footer").attr({id:"footer"}).appendTo($('#content_grid'));
+			//$('<div/>').html("footer").addClass("grid_footer").attr({id:"footer"}).appendTo($('#k_contentlot'));
 			$('#title_l').addClass('cart_title').append('<h2>장바구니<h2>');
 			$('#title_r').append(/*'<div class="cart_process">' //장바구니-결제-완료
 		            +'<div class="row bs-wizard" style="border-bottom:0;">'
@@ -248,8 +264,11 @@ kaeun.payments = {
 				return false;
 			})
 		},
+		payment : ()=>{ //payment 화면
+			
+		},
 		payHis : ()=>{ //read some
-			//$('#content_grid').html('<h2>구매함</h2><br><div>날짜선택: 목록보기:(구매완료/사용중) </div><br>');
+			//$('#k_contentlot').html('<h2>구매함</h2><br><div>날짜선택: 목록보기:(구매완료/사용중) </div><br>');
 			$.getScript($.script()+'/comp.js',()=>{
 			ui.content_g();
 			$('#title_l').append('구매함');
@@ -264,7 +283,7 @@ kaeun.payments = {
 									+'<div class="item_header">수량</div>' 
 									+'<div class="item_header">상품금액</div>'
 									+'<div class="item_header">총액</div>'
-									+'<div id="cart_header_end" class="item_header">내역</div></div>');
+									+'<id="cart_header_end" class="item_header">내역</div></div>');
 			ui.n_div({clazz:'panel panel-default',html:$('<div id="pay_panel"/>').addClass("panel-body"),to:$('#pay_Search')}); //search
 			$('#pay_panel').html('<div class="card">'
 					+'<div class="card-body">'
@@ -336,7 +355,7 @@ kaeun.payments = {
 					+'<li class="page-item"><a class="page-link" href="#">2</a></li>'
 					+'<li class="page-item"><a class="page-link" href="#">3</a></li>'
 					+'<li class="page-item"><a class="page-link" href="#">Next</a></li>'
-					+'</ul>').addClass("grid_footer").attr({id:"footer"}).appendTo($('#content_grid')); 
+					+'</ul>').addClass("grid_footer").attr({id:"footer"}).appendTo($('#k_contentlot')); 
 			})//getscript지우기
 		},
 		gift : ()=>{ //read some
@@ -424,7 +443,53 @@ kaeun.tastes = {
          collect : ()=>{ //콜렉션
         	 ui.content_g();
 			$('#title_l').append('콜렉션');
-			$('#title_r').append('');    
+			$('#title_r').append('');  
 			$('#content_g').append('');
+
+         },
+         test : ()=>{ 
+        	 ui.content_g();
+        	 $('#title_l').append('테스트');
+ 			$('#title_r').append(''); 
+ 			let testId = 'test1';
+ 			 google.charts.load('current', {'packages':['corechart']});
+ 		      google.charts.setOnLoadCallback(drawChart);
+ 		    
+ 		     $.getJSON($.ctx()+'/chart/'+testId,d=>{
+ 		    	 let dateArr = ['평점', ''];
+ 		    	 $.each(d,(i,j)=>{
+ 		    		 console.log(j.grade,j.cntgrade);
+ 		    		/* dateArr += [j.grade,j.cntgrade];*/
+ 		    	 });
+  			}); //getJSON
+ 			function drawChart() {
+	 		        var data = google.visualization.arrayToDataTable([
+	 		          ['평점', ''],
+	 		          ['0.5',  60     ],
+	 		          ['1.0',  58     ],
+	 		          ['1.5',  300     ],
+	 		          ['2.0',  660     ],
+	 		          ['2.5',  160     ],
+	 		          ['3.0',  160     ],
+	 		          ['3.5',  200     ],
+	 		          ['4.0',  260     ],
+	 		          ['4.5',  460     ],
+	 		          ['5.0',  10     ]
+	 		        ]);
+	 		        var options = {
+	 		          hAxis: {title: '별점',  titleTextStyle: {color: '#333'}},
+	 		          vAxis: {minValue: 0}
+	 		        };
+	 		        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+	 		        chart.draw(data, options);
+	 		      }
+		    	$('#content_g').append('<div id="chart_div" style="width: 100%; height: 500px;"></div>');  
+ 			
          }
 };
+kaeun.chart = {
+		AreaChart : ()=>{
+			
+		}
+};
+

@@ -11,7 +11,6 @@ public class HomeCtrlTest {
 	@Autowired ItemCtrlTest itemCT;
 	@Test
 	public void test() {
-		itemCT.tagDummy();
 	}
 
 }

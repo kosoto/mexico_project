@@ -3,11 +3,24 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.bemeal.web.taste.TasteMapper">
+  	 <resultMap type="java.util.HashMap" id="tmap">
+    	<result property="grade" column="GRADE"/> 
+  		<result property="cntgrade" column="CNTGRADE"/> 
+ 	 </resultMap>
+ 	 
   	<insert id="post">
   		INSERT INTO TASTE
   		(QUANTITY,DIR_NAME,GRADE,FLAG,MEMBER_ID,ITEM_SEQ)
   		VALUES
   		(#{quantity},#{dirName},#{grade},#{flag},#{memberId},#{itemSeq})
   	</insert>
- 	
+ 	<select id="existGrade" resultType="int">
+  	SELECT COUNT(*) FROM TASTE WHERE MEMBER_ID LIKE #{id}
+  	</select>
+ 	<select id="chart" resultType="java.util.HashMap">
+ 	SELECT GRADE "grade", COUNT(GRADE) AS "cntgrade"
+	FROM TASTE
+	WHERE MEMBER_ID LIKE 'test1' AND FLAG LIKE 'star'
+	GROUP BY GRADE;
+ 	</select>
   </mapper>

@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bemeal.web.cmm.CommonMapper;
 import com.bemeal.web.img.Image;
 import com.bemeal.web.tx.TxService;
 
@@ -22,7 +21,7 @@ public class ItemCtrlTest {
 	@Autowired Image img;
 	@Autowired TxService tx;
 	@Autowired ItemMapper itemMapper;
-	@Autowired CommonMapper cmmMapper;
+	
 	@Test
 	public void dummy() {
 		map.clear();
@@ -117,7 +116,7 @@ public class ItemCtrlTest {
 		for(int i=1;i<=400;i++) {//400개의 더미데이터 생성하기
 			item = new Item();
 			//아이템 번호
-			item.setItemSeq(i);
+/*			item.setItemSeq(i);
 			//아이템이름 결정
 			item.setItemName(nameArrPrefix[(int)(Math.random()*23)]+nameArrMain[(int)(Math.random()*23)]+nameArrPostfix[(int)(Math.random()*20)]);
 			//브랜드 결정
@@ -143,13 +142,13 @@ public class ItemCtrlTest {
 			map.put("img", img);
 			tx.insert(map);
 			logger.info(item.toString());
-			logger.info(img.toString());
+			logger.info(img.toString());*/
 
 			
 		}
 		
 	}
-	@Test @Transactional
+	/*@Test @Transactional
 	public void tagDummy() {
 		map.clear();
 		
@@ -182,6 +181,7 @@ public class ItemCtrlTest {
 				do {
 					tagName = favList[(int)(Math.random()*10)];
 				}while(tempList.contains(tagName));
+				tempList.add(tagName);
 				map.put("tagName", tagName);
 				logger.info(map.toString());
 				cmmMapper.postTag(map);
@@ -191,6 +191,7 @@ public class ItemCtrlTest {
 				do {
 					tagName = feelList[(int)(Math.random()*24)];
 				}while(tempList.contains(tagName));
+				tempList.add(tagName);
 				map.put("tagName", tagName);
 				logger.info(map.toString());
 				cmmMapper.postTag(map);
@@ -202,6 +203,7 @@ public class ItemCtrlTest {
 			if(itemName.contains("치즈")) {
 				map.put("tagName", "치즈");
 				logger.info(map.toString());
+				tempList.add("치즈");
 				cmmMapper.postTag(map);
 			}
 			//아이템 이름에 맞추어서 재료 넣기
@@ -232,6 +234,7 @@ public class ItemCtrlTest {
 					case 22 :map.put("tagName", "소시지"); break;	//소시지
 					}
 					logger.info(map.toString());
+					tempList.add(nameArrMain[k]);
 					cmmMapper.postTag(map);
 				}
 			}
@@ -239,14 +242,14 @@ public class ItemCtrlTest {
 				do {
 					tagName = ingList[(int)(Math.random()*19)];
 				}while(tempList.contains(tagName));
+				tempList.add(tagName);
 				map.put("tagName", tagName);
 				logger.info(map.toString());
 				cmmMapper.postTag(map);
 			}
+			logger.info(itemName+" : "+tempList.toString());
 		}
-	}
-	
-
+	}*/
 }
 
 
