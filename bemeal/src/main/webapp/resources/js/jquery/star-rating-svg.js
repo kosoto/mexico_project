@@ -102,7 +102,7 @@
       this.executeCallback( rating, this.$el );
 
       if(this.settings.disableAfterRate){
-        this.$stars.off();
+        //this.$stars.off();
       }
     },
 
@@ -318,3 +318,5 @@
   };
 
 })( jQuery, window, document );
+
+

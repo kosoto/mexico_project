@@ -50,7 +50,7 @@ bemeal.router = {
 					$('<header/>').append(
 							bemeal.compo.banner({
 								id:'banner',
-								arr:[{image:"/web/resources/img/cmm/banner1.jpg"},{image:"/web/resources/img/cmm/banner2.jpg"}]
+								arr:[{image:"/web/resources/img/cmm/banner/banner1.jpg"},{image:"/web/resources/img/cmm/banner/banner2.jpg"}]
 							})
 					),					
 					$('<div/>').attr({id:'content'})
@@ -64,7 +64,8 @@ bemeal.router = {
 				let $content = $('#content');
 				let $carousels = $('<div/>').appendTo($content);
 
-				$.getJSON($.ctx()+"/item/list/first",d=>{
+				$.getJSON($.ctx()+"/item/list/grade",d=>{
+					console.log(d.list);
 					$carousels.append(
 							bemeal.compo.carousel({
 								id:'carousel1',
@@ -75,21 +76,10 @@ bemeal.router = {
 					);
 				}); /*getJSON end*/
 				
-				$.getJSON($.ctx()+"/item/list/second",d=>{
+				$.getJSON($.ctx()+"/item/list/buy",d=>{
 					$carousels.append(
 							bemeal.compo.carousel({
 								id:'carousel2',
-								title:'가장 인기 있는',
-								arr:d.list,
-								row_size:5
-							})
-					);
-				}); /*getJSON end*/
-				
-				$.getJSON($.ctx()+"/item/list/third",d=>{
-					$carousels.append(
-							bemeal.compo.carousel({
-								id:'carousel3',
 								title:'가장 판매량이 높은',
 								arr:d.list,
 								row_size:5
@@ -97,6 +87,16 @@ bemeal.router = {
 					);
 				}); /*getJSON end*/
 				
+				$.getJSON($.ctx()+"/item/list/wish",d=>{
+					$carousels.append(
+							bemeal.compo.carousel({
+								id:'carousel3',
+								title:'가장 인기 있는',
+								arr:d.list,
+								row_size:5
+							})
+					);
+				}); /*getJSON end*/
 				// 무한 스크롤 테스트
 				let num = 4;
 				/*
@@ -326,14 +326,29 @@ bemeal.evaluate=(()=>{
 				let $gift_details = $('<div/>').addClass('gift_details').appendTo($gift_c);
 				let $h2 = $('<h2/>').addClass('evaluative_title').text('아이템이름').appendTo($gift_details);
 				let $star_rating_container = $('<div/>').appendTo($gift_details)
-				.starRating({
-					  starSize: 32,  //width속성값
-					  initialRating: 0,
-					  strokeColor: '#894A00',
-					  strokeWidth: 10
-					 
+				.starRating({ //https://github.com/nashio/star-rating-svg
+					initialRating: 0, //초기값  
+					starSize: 32,  //width속성값
+					minRating : 0.5,
+					emptyColor : 'white',
+					hoverColor : 'orange',
+					activeColor : 'orange',
+					ratedColor : 'orange',
+					useGradient : false,
+					strokeColor: 'orange',  //border color
+					callback : (currentRating, $el)=>{
+						alert(currentRating);
+						let flag = false; //평점을 준적이 없으면 false 있으면 true
+						/*getJSON($.ctx()+'/',()=>{//id와 item_seq를 넘겨줌
+							
+						})*/
+						
+					}
 					});
-			
+				/*setTimeout(() => {
+					$star_rating_container.starRating('setReadOnly',false);	
+				}, 1000);*/
+				
 				$gift_slid.append($gift_c);
 				/*$gift_slid.append($(
 						'<div class="card gift_c">'

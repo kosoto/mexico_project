@@ -2,7 +2,11 @@ package com.bemeal.web.taste;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
+
+import com.bemeal.web.mbr.Member;
 
 public class TasteCtrlTest {
 
@@ -95,7 +99,48 @@ public class TasteCtrlTest {
 	            logger.info(taste.toString());
 	         }
 	      }*/
-		
+		// 대표 3인이 무작위 10개의 제품을 좋아요  
+				/*ArrayList<Integer> temp;
+				int itemSeq;
+				for(int j=1;j<=3;j++) {
+					temp = new ArrayList<>();
+					for(int i=1;i<=10;i++) {
+						taste = new Taste();
+						//회원아이디
+						taste.setMemberId("test"+j);
+						//좋아요 플래그
+						taste.setFlag("wish");
+						//아이템번호
+						do {
+							itemSeq = (int)(Math.random()*400+1);
+						}while(temp.contains(itemSeq));
+						temp.add(itemSeq);
+						taste.setItemSeq(itemSeq);
+						logger.info(taste.toString());
+						tasteMapper.post(taste);
+					}	
+				}*/
+		// 400명이 무작위 2개의 제품구매을 좋아요     
+				/*ArrayList<Member> mbrList = (ArrayList<Member>) mbrMapper.listAll();
+			      logger.info(mbrList.toString());
+			      ArrayList<Integer> itemSeqList;
+			      int temp;
+			      for(int i=1;i<=400;i++) {
+			         System.out.println("회전수 : "+i);
+			         itemSeqList = new ArrayList<>();
+			         taste = new Taste();
+			         taste.setMemberId(mbrList.get(i).getMemberId());
+			         taste.setFlag("wish");
+			         for(int c=1;c<=2;c++) {
+			            do {
+			               temp = (int)(Math.random()*400+1);
+			            } while(itemSeqList.contains(temp));
+			            itemSeqList.add(temp);
+			            taste.setItemSeq(temp);
+			            tasteMapper.post(taste);
+			            logger.info(taste.toString());
+			         }
+			      }*/
 	}
 
 }

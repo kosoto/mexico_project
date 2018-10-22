@@ -3,17 +3,24 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.bemeal.web.item.ItemMapper">
+  	<resultMap type="hashmap" id="result">
+  		<result property="itemSeq" column="ITEM_SEQ"/>
+  		<result property="itemName" column="ITEM_NAME"/>
+  		<result property="brand" column="BRAND"/>
+  		<result property="category" column="CATEGORY"/>
+  		<result property="price" column="PRICE"/>
+  		<result property="salePercent" column="SALE_PERCENT"/>
+  		<result property="event" column="EVENT"/>
+  		<result property="newItem" column="NEW_ITEM"/>
+  		<result property="image" column="IMG"/>
+  		<result property="explains" column="EXPLATINS"/>
+  		<result property="calorie" column="CALORIE"/>
+  	</resultMap>
   	<insert id="post">
   		INSERT INTO ITEM
   		(ITEM_SEQ,ITEM_NAME,BRAND,CATEGORY,PRICE,CALORIE,EXPLAINS)
   		VALUES
 	  	(#{itemSeq},#{itemName},#{brand},#{category},#{price},#{calorie},#{explains})
   	</insert>
-  	<select id="listAll" resultType="com.bemeal.web.item.Item">
-  		SELECT 
-  			ITEM_SEQ AS "ITEMSEQ",
-  			ITEM_NAME AS "ITEMNAME"
-		FROM 
-			ITEM
-  	</select>
+  	
   </mapper>

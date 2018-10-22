@@ -9,4 +9,7 @@
   		VALUES
   		(#{quantity},#{dirName},#{grade},#{flag},#{memberId},#{itemSeq})
   	</insert>
+ 	<select id="existGrade" resultType="int">
+  	SELECT COUNT(*) FROM TASTE WHERE MEMBER_ID LIKE #{id}
+  	</select>
   </mapper>

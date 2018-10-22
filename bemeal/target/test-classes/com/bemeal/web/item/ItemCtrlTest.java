@@ -149,7 +149,7 @@ public class ItemCtrlTest {
 		}
 		
 	}
-	@Test @Transactional
+	/*@Test @Transactional
 	public void tagDummy() {
 		map.clear();
 		
@@ -250,7 +250,7 @@ public class ItemCtrlTest {
 			}
 			logger.info(itemName+" : "+tempList.toString());
 		}
-	}
+	}*/
 }
 
 
