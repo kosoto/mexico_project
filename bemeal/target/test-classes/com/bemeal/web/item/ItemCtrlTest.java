@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bemeal.web.cmm.CommonMapper;
 import com.bemeal.web.img.Image;
 import com.bemeal.web.tx.TxService;
 
@@ -22,7 +21,7 @@ public class ItemCtrlTest {
 	@Autowired Image img;
 	@Autowired TxService tx;
 	@Autowired ItemMapper itemMapper;
-	@Autowired CommonMapper cmmMapper;
+	
 	@Test
 	public void dummy() {
 		map.clear();
@@ -117,7 +116,7 @@ public class ItemCtrlTest {
 		for(int i=1;i<=400;i++) {//400개의 더미데이터 생성하기
 			item = new Item();
 			//아이템 번호
-			item.setItemSeq(i);
+/*			item.setItemSeq(i);
 			//아이템이름 결정
 			item.setItemName(nameArrPrefix[(int)(Math.random()*23)]+nameArrMain[(int)(Math.random()*23)]+nameArrPostfix[(int)(Math.random()*20)]);
 			//브랜드 결정
@@ -137,7 +136,7 @@ public class ItemCtrlTest {
 			img = new Image();
 			// 1 ~ 216
 			img.setImg("/web/resources/img/cmm/item/dosiroc ("+((int)(Math.random()*216+1))+").jpg");
-			img.setItemSeq(i);
+			img.setItemSeq(i);*/
 			map.clear();
 			map.put("item", item);
 			map.put("img", img);
@@ -149,102 +148,7 @@ public class ItemCtrlTest {
 		}
 		
 	}
-	@Test @Transactional
-	public void tagDummy() {
-		map.clear();
-		
-		String[] favList = {//10개
-				"고소","달달","짭짤","달콤","매콤","새콤","씁쓸","감칠맛","담백","느끼" 
-		};
-		String[] feelList = {//24개
-				"빨간","얼큰한","얼얼한","봄","여름","가을","겨울","둘이서","엄마가해준","건강한","야식","아침","점심","저녁","말랑한","야들한",
-	            "부드러운","말캉한","샤르르","찐한","힐링","알콜","맥주","푸짐한"
-		};
-		String[] ingList = {//19개
-				"닭","오리","오징어","소고기","버섯","김치","계란","더덕","새우","고등어","갈치","문어","장어","감자","고구마","어묵","소시지","돼지","치즈"
-		};
-		String[] nameArrMain = {
-				"제육","갈비","해물","닭","불고기","오리","오징어","소고기","버섯","김치",
-				"계란","더덕","치킨","새우","고등어","갈치","문어","장어","감자","고구마",
-				"돈가스","어묵","소시지"
-		};//23개
-		String[] pigCow = {"돼지","소고기"};
-		//아이템 리스트 가져오기
-		List<Item> itemList = itemMapper.listAll();
-		ArrayList<String> tempList; 
-		String tagName,itemName;
-		for(int i=0;i<itemList.size();i++) {//400개
-			map.clear();
-			map.put("itemSeq", itemList.get(i).getItemSeq());
-			tempList = new ArrayList<>();
-			//맛 태그 부여하기
-			for(int j=0,count=(int)(Math.random()*2+1);j<count;j++) { //맛 태그는 1~2개씩
-				do {
-					tagName = favList[(int)(Math.random()*10)];
-				}while(tempList.contains(tagName));
-				map.put("tagName", tagName);
-				logger.info(map.toString());
-				cmmMapper.postTag(map);
-			}
-			//감성 태그 부여하기
-			for(int j=0,count=(int)(Math.random()*4+2);j<count;j++) { //감성 태그는 2~5
-				do {
-					tagName = feelList[(int)(Math.random()*24)];
-				}while(tempList.contains(tagName));
-				map.put("tagName", tagName);
-				logger.info(map.toString());
-				cmmMapper.postTag(map);
-			}
-			//재료 태그 부여하기 2~4개
-			//아이템 이름에 있는 재료 넣는 방법은?
-			//아이템 이름에 치즈가 들어있으면 재료에 치즈 넣기
-			itemName = itemList.get(i).getItemName();
-			if(itemName.contains("치즈")) {
-				map.put("tagName", "치즈");
-				logger.info(map.toString());
-				cmmMapper.postTag(map);
-			}
-			//아이템 이름에 맞추어서 재료 넣기
-			for(int k=0;k<nameArrMain.length;k++) {
-				if(itemName.contains(nameArrMain[k])) {
-					switch(k) {
-					case 0 : map.put("tagName", "돼지"); break;
-					case 1 : case 4 : map.put("tagName", pigCow[(int)(Math.random()*2)]); //돼지, 소고기
-						break;
-					case 2 : break;
-					case 3 : case 12: map.put("tagName", "닭"); break; //닭
-					case 5 : map.put("tagName", "오리"); break;  //오리
-					case 6 : map.put("tagName", "오징어"); break; //오징어
-					case 7 : map.put("tagName", "소고기"); break;  //소고기
-					case 8 : map.put("tagName", "버섯"); break;  //버섯
-					case 9 : map.put("tagName", "김치"); break;	//김치
-					case 10 : map.put("tagName", "계란");  break;	//계란
-					case 11 : map.put("tagName", "더덕"); break;	//더덕
-					case 13 :map.put("tagName", "새우"); break;	//새우
-					case 14 : map.put("tagName", "고등어"); break;	//고등어
-					case 15 : map.put("tagName", "갈치");break;	//갈치
-					case 16 :map.put("tagName", "문어"); break;	//문어
-					case 17 :map.put("tagName", "장어"); break;	//장어
-					case 18 :map.put("tagName", "감자"); break;	//감자
-					case 19 :map.put("tagName", "감자"); break;	//고구마
-					case 20 :map.put("tagName", "돼지"); break;	//돼지
-					case 21 :map.put("tagName", "어묵"); break;	//어묵
-					case 22 :map.put("tagName", "소시지"); break;	//소시지
-					}
-					logger.info(map.toString());
-					cmmMapper.postTag(map);
-				}
-			}
-			for(int j=0,count=(int)(Math.random()*3+1);j<count;j++) {
-				do {
-					tagName = ingList[(int)(Math.random()*19)];
-				}while(tempList.contains(tagName));
-				map.put("tagName", tagName);
-				logger.info(map.toString());
-				cmmMapper.postTag(map);
-			}
-		}
-	}
+	
 	
 
 }

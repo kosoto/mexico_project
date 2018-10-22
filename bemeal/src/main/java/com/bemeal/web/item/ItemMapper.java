@@ -1,6 +1,7 @@
 package com.bemeal.web.item;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -8,4 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface ItemMapper {
 	public void post(Item p);
 	public List<Item> listAll();
+	public List<Item> listSome(Map<String,Object> p);
 }

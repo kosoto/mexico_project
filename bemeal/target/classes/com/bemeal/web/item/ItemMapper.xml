@@ -16,4 +16,15 @@
 		FROM 
 			ITEM
   	</select>
+ 	<select id="listSome" resultType="com.bemeal.web.item.Item">
+  		SELECT 
+  			*
+		FROM 
+			ITEM
+		WHERE
+			BRAND LIKE #{brand}
+		AND
+			CATEGORY LIKE #{category}
+		
+  	</select>
   </mapper>
