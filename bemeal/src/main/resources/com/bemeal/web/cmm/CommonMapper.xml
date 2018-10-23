@@ -12,10 +12,10 @@
   		<result property="salePercent" column="SALE_PERCENT"/>
   		<result property="event" column="EVENT"/>
   		<result property="newItem" column="NEW_ITEM"/>
-  		<result property="explains" column="EXPLATINS"/>
+  		<result property="explains" column="EXPLAINS"/>
   		<result property="calorie" column="CALORIE"/>
   		<result property="imgSeq" column="IMG_SEQ"/>
-  		<result property="image" column="IMG"/>
+  		<result property="img" column="IMG"/>
   		<result property="memberId" column="MEMBER_ID"/>
   		<result property="password" column="PASSWORD"/>
   		<result property="name" column="NAME"/>

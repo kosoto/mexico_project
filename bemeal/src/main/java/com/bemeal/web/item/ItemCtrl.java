@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,8 +31,8 @@ public class ItemCtrl {
 	@Autowired TxService tx;
 	@Autowired HashMap<String,Object> map;
 	
-	@GetMapping(value="/item/list/{brand}/{category}/{sort}")
-	public @ResponseBody Map<String,Object> ylist(
+	@RequestMapping(value="/item/list/{brand}/{category}/{sort}")
+	public @ResponseBody Map<String,Object> list(
 			@PathVariable String brand,
 			@PathVariable String category,
 			@PathVariable String sort
@@ -40,13 +41,32 @@ public class ItemCtrl {
 		logger.info("brand {}",brand); // 평점,판매량,최신 등등의 옵션으로 해당 옵션의 아이템을 검색
 		logger.info("category {}",category);
 		logger.info("sort {}",sort);
+		item.setBrand(brand);
+		item.setCategory(category);
 		
-		map.put("brand", brand);
-		map.put("category", category);
+		logger.info("item.getBrand {}",item.getBrand());
+		logger.info("item.getCategory {}",item.getCategory());
+		
+		map.put("brand", item.getBrand());
+		map.put("category", item.getCategory());
 		map.put("sort", sort);
-		itemMapper.listSome(map);
-		//map.put("listres", value)
-		//logger.info("itm {}",map.get("itm"));
+		itemMapper.listSome(item);
+		map.put("listsm", itemMapper.listSome(item));
+		map.put("listall",itemMapper.listAll());
+		//img.setItemSeq(item.getItemSeq());
+		logger.info("itemMapper::"+map.get("list"));
+		return map;
+	}
+	@RequestMapping(value="/item/retrieve/{itemSeq}")
+	public @ResponseBody Map<String, Object> retrieve(@PathVariable String itemSeq ){
+		map.clear();
+		logger.info("itemseq int:{}",Integer.parseInt(itemSeq));
+		item.setItemSeq(Integer.parseInt(itemSeq));
+		logger.info("itemseq :{}",item);
+		itemMapper.retrieve(item);
+		logger.info("item retrieve:{}",itemMapper.retrieve(item));
+		
+		map.put("retrieve", itemMapper.retrieve(item));
 		return map;
 	}
 }

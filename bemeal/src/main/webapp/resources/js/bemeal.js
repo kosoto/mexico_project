@@ -226,7 +226,7 @@ bemeal.compo=(()=>{
 			for(let j=i*row_size;j<(i+1)*row_size;j++){
 				$('<div/>').text(arr[j].itemName).appendTo($span);
 				$('<img/>').attr({
-					src:arr[j].image,
+					src:arr[j].img,
 					alt:arr[j].itemName
 					,
 					style:"width:"+(100/row_size)+"%;height:150px"

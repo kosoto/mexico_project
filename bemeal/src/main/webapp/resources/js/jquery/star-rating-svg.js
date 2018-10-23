@@ -102,11 +102,7 @@
       this.executeCallback( rating, this.$el );
 
       if(this.settings.disableAfterRate){
-<<<<<<< HEAD
         //this.$stars.off();
-=======
-        this.$stars.off();
->>>>>>> yh
       }
     },
 
