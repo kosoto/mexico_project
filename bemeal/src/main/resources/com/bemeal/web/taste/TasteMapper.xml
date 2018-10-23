@@ -17,10 +17,49 @@
  	<select id="existGrade" resultType="int">
   	SELECT COUNT(*) FROM TASTE WHERE MEMBER_ID LIKE #{id}
   	</select>
- 	<select id="chart" resultType="java.util.HashMap">
+ 	<select id="chartArea" resultType="java.util.HashMap">
  	SELECT GRADE "grade", COUNT(GRADE) AS "cntgrade"
 	FROM TASTE
 	WHERE MEMBER_ID LIKE 'test1' AND FLAG LIKE 'star'
 	GROUP BY GRADE;
  	</select>
+	<select id="chartIngre" resultType="java.util.HashMap">
+ 	SELECT * 
+FROM (SELECT G.TAG_NAME AS "ingre", AVG(T.GRADE) AS "ingreAvg", COUNT(T.GRADE) AS "ingreCnt" 
+	FROM ITEM I, TASTE T, TAG_ITEM A, TAG G
+	WHERE I.ITEM_SEQ = T.ITEM_SEQ
+	AND I.ITEM_SEQ = A.ITEM_SEQ
+	AND A.TAG_SEQ = G.TAG_SEQ
+	AND T.MEMBER_ID LIKE 'test1'
+	AND T.FLAG LIKE 'star'
+	AND G.TAG_FLAG LIKE '재료'
+	GROUP BY  G.TAG_NAME
+	ORDER BY ingreAvg DESC 
+	LIMIT 8) A
+	ORDER BY ingreCnt DESC;
+ 	</select>
+ 	<select id="chartBrand" resultType="java.util.HashMap">
+ 	SELECT I.BRAND AS "brand", SUM(T.QUANTITY) AS 'brandSum'
+	FROM ITEM AS I, TASTE AS T
+	WHERE I.ITEM_SEQ = T.ITEM_SEQ
+       AND T.MEMBER_ID LIKE 'test1'
+       AND T.FLAG LIKE 'buy'
+	GROUP BY I.BRAND
+	ORDER BY brandSum desc
+	LIMIT 5;
+ 	</select>
+ 	<select id="chartTaste" resultType="java.util.HashMap">
+ 	</select>
+ 	<select id="chartEmotion" resultType="java.util.HashMap">
+ 	</select>
+ 	<select id="chartMenu" resultType="java.util.HashMap">
+ 	SELECT I.CATEGORY AS "menu", AVG(T.GRADE) AS 'menuAvg', COUNT(T.GRADE) AS 'menuCnt'
+	FROM ITEM AS I, TASTE AS T
+	WHERE I.ITEM_SEQ = T.ITEM_SEQ
+    AND T.MEMBER_ID LIKE 'test1'
+    AND T.FLAG LIKE 'star'
+	GROUP BY I.CATEGORY;
+ 	</select>
   </mapper>
+
+  
