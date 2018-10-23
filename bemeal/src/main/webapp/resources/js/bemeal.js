@@ -22,6 +22,7 @@ bemeal.main = (()=>{
 		setContentView();
 	};
 	var setContentView=()=>{
+		
 		bemeal.router.main();
 		
 	};
@@ -160,6 +161,7 @@ bemeal.router = {
 					$.getScript($.script()+"/junghoon.js",(e)=>{
 						/*가야 할 곳은 개인이 알아서*/
 						$window.off('scroll');
+						
 						junghoon.member.login();
 					})
 				});

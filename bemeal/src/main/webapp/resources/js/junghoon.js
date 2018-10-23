@@ -12,9 +12,11 @@ junghoon.board = (()=>{
 junghoon.member = (()=>{
 	var add =()=>{
 		$.getScript($.script()+'/comp.js',()=>{
-			$.getScript($.script()+'/login.js',()=>{
+			$.getScript($.script()+'/ui/j_add.js',()=>{
 				$('header').remove();
-				$('#content').empty().append($('<div/>').addClass('add').html(addUI()));
+				$('#content').empty().append(
+						$('<div/>').addClass('add').html(addUI())
+						);
 				
 				$('#join_to_login').click(e=>{
 					alert('안녕 안녕 안녕로봇');	
@@ -27,6 +29,7 @@ junghoon.member = (()=>{
 						method:'post',
 						contentType:'application/json',
 						data:JSON.stringify({
+							
 							memberId:$('#memberId').val(),
 							password:$('#password').val(),
 							name:$('#name').val(),
@@ -34,8 +37,11 @@ junghoon.member = (()=>{
 							address:$('#address').val(),
 							eMail:$('#eMail').val(),
 							phoneNum:$('#phoneNum').val()
+							
 						}),
-						success:d=>{console.log('JOIN SUCESS :: '+d.memberId)},
+						success:d=>{
+								alert(d.toString());
+							},
 						error:(x,y,z)=>{console.log('error :: '+z)}
 					});
 				});
@@ -45,8 +51,9 @@ junghoon.member = (()=>{
 		
 	};
 	var login =x=>{
-		$.getScript($.script()+'/comp.js',()=>{
-			$.getScript($.script()+'/login.js',()=>{
+				alert('login click3');
+			$.getScript($.script()+'/ui/j_login.js',()=>{
+				alert('login click4');
 				$('header').remove();
 				$('#content').empty().append($(loginUI()));
 				
@@ -60,19 +67,24 @@ junghoon.member = (()=>{
 						url : $.ctx()+'/mbr/login',
 						method : 'post',
 						contentType : 'application/json',
-						data : JSON.stringify({ memberId : $('#memberId').val(), password : $('#password').val()}),
+						data : JSON.stringify({ memberId : $('#memberId').val(),
+												password : $('#password').val()}),
 						success : d => {
 							
-							$.cookie("loginID", d.member.memberId);
+							$.cookie("loginID :: ", d.memberId);
+							alert("loginID"+d.memberId);
 							
-							alert('aa');
 							$('#info').empty();
+							
+							alert('info change');
 							$('<li/>').append($('<a/>').attr({id:"login_form", href:"#"}).html('마이페이지')).appendTo($('#info'))
 							.click(e=>{
 								junghoon.service.mypage();
 							});
+							
 							$('<li/>').append($('<a/>').attr({href:"#"}).html('로그아웃')).appendTo($('#info'))
 							.click(e=>{
+								$.removeCookie('loginID');
 								bemeal.main.init();
 							});
 							$('<li/>').append($('<a/>').attr({href:"#"}).html('댓글 테스트')).appendTo($('#info'))
@@ -83,8 +95,8 @@ junghoon.member = (()=>{
 							.click(e=>{
 								junghoon.service.search();
 							});
-						}
-					})
+							},
+						error : (x,y,z)=>{console.log('error :: '+z)}
 				})
 			});
 		});

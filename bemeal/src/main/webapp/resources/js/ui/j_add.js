@@ -12,11 +12,14 @@
 	+'      <input type="text" id="name" placeholder="이름을 입력하세요"  required><br>'
 	+'      <label for="ssn"><b>주민번호</b></label>'
 	+'      <input type="text" id="ssn" placeholder=" "-"을 포함해 주민번호를 입력해주세요" required><br>'
+	
 	+'      <label for="address"><b>주소</b></label>'
 	+'      <input type="text" id="address" placeholder="상품을 받을 주소를 입력해주세요"  required><br>'
-	+'      <label for="e_mail"><b>이메일 주소</b></label>'
+	
+	+'      <label for="eMail"><b>이메일 주소</b></label>'
 	+'      <input type="text" id="eMail" placeholder="이메일 주소를 입력해주세요" required><br>'
-	+'      <label for="phone_num"><b>전화번호</b></label>'
+	
+	+'      <label for="phoneNum"><b>전화번호</b></label>'
 	+'      <input type="text" id="phoneNum" placeholder="전화번호를 입력해주세요" required><br>'
 	+'		<p>이미 회원이신가요?<a id ="join_to_login" href="#"  style="color:dodgerblue"> 여기서 </a>로그인하세요.</p>'
 	+'        <button class="j_button" type="submit" id="join_submit_btn" class="join_submit_btn">회원가입</button>'
