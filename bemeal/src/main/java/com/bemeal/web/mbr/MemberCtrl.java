@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bemeal.web.cmm.AgeCalc;
+
 import com.bemeal.web.cmm.Util;
 
 
@@ -30,7 +30,7 @@ public class MemberCtrl {
 		System.out.println("add() :: 넘어온 정보 :: "+p);
 		System.out.println("add() :: 넘어온 정보 :: "+p.getMemberId().toString());
 		Map<String, Object> r = new HashMap<>();
-		AgeCalc.TheKingGodGeneral.apply(p);
+		/*AgeCalc.TheKingGodGeneral.apply(p);*/
 		Util.log.accept(p.getAge()+"/"+p.getGender());
 		
 		return r;
