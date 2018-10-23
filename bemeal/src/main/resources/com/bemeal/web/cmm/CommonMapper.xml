@@ -12,10 +12,10 @@
   		<result property="salePercent" column="SALE_PERCENT"/>
   		<result property="event" column="EVENT"/>
   		<result property="newItem" column="NEW_ITEM"/>
-  		<result property="explains" column="EXPLATINS"/>
+  		<result property="explains" column="EXPLAINS"/>
   		<result property="calorie" column="CALORIE"/>
   		<result property="imgSeq" column="IMG_SEQ"/>
-  		<result property="image" column="IMG"/>
+  		<result property="img" column="IMG"/>
   		<result property="memberId" column="MEMBER_ID"/>
   		<result property="password" column="PASSWORD"/>
   		<result property="name" column="NAME"/>
@@ -34,6 +34,7 @@
   		<result property="avg" column="avg"/>
   		<result property="count" column="COUNT"/>
   		<result property="sum" column="SUM"/>
+  		<result property="no" column="NO"/>
   	</resultMap>
   	<insert id="postTag">
   		INSERT INTO TAG_ITEM
@@ -46,10 +47,10 @@
 	  	#{itemSeq}	
 		)
   	</insert>
-  	<select id="existGrade" resultType="int">
-  		SELECT COUNT(*) FROM TASTE 
+  	<select id="existGrade" resultType="string">
+  		SELECT GRADE FROM TASTE 
   		WHERE MEMBER_ID LIKE #{id}
-  			AND ITEM_SEQ LIKE 1
+  			AND ITEM_SEQ LIKE #{itemSeq}
   			AND FLAG LIKE 'star'
   	</select>
   	<select id="countRatingsById" resultType="int">
@@ -58,6 +59,49 @@
   	WHERE FLAG LIKE 'STAR'
   		AND MEMBER_ID LIKE #{id}
   	</select>
+  	<select id="countUnRatingsById" resultType="int">
+  	SELECT COUNT(*)
+	FROM ITEM 
+	WHERE ITEM_SEQ NOT IN (
+		SELECT item_seq
+		FROM TASTE 
+		WHERE FLAG LIKE 'STAR'
+			AND MEMBER_ID LIKE #{id}
+	)
+  	</select>
+  	<select id="evaluateList" resultMap="result">
+  	SELECT * 
+  	FROM image m join (
+		SELECT *, row_number() over() as NO
+		FROM ITEM 
+		WHERE ITEM_SEQ NOT IN (
+			SELECT item_seq
+			FROM TASTE 
+			WHERE FLAG LIKE 'STAR'
+				AND MEMBER_ID LIKE #{id}
+		)
+	) t on m.item_seq like t.item_seq
+	WHERE NO between #{pagination.beginRow} and #{pagination.endRow};
+  	</select>
+	<insert id="insertGrade">
+	INSERT INTO TASTE
+	(GRADE, FLAG, MEMBER_ID, ITEM_SEQ)
+	VALUES
+	(#{grade} , 'star', #{id}, #{itemSeq})
+	</insert>
+	<delete id="removeGrade">
+	DELETE FROM TASTE
+	WHERE MEMBER_ID LIKE #{id}
+		AND ITEM_SEQ LIKE #{itemSeq}
+		AND FLAG LIKE 'star'
+	</delete>
+	<update id="modifyGrade">
+	UPDATE TASTE
+	SET GRADE = #{grade}
+	WHERE FLAG LIKE 'star'
+		AND MEMBER_ID LIKE #{id}
+		AND ITEM_SEQ LIKE #{itemSeq}
+	</update>
  	<select id="gradList" resultMap="result">
 	  	SELECT *
 		FROM

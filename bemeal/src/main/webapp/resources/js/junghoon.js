@@ -12,7 +12,7 @@ junghoon.board = (()=>{
 junghoon.member = (()=>{
 	var add =()=>{
 		$.getScript($.script()+'/comp.js',()=>{
-			$.getScript($.script()+'/login.js',()=>{
+			$.getScript($.script()+'/ui/j_add.js',()=>{
 				$('header').remove();
 				$('#content').empty().append($('<div/>').addClass('add').html(addUI()));
 				
@@ -46,7 +46,7 @@ junghoon.member = (()=>{
 	};
 	var login =x=>{
 		$.getScript($.script()+'/comp.js',()=>{
-			$.getScript($.script()+'/login.js',()=>{
+			$.getScript($.script()+'/ui/j_login.js',()=>{
 				$('header').remove();
 				$('#content').empty().append($(loginUI()));
 				

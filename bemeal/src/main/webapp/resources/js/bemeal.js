@@ -22,8 +22,11 @@ bemeal.main = (()=>{
 		setContentView();
 	};
 	var setContentView=()=>{
-		bemeal.router.main();
-		
+		/* nav 그리기 */
+		$.getScript($.script()+"/ui/navi.js",()=>{
+			$('#wrapper').html(naviUI());
+			bemeal.router.main();
+		});
 	};
 	return {init:init};
 })();
@@ -44,8 +47,9 @@ bemeal.router = {
 		},
 		main : ()=>{
 			/*메인화면 그리기*/
-			$.getScript($.script()+"/ui/navi.js",()=>{
-				$('#wrapper').html(naviUI())
+				$('header').remove();
+				$('#content').remove();
+				$('#wrapper')
 				.append(
 					$('<header/>').append(
 							bemeal.compo.banner({
@@ -65,7 +69,6 @@ bemeal.router = {
 				let $carousels = $('<div/>').appendTo($content);
 
 				$.getJSON($.ctx()+"/item/list/grade",d=>{
-					console.log(d.list);
 					$carousels.append(
 							bemeal.compo.carousel({
 								id:'carousel1',
@@ -109,7 +112,7 @@ bemeal.router = {
 				 */
 				let titles = [];
 				let $window = $(window);
-				$window.scroll(e=>{
+				$window.on('scroll.category',e=>{
 					if(num<=10 && $window.scrollTop()+$window.height()+30>$(document).height()){
 						$.getJSON($.ctx()+"/item/list/scrollTest",d=>{
 							$carousels.append(
@@ -125,9 +128,9 @@ bemeal.router = {
 					}
 				});//scroll event end
 				
-				
 				$('#logo').click(e=>{
 					e.preventDefault();
+					$window.off('scroll.category');
 					bemeal.router.main();
 				});
 
@@ -138,7 +141,7 @@ bemeal.router = {
 					$('#taste').parent().addClass('active');
 					$.getScript($.script()+"/kaeun.js",()=>{
 						/*가야 할 곳은 개인이 알아서*/
-						$window.off('scroll');
+						$window.off('scroll.category');
 						kaeun.main.init();
 					})
 				});
@@ -149,7 +152,7 @@ bemeal.router = {
 					$('#menu').parent().addClass('active');
 					$.getScript($.script()+"/yoonho.js",()=>{
 						/*가야 할 곳은 개인이 알아서*/
-						$window.off('scroll');
+						$window.off('scroll.category');
 						yoonho.service.list();
 
 					})
@@ -159,7 +162,7 @@ bemeal.router = {
 					alert('login click');
 					$.getScript($.script()+"/junghoon.js",(e)=>{
 						/*가야 할 곳은 개인이 알아서*/
-						$window.off('scroll');
+						$window.off('scroll.category');
 						junghoon.member.login();
 					})
 				});
@@ -170,7 +173,7 @@ bemeal.router = {
 					$('#join').parent().addClass('active');
 					$.getScript($.script()+"/junghoon.js",()=>{
 						/*가야 할 곳은 개인이 알아서*/
-						$window.off('scroll');
+						$window.off('scroll.category');
 						junghoon.member.add();
 					})
 				});
@@ -189,17 +192,17 @@ bemeal.router = {
 					alert('evaluate 클릭');
 					$('.nav-item').removeClass('active');
 					$('#evaluate').parent().addClass('active');
+					$window.off('scroll.category');
 					bemeal.evaluate.main();
 				});
 				$('#sam').click(e=>{
 					e.preventDefault();
 					alert('sam click');
 					$.getScript($.script()+"/sam.js",()=>{
-						$window.off('scroll');
+						$window.off('scroll.category');
 						sam.util.popup();
 					})
 				});
-			});
 		}
 };
 
@@ -223,7 +226,7 @@ bemeal.compo=(()=>{
 			for(let j=i*row_size;j<(i+1)*row_size;j++){
 				$('<div/>').text(arr[j].itemName).appendTo($span);
 				$('<img/>').attr({
-					src:arr[j].image,
+					src:arr[j].img,
 					alt:arr[j].itemName
 					,
 					style:"width:"+(100/row_size)+"%;height:150px"
@@ -299,77 +302,118 @@ bemeal.compo=(()=>{
 
 bemeal.evaluate=(()=>{
 	var main=x=>{
+		$('#content').empty();
 		let $evaluate_progress = $('header').empty().addClass('evaluate_progress');
 		let $evaluate_progress_ratings_count = $('<div/>').addClass('evaluate_progress_ratings_count').appendTo($evaluate_progress);
 		let $evaluate_progress_message = $('<div/>').addClass('evaluate_progress_message').appendTo($evaluate_progress);
 		let $evaluate_progress_bar= $('<div/>').addClass('evaluate_progress_bar').appendTo($evaluate_progress);
 		let $evaluate_progress_value= $('<div/>').addClass('evaluate_progress_value').appendTo($evaluate_progress_bar);
-		///가져온 코드
-		$.getJSON($.ctx()+'/evaluate/00r5qj6/1',d=>{//id와 page를 가지고 평가 하지 않은 제품들을 가져오기
-			let length = d.length;
-			console.log("length:"+length);
-			let $content =  $('#content').empty();
-			for(let i=1;i<=5;i++){
-				let $gift_slid = $('<div/>').attr({id:'gift_slid'+i}).addClass('card-group');
-				$content.append(
-						$('<div>').addClass('col').append(
-								$('<div/>').addClass('card_row').append(
-										$gift_slid
-								)
-						)
-				);
-				for(let j=1;j<5;j++){
-					let $gift_c = $('<div/>').addClass('card gift_c');
-					let $gift_img = $('<div/>').addClass('gift_img').append(
-							$('<img/>').attr({src:'https://images.pexels.com/photos/884596/pexels-photo-884596.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'})
-					).appendTo($gift_c);
-					let $gift_details = $('<div/>').addClass('gift_details').appendTo($gift_c);
-					let $h2 = $('<h2/>').addClass('evaluative_title').text('아이템이름').appendTo($gift_details);
-					let $star_rating_container = $('<div/>').appendTo($gift_details)
-					.starRating({ //https://github.com/nashio/star-rating-svg
-						initialRating: 0, //초기값  
-						starSize: 32,  //width속성값
-						minRating : 0.5,
-						emptyColor : 'white',
-						hoverColor : 'orange',
-						activeColor : 'orange',
-						ratedColor : 'orange',
-						useGradient : false,
-						strokeColor: 'orange',  //border color
-						callback : (currentRating, $el)=>{
-							alert(currentRating);
-							$.getJSON($.ctx()+'/grade/exist/test1/1',d=>{//id와 item_seq를 넘겨줌
-								if(d){//평점을 준적이 없으면 false 있으면 true
-									$.getJSON($.ctx()+'/grade/delete/id/1');
-								}else{
-									$.getJSON($.ctx()+'/grade/add/id/1');
+		let page = 1;
+		loadPage({
+			id:'00r5qj6',
+			page:page++,
+		});
+		let $window = $(window);
+		$window.on('scroll.category',e=>{
+			if($window.scrollTop()+$window.height()+30>$(document).height()){
+				loadPage({
+					id:'00r5qj6',
+					page:page++,
+				});
+			}
+		});//scroll event end
+	};
+	var loadPage=x=>{
+		console.log(x);
+		$.getJSON($.ctx()+'/evaluate/'+x.id+'/'+x.page,d=>{//id와 page를 가지고 평가 하지 않은 제품들을 가져오기
+			let existNext = d.pagination.existNext;
+			console.log(existNext);
+			if(existNext){ //다음 페이지가 존재할때만 
+				let arr = d.list;
+				let index = 0;
+				let $content =  $('#content');
+				for(let i=1;i<=5;i++){
+					let $gift_slid = $('<div/>').addClass('card-group');
+					$content.append(
+							$('<div>').addClass('col').append(
+									$('<div/>').addClass('card_row').append(
+											$gift_slid
+									)
+							)
+					);
+					for(let j=1;j<=4;j++){
+						let $gift_c = $('<div/>').addClass('card gift_c');
+						let $gift_img = $('<div/>').addClass('gift_img').append(
+								$('<img/>').attr({src:arr[index].img})
+						).appendTo($gift_c);
+						let $gift_details = $('<div/>').addClass('gift_details').appendTo($gift_c);
+						let $h2 = $('<h2/>').addClass('evaluative_title').text(arr[index].itemName).appendTo($gift_details);
+						let $star_rating_container = $('<div/>').attr({'data-seq':arr[index].itemSeq}).appendTo($gift_details)
+						.starRating({ //https://github.com/nashio/star-rating-svg
+							initialRating: 0, //초기값  
+							starSize: 32,  //width속성값
+							//minRating : 0,
+							emptyColor : 'white',
+							hoverColor : 'orange',
+							activeColor : 'orange',
+							ratedColor : 'orange',
+							useGradient : false,
+							strokeColor: 'orange',  //border color
+							callback : (currentRating, $el)=>{
+								if(currentRating!=0){
+									console.log('currentRating'+currentRating);
+									let seq = $el.data('seq');
+									let memberId = '00r5qj6';
+									$.getJSON($.ctx()+'/grade/exist/'+memberId+'/'+seq,d=>{//id와 item_seq를 넘겨줌
+										console.log("grade:"+d);
+										console.log("gracurrentRatingde:"+currentRating);
+										if(d==currentRating){
+											$.getJSON($.ctx()+'/grade/delete/'+memberId+'/'+seq);
+											$el.starRating('setRating', 0);
+										}else{
+											$.getJSON($.ctx()+'/grade/add/'+memberId+'/'+seq+'/'+currentRating*2);
+										}
+									});
 								}
+							}
 							});
-							
-						}
+						let $gift_msg = $('<div/>').addClass('gift_msg').appendTo($gift_details).append(
+								$('<p/>').text(arr[index].explains),
+								$('<a/>').addClass('evaluateToRetrieve').text('상세보기').attr({href:'#','data-seq':arr[index].itemSeq})
+						);
+						$.getScript($.script()+'/yoonho.js',()=>{
+							$('.evaluateToRetrieve').each(function(i){
+								$(this).click(e=>{
+									e.preventDefault();
+									yoonho.service.retrieve($(this).data('seq'));
+								});
+							});
 						});
-					/*setTimeout(() => {
-						$star_rating_container.starRating('setReadOnly',false);	
-					}, 1000);*/
-					
-					$gift_slid.append($gift_c);
-					/*$gift_slid.append($(
-							'<div class="card gift_c">'
-							+'            <div class="gift_img"><img src="https://images.pexels.com/photos/884596/pexels-photo-884596.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"></div>'
-							+'            <div class="gift_details">'
-							+'                <h2 style="text-align:center; color:black;">아이템이름 <br><span>☆☆☆☆☆</span></h2>'
-							+'                <div class="gift_msg">'
-							+'                    <p>메세지 Lorem Ipsum has been the industrys standard, when an unknown printer took a galley '
-							+'                        remaining essentially unchanged...</p>'
-							+'                </div>' //평가페이지에선 지울까? 제품 설명을 넣을까?
-							+'            </div>'
-							+'        </div>'		
-					));*/
+						
+						$gift_slid.append($gift_c);
+						/*$gift_slid.append($(
+								'<div class="card gift_c">'
+								+'            <div class="gift_img"><img src="https://images.pexels.com/photos/884596/pexels-photo-884596.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"></div>'
+								+'            <div class="gift_details">'
+								+'                <h2 style="text-align:center; color:black;">아이템이름 <br><span>☆☆☆☆☆</span></h2>'
+								+'                <div class="gift_msg">'
+								+'                    <p>메세지 Lorem Ipsum has been the industrys standard, when an unknown printer took a galley '
+								+'                        remaining essentially unchanged...</p>'
+								+'                </div>' //평가페이지에선 지울까? 제품 설명을 넣을까?
+								+'            </div>'
+								+'        </div>'		
+						));*/
+						index++;
+					}
 				}
 			}
-		});
+			
+		}); /* getJSON end*/
 	};
-	return {main:main}; 
+	return {
+		main:main,
+		loadPage:loadPage
+		}; 
 })();
 
 

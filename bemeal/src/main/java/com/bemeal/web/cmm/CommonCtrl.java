@@ -18,8 +18,6 @@ import com.bemeal.web.item.Item;
 import com.bemeal.web.item.ItemMapper;
 import com.bemeal.web.mbr.Member;
 import com.bemeal.web.mbr.MemberMapper;
-import com.bemeal.web.page.PageProxy;
-import com.bemeal.web.page.Pagination;
 import com.bemeal.web.taste.Taste;
 import com.bemeal.web.taste.TasteMapper;
 
@@ -29,6 +27,7 @@ public class CommonCtrl {
 	@Autowired Taste taste;
 	@Autowired Item item;
 	@Autowired Member mbr;
+	@Autowired Pagination pagination;
 	@Autowired CommonMapper cmmMapper;
 	@Autowired ItemMapper itemMapper;
 	@Autowired TasteMapper tasteMapper;
@@ -42,47 +41,84 @@ public class CommonCtrl {
 		map.clear();
 		logger.info("넘어온 id {}",id);
 		logger.info("넘어온 page {}",pageNum);
-		PageProxy pxy = new PageProxy();
 		map.put("pageNum", pageNum);
-		map.put("count", 0);
-		map.put("pageSize", 5);
-		map.put("blockSize", 4);
-		pxy.carryOut(map);
-		Pagination page = pxy.getPagination();
-		Function<String, ArrayList<HashMap<String,Object>>> f=x->{
-			
-			return null;
+		Function<String, Integer> cnt=x->{
+			return cmmMapper.countUnRatingsById(x);
 		};
-		f.apply(id+"/"+page);
-		map.put("page", 1);
+		map.put("count", cnt.apply(id));
+		map.put("pageSize", 20);
+		map.put("blockSize", 1);
+		pagination.excute(map);
+		Function<HashMap<String,Object>, ArrayList<HashMap<String,Object>>> f=x->{
+			return cmmMapper.evaluateList(x);
+		};
+		map.clear();
+		map.put("id", id);
+		map.put("pagination", pagination);
+		map.put("list", f.apply(map));
+		map.put("page", pageNum);
 		return map;
 	}
 	/*/Taste - evaluate*/
 	
 	/*Taste - grade CRUD + exist*/
 	@GetMapping("/grade/exist/{id}/{itemSeq}")
-	public @ResponseBody boolean existGrade(
+	public @ResponseBody String existGrade(
 			@PathVariable String id,
 			@PathVariable String itemSeq) {
+		logger.info("==existGrade==");
 		logger.info("넘어온 id {}",id);
 		logger.info("넘어온 itemSeq {}",itemSeq);
-		Function<String, Boolean> f = x->{
-			x.split("/");
-			int flag = cmmMapper.existGrade(id,itemSeq);
-			logger.info("평점 정보가 있나? {}",flag);
-			return (flag==1);
+		Function<HashMap<String,Object>, String> f = x->{
+			return cmmMapper.existGrade(x);
 		};
-		return f.apply(id+"/"+itemSeq);
+		map.clear();
+		map.put("id",id);
+		map.put("itemSeq",itemSeq);
+		String temp = f.apply(map);
+		logger.info("temp : "+temp);
+		return (f.apply(map)==null)?"0":f.apply(map);
 	} 
-	@GetMapping("/grade/add/{id}/{itemSeq}")
+	@GetMapping("/grade/add/{id}/{itemSeq}/{grade}")
 	public void addGrade(
 			@PathVariable String id,
-			@PathVariable String itemSeq) {
+			@PathVariable String itemSeq,
+			@PathVariable double grade) {
+		logger.info("==addGrade==");
 		logger.info("넘어온 id {}",id);
 		logger.info("넘어온 itemSeq {}",itemSeq);
-		Consumer<String> c = x->{
-			
+		logger.info("넘어온 currentRating {}",grade/2);
+		Consumer<HashMap<String, Object>> c;
+		if(Double.parseDouble(existGrade(id, itemSeq))==(grade/2)) {
+			c = x->{//update
+				logger.info(cmmMapper.modifyGrade(x)+"");
+			};
+		}else {
+			c = x->{//insert
+				logger.info(cmmMapper.insertGrade(x)+"");
+			};
+		}
+		
+		map.clear();
+		map.put("id", id);
+		map.put("itemSeq", itemSeq);
+		map.put("grade", grade/2);
+		c.accept(map);
+	} 
+	@GetMapping("/grade/delete/{id}/{itemSeq}")
+	public void deleteGrade(
+			@PathVariable String id,
+			@PathVariable String itemSeq) {
+		logger.info("==deleteGrade==");
+		logger.info("넘어온 id {}",id);
+		logger.info("넘어온 itemSeq {}",itemSeq);
+		Consumer<HashMap<String, Object>> c = x->{
+			logger.info(cmmMapper.removeGrade(x)+"");
 		};
+		map.clear();
+		map.put("id", id);
+		map.put("itemSeq", itemSeq);
+		c.accept(map);
 	} 
 	
 	/* /Taste - grade*/

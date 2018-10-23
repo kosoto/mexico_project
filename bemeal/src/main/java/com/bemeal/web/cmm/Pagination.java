@@ -1,7 +1,6 @@
-package com.bemeal.web.page;
+package com.bemeal.web.cmm;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -9,13 +8,14 @@ import org.springframework.stereotype.Component;
 import lombok.Data;
 
 @Component @Data @Lazy
-public class Pagination implements Proxy {
+public class Pagination  {
 	int pageNum,count,pageSize,blockSize,beginPage,endPage,beginRow,endRow,prevBlock,nextBlock;
 	boolean existPrev,existNext; 
 	
-	@Override
-	public void carryOut(HashMap<String,Object> p) {
-		pageNum = (int) p.get("pageNum");
+	public void excute(HashMap<String,Object> p) {
+		/* 필요한 파라미터 : 
+		 * pageNum, count, pageSize, blockSize */
+		pageNum = Integer.parseInt((String) p.get("pageNum"));
 		count =  (int) p.get("count");
 		pageSize = (int) p.get("pageSize"); 
 		blockSize = (int) p.get("blockSize");
