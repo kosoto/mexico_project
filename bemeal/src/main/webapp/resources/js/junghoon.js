@@ -51,9 +51,11 @@ junghoon.member = (()=>{
 		
 	};
 	var login =x=>{
+		$.getScript($.script()+'/comp.js',()=>{
 				alert('login click3');
 			$.getScript($.script()+'/ui/j_login.js',()=>{
 				alert('login click4');
+
 				$('header').remove();
 				$('#content').empty().append($(loginUI()));
 				
@@ -97,11 +99,12 @@ junghoon.member = (()=>{
 							});
 							},
 						error : (x,y,z)=>{console.log('error :: '+z)}
-				})
-			});
-		});
-			}
-	return{login:login,
+				}); //ajax end
+			}); //login_submit_btn end
+		}); //getScript end
+	});
+	}
+	return {login:login,
 		   add:add};
 })();
 

@@ -38,6 +38,7 @@
 <link rel="stylesheet" type="text/css" href="${context}/resources/css/star-rating-svg.css">
 <!-- kaeun chart -->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
 </head>
 <body>
 <!-- MDB -->

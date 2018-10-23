@@ -426,70 +426,141 @@ kaeun.tastes = {
 					+'</div>'//row끝
 					+'</div></div>');  
 			$('#content_anlz').html(ui.a_col({id:"anlyz1",claz:"anlyz_form"}));
-			$('#anlyz1').html('dom첫번째취향첫번째취향첫번째취향첫번째취향첫번째취향첫번째취향첫번째취향첫번째취향첫번째취향첫번째취향첫번째취향첫번째취향첫번째취향');
 			$('#content_anlz').append(ui.a_col({id:"anlyz2",claz:"anlyz_form"}));
-			$('#anlyz2').html('두번째취향두번째취향두번째취향두번째취향두번째취향두번째취향두번째취향두번째취향');
 			$('#content_anlz').append(ui.a_col({id:"anlyz3",claz:"anlyz_form"}));
-			$('#anlyz3').html('세번째취향');
 			$('#content_anlz').append(ui.a_col({id:"anlyz4",claz:"anlyz_form"}));
-			$('#anlyz4').html('네번째취향');
 			$('#content_anlz').append(ui.a_col({id:"anlyz5",claz:"anlyz_form"}));
-			$('#anlyz5').html('다번째취향');
 			$('#content_anlz').append(ui.a_col({id:"anlyz6",claz:"anlyz_form"}));
-			$('#anlyz6').html('여번째취향');
 			$('#content_anlz').append(ui.a_col({id:"anlyz7",claz:"anlyz_form"}));
 			$('#anlyz7').html('일번째취향');
+			
+			//차트의시작
+			let testId = 'test1';
+ 			$.getJSON($.ctx()+'/chart/'+testId,d=>{
+ 			google.charts.load('current', {'packages':['corechart']});
+ 		    google.charts.setOnLoadCallback(drawChart);
+ 		   google.charts.setOnLoadCallback(drawStuff);
+ 		   function drawChart() {  
+ 			   //별점 Chart
+ 			  var dataArea = google.visualization.arrayToDataTable([
+                  ['평점', ''],
+                  ['0.0',  0 ]
+                ]);
+ 			  $.each(d.area,(i,j)=>{
+                    	dataArea.addRow([j.grade+'',j.cntgrade*1]); 
+   			  }); //each문
+ 			  dataArea.addRow(['5.0',0]);
+ 			 var optionsArea = {
+ 					backgroundColor: 'none',
+                     hAxis: {title: '별점',  titleTextStyle: {color: '#333'}},
+                     vAxis: {minValue: 0}
+                   };
+ 			var chartArea = new google.visualization.AreaChart(document.getElementById('chart_div'));
+            chartArea.draw(dataArea, optionsArea);
+            
+            //재료 Chart
+            var dataDonut = google.visualization.arrayToDataTable([
+                ['Brand', 'per'],
+                ['',     0]
+              ]);
+            $.each(d.brand,(i,j)=>{
+            	dataDonut.addRow([j.brand,j.brandSum*1]);
+            }); //each문
+            var optionsDonut = {
+            		backgroundColor: 'none',
+                    title: '나의 Top5 브랜드'
+                  };
+            var chartDonut = new google.visualization.PieChart(document.getElementById('donutchart'));
+            chartDonut.draw(dataDonut, optionsDonut);
+ 		   } //function끝
+ 		 
+ 		   //바 chart 재료별
+ 		  google.charts.load('current', {'packages':['bar']});
+ 		  google.charts.setOnLoadCallback(drawStuff);
+		      function drawStuff() {
+		        var data = new google.visualization.arrayToDataTable([
+		          /*['Opening Move', 'Percentage'],
+		          ["", 0]*/
+		        ]);
+		        data.addColumn('string', '재료');
+		        data.addColumn('number', 'Percentage');
+		        $.each(d.ingre,(i,j)=>{
+	            	data.addRow([j.ingre+' ',j.ingreCnt*1]);
+	            }); //each문
+		        var options = {
+		          title: '재료별 취향',
+		          width: 900,
+		          legend: { position: 'none' },
+		          /*chart: { title: 'Chess opening moves',
+		                   subtitle: 'popularity by percentage' },*/
+		          bars: 'horizontal', // Required for Material Bar Charts.
+		          axes: {
+		            x: {
+		              0: { side: 'top', label: 'Percentage'} // Top x-axis.
+		            }
+		          },
+		          backgroundColor: 'none',
+		          bar: { groupWidth: "90%" }
+		        };
+		        var chart = new google.charts.Bar(document.getElementById('top_x_div'));
+		        chart.draw(data, options);
+		      }; //drawStuff 끝
+		   //menu 차트
+		    google.charts.load('current', {'packages':['corechart']});
+		    google.charts.setOnLoadCallback(drawSeriesChart);
+		    function drawSeriesChart() {
+		        var data = google.visualization.arrayToDataTable([ 
+		        ]);
+		        data.addColumn('string', 'MENU');
+		        data.addColumn('number', 'X');
+		        data.addColumn('number', 'Y');
+		        data.addColumn('string', 'COUNTRY');
+		        data.addColumn('number', 'COUNT');
+		        //건강식, 다이어트식, 동남아식, 분식, 양식, 일식, 중식, 한식 
+		        //
+		        let arrX = [ 6, 1, 5,0.5,2.5,6.8,5,6];
+		        let arrY = [1.5,4.5,2.5,3,4,3.2,3.5,4];
+		        let int = 0;
+		        $.each(d.menu,(i,j)=>{
+		        	int += 1;
+	            	console.log(j.menu,j.menuAvg,j.menuCnt);
+	            	data.addRow([j.menu+' ', arrX[i]*1, arrY[i]*1, j.menu+'', j.menuCnt*1]);
+	            }); //each문
+		        var options = {
+		         /* hAxis: {title: 'Life Expectancy'},
+		          vAxis: {title: 'Fertility Rate'},*/
+		          bubble: {textStyle: {fontSize: 11}},
+		          backgroundColor: 'none'
+		        };
+		        var chart = new google.visualization.BubbleChart(document.getElementById('series_chart_div'));
+		        chart.draw(data, options);
+		      } //menu차트끝
+		  $('#anlyz7').html('일번째취향');
+ 		  $('#anlyz1').append('<div id="chart_div" style="width: 100%; height: 400px;"></div>');
+ 		  $('#anlyz4').append('<div id="donutchart" style="width: 100%; height: 400px;"></div>');
+ 		  $('#anlyz3').append('<div id="top_x_div" style="width: 100%; height: 400px;"></div>');
+ 		  $('#anlyz2').append('<div id="series_chart_div" style="width: 100%; height: 400px;"></div>');
+ 			}); //getjson끝
 		},
          collect : ()=>{ //콜렉션
         	 ui.content_g();
 			$('#title_l').append('콜렉션');
 			$('#title_r').append('');  
 			$('#content_g').append('');
-
+				
          },
          test : ()=>{ 
         	 ui.content_g();
-        	 $('#title_l').append('테스트');
+        	$('#title_l').append('테스트');
  			$('#title_r').append(''); 
- 			let testId = 'test1';
- 			 google.charts.load('current', {'packages':['corechart']});
- 		      google.charts.setOnLoadCallback(drawChart);
- 		    
- 		     $.getJSON($.ctx()+'/chart/'+testId,d=>{
- 		    	 let dateArr = ['평점', ''];
- 		    	 $.each(d,(i,j)=>{
- 		    		 console.log(j.grade,j.cntgrade);
- 		    		/* dateArr += [j.grade,j.cntgrade];*/
- 		    	 });
-  			}); //getJSON
- 			function drawChart() {
-	 		        var data = google.visualization.arrayToDataTable([
-	 		          ['평점', ''],
-	 		          ['0.5',  60     ],
-	 		          ['1.0',  58     ],
-	 		          ['1.5',  300     ],
-	 		          ['2.0',  660     ],
-	 		          ['2.5',  160     ],
-	 		          ['3.0',  160     ],
-	 		          ['3.5',  200     ],
-	 		          ['4.0',  260     ],
-	 		          ['4.5',  460     ],
-	 		          ['5.0',  10     ]
-	 		        ]);
-	 		        var options = {
-	 		          hAxis: {title: '별점',  titleTextStyle: {color: '#333'}},
-	 		          vAxis: {minValue: 0}
-	 		        };
-	 		        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-	 		        chart.draw(data, options);
-	 		      }
-		    	$('#content_g').append('<div id="chart_div" style="width: 100%; height: 500px;"></div>');  
  			
          }
 };
+
 kaeun.chart = {
-		AreaChart : ()=>{
-			
+		loadArea : ()=>{
+		},
+		drawArea : ()=>{
 		}
 };
 

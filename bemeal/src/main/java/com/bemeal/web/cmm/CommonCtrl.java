@@ -3,6 +3,7 @@ package com.bemeal.web.cmm;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.slf4j.Logger;
@@ -26,20 +27,101 @@ public class CommonCtrl {
 	@Autowired Taste taste;
 	@Autowired Item item;
 	@Autowired Member mbr;
+	@Autowired Pagination pagination;
 	@Autowired CommonMapper cmmMapper;
 	@Autowired ItemMapper itemMapper;
 	@Autowired TasteMapper tasteMapper;
 	@Autowired MemberMapper mbrMapper;
 	@Autowired HashMap<String, Object> map;
-	
-	// Taste
-	@GetMapping("/grade/{id}")
-	public @ResponseBody boolean existGrade(@PathVariable String id) {
-		Function<String, Boolean> f = x->{
-			return (tasteMapper.existGrade(id)==1);
+	/*Taste - evaluate*/
+	@GetMapping("/evaluate/{id}/{pageNum}")
+	public @ResponseBody HashMap<String,Object> evaluate(
+			@PathVariable String id,
+			@PathVariable String pageNum){
+		map.clear();
+		logger.info("넘어온 id {}",id);
+		logger.info("넘어온 page {}",pageNum);
+		map.put("pageNum", pageNum);
+		Function<String, Integer> cnt=x->{
+			return cmmMapper.countUnRatingsById(x);
 		};
-		return false;
+		map.put("count", cnt.apply(id));
+		map.put("pageSize", 20);
+		map.put("blockSize", 1);
+		pagination.excute(map);
+		Function<HashMap<String,Object>, ArrayList<HashMap<String,Object>>> f=x->{
+			return cmmMapper.evaluateList(x);
+		};
+		map.clear();
+		map.put("id", id);
+		map.put("pagination", pagination);
+		map.put("list", f.apply(map));
+		map.put("page", pageNum);
+		return map;
+	}
+	/*/Taste - evaluate*/
+	
+	/*Taste - grade CRUD + exist*/
+	@GetMapping("/grade/exist/{id}/{itemSeq}")
+	public @ResponseBody String existGrade(
+			@PathVariable String id,
+			@PathVariable String itemSeq) {
+		logger.info("==existGrade==");
+		logger.info("넘어온 id {}",id);
+		logger.info("넘어온 itemSeq {}",itemSeq);
+		Function<HashMap<String,Object>, String> f = x->{
+			return cmmMapper.existGrade(x);
+		};
+		map.clear();
+		map.put("id",id);
+		map.put("itemSeq",itemSeq);
+		String temp = f.apply(map);
+		logger.info("temp : "+temp);
+		return (f.apply(map)==null)?"0":f.apply(map);
 	} 
+	@GetMapping("/grade/add/{id}/{itemSeq}/{grade}")
+	public void addGrade(
+			@PathVariable String id,
+			@PathVariable String itemSeq,
+			@PathVariable double grade) {
+		logger.info("==addGrade==");
+		logger.info("넘어온 id {}",id);
+		logger.info("넘어온 itemSeq {}",itemSeq);
+		logger.info("넘어온 currentRating {}",grade/2);
+		Consumer<HashMap<String, Object>> c;
+		if(Double.parseDouble(existGrade(id, itemSeq))==(grade/2)) {
+			c = x->{//update
+				logger.info(cmmMapper.modifyGrade(x)+"");
+			};
+		}else {
+			c = x->{//insert
+				logger.info(cmmMapper.insertGrade(x)+"");
+			};
+		}
+		
+		map.clear();
+		map.put("id", id);
+		map.put("itemSeq", itemSeq);
+		map.put("grade", grade/2);
+		c.accept(map);
+	} 
+	@GetMapping("/grade/delete/{id}/{itemSeq}")
+	public void deleteGrade(
+			@PathVariable String id,
+			@PathVariable String itemSeq) {
+		logger.info("==deleteGrade==");
+		logger.info("넘어온 id {}",id);
+		logger.info("넘어온 itemSeq {}",itemSeq);
+		Consumer<HashMap<String, Object>> c = x->{
+			logger.info(cmmMapper.removeGrade(x)+"");
+		};
+		map.clear();
+		map.put("id", id);
+		map.put("itemSeq", itemSeq);
+		c.accept(map);
+	} 
+	
+	/* /Taste - grade*/
 	
 	//  Item
 	@GetMapping("/item/list/{option}")
@@ -66,31 +148,4 @@ public class CommonCtrl {
 		map.put("list", f.apply(option));
 		return map;
 	}
-	
-	@GetMapping("/item/evaluate/{id}/{page}")
-	public @ResponseBody Map<String,Object> evaluate(
-			@PathVariable String id,@PathVariable String page){
-		map.clear();
-		logger.info("넘어온 id {}",id);
-		logger.info("넘어온 page {}",page);
-		/* DB에서 해당 id가 평가하지 않는 아이템 목록을 뽑아옴 
-		 * page로 pagination하기
-		 */
-		Function<String,ArrayList<Item>> f = x->{
-			ArrayList<Item> temp = new ArrayList<>();
-			for(int i=0;i<20;i++) {
-				item = new Item();
-				int n = ((int) (Math.random()*10))+1;
-				item.setImage("/web/resources/img/cmm/image"+n+".jpg");
-				item.setItemName("도시락"+n);
-				temp.add(item);
-			}
-			return temp;
-		};
-		/* 더미 데이터 끝*/
-		map.put("page", page);
-		map.put("list", f.apply(page));
-		return map;
-	}
-	
 }
