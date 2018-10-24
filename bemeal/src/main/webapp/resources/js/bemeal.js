@@ -22,11 +22,10 @@ bemeal.main = (()=>{
 		setContentView();
 	};
 	var setContentView=()=>{
-		/* nav 그리기 */
-		$.getScript($.script()+"/ui/navi.js",()=>{
-			$('#wrapper').html(naviUI());
-			bemeal.router.main();
-		});
+		// nav
+		$('#wrapper').append(bemeal.compo.nav());
+		// header, content
+		bemeal.router.main();
 	};
 	return {init:init};
 })();
@@ -46,7 +45,7 @@ bemeal.router = {
 			});
 		},
 		main : ()=>{
-			/*메인화면 그리기*/
+			/*메인화면 header, content 그리기*/
 				$('header').remove();
 				$('#content').remove();
 				$('#wrapper')
@@ -58,8 +57,7 @@ bemeal.router = {
 							})
 					),					
 					$('<div/>').attr({id:'content'})
-					/*,
-					$('<footer/>')*/
+					/*,$('<footer/>')*/
 				);
 				/*footer 삭제
 				$.getScript($.script()+"/ui/footer.js",()=>{
@@ -67,39 +65,24 @@ bemeal.router = {
 				});*/
 				let $content = $('#content');
 				let $carousels = $('<div/>').appendTo($content);
+				let arr = [
+					{category:'grade',title:'가장 평점이 높은'},
+					{category:'buy',title:'가장 판매량이 높은'},
+					{category:'wish',title:'가장 인기 있는'}
+				];
+				$.each(arr,(i,j)=>{
+					$.getJSON($.ctx()+"/item/list/"+j.category,d=>{
+						$carousels.append(
+								bemeal.compo.carousel({
+									id:'carousel1',
+									title:j.title,
+									arr:d.list,
+									row_size:5
+								})
+						);
+					});
+				});
 
-				$.getJSON($.ctx()+"/item/list/grade",d=>{
-					$carousels.append(
-							bemeal.compo.carousel({
-								id:'carousel1',
-								title:'가장 평점이 높은',
-								arr:d.list,
-								row_size:5
-							})
-					);
-				}); /*getJSON end*/
-				
-				$.getJSON($.ctx()+"/item/list/buy",d=>{
-					$carousels.append(
-							bemeal.compo.carousel({
-								id:'carousel2',
-								title:'가장 판매량이 높은',
-								arr:d.list,
-								row_size:5
-							})
-					);
-				}); /*getJSON end*/
-				
-				$.getJSON($.ctx()+"/item/list/wish",d=>{
-					$carousels.append(
-							bemeal.compo.carousel({
-								id:'carousel3',
-								title:'가장 인기 있는',
-								arr:d.list,
-								row_size:5
-							})
-					);
-				}); /*getJSON end*/
 				// 무한 스크롤 테스트
 				let num = 4;
 				/*
@@ -127,86 +110,94 @@ bemeal.router = {
 						}); 
 					}
 				});//scroll event end
-				
-				$('#logo').click(e=>{
-					e.preventDefault();
-					$window.off('scroll.category');
-					bemeal.router.main();
-				});
-
-				$('#taste').click(e=>{
-					e.preventDefault();
-					alert('taste click');
-					$('.nav-item').removeClass('active');
-					$('#taste').parent().addClass('active');
-					$.getScript($.script()+"/kaeun.js",()=>{
-						/*가야 할 곳은 개인이 알아서*/
-						$window.off('scroll.category');
-						kaeun.main.init();
-					})
-				});
-				$('#menu').click(e=>{
-					e.preventDefault();
-					alert('1.menu click');
-					$('.nav-item').removeClass('active');
-					$('#menu').parent().addClass('active');
-					$.getScript($.script()+"/yoonho.js",()=>{
-						/*가야 할 곳은 개인이 알아서*/
-						$window.off('scroll.category');
-						yoonho.service.list();
-
-					})
-				});
-				$('#login').click(e=>{
-					e.preventDefault();
-					alert('login click');
-					$.getScript($.script()+"/junghoon.js",(e)=>{
-						/*가야 할 곳은 개인이 알아서*/
-						$window.off('scroll.category');
-						junghoon.member.login();
-					})
-				});
-				$('#join').click(e=>{
-					e.preventDefault();
-					alert('join click');
-					$('.nav-item').removeClass('active');
-					$('#join').parent().addClass('active');
-					$.getScript($.script()+"/junghoon.js",()=>{
-						/*가야 할 곳은 개인이 알아서*/
-						$window.off('scroll.category');
-						junghoon.member.add();
-					})
-				});
-				
-				$('#testSearch').click(e=>{
-					e.preventDefault();
-					
-					$.getScript($.script()+"/junghoon.js",()=>{
-						/*가야 할 곳은 개인이 알아서*/
-						alert('testSearch click');
-						junghoon.service.search();
-					})
-				});
-				$('#evaluate').click(e=>{
-					e.preventDefault();
-					alert('evaluate 클릭');
-					$('.nav-item').removeClass('active');
-					$('#evaluate').parent().addClass('active');
-					$window.off('scroll.category');
-					bemeal.evaluate.main();
-				});
-				$('#sam').click(e=>{
-					e.preventDefault();
-					alert('sam click');
-					$.getScript($.script()+"/sam.js",()=>{
-						$window.off('scroll.category');
-						sam.util.popup();
-					})
-				});
 		}
 };
 
 bemeal.compo=(()=>{
+	var nav = ()=>{
+		let $window = $(window);
+		return $('<nav/>').addClass('navbar fixed-top navbar-expand-lg navbar-light lighten-5 scrolling-navbar').append(
+					$('<a/>').addClass('navbar-brand').attr({href:'#',id:'logo'}).append($('<strong/>').text('Be meal')).click(e=>{
+						e.preventDefault();
+						$window.off('scroll.category');
+						bemeal.router.main();
+					}),
+					$('<button/>').addClass('navbar-toggler').attr({
+						type:'button','data-toggle':'collapse','data-target':'#navbarSupportedContent',
+						'aria-controls':'navbarSupportedContent','aria-expanded':'false','aria-label':'Toggle navigation'
+					}).append($('<span/>').addClass('navbar-toggler-icon')),
+					$('<div/>').addClass('collapse navbar-collapse').attr('id','navbarSupportedContent').append(
+						$('<ul/>').addClass('navbar-nav mr-auto').append(
+							$('<li/>').addClass('nav-item').append(
+								$('<a/>').addClass('nav-link').attr({href:'#',id:'menu'}).text('MENU').click(e=>{
+									e.preventDefault();
+									$('.nav-item').removeClass('active');
+									$('#menu').parent().addClass('active');
+									$.getScript($.script()+"/yoonho.js",()=>{
+										$(window).off('scroll.category');
+										yoonho.service.list();
+									})
+								})
+							),
+							$('<li/>').addClass('nav-item').append(
+								$('<a/>').addClass('nav-link').attr({href:'#',id:'join'}).text('JOIN').click(e=>{
+									e.preventDefault();
+									$('.nav-item').removeClass('active');
+									$('#join').parent().addClass('active');
+									$.getScript($.script()+"/junghoon.js",()=>{
+										$(window).off('scroll.category');
+										junghoon.member.add();
+									})
+								})
+							),
+							$('<li/>').addClass('nav-item').append(
+								$('<a/>').addClass('nav-link').attr({href:'#',id:'taste'}).text('TASTE').click(e=>{
+									e.preventDefault();
+									$('.nav-item').removeClass('active');
+									$('#taste').parent().addClass('active');
+									$.getScript($.script()+"/kaeun.js",()=>{
+										$(window).off('scroll.category');
+										kaeun.main.init();
+									})
+								})
+							),
+							$('<li/>').addClass('nav-item').append(
+								$('<a/>').addClass('nav-link').attr({href:'#',id:'evaluate'}).text('평가하기').click(e=>{
+									e.preventDefault();
+									$('.nav-item').removeClass('active');
+									$('#evaluate').parent().addClass('active');
+									$(window).off('scroll.category');
+									bemeal.evaluate.main();
+								})
+							)
+						),
+						$('<form/>').addClass('form-inline').append(
+							$('<input/>').addClass('form-control mr-sm-2').attr({type:'text','aria-label':'Search'}),
+							$('<button/>').addClass('btn btn-outline-white btn-sm my-0').attr({style:'color:black!important',type:'button',id:'testSearch'}).text('Search').click(e=>{
+								e.preventDefault();
+								$.getScript($.script()+"/junghoon.js",()=>{
+									//$(window).off('scroll.category');
+									junghoon.service.search();
+								})
+							})
+						),
+						$('<li/>').addClass('nav-item dropdown').append(
+							$('<a/>').addClass('nav-link dropdown-toggle').attr({id:'navbarDropdownMenuLink','data-toggle':'dropdown','aria-haspopup':'true','aria-expanded':'false'}).append(
+								$('<i/>').addClass('fa fa-user')
+							),
+							$('<div/>').addClass('dropdown-menu dropdown-menu-right dropdown-unique').attr({id:'info','aria-labelledby':'navbarDropdownMenuLink'}).append(
+								$('<a/>').addClass('dropdown-item').attr({href:'#',id:'login'}).text('로그인').click(e=>{
+									e.preventDefault();
+									$.getScript($.script()+"/junghoon.js",(e)=>{
+										$(window).off('scroll.category');
+										junghoon.member.login();
+									})
+								})
+							)
+						)
+					)
+				);
+	};
 	var carousel = x=>{/*x.id, x.title 슬라이드의 제목, x.arr 슬라이드에 보여질 이미지들, x.row_size 한번에 보여줄 이미지의 갯수*/
 		let arr = x.arr;
 		let row_size = x.row_size;
@@ -295,6 +286,7 @@ bemeal.compo=(()=>{
 		return $div;
 	};
 	return {
+		nav:nav,
 		carousel:carousel,
 		banner:banner
 		};
@@ -302,111 +294,129 @@ bemeal.compo=(()=>{
 
 bemeal.evaluate=(()=>{
 	var main=x=>{
+		$('header').remove();
 		$('#content').empty();
-		let $evaluate_progress = $('header').empty().addClass('evaluate_progress');
-		let $evaluate_progress_ratings_count = $('<div/>').addClass('evaluate_progress_ratings_count').appendTo($evaluate_progress);
-		let $evaluate_progress_message = $('<div/>').addClass('evaluate_progress_message').appendTo($evaluate_progress);
-		let $evaluate_progress_bar= $('<div/>').addClass('evaluate_progress_bar').appendTo($evaluate_progress);
-		let $evaluate_progress_value= $('<div/>').addClass('evaluate_progress_value').appendTo($evaluate_progress_bar);
-		let page = 1;
-		loadPage({
-			id:'00r5qj6',
-			page:page++,
-		});
-		let $window = $(window);
-		$window.on('scroll.category',e=>{
-			if($window.scrollTop()+$window.height()+30>$(document).height()){
+		let gradeCnt = 0;
+		let itemCnt = 0;
+		let width = 0;
+		let id = '00r5qj6';
+		let message = '';
+		$.getJSON($.ctx()+'/grade/count/'+id,d=>{
+			gradeCnt = d.gradeCnt;
+			itemCnt = d.itemCnt;
+			width = gradeCnt/itemCnt;
+			$('<div/>').addClass('evaluate_progress').appendTo($('#content')).append(
+					$('<div/>').addClass('evaluate_progress_ratings_count').attr({id:'gradeCnt'}).text(gradeCnt),
+					$('<div/>').addClass('evaluate_progress_message').text('평가를 얼마나 했는지 확인해 보세요!'),
+					$('<div/>').addClass('evaluate_progress_bar').append(
+						$('<div/>').addClass('evaluate_progress_value').attr({id:'gradeWidth',style:'width:'+width*580+'px;','data-itemcnt':itemCnt})
+					)
+				);
+				$('<div/>').appendTo($('#content')).attr({style:'height:85px'});
+				let page = 1;
 				loadPage({
 					id:'00r5qj6',
 					page:page++,
 				});
-			}
-		});//scroll event end
+				let $window = $(window);
+				$window.on('scroll.category',e=>{
+					if($window.scrollTop()+$window.height()+5>$(document).height()){
+						loadPage({
+							id:'00r5qj6',
+							page:page++,
+						});
+					}
+				});//scroll event end
+		});
+		
 	};
 	var loadPage=x=>{
 		console.log(x);
 		$.getJSON($.ctx()+'/evaluate/'+x.id+'/'+x.page,d=>{//id와 page를 가지고 평가 하지 않은 제품들을 가져오기
-			let existNext = d.pagination.existNext;
-			console.log(existNext);
-			if(existNext){ //다음 페이지가 존재할때만 
-				let arr = d.list;
-				let index = 0;
-				let $content =  $('#content');
-				for(let i=1;i<=5;i++){
-					let $gift_slid = $('<div/>').addClass('card-group');
-					$content.append(
-							$('<div>').addClass('col').append(
-									$('<div/>').addClass('card_row').append(
-											$gift_slid
-									)
-							)
-					);
-					for(let j=1;j<=4;j++){
-						let $gift_c = $('<div/>').addClass('card gift_c');
-						let $gift_img = $('<div/>').addClass('gift_img').append(
-								$('<img/>').attr({src:arr[index].img})
-						).appendTo($gift_c);
-						let $gift_details = $('<div/>').addClass('gift_details').appendTo($gift_c);
-						let $h2 = $('<h2/>').addClass('evaluative_title').text(arr[index].itemName).appendTo($gift_details);
-						let $star_rating_container = $('<div/>').attr({'data-seq':arr[index].itemSeq}).appendTo($gift_details)
-						.starRating({ //https://github.com/nashio/star-rating-svg
-							initialRating: 0, //초기값  
-							starSize: 32,  //width속성값
-							//minRating : 0,
-							emptyColor : 'white',
-							hoverColor : 'orange',
-							activeColor : 'orange',
-							ratedColor : 'orange',
-							useGradient : false,
-							strokeColor: 'orange',  //border color
-							callback : (currentRating, $el)=>{
-								if(currentRating!=0){
-									console.log('currentRating'+currentRating);
-									let seq = $el.data('seq');
-									let memberId = '00r5qj6';
-									$.getJSON($.ctx()+'/grade/exist/'+memberId+'/'+seq,d=>{//id와 item_seq를 넘겨줌
-										console.log("grade:"+d);
-										console.log("gracurrentRatingde:"+currentRating);
-										if(d==currentRating){
-											$.getJSON($.ctx()+'/grade/delete/'+memberId+'/'+seq);
-											$el.starRating('setRating', 0);
-										}else{
-											$.getJSON($.ctx()+'/grade/add/'+memberId+'/'+seq+'/'+currentRating*2);
-										}
-									});
-								}
-							}
-							});
-						let $gift_msg = $('<div/>').addClass('gift_msg').appendTo($gift_details).append(
-								$('<p/>').text(arr[index].explains),
-								$('<a/>').addClass('evaluateToRetrieve').text('상세보기').attr({href:'#','data-seq':arr[index].itemSeq})
+			$.getScript($.script()+'/yoonho.js',()=>{
+				if(d.pagination.existNext){ //다음 페이지가 존재할때만 
+					let arr = d.list;
+					let index = 0;
+					let $content =  $('#content');
+					for(let i=1;i<=5;i++){
+						let $gift_slid = $('<div/>').addClass('card-group');
+						$content.append(
+								$('<div>').addClass('col').append(
+										$('<div/>').addClass('card_row').append(
+												$gift_slid
+										)
+								)
 						);
-						$.getScript($.script()+'/yoonho.js',()=>{
-							$('.evaluateToRetrieve').each(function(i){
-								$(this).click(e=>{
-									e.preventDefault();
-									yoonho.service.retrieve($(this).data('seq'));
+						for(let j=1;j<=4;j++){
+							let $gift_c = $('<div/>').addClass('card gift_c');
+							let $gift_img = $('<div/>').addClass('gift_img').append(
+									$('<img/>').attr({src:arr[index].img})
+							).appendTo($gift_c);
+							let $gift_details = $('<div/>').addClass('gift_details').appendTo($gift_c);
+							let $h2 = $('<h2/>').addClass('evaluative_title').text(arr[index].itemName).appendTo($gift_details);
+							let $star_rating_container = $('<div/>').attr({'data-seq':arr[index].itemSeq}).appendTo($gift_details)
+							.starRating({ //https://github.com/nashio/star-rating-svg
+								initialRating: 0, //초기값  
+								starSize: 32,  //width속성값
+								//minRating : 0,
+								emptyColor : 'white',
+								hoverColor : 'orange',
+								activeColor : 'orange',
+								ratedColor : 'orange',
+								useGradient : false,
+								strokeColor: 'orange',  //border color
+								callback : (currentRating, $el)=>{
+									let $gradeCnt = $('#gradeCnt');
+									let $gradeWidth = $('#gradeWidth');
+									let cnt = $gradeCnt.text()*1;
+									let itemCnt = $gradeWidth.data('itemcnt')*1;
+									console.log($gradeWidth);
+									console.log($gradeWidth.width());
+									console.log(cnt);
+									console.log(itemCnt);
+									if(currentRating!=0){
+										console.log('currentRating'+currentRating);
+										let seq = $el.data('seq');
+										let memberId = '00r5qj6';
+										$.getJSON($.ctx()+'/grade/retrieve/'+memberId+'/'+seq,d=>{//id와 item_seq를 넘겨줌
+											console.log("grade:"+d);
+											console.log("gracurrentRatingde:"+currentRating);
+											console.log('width'+((cnt-1)/itemCnt*1)*580)
+											switch(d){
+											case 0: // 정보가 없으니 add 
+												$.getJSON($.ctx()+'/grade/add/'+memberId+'/'+seq+'/'+currentRating*2);
+												$gradeCnt.html(cnt+1);
+												console.log('add:'+((cnt+1)/itemCnt)*580)
+												$gradeWidth.attr({style:'width:'+((cnt+1)/itemCnt)*580+'px'});
+												break;
+											case currentRating: // 이전값과 현재값이 같으므로 삭제 
+												$.getJSON($.ctx()+'/grade/delete/'+memberId+'/'+seq);
+												$el.starRating('setRating', 0);
+												$gradeCnt.html(cnt-1);
+												console.log('delete:'+((cnt-1)/itemCnt)*580)
+												$gradeWidth.attr({style:'width:'+((cnt-1)/itemCnt)*580+'px'});
+												break;
+											default :  //이전값과 현재값이 다르므로 업데이트 
+												$.getJSON($.ctx()+'/grade/update/'+memberId+'/'+seq+'/'+currentRating*2);
+												break;
+											}
+										});
+									}
+								}
 								});
-							});
-						});
-						
-						$gift_slid.append($gift_c);
-						/*$gift_slid.append($(
-								'<div class="card gift_c">'
-								+'            <div class="gift_img"><img src="https://images.pexels.com/photos/884596/pexels-photo-884596.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"></div>'
-								+'            <div class="gift_details">'
-								+'                <h2 style="text-align:center; color:black;">아이템이름 <br><span>☆☆☆☆☆</span></h2>'
-								+'                <div class="gift_msg">'
-								+'                    <p>메세지 Lorem Ipsum has been the industrys standard, when an unknown printer took a galley '
-								+'                        remaining essentially unchanged...</p>'
-								+'                </div>' //평가페이지에선 지울까? 제품 설명을 넣을까?
-								+'            </div>'
-								+'        </div>'		
-						));*/
-						index++;
+							let $gift_msg = $('<div/>').addClass('gift_msg').appendTo($gift_details).append(
+									$('<p/>').text(arr[index].explains),
+									$('<a/>').addClass('evaluateToRetrieve').text('상세보기').attr({href:'#','data-seq':arr[index].itemSeq})
+									.click(e=>{
+										yoonho.service.retrieve(e.currentTarget.dataset.seq);
+									})
+							);
+							$gift_slid.append($gift_c);
+							index++;
+						}
 					}
 				}
-			}
+			});
 			
 		}); /* getJSON end*/
 	};

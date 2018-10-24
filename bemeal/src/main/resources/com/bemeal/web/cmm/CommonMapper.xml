@@ -47,7 +47,7 @@
 	  	#{itemSeq}	
 		)
   	</insert>
-  	<select id="existGrade" resultType="string">
+  	<select id="selectOneGrade" resultType="string">
   		SELECT GRADE FROM TASTE 
   		WHERE MEMBER_ID LIKE #{id}
   			AND ITEM_SEQ LIKE #{itemSeq}
@@ -102,6 +102,15 @@
 		AND MEMBER_ID LIKE #{id}
 		AND ITEM_SEQ LIKE #{itemSeq}
 	</update>
+	<select id="countGrade" resultType="string">
+	SELECT COUNT(*) FROM TASTE
+	WHERE FLAG LIKE 'star'
+		AND MEMBER_ID LIKE #{id}
+	</select>
+	<select  id="countItem" resultType="int">
+	SELECT COUNT(*) FROM ITEM
+	</select>
+	
  	<select id="gradList" resultMap="result">
 	  	SELECT *
 		FROM

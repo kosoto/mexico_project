@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,8 +32,8 @@ public class ItemCtrl {
 	@Autowired TxService tx;
 	@Autowired HashMap<String,Object> map;
 	
-
-	@RequestMapping(value="/item/list/{brand}/{category}/{sort}")
+	
+	@GetMapping("/item/list/{brand}/{category}/{sort}")
 	public @ResponseBody Map<String,Object> list(
 			@PathVariable String brand,
 			@PathVariable String category,
@@ -58,7 +59,7 @@ public class ItemCtrl {
 		logger.info("itemMapper::"+map.get("list"));
 		return map;
 	}
-	@RequestMapping(value="/item/retrieve/{itemSeq}")
+	@GetMapping("/item/retrieve/{itemSeq}")
 	public @ResponseBody Map<String, Object> retrieve(@PathVariable String itemSeq ){
 		map.clear();
 		logger.info("itemseq int:{}",Integer.parseInt(itemSeq));

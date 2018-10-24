@@ -73,7 +73,7 @@ junghoon.member = (()=>{
 												password : $('#password').val()}),
 						success : d => {
 							
-							$.cookie("loginID :: ", d.memberId);
+							$.cookie("loginID", d.memberId);
 							alert("loginID"+d.memberId);
 							
 							$('#info').empty();
