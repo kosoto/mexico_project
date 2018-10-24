@@ -12,9 +12,28 @@
   		<result property="salePercent" column="SALE_PERCENT"/>
   		<result property="event" column="EVENT"/>
   		<result property="newItem" column="NEW_ITEM"/>
-  		<result property="image" column="IMG"/>
-  		<result property="explains" column="EXPLATINS"/>
+  		<result property="explains" column="EXPLAINS"/>
   		<result property="calorie" column="CALORIE"/>
+  		<result property="imgSeq" column="IMG_SEQ"/>
+  		<result property="img" column="IMG"/>
+  		<result property="memberId" column="MEMBER_ID"/>
+  		<result property="password" column="PASSWORD"/>
+  		<result property="name" column="NAME"/>
+  		<result property="age" column="AGE"/>
+  		<result property="ssn" column="SSN"/>
+  		<result property="gender" column="GENDER"/>
+  		<result property="address" column="ADDRESS"/>
+  		<result property="eMail" column="E_MAIL"/>
+  		<result property="tasteSeq" column="TASTE_SEQ"/>
+  		<result property="quantity" column="QUANTITY"/>
+  		<result property="dirName" column="DIR_NAME"/>
+  		<result property="grade" column="GRADE"/>
+  		<result property="tasteDate" column="TASTE_DATE"/>
+  		<result property="tasteTime" column="TASTE_TIME"/>
+  		<result property="flag" column="FLAG"/>
+  		<result property="avg" column="avg"/>
+  		<result property="count" column="COUNT"/>
+  		<result property="sum" column="SUM"/>
   	</resultMap>
   	<insert id="post">
   		INSERT INTO ITEM
@@ -22,21 +41,36 @@
   		VALUES
 	  	(#{itemSeq},#{itemName},#{brand},#{category},#{price},#{calorie},#{explains})
   	</insert>
-  	<select id="listAll" resultType="com.bemeal.web.item.Item">
+  	<select id="listAll" resultMap="result">
   		SELECT 
-  			ITEM_SEQ AS "ITEMSEQ",
-  			ITEM_NAME AS "ITEMNAME"
+  			it.*,img.*
 		FROM 
-			ITEM
+			ITEM it
+			JOIN image img
+				on it.item_seq like img.item_seq
   	</select>
- 	<select id="listSome" resultType="com.bemeal.web.item.Item">
-  		SELECT 
-  			*
-		FROM 
-			ITEM
-		WHERE
-			BRAND LIKE #{brand}
-		AND
-			CATEGORY LIKE #{category}
+ 	<select id="listSome" resultMap="result">
+		SELECT it.*,img.*
+		FROM
+			ITEM it
+			JOIN image img
+				on it.item_seq like img.item_seq
+		WHERE it.brand like #{brand}
+		AND it.category like #{category}
   	</select>
+  	<select id="retrieve" resultMap="result">
+		SELECT it.*,
+				img.*, 
+			count(*) as starCount
+		FROM
+			ITEM it
+			JOIN image img
+				on it.item_seq like img.item_seq
+			JOIN taste t
+				on it.item_seq like t.item_seq	
+		WHERE it.item_seq LIKE #{itemSeq} AND t.flag LIKE 'star'
+  	</select>
+
+  	
+
   </mapper>

@@ -1,6 +1,5 @@
 package com.bemeal.web.taste;
 
-import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Map;
 

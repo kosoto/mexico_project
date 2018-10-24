@@ -14,4 +14,28 @@
            MEMBER_ID AS "MEMBERID",PASSWORD,NAME,AGE,SSN,GENDER,ADDRESS,E_MAIL AS "EMAIL",PHONE_NUM AS PHONENUM 
         FROM MEMBER
     </select>
+    	
+    <select id="get" resultType="com.bemeal.web.mbr.Member">
+    	SELECT 
+    	MEMBER_ID memberId,
+    	PASSWORD,
+    	NAME,
+    	AGE,
+    	SSN,
+    	GENDER,
+    	ADDRESS,
+    	E_MAIL eMail,
+    	PHONE_NUM phoneNum
+    	FROM MEMBER
+    	<where>
+    		<if test="memberId != null and memberId != ''">
+    			MEMBER_ID LIKE #{memberId}
+    		</if>
+    		<if test="password != null and password !=''">
+    			AND PASSWORD LIKE #{password}
+    		</if>
+    	</where>
+    </select>
+    
+    
   </mapper>

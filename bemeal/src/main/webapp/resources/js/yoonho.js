@@ -15,25 +15,25 @@ yoonho.service=(x=>{
 		let $content = $('#content')
 		let $select = $('<div/>')
 		.html('<h2 class="h1-responsive font-weight-bold text-center my-5">Be meal::Our menu</h2>'
-				+'<p class="grey-text text-center w-responsive mx-auto mb-5">맛있는 식사를 위해 항상 최선의 노력을 다하겠습니다.</p>')
+				+'<p class="grey-text text-center w-responsive mx-auto mb-5">맛있는 식사를 위해 </p>')
 		.addClass('container')//.attr({id:'cat_drbx'})
 			.append($('<span/>').addClass('col-lg-2 mgt50 btn-group')
-				.append($('<div/>').addClass('form-group').html('브랜드')
+				.append($('<div/>').addClass('form-group')
 					.append($('<select/>').addClass('form-control').attr({'id':'brand_menu','role':'menu'}))
 				)
 			)
 			.append($('<span/>').addClass('col-lg-2 mgt50 btn-group')
-				.append($('<div/>').addClass('form-group').html('메뉴카테고리')
+				.append($('<div/>').addClass('form-group')
 					.append($('<select/>').addClass('form-control').attr({'id':'category_menu','role':'menu'}))
 				)
 			)
 			.append($('<span style="float:right"/>').addClass('col-lg-2 mgt50 btn-group')
-				.append($('<div/>').addClass('form-group').html('정렬순')
+				.append($('<div/>').addClass('form-group')
 					.append($('<select/>').addClass('form-control').attr({'id':'sort_menu','role':'menu'}))
 				)
 			).appendTo($content)
 			
-		let $container = $('<div/>').appendTo($select).attr({id:'yh_container'})
+		let $container = $('<div/>').addClass('container').appendTo($select).attr({id:'yh_container'})
 		
 		for(let i=0;i<brand_arr.length;i++){
 			$('<option value="'+i+'"/>').html(brand_arr[i]).attr({id:'brand_'+i+'_menu'}).appendTo($('#brand_menu'))
@@ -51,41 +51,42 @@ yoonho.service=(x=>{
 		let $category_menu = category_arr[$('#category_menu').val()]
 		let $sort_menu = sort_arr[$('#sort_menu').val()]
 		
-		$.getJSON($.ctx()+'/item/list/{'+$brand_menu+'}/{'+$category_menu+'}/{'+$sort_menu+'}',d=>{
-			yoonho.service.row($('#brand_menu').val()).appendTo($('#yh_container'))
+		$.getJSON($.ctx()+'/item/list/'+$brand_menu+'/'+$category_menu+'/'+$sort_menu,d=>{
+			yoonho.service.row(d.listall).appendTo($('#yh_container'))//이게 가장 맨처음 보이는 화면
+			
 			$('#brand_menu').change(()=>{
 				$brand_menu = brand_arr[$("#brand_menu").val()]
 				alert('#brand_menu option:selected:'+$('#brand_menu').val())
-				$.getJSON($.ctx()+'/item/list/{'+$brand_menu+'}/{'+$category_menu+'}/{'+$sort_menu+'}',d=>{
+				$.getJSON($.ctx()+'/item/list/'+$brand_menu+'/'+$category_menu+'/'+$sort_menu,d=>{
 					alert('$brand_menu:'+$brand_menu+'/$category_menu:'+$category_menu+'/$sort_menu:'+$sort_menu)
+					alert('d:'+d.listsm)
+					yoonho.service.row(d.listsm).appendTo($('#yh_container'))	
 				})
-				$.getScript($.script()+'/ui/y_item_list.js').done(()=>{
-					yoonho.service.row($('#brand_menu').val()).appendTo($('#yh_container'))
-				})		
+				
 			})//메뉴카테고리
 		
 			$('#category_menu').change(()=>{
 				$category_menu = category_arr[$("#category_menu").val()]
 				alert('#category_menu option:selected:'+$('#category_menu').val())
-				$.getJSON($.ctx()+'/item/list/{'+$brand_menu+'}/{'+$category_menu+'}/{'+$sort_menu+'}',d=>{
+				$.getJSON($.ctx()+'/item/list/'+$brand_menu+'/'+$category_menu+'/'+$sort_menu,d=>{
 					alert('$brand_menu:'+$brand_menu+'/$category_menu:'+$category_menu+'/$sort_menu:'+$sort_menu)
+					alert('d:'+d.list)
+					yoonho.service.row(d.listsm).appendTo($('#yh_container'))
 				})
-				$.getScript($.script()+'/ui/y_item_list.js').done(()=>{
-					yoonho.service.row($('#category_menu').val()).appendTo($('#yh_container'))
-				})	
+				
 			})
 			//브랜드
 			
 			$('#sort_menu').change(()=>{
 				$sort_menu = sort_arr[$("#sort_menu").val()]
 				alert('#sort_menu option:selected:'+$('#sort_menu').val())
-				$.getJSON($.ctx()+'/item/list/{'+$brand_menu+'}/{'+$category_menu+'}/{'+$sort_menu+'}',d=>{
+				$.getJSON($.ctx()+'/item/list/'+$brand_menu+'/'+$category_menu+'/'+$sort_menu,d=>{
 					alert('$brand_menu:'+$brand_menu+'/$category_menu:'+$category_menu+'/$sort_menu:'+$sort_menu)
+					alert('d:'+d.list)
+					yoonho.service.row(d.listsm).appendTo($('#yh_container'))	
 				})
 				alert('#sort_menu option:selected:'+$('#sort_menu option:selected').val());
-				$.getScript($.script()+'/ui/y_item_list.js').done(()=>{
-					yoonho.service.row($('#sort_menu').val()).appendTo($('#yh_container'))
-				})	
+				
 			})
 			$('#category_menu').val()
 		})
@@ -94,69 +95,72 @@ yoonho.service=(x=>{
 	};
 	var row=x=>{
 		$('#yh_container').empty();
-		let $row;
+		let $section;
+		let $div_row
+		let $div_col
+		let $div_card
+		let $div_view_zoom
+		let $div_a_p
+		
 		let num = 4;
 		let titles = [];
 		let $window = $(window);
-		$.getScript($.script()+"/ui/y_item_list.js").done(()=>{
-			
-			$.getJSON($.ctx()+"/item/list",d=>{
-				alert('/d에는또뭐?'+d.list.length)
-				$row=$('<div/>').addClass('container').attr({id:'item_eval_'}).html(y_item_listUI(d)).appendTo($('#yh_container')).click(e=>{
-					yoonho.service.retrieve();
-				})
-			})
+		
+		$section = $('<section align="left"/>').addClass('text-center my-5').appendTo('#yh_container')
+		$div_row = $('<div/>').addClass('row').appendTo($section)
+			for(let i = 0 ;i < x.length; i++){
+				
+				$div_col = $('<div/>').addClass('col-lg-2 col-md-2 mb-lg-0 mb-2').appendTo($div_row)
+				$div_card = $('<div/>').addClass('card collection-card z-depth-1-half').appendTo($div_col)
+				$div_view_zoom = $('<div/>').addClass('view zoom').appendTo($div_card)
+									.append($('<img/>').addClass('img-fluid').attr({src:x[i].img})
+										.click(e=>{
+											alert('x:'+x[i].itemSeq);
+											yoonho.service.retrieve(x[i].itemSeq);
+										})
+									)
+				$div_a_p = $('<div/>').addClass('stripe dark').appendTo($div_card)
+								.append($('<a/>').append($('<p/>').html(x[i].itemName).append($('<i/>').addClass('fa fa-angle-right').html(x[i].price+' 원'))))
 
-			$.getJSON($.ctx()+"/item/list/second",d=>{
-				alert('/d에는또뭐?'+d.list.length)
-				$row=$('<div/>').addClass('container').attr({id:'item_eval_'}).html(y_item_listUI(d)).appendTo($('#yh_container')).click(e=>{
-					yoonho.service.retrieve();
+			}
+		
+		$window.scroll(e=>{
+			if(num<=20 && $window.scrollTop()+$window.height()+30>$(document).height()){
+				$div_row
+				.attr({id:'item_eval'+num}).appendTo($section).click(e=>{
+					yoonho.service.retrieve(x);
 				})
-			})
-			$.getJSON($.ctx()+"/item/list/third",d=>{
-				alert('/d에는또뭐?'+d.list.length)
-				$row=$('<div/>').addClass('container').attr({id:'item_eval_'}).html(y_item_listUI(d)).appendTo($('#yh_container')).click(e=>{
-					yoonho.service.retrieve();
-				})
-			})
-			
-			$.getJSON($.ctx()+"/item/list/first",d=>{
-				$window.scroll(e=>{
-					if(num<=20 && $window.scrollTop()+$window.height()+30>$(document).height()){
-							$('<div/>').addClass('container').attr({id:'item_eval'+num}).html(y_item_listUI(d)).appendTo($('#yh_container')).click(e=>{
-								yoonho.service.retrieve();
-							})
-							num++;
-					}//무한스크롤링  20라인까지 
-				});//scroll event end
-			})
-		})
-		return $row;
+				num++;
+			}//무한스크롤링  20라인까지 
+		});//scroll event end
+		return $section;
 	};
 
 	var retrieve = x=>{
-		//yoonho.contain.modal()
-		$.magnificPopup.open({
-			closeBtnInside:true,
-			closeOnContentClick:false,
-			alignTop: false,
-			fixedBgPos: true,
-			fixedContentPos:false,
-			items:{src:
-				yoonho.service.popup()
-			},
-			midClick:true,
-			overflowY:'auto',
-			removalDelay:'0',
-			type:'inline'
-			}); 
-		$('.btn').on('click',function(){
-			alert($('#code').val());
-		});
+		$.getJSON($.ctx()+'/item/retrieve/'+x,d=>{
+			$.magnificPopup.open({
+				closeBtnInside:true,
+				closeOnContentClick:false,
+				alignTop: false,
+				fixedBgPos: true,
+				fixedContentPos:false,
+				items:{src:
+						yoonho.service.popup(d.retrieve[0])
+				},
+				midClick:true,
+				overflowY:'auto',
+				removalDelay:'0',
+				type:'inline'
+				}); 
+			$('.btn').on('click',function(){
+				alert($('#code').val());
+			});
+		})
 		return false;
 	};
-	var popup =x=>{
-		
+	var popup =x=>{//x:itemSeq
+		alert('몇번?:'+x.itemSeq)
+
 		//component
 		let detail_arr = ["당신이 좋아할 만한 도시락","20대가 많이 구매한 도시락","신제품 도시락","베스트셀러"];
 		
@@ -168,7 +172,7 @@ yoonho.service=(x=>{
 		let $div1 = $('<div/>').attr({id:'y_item_detailUI'}).addClass('container yh-mfp-wrap yh-white-popup');
 		let $div2 = $('<div/>').addClass('mfp-container detail-main')
 					.append($('<span/>').addClass('col')
-						.append($('<img src="/web/resources/img/yoonho/maehwa_chicken.jpg"/>').addClass('rounded y_img_popup')))
+						.append($('<img src="'+x.img+'"/>').addClass('rounded y_img_popup')))
 		.appendTo($div1);// div2 end
 		
 	
@@ -193,7 +197,7 @@ yoonho.service=(x=>{
 										alert('/선물햇슈')
 									})
 								)
-								.append($('<a/>').attr({id:'detail_good_btn'}).html('맛있어요').addClass('btn btn-warning mgt10-mgb10 mgr10-mgr10')
+								.append($('<a/>').attr({id:'detail_good_btn'}).html('위시리스트').addClass('btn btn-warning mgt10-mgb10 mgr10-mgr10')
 									.click(e=>{
 										alert('/맛있어서 자바갔다와야댐 $.ajax')
 									})
@@ -219,65 +223,105 @@ yoonho.service=(x=>{
 
 		//commentbox1,2
 		let $div5_1 = $('<div/>').addClass('single_comment_area').appendTo($div4_1);
-		let $span6_1 = $('<div/>').addClass('col-lg-8 mgt50-mgb50').appendTo($div5_1)
-						.append(
-							$.getScript($.script()+"/ui/y_item_comment.js").done(()=>{
-								$('<div/>')
-								.html(y_item_cLstUI()).appendTo($div5_1)
-								
-							})
-						)
-		let $section6_1 = $('<section/>').addClass('my-5').appendTo($span6_1).append($('<div/>').addClass('my-5').html('4개의 댓글'))
-		let $sec_div = $('<div/>').addClass('media d-block d-md-flex mt-4')
+		//comment list:Read
+		let $section6_1 = $('<section/>').addClass('my-5').appendTo($div5_1).append($('<div/>').addClass('card-header border-0 font-weight-bold').html('4개의 댓글'))
+		let $sec6_1_div = $('<div/>').addClass('media d-block d-md-flex mt-4')
 						.append(
 							$('<img/>').addClass('card-img-64 d-flex mx-auto mb-3 rounded-circle').attr({'src':'/web/resources/img/yoonho/img_avatar1.png','alt':'Generic placeholder image'})
 						)
 						.append(
 							$('<div/>').addClass('media-body text-center text-md-left ml-md-3 ml-0')
 							.append(
-								$('<h5/>').addClass('font-weight-bold mt-0').append($('<a/>').html('회원아이디').click(e=>{alert('회원retrieve')}))
-							).html('내용 : 바쁜 저녁 마라톤회의때 먹었는데 든든합니다. 강추!!')
-						).appendTo($section6_1)
-						
-						/*								.append(
-									$('<a role="button"/>').addClass('badge orange').attr({style:'margin:10px;font-size:18px','data-toggle':'modal','data-target':'#modalContactForm'}).html('수정').click(e=>{
-										alert('모달수정')
+								$('<a/>').addClass('font-weight-bold mt-0').attr({style:'font-size:18px;color:#007bff;'}).html('회원아이디').click(e=>{alert('회원retrieve')})//정훈정훈한테 물어보고 memberRetrieve 없으면 h4태그로 바꿀것
+							)
+							.append(
+								$('<h6/>').html('내용 : 바쁜 저녁 마라톤회의때 먹었는데 든든합니다. 강추!!')
+							)
+							.append(
+								$('<a role="button"/>').addClass('badge orange').attr({style:'margin:10px;font-size:18px','data-toggle':'modal','data-target':'#modalContactForm'}).html('수정').click(e=>{
+									alert('모달수정')
+									$.getScript($.script()+'/ui/y_item_comment.js')(()=>{
 										yoonho.contain.modal(y_item_cMdfUI());
 									})
-								)
-								.append(
-									$('<a role="button"/>').addClass('badge orange').attr({style:'margin:10px;font-size:18px','data-toggle':'modal','data-target':'#modalContactForm'}).html('삭제').click(e=>{
-										alert('모달삭제')
+								})
+							)
+							.append(
+								$('<a role="button"/>').addClass('badge orange').attr({style:'margin:10px;font-size:18px','data-toggle':'modal','data-target':'#modalContactForm'}).html('삭제').click(e=>{
+									alert('모달삭제')
+									$.getScript($.script()+'/ui/y_item_comment.js')(()=>{
 										yoonho.contain.modal(y_item_cDelUI());
 									})
-								)*/
-						
-
-		let $span6_2 = $('<div/>').addClass('col-lg-8 mgt50-mgb50')// y_img_popup_div
-						.append(
-							$.getScript($.script()+"/ui/y_item_comment.js").done(()=>{
-								$('<div/>').html(y_item_cWrtUI()).appendTo($div5_1)
-							})
-						).appendTo($div5_1);
-
-						
+								})
+							)
+						).appendTo($section6_1)
+				
+		//comment write:create
+		let $section6_2 =  $('<div/>').appendTo($div5_1)
+							.append(
+								$('<section/>').addClass('my-5')
+								.append(
+									$('<div/>').addClass('form-group mt-4')
+									.append(
+										$('<label/>').attr({'for':'quickReplyFormComment'}).html('Your comment')
+									)
+									.append(
+										$('<textarea/>').addClass('form-control').attr({'id':'quickReplyFormComment','rows':'5'})
+									)
+									.append(
+										$('<div/>').addClass('text-center my-4')
+										.append(
+											$('<button/>').addClass('btn btn-warning btn-sm').attr({'type':'submit'}).html('SUBMIT')
+											.click(e=>{
+												alert('게시글이 등록되었습니다^^')
+												/*$.ajax({
+													url:'',
+													method:'',
+													contentType:'application/json',
+													data:JSON.stringify({
+														
+													}),
+													success:d=>{
+														alert('게시글이 등록되었습니다.'+d)
+													},
+													error:(m1,m2,m3)=>{
+														
+													}
+												})*/
+											})
+										)
+									)
+								)
+							)
 							
 		//commentbox ed
 		let $div2_4 = $('<div/>').addClass('col-sm-5 mg0-pd0 detail-right yh-mfp-navi').appendTo($div1);
 		let $div3_4 = $('<div/>').addClass('container-fluid').appendTo($div2_4);
 		let $div4_4 = $('<div/>').addClass('row').appendTo($div3_4);
 		let $div5_4 = $('<div/>').addClass('col-lg-12 y_bg_popup_gr')
-						.append($('<h2 style="font-size:28px;"/>').addClass('text-center font-weight-bold').html('매화 (치킨, 연어구이)'))
-						.append($('<p/>').addClass('text-center').html('사각 도시락'))
+						.append($('<h2 style="font-size:28px;"/>').addClass('text-center font-weight-bold').html(x.itemName))
+						.append($('<p/>').addClass('text-center').html(x.category))
 						.appendTo($div4_4);
-		let $star = $('<div/>').addClass('my-rating').attr({id:'my-rating'}).starRating({
-							initialRating: 4,
-							strokeColor: '#894A00',
-							strokeWidth: 10,
-							starSize: 25
-						}).appendTo($div5_4)
-						.append($('<div/>').html('(743명)'))
-			let $p6_4_1 = $('<p/>').addClass('text-left').html('1520명이 평가했어요')
+		let $star = $('<div/>').addClass('my-rating').attr({id:'my-rating'})
+			.starRating({ //https://github.com/nashio/star-rating-svg
+				initialRating: 0, //초기값  
+				starSize: 32,  //width속성값
+				minRating : 0.5,
+				emptyColor : 'white',
+				hoverColor : 'orange',
+				activeColor : 'orange',
+				ratedColor : 'orange',
+				useGradient : false,
+				strokeColor: 'orange',  //border color
+				callback : (currentRating, $el)=>{
+					alert(currentRating);
+					let flag = false; //평점을 준적이 없으면 false 있으면 true
+					/*getJSON($.ctx()+'/',()=>{//id와 item_seq를 넘겨줌
+						
+					})*/
+					
+				}
+			}).appendTo($div5_4)
+			let $p6_4_1 = $('<p/>').addClass('text-left').html(x.starCount+'명이 평가했어요!')
 						.append($('<div/>')
 							.append($tag1)
 							.append($tag2)
@@ -285,31 +329,27 @@ yoonho.service=(x=>{
 						.appendTo($div5_4)
 			
 
-			
+			//x.imgSeq,x.itemName,x.img,x.price,x.calorie,x.category,x.explains,x.brand,x.itemSeq
 			let $div4_5 = $('<div/>').addClass('row').appendTo($div3_4)
 			let $div5_5 = $('<div/>').addClass('col-lg-12 y_bg_popup_bg').appendTo($div4_5)
 			
 			let $tbl6_5 = $('<div/>').addClass('row').appendTo($div5_5)
 			let $tbody7_5 = $('<div/>').html('업체').addClass('col-sm text-left mgt10-mgb10').appendTo($tbl6_5)
-			let $tbody7_5_1 = $('<div/>').html('오봉도시락').addClass('col-sm  mgt10-mgb10').appendTo($tbl6_5)
+			let $tbody7_5_1 = $('<div/>').html(x.brand).addClass('col-sm  mgt10-mgb10').appendTo($tbl6_5)
+
 			
 			let $tbl6_6 = $('<div/>').addClass('row').appendTo($div5_5)
 			let $tbody7_6 = $('<div/>').html('칼로리').addClass('col-sm text-left mgt10-mgb10').appendTo($tbl6_6)
-			let $tbody7_6_1 = $('<div/>').html('405.5Kcal').addClass('col-sm  mgt10-mgb10').appendTo($tbl6_6)
+			let $tbody7_6_1 = $('<div/>').html(x.calorie+' Kcal').addClass('col-sm  mgt10-mgb10').appendTo($tbl6_6)
 			
 			let $tbl6_7 = $('<div/>').addClass('row').appendTo($div5_5)
 			let $tbody7_7 = $('<div/>').html('가격').addClass('col-sm text-left mgt10-mgb10').appendTo($tbl6_7)
-			let $tbody7_7_1 = $('<div/>').html('10,000원').addClass('col-sm  mgt10-mgb10').appendTo($tbl6_7)
+			let $tbody7_7_1 = $('<div/>').html(x.price+' 원').addClass('col-sm  mgt10-mgb10').appendTo($tbl6_7)
 			
-			let $tbl6_8 = $('<div/>').addClass('col text-left').append($('<div/>').html('알러지정보').addClass('row mgt10-mgb10')).appendTo($div5_5)
-			let $tbody7_8 = $('<div/>').addClass('row').appendTo($tbl6_8)
-			let $tbody7_8_1 = $('<div/>').append($('<img src="/web/resources/img/yoonho/allergy1.png">').addClass('rounded y_img_popup_alg')).appendTo($tbody7_8 )
-			let $tbody7_8_2 = $('<div/>').append($('<img src="/web/resources/img/yoonho/allergy2.png">').addClass('rounded y_img_popup_alg')).appendTo($tbody7_8 )
-			let $tbody7_8_3 = $('<div/>').append($('<img src="/web/resources/img/yoonho/allergy3.png">').addClass('rounded y_img_popup_alg')).appendTo($tbody7_8 )
 			
 			let $tbl6_9 = $('<div/>').addClass('row')
 							.appendTo($div5_5)
-			let $tbody7_9 = $('<div/>').html('[베스트 & 스테디셀러 SINCE 2007] 12가지 다양한 반찬으로 구성된 프리미엄 도시락입니다. 푸짐한 반찬과 함께 촉촉하고 부드러운 연어구이와 치킨이 구성되어 있어 부족하지 않고 든든하게 드실 수 있는 도시락 입니다. 생수와 조미 김이 함께 제공 됩니다.').addClass('col-sm text-left mgt10-mgb10').appendTo($tbl6_9)
+			let $tbody7_9 = $('<div/>').html(x.explains).addClass('col-sm text-left mgt10-mgb10').appendTo($tbl6_9)
 		
 		return $div1;
 	};
@@ -427,7 +467,7 @@ yoonho.contain=(x=>{
 		+'<!--/.Carousel Wrapper-->'
 	}
 	var modal=x=>{
-		return $.magnificPopup.open({
+		$.magnificPopup.open({
 			closeBtnInside:true,
 			closeOnContentClick:false,
 			alignTop: true,
@@ -441,9 +481,9 @@ yoonho.contain=(x=>{
 			removalDelay:'0',
 			type:'inline'}); 
 		$('.btn').on('click',function(){
-			
 			alert($('#code').val());
 		});
+		return false;
 	};
 	var layout=()=>{
 		
