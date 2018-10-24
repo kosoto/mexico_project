@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bemeal.web.cmm.Auth;
 import com.bemeal.web.img.Image;
 import com.bemeal.web.item.Item;
 import com.bemeal.web.item.ItemMapper;

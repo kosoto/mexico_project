@@ -13,6 +13,8 @@ public interface CommonMapper {
 	public ArrayList<HashMap<String, Object>> gradList();
 	public ArrayList<HashMap<String, Object>> buyList();
 	public ArrayList<HashMap<String, Object>> wishList();
+	public ArrayList<HashMap<String, Object>> listByGender();
+	public ArrayList<HashMap<String, Object>> listByAge();
 	public int countRatingsById(String id);
 	public int countUnRatingsById(String id);
 	public ArrayList<HashMap<String, Object>> evaluateList(HashMap<String,Object> p);

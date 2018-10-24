@@ -81,6 +81,7 @@ public class CommonCtrl {
 		logger.info("temp : "+temp);
 		return (temp==null)?"0":temp;
 	} 
+	@Auth
 	@GetMapping("/grade/add/{id}/{itemSeq}/{grade}")
 	public void addGrade(
 			@PathVariable String id,
@@ -99,6 +100,7 @@ public class CommonCtrl {
 		map.put("grade", grade/2);
 		c.accept(map);
 	} 
+	@Auth
 	@GetMapping("/grade/delete/{id}/{itemSeq}")
 	public void deleteGrade(
 			@PathVariable String id,
@@ -114,6 +116,7 @@ public class CommonCtrl {
 		map.put("itemSeq", itemSeq);
 		c.accept(map);
 	} 
+	@Auth
 	@GetMapping("/grade/update/{id}/{itemSeq}/{grade}")
 	public void updateGrade(
 			@PathVariable String id,
@@ -162,6 +165,12 @@ public class CommonCtrl {
 				break;
 			case "wish": 
 				temp = cmmMapper.wishList();
+				break;
+			case "gender": 
+				temp = cmmMapper.listByGender();
+				break;
+			case "age": 
+				temp = cmmMapper.listByAge();
 				break;
 			}
 			logger.info(temp.toString());

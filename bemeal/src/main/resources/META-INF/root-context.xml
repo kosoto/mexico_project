@@ -92,7 +92,13 @@
 			</props>
 		</property>
 	</bean>
-	
+	<bean id="LoginInterscptor" class="com.bemeal.web.cmm.LoginInterceptor"/>
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="com.bemeal.web.cmm.AuthInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
 	<tx:annotation-driven />
 	
 </beans>

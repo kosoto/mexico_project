@@ -19,6 +19,7 @@ bemeal.main = (()=>{
 		onCreate();
 	};
 	var onCreate=()=>{
+		$.cookie.json=true;
 		setContentView();
 	};
 	var setContentView=()=>{
@@ -84,7 +85,7 @@ bemeal.router = {
 				});
 
 				// 무한 스크롤 테스트
-				let num = 4;
+				let num = 0;
 				/*
 				 * 무한 스크롤로 추가되는 카테고리들을 어떻게 정할지 고민 필요
 				 * case 1 : DB에서 카테고리들을 가져와서 js에서 배열로 저장해둔 후 배열에서 랜덤으로 카테고리를 뽑아내서 결정
@@ -93,15 +94,26 @@ bemeal.router = {
 				 * case 2 : js에서 java로 데이터롤 요청하면 java에서 DB에서 이미 화면에 뿌려지지 않은 카테고리를 검색하여 js로 전송
 				 * 			이 경우 js에서 이미 검색된 배열정보를 java로 보내주어야함.  
 				 */
-				let titles = [];
+				let titles = {} || titles;
+				//1.남성 여성 2.나이 3.주소? 4.태그?
+				let member = $.cookie('member');
+				if(member!==undefined){
+					titles = {
+							gender:member['gender'],
+							age:member['age']
+					};
+				}
+				let keySet = Object.keys(titles);
+				let values = Object.values(titles);
+				
 				let $window = $(window);
 				$window.on('scroll.category',e=>{
-					if(num<=10 && $window.scrollTop()+$window.height()+30>$(document).height()){
-						$.getJSON($.ctx()+"/item/list/scrollTest",d=>{
+					if(num<keySet.length && $window.scrollTop()+$window.height()+30>$(document).height()){
+						$.getJSON($.ctx()+"/item/list/"+keySet[num],d=>{
 							$carousels.append(
 									bemeal.compo.carousel({
-										id:'carousel'+num,
-										title:'scrollTest'+(num-3),
+										id:'carousel'+num+4,
+										title:values[num],
 										arr:d.list,
 										row_size:5
 									})
@@ -151,7 +163,7 @@ bemeal.compo=(()=>{
 								})
 							),
 							$('<li/>').addClass('nav-item').append(
-								$('<a/>').addClass('nav-link').attr({href:'#',id:'taste'}).text('TASTE').click(e=>{
+								$('<a/>').addClass('nav-link').attr({href:'#',id:'taste'}).text('TASTE').hide().click(e=>{
 									e.preventDefault();
 									$('.nav-item').removeClass('active');
 									$('#taste').parent().addClass('active');
@@ -162,7 +174,7 @@ bemeal.compo=(()=>{
 								})
 							),
 							$('<li/>').addClass('nav-item').append(
-								$('<a/>').addClass('nav-link').attr({href:'#',id:'evaluate'}).text('평가하기').click(e=>{
+								$('<a/>').addClass('nav-link').attr({href:'#',id:'evaluate'}).hide().text('평가하기').click(e=>{
 									e.preventDefault();
 									$('.nav-item').removeClass('active');
 									$('#evaluate').parent().addClass('active');
@@ -299,7 +311,7 @@ bemeal.evaluate=(()=>{
 		let gradeCnt = 0;
 		let itemCnt = 0;
 		let width = 0;
-		let id = '00r5qj6';
+		let id = $.cookie('member').memberId;
 		let message = '';
 		$.getJSON($.ctx()+'/grade/count/'+id,d=>{
 			gradeCnt = d.gradeCnt;
@@ -315,14 +327,14 @@ bemeal.evaluate=(()=>{
 				$('<div/>').appendTo($('#content')).attr({style:'height:85px'});
 				let page = 1;
 				loadPage({
-					id:'00r5qj6',
+					id:id,
 					page:page++,
 				});
 				let $window = $(window);
 				$window.on('scroll.category',e=>{
 					if($window.scrollTop()+$window.height()+5>$(document).height()){
 						loadPage({
-							id:'00r5qj6',
+							id:id,
 							page:page++,
 						});
 					}
@@ -332,7 +344,8 @@ bemeal.evaluate=(()=>{
 	};
 	var loadPage=x=>{
 		console.log(x);
-		$.getJSON($.ctx()+'/evaluate/'+x.id+'/'+x.page,d=>{//id와 page를 가지고 평가 하지 않은 제품들을 가져오기
+		let memberId = x.id;
+		$.getJSON($.ctx()+'/evaluate/'+memberId+'/'+x.page,d=>{//id와 page를 가지고 평가 하지 않은 제품들을 가져오기
 			$.getScript($.script()+'/yoonho.js',()=>{
 				if(d.pagination.existNext){ //다음 페이지가 존재할때만 
 					let arr = d.list;
@@ -377,24 +390,27 @@ bemeal.evaluate=(()=>{
 									if(currentRating!=0){
 										console.log('currentRating'+currentRating);
 										let seq = $el.data('seq');
-										let memberId = '00r5qj6';
 										$.getJSON($.ctx()+'/grade/retrieve/'+memberId+'/'+seq,d=>{//id와 item_seq를 넘겨줌
 											console.log("grade:"+d);
 											console.log("gracurrentRatingde:"+currentRating);
 											console.log('width'+((cnt-1)/itemCnt*1)*580)
 											switch(d){
 											case 0: // 정보가 없으니 add 
-												$.getJSON($.ctx()+'/grade/add/'+memberId+'/'+seq+'/'+currentRating*2);
-												$gradeCnt.html(cnt+1);
-												console.log('add:'+((cnt+1)/itemCnt)*580)
-												$gradeWidth.attr({style:'width:'+((cnt+1)/itemCnt)*580+'px'});
+												$.getJSON($.ctx()+'/grade/add/'+memberId+'/'+seq+'/'+currentRating*2,()=>{
+													$gradeCnt.html(cnt+1);
+													$gradeWidth.attr({style:'width:'+((cnt+1)/itemCnt)*580+'px'});
+												}).fail((jqXHR, textStatus, errorThrown)=>{
+													console.log(jqXHR);
+													console.log(textStatus);
+													console.log(errorThrown);
+												});
 												break;
 											case currentRating: // 이전값과 현재값이 같으므로 삭제 
-												$.getJSON($.ctx()+'/grade/delete/'+memberId+'/'+seq);
-												$el.starRating('setRating', 0);
-												$gradeCnt.html(cnt-1);
-												console.log('delete:'+((cnt-1)/itemCnt)*580)
-												$gradeWidth.attr({style:'width:'+((cnt-1)/itemCnt)*580+'px'});
+												$.getJSON($.ctx()+'/grade/delete/'+memberId+'/'+seq,()=>{
+													$el.starRating('setRating', 0);
+													$gradeCnt.html(cnt-1);
+													$gradeWidth.attr({style:'width:'+((cnt-1)/itemCnt)*580+'px'});
+												});
 												break;
 											default :  //이전값과 현재값이 다르므로 업데이트 
 												$.getJSON($.ctx()+'/grade/update/'+memberId+'/'+seq+'/'+currentRating*2);
@@ -408,6 +424,7 @@ bemeal.evaluate=(()=>{
 									$('<p/>').text(arr[index].explains),
 									$('<a/>').addClass('evaluateToRetrieve').text('상세보기').attr({href:'#','data-seq':arr[index].itemSeq})
 									.click(e=>{
+										e.preventDefault();
 										yoonho.service.retrieve(e.currentTarget.dataset.seq);
 									})
 							);

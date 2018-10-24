@@ -25,7 +25,7 @@ public class MemberCtrl {
 	private static final Logger logger = LoggerFactory.getLogger(MemberCtrl.class);
 	@Autowired Member member;
 	@Autowired MemberMapper mbrMapper;
-	@Autowired Map<String, Object> map;
+	@Autowired HashMap<String, Object> map;
 	
 	@PostMapping("/add")
 	public @ResponseBody void add(
@@ -72,25 +72,9 @@ public class MemberCtrl {
 		
 	}
 	@PostMapping("/login")
-	public @ResponseBody Map<String, Object> login(@RequestBody Member member) {
-				HashMap<String,Object> rmap = new HashMap<>();		
-
-				String validateID = "WRONG";
-				String validatePW = "WRONG";
-				if(member.getMemberId() != null) {
-					
-				}
-				
-				
-				
-//				Util.log.accept("넘어온 아이디"+member.getMemberId());
-//				Util.log.accept("넘어온 비번"+member.getPassword());
-				rmap.put("memberId", member.getMemberId());
-				rmap.put("password", member.getPassword());
-				
-			
-				
-				return rmap;
+	public @ResponseBody Member login(@RequestBody Member mbr) {
+		Function<Member, Member>f=x->mbrMapper.get(x);
+		return f.apply(mbr);
 	}
 	
 	public void logout() {
