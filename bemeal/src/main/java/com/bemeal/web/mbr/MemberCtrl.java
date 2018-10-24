@@ -28,13 +28,15 @@ public class MemberCtrl {
 	@Autowired Map<String, Object> map;
 	
 	@PostMapping("/add")
-	public @ResponseBody void add(@RequestBody Member mbr) {
-		System.out.println("add() :: 넘어온 정보 :: "+mbr);
-		System.out.println("add() :: 넘어온 정보 :: "+mbr.getMemberId().toString());
-		Map<String, Object> r = new HashMap<>();
-		
-		String ssn = mbr.getSsn();
-		
+	public @ResponseBody void add(
+			//@RequestBody Member mbr
+			@RequestBody Member mbr 
+			) {
+		mbr.getSsn();
+		Util.log.accept("add() :: 넘어온 정보 :: "+mbr);
+		HashMap<String, Object> r = new HashMap<>();
+		String ssn = String.valueOf(mbr.getSsn());
+		Util.log.accept(ssn);
 		mbr.setAge( 2019 - Integer.parseInt(
 		((Integer.parseInt(ssn.substring(0, 2)) 
 		> Integer.parseInt(new SimpleDateFormat("yyyy")
@@ -53,8 +55,7 @@ public class MemberCtrl {
 		r.put("eMail", mbr.getEMail());
 		r.put("phoneNum", mbr.getPhoneNum());
 		
-		System.out.println("r :: "+ r.toString());
-		
+		mbrMapper.post(mbr);
 		//member.post
 	}
 	
@@ -62,7 +63,7 @@ public class MemberCtrl {
 	public void retrieve() {
 		
 	}
-	
+	@RequestMapping("/modify")
 	public void modify() {
 		
 	}
@@ -73,13 +74,21 @@ public class MemberCtrl {
 	@PostMapping("/login")
 	public @ResponseBody Map<String, Object> login(@RequestBody Member member) {
 				HashMap<String,Object> rmap = new HashMap<>();		
-				Util.log.accept("넘어온 아이디"+member.getMemberId());
-				Util.log.accept("넘어온 비번"+member.getPassword());
+
+				String validateID = "WRONG";
+				String validatePW = "WRONG";
+				if(member.getMemberId() != null) {
+					
+				}
 				
+				
+				
+//				Util.log.accept("넘어온 아이디"+member.getMemberId());
+//				Util.log.accept("넘어온 비번"+member.getPassword());
 				rmap.put("memberId", member.getMemberId());
 				rmap.put("password", member.getPassword());
 				
-				System.out.println(rmap.toString());
+			
 				
 				return rmap;
 	}
