@@ -17,8 +17,7 @@
     	
     <select id="get" resultType="com.bemeal.web.mbr.Member">
     	SELECT 
-    	MEMBER_ID memberId,
-    	PASSWORD,
+    	MEMBER_ID memberId
     	NAME,
     	AGE,
     	SSN,

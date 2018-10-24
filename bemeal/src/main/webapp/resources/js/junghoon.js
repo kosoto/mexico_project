@@ -24,6 +24,7 @@ junghoon.member = (()=>{
 				})
 				
 				$('#join_submit_btn').click(e=>{
+					console.log('email :: '+$('#eMail').val());
 					$.ajax({
 						url:$.ctx()+'/mbr/add',
 						method:'post',
@@ -39,10 +40,13 @@ junghoon.member = (()=>{
 							phoneNum:$('#phoneNum').val()
 							
 						}),
+						
 						success:d=>{
+							
 								alert(d.toString());
 							},
 						error:(x,y,z)=>{console.log('error :: '+z)}
+						
 					});
 				});
 			})
@@ -73,8 +77,11 @@ junghoon.member = (()=>{
 												password : $('#password').val()}),
 						success : d => {
 							
-							$.cookie("loginID :: ", d.memberId);
-							alert("loginID"+d.memberId);
+							$.cookie("loginID", d.memberId);
+							alert("loginID"+"   "+d.memberId);
+							
+							
+							
 							
 							$('#info').empty();
 							
