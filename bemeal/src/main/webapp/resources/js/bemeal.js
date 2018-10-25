@@ -46,6 +46,14 @@ bemeal.router = {
 			});
 		},
 		main : ()=>{
+			if($.cookie("member")!==undefined){
+				console.log($.cookie("member"));
+				$('.auth').show();
+				$('.unAuth').hide();
+			}else{
+				$('.auth').hide();
+				$('.unAuth').show();
+			}
 			/*메인화면 header, content 그리기*/
 				$('header').remove();
 				$('#content').remove();
@@ -142,11 +150,10 @@ bemeal.router = {
 
 bemeal.compo=(()=>{
 	var nav = ()=>{
-		let $window = $(window);
 		return $('<nav/>').addClass('navbar fixed-top navbar-expand-lg navbar-light lighten-5 scrolling-navbar').append(
 					$('<a/>').addClass('navbar-brand').attr({href:'#',id:'logo'}).append($('<strong/>').append($('<img/>').attr({src:$.img()+"/cmm/logo.png"}))).click(e=>{
 						e.preventDefault();
-						$window.off('scroll.category');
+						$(window).off('scroll.category');
 						$('.nav-item').removeClass('active');
 						$('#content').removeClass('mainContent');
 						bemeal.router.main();
@@ -170,7 +177,7 @@ bemeal.compo=(()=>{
 								})
 							),
 							$('<li/>').addClass('nav-item').append(
-								$('<a/>').addClass('nav-link').attr({href:'#',id:'join'}).text('JOIN').click(e=>{
+								$('<a/>').addClass('nav-link unAuth').attr({href:'#',id:'join'}).text('JOIN').click(e=>{
 									e.preventDefault();
 									$('.nav-item').removeClass('active');
 									$('#join').parent().addClass('active');
@@ -182,7 +189,7 @@ bemeal.compo=(()=>{
 								})
 							),
 							$('<li/>').addClass('nav-item').append(
-								$('<a/>').addClass('nav-link').attr({href:'#',id:'taste'}).text('TASTE').hide().click(e=>{
+								$('<a/>').addClass('nav-link auth').attr({href:'#',id:'taste'}).text('TASTE').hide().click(e=>{
 									e.preventDefault();
 									$('.nav-item').removeClass('active');
 									$('#taste').parent().addClass('active');
@@ -194,7 +201,7 @@ bemeal.compo=(()=>{
 								})
 							),
 							$('<li/>').addClass('nav-item').append(
-								$('<a/>').addClass('nav-link').attr({href:'#',id:'evaluate'}).hide().text('평가하기').click(e=>{
+								$('<a/>').addClass('nav-link auth').attr({href:'#',id:'evaluate'}).hide().text('평가하기').click(e=>{
 									e.preventDefault();
 									$('.nav-item').removeClass('active');
 									$('#evaluate').parent().addClass('active');
@@ -219,12 +226,47 @@ bemeal.compo=(()=>{
 								$('<i/>').addClass('fa fa-user')
 							),
 							$('<div/>').addClass('dropdown-menu dropdown-menu-right dropdown-unique').attr({id:'info','aria-labelledby':'navbarDropdownMenuLink'}).append(
-								$('<a/>').addClass('dropdown-item').attr({href:'#',id:'login'}).text('로그인').click(e=>{
+								$('<a/>').addClass('dropdown-item unAuth').attr({href:'#',id:'login'}).text('로그인').click(e=>{
 									e.preventDefault();
 									$.getScript($.script()+"/junghoon.js",(e)=>{
 										$(window).off('scroll.category');
 										$('#content').removeClass('mainContent');
 										junghoon.member.login();
+									})
+								}),
+								$('<a/>').addClass('dropdown-item auth').attr({href:'#',id:'login_form'}).text('마이페이지').click(e=>{
+									e.preventDefault();
+									$.getScript($.script()+"/junghoon.js",(e)=>{
+										$(window).off('scroll.category');
+										$('#content').removeClass('mainContent');
+										junghoon.service.mypage();
+									})
+								}),
+								$('<a/>').addClass('dropdown-item auth').attr({href:'#'}).text('로그아웃').click(e=>{
+									e.preventDefault();
+									$.getScript($.script()+"/junghoon.js",(e)=>{
+										$(window).off('scroll.category');
+										//$('#content').removeClass('mainContent');
+										$('.auth').hide();
+										$('.unAuth').show();
+										$.removeCookie('member');
+										bemeal.router.main();
+									})
+								}),
+								$('<a/>').addClass('dropdown-item auth').attr({href:'#'}).text('댓글 테스트').click(e=>{
+									e.preventDefault();
+									$.getScript($.script()+"/junghoon.js",(e)=>{
+										$(window).off('scroll.category');
+										$('#content').removeClass('mainContent');
+										junghoon.service.comment();
+									})
+								}),
+								$('<a/>').addClass('dropdown-item auth').attr({href:'#'}).text('검색 테스트').click(e=>{
+									e.preventDefault();
+									$.getScript($.script()+"/junghoon.js",(e)=>{
+										$(window).off('scroll.category');
+										$('#content').removeClass('mainContent');
+										junghoon.service.search();
 									})
 								})
 							)
@@ -417,19 +459,40 @@ bemeal.evaluate=(()=>{
 											console.log(typeof(d));
 											console.log("gracurrentRatingde:"+currentRating);
 											console.log('width'+((cnt-1)/itemCnt*1)*580)
-											switch(d){
+											if(d==0){
+												console.log('추가 케이스');
+												$.getJSON($.ctx()+'/grade/add/'+memberId+'/'+seq+'/'+currentRating*2,d=>{
+													console.log('별점 추가'+d);
+													$gradeCnt.html(cnt+1);
+													$gradeWidth.attr({style:'width:'+((cnt+1)/itemCnt)*580+'px'});
+												});
+											}else if(d==currentRating){
+												console.log('삭제 케이스');
+												$.getJSON($.ctx()+'/grade/delete/'+memberId+'/'+seq,d=>{
+													console.log('별점 삭제'+d);
+													$el.starRating('setRating', 0);
+													$gradeCnt.html(cnt-1);
+													$gradeWidth.attr({style:'width:'+((cnt-1)/itemCnt)*580+'px'});
+												});
+											} else{
+												console.log('수정 케이스');
+												$.getJSON($.ctx()+'/grade/update/'+memberId+'/'+seq+'/'+currentRating*2,d=>{
+													console.log('별점 수정'+d);
+												});
+											}
+											/*switch(d){
 											case 0: // 정보가 없으니 add 
 												console.log('추가 케이스');
-												$.getJSON($.ctx()+'/grade/add/'+memberId+'/'+seq+'/'+currentRating*2,()=>{
-													console.log('별점 추가');
+												$.getJSON($.ctx()+'/grade/add/'+memberId+'/'+seq+'/'+currentRating*2,d=>{
+													console.log('별점 추가'+d);
 													$gradeCnt.html(cnt+1);
 													$gradeWidth.attr({style:'width:'+((cnt+1)/itemCnt)*580+'px'});
 												});
 												break;
 											case currentRating: // 이전값과 현재값이 같으므로 삭제
 												console.log('삭제 케이스');
-												$.getJSON($.ctx()+'/grade/delete/'+memberId+'/'+seq,()=>{
-													console.log('별점 삭제');
+												$.getJSON($.ctx()+'/grade/delete/'+memberId+'/'+seq,d=>{
+													console.log('별점 삭제'+d);
 													
 													$el.starRating('setRating', 0);
 													$gradeCnt.html(cnt-1);
@@ -438,11 +501,11 @@ bemeal.evaluate=(()=>{
 												break;
 											default :  //이전값과 현재값이 다르므로 업데이트 
 												console.log('수정 케이스');
-												$.getJSON($.ctx()+'/grade/update/'+memberId+'/'+seq+'/'+currentRating*2,()=>{
-													console.log('별점 수정');
+												$.getJSON($.ctx()+'/grade/update/'+memberId+'/'+seq+'/'+currentRating*2,d=>{
+													console.log('별점 수정'+d);
 												});
 												break;
-											}
+											}*/
 										});
 									}
 								}
