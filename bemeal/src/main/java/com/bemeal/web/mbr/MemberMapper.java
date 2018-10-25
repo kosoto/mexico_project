@@ -7,10 +7,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MemberMapper {
-	public void post(Member p);
+	public void post(Map<String, Object> r);
 	public List<?> list(Map<?,?>p);
 	public Member get(Member p); // 로그인 !!
 	public Integer count(Map<?,?>p);
 	public void put(Member p);
-	public boolean delete(Member p);
+	public void delete(Member p);
 }

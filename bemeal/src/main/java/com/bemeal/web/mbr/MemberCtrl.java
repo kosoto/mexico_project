@@ -9,9 +9,11 @@ import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -55,34 +57,30 @@ public class MemberCtrl {
 		
 		System.out.println("r :: "+ r.toString());
 		
-		//member.post
+		mbrMapper.post(r);
 	}
-	
-	@RequestMapping("/retrieve")
-	public void retrieve() {
-		
+	@RequestMapping(value="/remove", method=RequestMethod.POST)
+	public void delete(@ModelAttribute Member member, @ModelAttribute("user") Member user) {
+		Util.log.accept("delete 넘어온 아이디 값 :: "+user.getMemberId());
+		member.setMemberId(user.getMemberId());
+		mbrMapper.delete(user);
 	}
-	
-	public void modify() {
-		
-	}
-	
-	public void remove() {
-		
+	@RequestMapping(value="/modify", method=RequestMethod.POST)
+	public void modify(@ModelAttribute("member") Member member, @ModelAttribute("user") Member user) {
+		logger.info("modify()");
+		Util.log.accept("update 넘어온 아이디 값 :: "+user.getMemberId());
+		member.setMemberId(user.getMemberId());
+		mbrMapper.put(member);
 	}
 	@PostMapping("/login")
-	public @ResponseBody Map<String, Object> login(@RequestBody Member member) {
-				HashMap<String,Object> rmap = new HashMap<>();		
-				Util.log.accept("넘어온 아이디"+member.getMemberId());
-				Util.log.accept("넘어온 비번"+member.getPassword());
-				
-				rmap.put("memberId", member.getMemberId());
-				rmap.put("password", member.getPassword());
-				
-				System.out.println(rmap.toString());
-				
-				return rmap;
+	public @ResponseBody Map<String, Object> login(@RequestBody Member member){
+		Map<String, Object> r = new HashMap<>();
+		Util.log.accept("login 넘어온 로그인 정보 :: "+member.toString());
+		r.put("memberId", member.getMemberId());
+		r.put("password", member.getPassword());
+		return r;
 	}
+	
 	
 	public void logout() {
 		
