@@ -144,9 +144,10 @@ bemeal.compo=(()=>{
 	var nav = ()=>{
 		let $window = $(window);
 		return $('<nav/>').addClass('navbar fixed-top navbar-expand-lg navbar-light lighten-5 scrolling-navbar').append(
-					$('<a/>').addClass('navbar-brand').attr({href:'#',id:'logo'}).append($('<strong/>').text('Be meal')).click(e=>{
+					$('<a/>').addClass('navbar-brand').attr({href:'#',id:'logo'}).append($('<strong/>').append($('<img/>').attr({src:$.img()+"/cmm/logo.png"}))).click(e=>{
 						e.preventDefault();
 						$window.off('scroll.category');
+						$('.nav-item').removeClass('active');
 						$('#content').removeClass('mainContent');
 						bemeal.router.main();
 					}),
@@ -413,28 +414,33 @@ bemeal.evaluate=(()=>{
 										let seq = $el.data('seq');
 										$.getJSON($.ctx()+'/grade/retrieve/'+memberId+'/'+seq,d=>{//id와 item_seq를 넘겨줌
 											console.log("grade:"+d);
+											console.log(typeof(d));
 											console.log("gracurrentRatingde:"+currentRating);
 											console.log('width'+((cnt-1)/itemCnt*1)*580)
 											switch(d){
 											case 0: // 정보가 없으니 add 
+												console.log('추가 케이스');
 												$.getJSON($.ctx()+'/grade/add/'+memberId+'/'+seq+'/'+currentRating*2,()=>{
+													console.log('별점 추가');
 													$gradeCnt.html(cnt+1);
 													$gradeWidth.attr({style:'width:'+((cnt+1)/itemCnt)*580+'px'});
-												}).fail((jqXHR, textStatus, errorThrown)=>{
-													console.log(jqXHR);
-													console.log(textStatus);
-													console.log(errorThrown);
 												});
 												break;
-											case currentRating: // 이전값과 현재값이 같으므로 삭제 
+											case currentRating: // 이전값과 현재값이 같으므로 삭제
+												console.log('삭제 케이스');
 												$.getJSON($.ctx()+'/grade/delete/'+memberId+'/'+seq,()=>{
+													console.log('별점 삭제');
+													
 													$el.starRating('setRating', 0);
 													$gradeCnt.html(cnt-1);
 													$gradeWidth.attr({style:'width:'+((cnt-1)/itemCnt)*580+'px'});
 												});
 												break;
 											default :  //이전값과 현재값이 다르므로 업데이트 
-												$.getJSON($.ctx()+'/grade/update/'+memberId+'/'+seq+'/'+currentRating*2);
+												console.log('수정 케이스');
+												$.getJSON($.ctx()+'/grade/update/'+memberId+'/'+seq+'/'+currentRating*2,()=>{
+													console.log('별점 수정');
+												});
 												break;
 											}
 										});
