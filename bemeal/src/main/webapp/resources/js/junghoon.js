@@ -67,51 +67,60 @@ junghoon.member = (()=>{
 				});
 				
 				$('#login_submit_btn').click(e=>{
-					$.ajax({
-						url : $.ctx()+'/mbr/login',
-						method : 'post',
-						contentType : 'application/json',
-						data : JSON.stringify({ memberId : $('#memberId').val(),
-												password : $('#password').val()}),
-						success : d => {
-							console.log(d);
-							if(d!=''){//로그인 성공
-								$.cookie("member", d);
-								//nav 버튼 바꾸기
-								$('#taste').show();
-								$('#join').hide();
-								$('#evaluate').show();
-								$('#info').empty();
-								$('<li/>').append($('<a/>').attr({id:"login_form", href:"#"}).html('마이페이지')).appendTo($('#info'))
-								.click(e=>{
-									junghoon.service.mypage();
-								});
-								
-								$('<li/>').append($('<a/>').attr({href:"#"}).html('로그아웃')).appendTo($('#info'))
-								.click(e=>{
+					let memberId = $('#memberId').val();
+					let password = $('#password').val();
+					if(memberId===''){
+						alert('아이디를 입력하세요')
+					}else if(password===''){
+						alert('비밀번호를 입력하세요')
+					}else{
+						$.ajax({
+							url : $.ctx()+'/mbr/login',
+							method : 'post',
+							contentType : 'application/json',
+							data : JSON.stringify({ memberId : memberId,
+													password : password}),
+							success : d => {
+								console.log(d);
+								if(d!=''){//로그인 성공
+									$.cookie("member", d);
 									//nav 버튼 바꾸기
-									$('#taste').hide();
-									$('#join').show();
-									$('#evaluate').hide();
-									$.removeCookie('member');
-									bemeal.main.init();
-								});
-								$('<li/>').append($('<a/>').attr({href:"#"}).html('댓글 테스트')).appendTo($('#info'))
-								.click(e=>{
-									junghoon.service.comment();
-								});
-								$('<li/>').append($('<a/>').attr({href:"#"}).html('검색 테스트')).appendTo($('#info'))
-								.click(e=>{
-									junghoon.service.search();
-								});
-								//메인화면 보여주기
-								bemeal.router.main();
-							}else{//로그인 실패
-								alert('로그인에 실패했습니다.');
-							}
-							},//success end
-						error : (x,y,z)=>{console.log('error :: '+z)}
-				}); //ajax end
+									$('#taste').show();
+									$('#join').hide();
+									$('#evaluate').show();
+									$('#info').empty();
+									$('<li/>').append($('<a/>').attr({id:"login_form", href:"#"}).html('마이페이지')).appendTo($('#info'))
+									.click(e=>{
+										junghoon.service.mypage();
+									});
+									
+									$('<li/>').append($('<a/>').attr({href:"#"}).html('로그아웃')).appendTo($('#info'))
+									.click(e=>{
+										//nav 버튼 바꾸기
+										$('#taste').hide();
+										$('#join').show();
+										$('#evaluate').hide();
+										$.removeCookie('member');
+										bemeal.main.init();
+									});
+									$('<li/>').append($('<a/>').attr({href:"#"}).html('댓글 테스트')).appendTo($('#info'))
+									.click(e=>{
+										junghoon.service.comment();
+									});
+									$('<li/>').append($('<a/>').attr({href:"#"}).html('검색 테스트')).appendTo($('#info'))
+									.click(e=>{
+										junghoon.service.search();
+									});
+									//메인화면 보여주기
+									bemeal.router.main();
+								}else{//로그인 실패
+									alert('로그인에 실패했습니다.');
+								}
+								},//success end
+							error : (x,y,z)=>{console.log('error :: '+z)}
+					});
+					}
+					 //ajax end
 			}); //login_submit_btn end
 		}); //getScript end
 	});

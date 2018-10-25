@@ -95,9 +95,14 @@
 	<bean id="LoginInterscptor" class="com.bemeal.web.cmm.LoginInterceptor"/>
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/**" />
-			<bean class="com.bemeal.web.cmm.AuthInterceptor" />
+			<mvc:mapping path="/mbr/login" />
+			<ref bean="LoginInterscptor"/>
 		</mvc:interceptor>
+		<!-- <mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/mbr/login"/>
+			<bean class="com.bemeal.web.cmm.AuthInterceptor" />
+		</mvc:interceptor> -->
 	</mvc:interceptors>
 	<tx:annotation-driven />
 	

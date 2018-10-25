@@ -81,7 +81,6 @@ public class CommonCtrl {
 		logger.info("temp : "+temp);
 		return (temp==null)?"0":temp;
 	} 
-	@Auth
 	@GetMapping("/grade/add/{id}/{itemSeq}/{grade}")
 	public void addGrade(
 			@PathVariable String id,
@@ -100,7 +99,6 @@ public class CommonCtrl {
 		map.put("grade", grade/2);
 		c.accept(map);
 	} 
-	@Auth
 	@GetMapping("/grade/delete/{id}/{itemSeq}")
 	public void deleteGrade(
 			@PathVariable String id,
@@ -116,7 +114,6 @@ public class CommonCtrl {
 		map.put("itemSeq", itemSeq);
 		c.accept(map);
 	} 
-	@Auth
 	@GetMapping("/grade/update/{id}/{itemSeq}/{grade}")
 	public void updateGrade(
 			@PathVariable String id,
@@ -149,13 +146,14 @@ public class CommonCtrl {
 	
 	/* /Taste - grade*/
 	
-	//  Item
-	@GetMapping("/item/list/{option}")
-	public @ResponseBody Map<String,Object> list(@PathVariable String option){
-		map.clear();
-		logger.info("넘어온 옵션 {}",option); // 평점,판매량,최신 등등의 옵션으로 해당 옵션의 아이템을 검색
+	@GetMapping("/item/list/{option}/{value}")
+	public @ResponseBody Map<String,Object> list(
+			@PathVariable String option,
+			@PathVariable String value){
 		Function<String,ArrayList<HashMap<String,Object>>> f = x->{
 			ArrayList<HashMap<String,Object>> temp = new ArrayList<>();
+			logger.info("넘어온 옵션:"+option);
+			logger.info("넘어온 값:"+value);
 			switch(x) {
 			case "grade": 
 				temp = cmmMapper.gradList();	
@@ -167,17 +165,31 @@ public class CommonCtrl {
 				temp = cmmMapper.wishList();
 				break;
 			case "gender": 
-				temp = cmmMapper.listByGender();
+				temp = cmmMapper.listByGender(value);
 				break;
 			case "age": 
-				temp = cmmMapper.listByAge();
+				map.clear();
+				map.put("start", value);
+				map.put("end", Integer.parseInt(value)+9);
+				temp = cmmMapper.listByAge(map);
+				break;
+			default : 
+				if(x.substring(0,3).equals("tag"))temp = cmmMapper.tagSerchList(value);
 				break;
 			}
 			logger.info(temp.toString());
 			return temp;
 		};
+		map.clear();
 		map.put("option", option);
 		map.put("list", f.apply(option));
 		return map;
+	}
+	
+	/*tag*/
+	@GetMapping("/tagList")
+	public ArrayList<String> tagList(){
+		Supplier<ArrayList<String>>c=()->cmmMapper.tagList();
+		return c.get();
 	}
 }

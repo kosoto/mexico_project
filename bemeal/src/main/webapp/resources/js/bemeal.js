@@ -57,7 +57,7 @@ bemeal.router = {
 								arr:[{image:"/web/resources/img/cmm/banner/banner1.jpg"},{image:"/web/resources/img/cmm/banner/banner2.jpg"}]
 							})
 					),					
-					$('<div/>').attr({id:'content'})
+					$('<div/>').attr({id:'content',style:'margin:0 150px'})
 					/*,$('<footer/>')*/
 				);
 				/*footer 삭제
@@ -71,57 +71,72 @@ bemeal.router = {
 					{category:'buy',title:'가장 판매량이 높은'},
 					{category:'wish',title:'가장 인기 있는'}
 				];
-				$.each(arr,(i,j)=>{
-					$.getJSON($.ctx()+"/item/list/"+j.category,d=>{
+				$.each(arr,(i,j)=>{ 
+					$.getJSON($.ctx()+"/item/list/"+j.category+'/null',d=>{
 						$carousels.append(
 								bemeal.compo.carousel({
-									id:'carousel1',
+									id:'carousel'+i,
 									title:j.title,
 									arr:d.list,
 									row_size:5
 								})
 						);
 					});
-				});
+				}); //$.each end
 
-				// 무한 스크롤 테스트
 				let num = 0;
-				/*
-				 * 무한 스크롤로 추가되는 카테고리들을 어떻게 정할지 고민 필요
-				 * case 1 : DB에서 카테고리들을 가져와서 js에서 배열로 저장해둔 후 배열에서 랜덤으로 카테고리를 뽑아내서 결정
-				 * 			js에서 java로 데이터를 요청할때 카테고리이름만 전송하면 됨.
-				 * 			java에서 카테고리를 가져올때 전부가 아니라 화면에 보여주고 싶은 갯수 만큼만 가져올것
-				 * case 2 : js에서 java로 데이터롤 요청하면 java에서 DB에서 이미 화면에 뿌려지지 않은 카테고리를 검색하여 js로 전송
-				 * 			이 경우 js에서 이미 검색된 배열정보를 java로 보내주어야함.  
-				 */
 				let titles = {} || titles;
-				//1.남성 여성 2.나이 3.주소? 4.태그?
 				let member = $.cookie('member');
-				if(member!==undefined){
-					titles = {
-							gender:member['gender'],
-							age:member['age']
-					};
-				}
-				let keySet = Object.keys(titles);
-				let values = Object.values(titles);
-				
-				let $window = $(window);
-				$window.on('scroll.category',e=>{
-					if(num<keySet.length && $window.scrollTop()+$window.height()+30>$(document).height()){
-						$.getJSON($.ctx()+"/item/list/"+keySet[num],d=>{
-							$carousels.append(
-									bemeal.compo.carousel({
-										id:'carousel'+num+4,
-										title:values[num],
-										arr:d.list,
-										row_size:5
-									})
-							);
-							num++;
-						}); 
+				$.getJSON($.ctx()+'/tagList',d=>{
+					tags = d;
+					if(member!==undefined){
+						titles = {
+								gender:member['gender'],
+								age:(member['age']+"").substring(0,1)+"0"
+						};
 					}
-				});//scroll event end
+					for(let i=1;i<=20;i++){
+						let temp = Math.floor(Math.random()*tags.length);
+						titles['tag'+i] = tags[temp];
+						tags.splice(temp,1);
+					}
+					let keySet = Object.keys(titles);
+					let values = Object.values(titles);
+					let p = {
+							gender:'자가 좋아하는',
+							age:'대가 좋아하는'
+					};
+					let $window = $(window);
+					$window.on('scroll.category',e=>{
+							if(keySet.length!=0 && $window.scrollTop()+$window.height()+80>$(document).height()){
+								let key = keySet.pop();
+								let value = values.pop();
+								$.getJSON($.ctx()+"/item/list/"+key+"/"+value,d=>{
+									setTimeout(() => {
+										$carousels.append(
+												bemeal.compo.carousel({
+													id:'carousel'+key,
+													title:(x=>{
+														if(key==='gender'){
+															return value+'성이 좋아하는'
+														}
+														if(key==='age'){
+															return value+'대가 좋아하는'
+														}
+														if(key.substring(0,3)==='tag'){
+															return '#'+value;
+														}
+														return '';
+													})(),
+													arr:d.list,
+													row_size:5
+												})
+										);
+									}, 750);
+								}); 
+							}
+					});//scroll event end
+				}); //getJSON tagList end
 		}
 };
 
