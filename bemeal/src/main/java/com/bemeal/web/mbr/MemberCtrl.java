@@ -9,9 +9,11 @@ import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -55,27 +57,29 @@ public class MemberCtrl {
 		r.put("eMail", mbr.getEMail());
 		r.put("phoneNum", mbr.getPhoneNum());
 		
-		mbrMapper.post(mbr);
-		//member.post
-	}
-	
-	@RequestMapping("/retrieve")
-	public void retrieve() {
+		System.out.println("r :: "+ r.toString());
 		
+		mbrMapper.post(r);
 	}
-	@RequestMapping("/modify")
-	public void modify() {
-		
-	}
-	
-	public void remove() {
-		
+	@PostMapping("/remove")
+	public void delete(@ModelAttribute Member member, @ModelAttribute("user") Member user) {
+		Util.log.accept("delete 넘어온 아이디 값 :: "+user.getMemberId());
+		member.setMemberId(user.getMemberId());
+		mbrMapper.delete(user);
 	}
 	@PostMapping("/login")
 	public @ResponseBody Member login(@RequestBody Member mbr) {
 		Function<Member, Member>f=x->mbrMapper.get(x);
 		return f.apply(mbr);
 	}
+	@PostMapping("/modify")
+	public void modify(@ModelAttribute("member") Member member, @ModelAttribute("user") Member user) {
+		logger.info("modify()");
+		Util.log.accept("update 넘어온 아이디 값 :: "+user.getMemberId());
+		member.setMemberId(user.getMemberId());
+		mbrMapper.put(member);
+	}
+	
 	
 	public void logout() {
 		

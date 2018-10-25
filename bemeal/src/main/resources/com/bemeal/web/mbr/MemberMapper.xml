@@ -35,6 +35,19 @@
     		</if>
     	</where>
     </select>
-    
-    
+    <update id="">
+    	UPDATE MEMBER SET 
+    </update>
+    <delete id="delete">
+		DELETE FROM MEMBER
+		WHERE MEMBER_ID LIKE #{memberId}
+	</delete>
+	<update id="put">
+		UPDATE MEMBER SET PASSWORD = #{password}, ADDRESS = {address}, E_MAIL = #{eMail}, PHONE_NUM = #{phoneNum}
+			WHERE MEMBER_ID LIKE #{memberId}
+	</update>
+	
+	
+	
+	
   </mapper>
