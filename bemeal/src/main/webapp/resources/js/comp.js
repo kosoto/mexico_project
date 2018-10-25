@@ -11,18 +11,22 @@ ui = {
 		},
 		checkbox : x=>{ //kui.checkbox({id:'',txt:''})
 			let p = $('<span/>').addClass('form-check');
-			$('<input/>').attr({type:'checkbox', id:x.id}).prop("checked", true)
+			$('<input/>').attr({type:'checkbox', id:x.id, name:'cartchk'}).prop("checked", true)
 			.addClass('form-check-input').appendTo(p);
 			$('<label/>').attr({type:'label'})
 			.addClass('form-check-label').html(x.txt+"　").appendTo(p);
 			return p;
 		},
-		content_g : x=>{ // kui.content_g();
+		content_g : x=>{ // ui.content_g();
 			return $('#k_contentlot').empty().html('<div class="container">'
-					  +'<div class="grid_title_l"><div id="title_l"/></div>' 
-					  +'<div class="grid_title_r"><div id="title_r"/></div>'
-					  +'<div class="k_contentlot"><div id="content_g"/></div>'
+					  +'<div class="k_header"><div id="k_header"/></div>' 
+					  +'<div class="k_contentlot"><div id="k_content"/></div>'
 					  +'</div>');
+		},
+		newpage : ()=>{
+			return $('#k_content').empty()
+				   +$('#k_header').empty()
+				   +$('#k_footer').empty();
 		},
 		stndlayout : x=>{
 		},

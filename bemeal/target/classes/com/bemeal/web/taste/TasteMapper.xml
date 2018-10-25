@@ -3,11 +3,28 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.bemeal.web.taste.TasteMapper">
-  	 <resultMap type="java.util.HashMap" id="tmap">
-    	<result property="grade" column="GRADE"/> 
-  		<result property="cntgrade" column="CNTGRADE"/> 
- 	 </resultMap>
- 	 
+  		<resultMap type="hashmap" id="tmap">
+  		<result property="itemSeq" column="ITEM_SEQ"/>
+  		<result property="itemName" column="ITEM_NAME"/>
+  		<result property="brand" column="BRAND"/>
+  		<result property="category" column="CATEGORY"/>
+  		<result property="price" column="PRICE"/>
+  		<result property="salePercent" column="SALE_PERCENT"/>
+  		<result property="event" column="EVENT"/>
+  		<result property="newItem" column="NEW_ITEM"/>
+  		<result property="explains" column="EXPLAINS"/>
+  		<result property="calorie" column="CALORIE"/>
+  		<result property="imgSeq" column="IMG_SEQ"/>
+  		<result property="img" column="IMG"/>
+  		<result property="memberId" column="MEMBER_ID"/>
+  		<result property="tasteSeq" column="TASTE_SEQ"/>
+  		<result property="quantity" column="QUANTITY"/>
+  		<result property="dirName" column="DIR_NAME"/>
+  		<result property="grade" column="GRADE"/>
+  		<result property="tasteDate" column="TASTE_DATE"/>
+  		<result property="tasteTime" column="TASTE_TIME"/>
+  		<result property="flag" column="FLAG"/>
+  	</resultMap>
   	<insert id="post">
   		INSERT INTO TASTE
   		(QUANTITY,DIR_NAME,GRADE,FLAG,MEMBER_ID,ITEM_SEQ)
@@ -56,6 +73,35 @@ FROM (SELECT G.TAG_NAME AS "ingre", AVG(T.GRADE) AS "ingreAvg", COUNT(T.GRADE) A
     AND T.MEMBER_ID LIKE 'test1'
     AND T.FLAG LIKE 'star'
 	GROUP BY I.CATEGORY;
+ 	</select>
+ 	<insert id="postCart">
+ 	INSERT INTO TASTE
+	(Flag, MEMBER_ID, ITEM_SEQ,Quantity)
+	VALUES
+	('cart', #{id}, #{itemSeq}, #{quantity});
+ 	</insert>
+ 	<delete id="deleteCart" parameterType="map">
+ 	DELETE FROM TASTE 
+  	WHERE FLAG LIKE "cart" 
+  	  <choose>
+            <when test="delList.size != 0">
+                AND TASTE_SEQ IN 
+                <foreach collection="delList" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </when>
+        </choose>
+ 	</delete>
+ 	<select id="listCart" resultMap="tmap">
+ 	SELECT T.*,I.*, IMG.*
+	FROM ITEM I
+	JOIN TASTE T
+	ON T.ITEM_SEQ LIKE I.ITEM_SEQ
+	JOIN IMAGE IMG
+	ON I.ITEM_SEQ LIKE IMG.ITEM_SEQ
+	WHERE T.FLAG LIKE #{flag}
+	AND T.MEMBER_ID LIKE #{id}
+	ORDER BY T.TASTE_DATE DESC, T.TASTE_TIME DESC;
  	</select>
   </mapper>
 

@@ -17,7 +17,9 @@
             }
 
 .k_contentlot { grid-area: main;
-				background-color: #fdd734;}
+				background-color: #fdd734;
+				font-family: 'Gothic A1', sans-serif; 
+				}
 .k_rightlot { grid-area: right; 
 				background-color: #fdd734;}
 
@@ -33,6 +35,7 @@
 .navi_home{
 	
 }
+
 .b01_simple_rollover {
     color: #000000;
     padding: 10px;
@@ -45,17 +48,19 @@
 }
 
 
-
+.k_header {grid-area: header;}
+.k_content {grid-area: main,
+			background-color: 'none'}
 .grid_title_l { grid-area: title_l;}
 .grid_title_r { grid-area: title_r;}
-.grid_footer { grid-area: footer; 
+.k_footer { grid-area: footer; 
 		}
 
 /*Cart layout Grid */
 .grid_layout {
   display: grid;
   grid-template-areas:
-    'title_l title_l title_l title_r title_r title_r'
+    'header header header header header header'
     'main main main main main main'
     'footer footer footer footer footer footer';
   grid-gap: 5px;
@@ -75,7 +80,7 @@
   display: grid;
   grid-template-columns: auto auto auto auto auto auto auto auto;
   grid-gap: 1px;
-  background-color: #ffffff;
+  background-color: rgb(255,255,255,0.5);
   padding: 5px;
 }
 .list-grid-container > div {
@@ -126,8 +131,8 @@
 }
 /* 장바구니 title-결제-완료 */
 .cart_title{
-    background-image: url('http://i.huffpost.com/gen/2808028/thumbs/r-SALMON-large570.jpg');
-    padding:20px;
+    background-color: 'none';
+    margin-top: 10px;
     color : white;
 }
 .bs-wizard {margin-top: 0px;
@@ -229,6 +234,7 @@
   padding: 8px;
 } */
 
+/* payHis */
 
 
 /* taste */
@@ -252,6 +258,7 @@
 
 .anlyz_form{
   margin-top: 20px;
+  margin-left: 10%;
   background-color: rgba(255,255,255,0.6);
   width: 90%;
  /*  font: 30px; */ 
@@ -261,7 +268,6 @@
 .card_row{
 	 margin-top: 10px;
 }
-@import url('https://fonts.googleapis.com/css?family=Nanum+Pen+Script');
 
 .gift_c {
    /*  position:absolute; */
@@ -273,7 +279,7 @@
     background:#ffffff;
     overflow:hidden;
     box-shadow:0 5px 10px rgba(0,0,0,0.5);
-    font-family: 'Nanum Pen Script', cursive!important;
+    font-family: 'Nanum Pen Script', cursive;!important;
 }
 .gift_c .gift_img {
     position:relative;
