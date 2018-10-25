@@ -30,19 +30,34 @@
   		<result property="grade" column="GRADE"/>
   		<result property="tasteDate" column="TASTE_DATE"/>
   		<result property="tasteTime" column="TASTE_TIME"/>
+  		<result property="articleSeq" column="ARTICLE_SEQ"/>
+  		<result property="title" column="TITLE"/>
+  		<result property="content" column="CONTENT"/>
+  		<result property="date" column="ARTICLE_DATE"/>
+  		<result property="url" column="URL"/>
   		<result property="flag" column="FLAG"/>
   		<result property="avg" column="avg"/>
   		<result property="count" column="COUNT"/>
-  		<result property="sum" column="SUM"/>
+  		<result property="sum" column="SUM"/><!-- 갈사람 -->
   	</resultMap>
   	<insert id="post">
-  	
+  		INSERT INTO article(CONTENT,MEMBER_ID,ITEM_SEQ) 
+  		VALUES(#{content},#{memberId},#{itemSeq});<!-- 오는사람 -->
   	</insert>
+
   	
-<!--   	<select id="get" resultMap="result">
-  	
+   	<select id="get" resultMap="result">
+		SELECT B.*
+		FROM (
+				SELECT ROW_NUMBER() OVER() AS no,A.*
+				FROM (
+					SELECT *
+					FROM ARTICLE
+					WHERE ITEM_SEQ LIKE #{itemSeq}
+				)A)B
+		ORDER BY B.no 
   	</select>
-  	
+  	<!--
   	<update id="put">
   	
   	</update>

@@ -33,6 +33,11 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.7.1/less.min.js"></script>
 <!--  kaeun font -->
 <link href="https://fonts.googleapis.com/css?family=Do+Hyeon|Gothic+A1|Nanum+Pen+Script" rel="stylesheet">
+<!--  내거 font 지우고 승태한테 부탁할 것 -->
+<link href="https://fonts.googleapis.com/css?family=Black+Han+Sans|Do+Hyeon&amp;subset=korean" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Black+Han+Sans&amp;subset=korean" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Black+Han+Sans|Do+Hyeon|Song+Myung&amp;subset=korean" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Black+Han+Sans|Do+Hyeon|Song+Myung|Sunflower:300&amp;subset=korean" rel="stylesheet">
 <!-- star-rating-svg -->
 <script src="${context}/resources/js/jquery/star-rating-svg.js"></script>
 <link rel="stylesheet" type="text/css" href="${context}/resources/css/star-rating-svg.css">
