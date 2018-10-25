@@ -57,7 +57,7 @@ bemeal.router = {
 								arr:[{image:"/web/resources/img/cmm/banner/banner1.jpg"},{image:"/web/resources/img/cmm/banner/banner2.jpg"}]
 							})
 					),					
-					$('<div/>').attr({id:'content',style:'margin:0 150px'})
+					$('<div/>').attr({id:'content'}).addClass('mainContent')
 					/*,$('<footer/>')*/
 				);
 				/*footer 삭제
@@ -147,6 +147,7 @@ bemeal.compo=(()=>{
 					$('<a/>').addClass('navbar-brand').attr({href:'#',id:'logo'}).append($('<strong/>').text('Be meal')).click(e=>{
 						e.preventDefault();
 						$window.off('scroll.category');
+						$('#content').removeClass('mainContent');
 						bemeal.router.main();
 					}),
 					$('<button/>').addClass('navbar-toggler').attr({
@@ -162,6 +163,7 @@ bemeal.compo=(()=>{
 									$('#menu').parent().addClass('active');
 									$.getScript($.script()+"/yoonho.js",()=>{
 										$(window).off('scroll.category');
+										$('#content').removeClass('mainContent');
 										yoonho.service.list();
 									})
 								})
@@ -173,6 +175,7 @@ bemeal.compo=(()=>{
 									$('#join').parent().addClass('active');
 									$.getScript($.script()+"/junghoon.js",()=>{
 										$(window).off('scroll.category');
+										$('#content').removeClass('mainContent');
 										junghoon.member.add();
 									})
 								})
@@ -184,6 +187,7 @@ bemeal.compo=(()=>{
 									$('#taste').parent().addClass('active');
 									$.getScript($.script()+"/kaeun.js",()=>{
 										$(window).off('scroll.category');
+										$('#content').removeClass('mainContent');
 										kaeun.main.init();
 									})
 								})
@@ -194,6 +198,7 @@ bemeal.compo=(()=>{
 									$('.nav-item').removeClass('active');
 									$('#evaluate').parent().addClass('active');
 									$(window).off('scroll.category');
+									$('#content').removeClass('mainContent');
 									bemeal.evaluate.main();
 								})
 							)
@@ -217,6 +222,7 @@ bemeal.compo=(()=>{
 									e.preventDefault();
 									$.getScript($.script()+"/junghoon.js",(e)=>{
 										$(window).off('scroll.category');
+										$('#content').removeClass('mainContent');
 										junghoon.member.login();
 									})
 								})
