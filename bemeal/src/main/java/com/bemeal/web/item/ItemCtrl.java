@@ -39,23 +39,27 @@ public class ItemCtrl {
 			@PathVariable String sort
 			){
 		map.clear();
-		logger.info("brand {}",brand); // 평점,판매량,최신 등등의 옵션으로 해당 옵션의 아이템을 검색
-		logger.info("category {}",category);
-		logger.info("sort {}",sort);
-		item.setBrand(brand);
-		item.setCategory(category);
-		
-		logger.info("item.getBrand {}",item.getBrand());
-		logger.info("item.getCategory {}",item.getCategory());
-		
-		map.put("brand", item.getBrand());
-		map.put("category", item.getCategory());
-		map.put("sort", sort);
-		itemMapper.listSome(item);
-		map.put("listsm", itemMapper.listSome(item));
-		map.put("listall",itemMapper.listAll());
-		//img.setItemSeq(item.getItemSeq());
-		logger.info("itemMapper::"+map.get("list"));
+		if(brand.equals("브랜드전체") && category.equals("카테고리전체")) {
+			item.setBrand(null);
+			item.setCategory(null);	
+		}else if(brand.equals("브랜드전체")) {
+			item.setBrand(null);
+			item.setCategory(category);
+		}else if(category.equals("카테고리전체")) {
+			item.setCategory(null);
+			item.setBrand(brand);
+		}else {
+			item.setBrand(brand);
+			item.setCategory(category);
+		}
+		if(sort.equals("가격")) {
+			map.put("listsm", itemMapper.listSomePrice(item));
+		}else if(sort.equals("칼로리")){
+			map.put("listsm", itemMapper.listSomeCalorie(item));
+		}/*else {
+			map.put("listsm", itemMapper.listSomeScore(item));
+		}*///그냥평점으로하면 한 아이템당 여러 아이디가 평가한 평점들을 나열하기 때문에  평균평점으로 sort해야함
+		logger.info("itemMapper::"+map.get("listsm"));
 		return map;
 	}
 	@RequestMapping(value="/item/retrieve/{itemSeq}")

@@ -10,6 +10,8 @@ import com.bemeal.web.img.Image;
 public interface ItemMapper {
 	public void post(Item p);
 	public List<Item> listAll();
-	public List<Item> listSome(Item p);
+	public List<Item> listSomePrice(Item p);
+	public List<Item> listSomeCalorie(Item p);
+	public List<Item> listSomeScore(Item p);
 	public List<Item> retrieve(Item p);
 }

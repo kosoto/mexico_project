@@ -41,22 +41,65 @@
   		VALUES
 	  	(#{itemSeq},#{itemName},#{brand},#{category},#{price},#{calorie},#{explains})
   	</insert>
-  	<select id="listAll" resultMap="result">
-  		SELECT 
-  			it.*,img.*
-		FROM 
-			ITEM it
-			JOIN image img
-				on it.item_seq like img.item_seq
-  	</select>
- 	<select id="listSome" resultMap="result">
+ 	<select id="listSomePrice" resultMap="result">
 		SELECT it.*,img.*
 		FROM
 			ITEM it
 			JOIN image img
 				on it.item_seq like img.item_seq
-		WHERE it.brand like #{brand}
-		AND it.category like #{category}
+		<where>
+			<if test="brand != null and category != null">
+				it.brand like #{brand} AND it.category like #{category}
+			</if>
+			<if test="brand != null and category == null">
+				it.brand like #{brand}
+			</if>
+			<if test="brand == null and category != null">
+				it.category like #{category}
+			</if>
+		</where>
+		ORDER BY it.price DESC
+  	</select>
+ 	<select id="listSomeCalorie" resultMap="result">
+		SELECT it.*,img.*
+		FROM
+			ITEM it
+			JOIN image img
+				on it.item_seq like img.item_seq
+		<where>
+			<if test="brand != null and category != null">
+				it.brand like #{brand} AND it.category like #{category}
+			</if>
+			<if test="brand != null and category == null">
+				it.brand like #{brand}
+			</if>
+			<if test="brand == null and category != null">
+				it.category like #{category}
+			</if>
+		</where>
+		ORDER BY it.calorie DESC
+  	</select>
+  	 	<select id="listSomeScore" resultMap="result">
+		SELECT it.*,img.*
+		FROM
+			ITEM it
+			JOIN image img
+				on it.item_seq like img.item_seq
+			JOIN taste t
+				on it.item_seq like t.item_seq
+		<where>
+			t.flag like 'star'
+			<if test="brand != null and category != null">
+				AND it.brand like #{brand} AND it.category like #{category}
+			</if>
+			<if test="brand != null and category == null">
+				AND it.brand like #{brand}
+			</if>
+			<if test="brand == null and category != null">
+				AND it.category like #{category}
+			</if>
+		</where>
+		ORDER BY t.grade DESC
   	</select>
   	<select id="retrieve" resultMap="result">
 		SELECT it.*,
