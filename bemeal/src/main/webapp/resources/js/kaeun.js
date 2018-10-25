@@ -338,6 +338,7 @@ kaeun.payments = {
             })
 		},
 		putBuy : x=>{
+			//구매하기를 누르면
 			
 		},
 		update : ()=>{ //taste update
@@ -374,6 +375,8 @@ kaeun.tastes = {
 				ui.btn({id:'cart_order_btn'+i,size:'mini',color:'black',txt:'구매하기'}).appendTo($('#cart_btns'+i))
 				.click(e=>{
 					alert("구매하시겠습니까?");
+					let postList = [d[i].itemSeq];
+					
 				});
 				$('<br/>').appendTo($('#cart_btns'+i));
 				ui.btn({id:'cart_gift_btn'+i,size:'mini',color:'red',txt:'선물하기'}).appendTo($('#cart_btns'+i))
