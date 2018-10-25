@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 public interface TasteMapper {
 	public void post(Taste p);
 	public int existGrade(String id);
+	public void postCart(Map<String, Object> p);
+	public int deleteCart(Map<String, Object> p);
+	public ArrayList<Map<String, Object>> listCart(Map<String, Object> p);
 	public ArrayList<Map<String, Object>> chartArea(String id);
 	public ArrayList<Map<String, Object>> chartIngre();
 	public ArrayList<Map<String, Object>> chartBrand();
