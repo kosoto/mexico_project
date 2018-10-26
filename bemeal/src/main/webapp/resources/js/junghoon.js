@@ -511,41 +511,45 @@ junghoon.service = {
 							junghoon.service.search();
 						})
 						$('#search_submit').click(e=>{
-							$.ajax({
-								url : ctx()+'',
-								method:'get',
-								contentType: 'application/json',
-								data:JSON.stringify({"tag_foodstuffs":txt1,
-													 "tag_taste":txt2,
-													 "tag_sensitivity":txt3}),
-								success:d=>{                                      
-									var foodstuffs = document.forms[0];
-									var taste = document.forms[0];
-									var sensitivity = document.forms[0];
-									var txt1 = "";
-									var txt2 = "";
-									var txt3 = "";
-									var i;
-									var j;
-									var k;
-									for(i = 0; i<j_foodstuffs.length; i++){
-										if(j_foodstuffs[i].checked){
-											txt1 = txt1 + j_foodstuffs[i].name+"/";
-										}
-									}
-									for(j = 0; j<j_taste.length; j++){
-										if(j_taste[j].checked){
-											txt2 = txt2 + j_taste[j].name+"/";
-										}
-									}
-									for(k = 0; k<j_sensitivity.length; k++){
-										if(j_sensitivity[k].checked){
-											txt3 = txt3 + j_sensitivity[k].name+"/";
-										}
-									}
-									
-								alert('선택한 재료 '+txt1+' 선택한 맛  '+txt2+' 선택한 감성 '+txt3);
+							var foodstuffs = document.forms[0];
+							var taste = document.forms[0];
+							var sensitivity = document.forms[0];
+							var txt1 = "";
+							var txt2 = "";
+							var txt3 = "";
+							var i;
+							var j;
+							var k;
+							for(i = 0; i<j_foodstuffs.length; i++){
+								if(j_foodstuffs[i].checked){
+									txt1 = txt1 + j_foodstuffs[i].name+"/";
 								}
+							}
+							for(j = 0; j<j_taste.length; j++){
+								if(j_taste[j].checked){
+									txt2 = txt2 + j_taste[j].name+"/";
+								}
+							}
+							for(k = 0; k<j_sensitivity.length; k++){
+								if(j_sensitivity[k].checked){
+									txt3 = txt3 + j_sensitivity[k].name+"/";
+								}
+							}
+							alert('선택한 재료 '+txt1+' 선택한 맛  '+txt2+' 선택한 감성 '+txt3);
+							
+							$.ajax({
+								url : $.ctx()+'/search/tagSearch',
+								method:'post',
+								contentType:'application/json',
+								data:JSON.stringify({"tagFoodstuffs":txt1,
+													 "tagTaste":txt2,
+													 "tagSensitivity":txt3}),
+								success:d=>{                                      
+								alert('success');
+								},
+								error:(x,y,z)=>{
+									console.log('error :: '+z)
+									}
 													 
 							})
 							
