@@ -65,12 +65,7 @@ bemeal.router = {
 							})
 					),					
 					$('<div/>').attr({id:'content'}).addClass('mainContent')
-					/*,$('<footer/>')*/
 				);
-				/*footer 삭제
-				$.getScript($.script()+"/ui/footer.js",()=>{
-					$('footer').append(footerUI());
-				});*/
 				let $content = $('#content');
 				let $carousels = $('<div/>').appendTo($content);
 				let arr = [
@@ -293,8 +288,7 @@ bemeal.compo=(()=>{
 				$('<div/>').text(arr[j].itemName).appendTo($span);
 				$('<img/>').attr({
 					src:arr[j].img,
-					alt:arr[j].itemName
-					,
+					alt:arr[j].itemName,
 					style:"width:"+(100/row_size)+"%;height:150px"
 				})
 				.click(e=>{
@@ -423,83 +417,70 @@ bemeal.evaluate=(()=>{
 										)
 								)
 						);
-						for(let j=1;j<=4;j++){
-							let $gift_c = $('<div/>').addClass('card gift_c');
-							let $gift_img = $('<div/>').addClass('gift_img').append(
+						for(let j=1;j<=4;j++,index++){
+							$('<div/>').addClass('card gift_c').appendTo($gift_slid).append(
+								$('<div/>').addClass('gift_img').append(
 									$('<img/>').attr({src:arr[index].img})
-							).appendTo($gift_c);
-							let $gift_details = $('<div/>').addClass('gift_details').appendTo($gift_c);
-							let $h2 = $('<h2/>').addClass('evaluative_title').text(arr[index].itemName).appendTo($gift_details);
-							let $star_rating_container = $('<div/>').attr({'data-seq':arr[index].itemSeq}).appendTo($gift_details)
-							.starRating({ //https://github.com/nashio/star-rating-svg
-								initialRating: 0, //초기값  
-								starSize: 32,  //width속성값
-								//minRating : 0,
-								emptyColor : 'white',
-								hoverColor : 'orange',
-								activeColor : 'orange',
-								ratedColor : 'orange',
-								useGradient : false,
-								strokeColor: 'orange',  //border color
-								callback : (currentRating, $el)=>{
-									let $gradeCnt = $('#gradeCnt');
-									let $gradeWidth = $('#gradeWidth');
-									let cnt = $gradeCnt.text()*1;
-									let itemCnt = $gradeWidth.data('itemcnt')*1;
-									if(currentRating!=0){
-										let seq = $el.data('seq');
-										$.ajax({
-											url : $.ctx()+'/grade/evaluate',
-											method : 'post',
-											contentType : 'application/json',
-											data : JSON.stringify({
-												memberId:memberId,
-												seq:seq,
-												currentRating:currentRating*2
-											}),
-											success : r=>{
-												console.log('grade/evluate 리턴:'+r);
-												if(r==='add'){
-													$gradeCnt.html(cnt+1);
-													$gradeWidth.attr({style:'width:'+((cnt+1)/itemCnt)*580+'px'});
-												}else if(r==='remove'){
-													$el.starRating('setRating', 0);
-													$gradeCnt.html(cnt-1);
-													$gradeWidth.attr({style:'width:'+((cnt-1)/itemCnt)*580+'px'});
-												}
-											},
-											error : (e1,e2,e3)=>{
-												console.log(e1);
-												console.log(e2);
-												console.log(e3);
-											}
-										});
-										/*$.getJSON($.ctx()+'/grade/evaluate/'+memberId+'/'+seq+'/'+(currentRating*2), r=>{
-											console.log('grade/evluate 리턴:'+r);
-											if(r==='add'){
-												$gradeCnt.html(cnt+1);
-												$gradeWidth.attr({style:'width:'+((cnt+1)/itemCnt)*580+'px'});
-											}else if(r==='remove'){
-												$el.starRating('setRating', 0);
-												$gradeCnt.html(cnt-1);
-												$gradeWidth.attr({style:'width:'+((cnt-1)/itemCnt)*580+'px'});
-											}
-										});*/
-								   }
-								} //callback end
-								}); //star-rating end
-							let $gift_msg = $('<div/>').addClass('gift_msg').appendTo($gift_details).append(
-									$('<p/>').text(arr[index].explains),
-									$('<a/>').addClass('evaluateToRetrieve').text('상세보기').attr({href:'#','data-seq':arr[index].itemSeq})
-									.click(e=>{
-										e.preventDefault();
-										yoonho.service.retrieve(e.currentTarget.dataset.seq);
-									})
-							);
-							$gift_slid.append($gift_c);
-							index++;
-						}
-					}
+								),
+								$('<div/>').addClass('gift_details').append(
+									$('<h2/>').addClass('evaluative_title').text(arr[index].itemName),
+									$('<div/>').attr({'data-seq':arr[index].itemSeq}).starRating({ //https://github.com/nashio/star-rating-svg
+												initialRating: 0, //초기값  
+												starSize: 32,  //width속성값
+												emptyColor : 'white',
+												hoverColor : 'orange',
+												activeColor : 'orange',
+												ratedColor : 'orange',
+												useGradient : false,
+												strokeColor: 'orange',  //border color
+												callback : (currentRating, $el)=>{
+													let $gradeCnt = $('#gradeCnt');
+													let $gradeWidth = $('#gradeWidth');
+													let cnt = $gradeCnt.text()*1;
+													let itemCnt = $gradeWidth.data('itemcnt')*1;
+													if(currentRating!=0){
+														let seq = $el.data('seq');
+														$.ajax({
+															url : $.ctx()+'/grade/evaluate',
+															method : 'post',
+															contentType : 'application/json',
+															data : JSON.stringify({
+																memberId:memberId,
+																seq:seq,
+																currentRating:currentRating*2
+															}),
+															success : r=>{
+																console.log('grade/evluate 리턴:'+r);
+																if(r==='add'){
+																	$gradeCnt.html(cnt+1);
+																	$gradeWidth.attr({style:'width:'+((cnt+1)/itemCnt)*580+'px'});
+																}else if(r==='remove'){
+																	$el.starRating('setRating', 0);
+																	$gradeCnt.html(cnt-1);
+																	$gradeWidth.attr({style:'width:'+((cnt-1)/itemCnt)*580+'px'});
+																}
+															},
+															error : (e1,e2,e3)=>{
+																console.log(e1);
+																console.log(e2);
+																console.log(e3);
+															}
+														});
+												   }
+												} //callback end
+												}), //star-rating end	
+									$('<div/>').addClass('gift_msg').append(
+											$('<p/>').text(arr[index].explains),
+											$('<a/>').addClass('evaluateToRetrieve').text('상세보기').attr({href:'#','data-seq':arr[index].itemSeq})
+											.click(e=>{
+												e.preventDefault();
+												yoonho.service.retrieve(e.currentTarget.dataset.seq);
+											})
+									)
+								)
+						  );
+						} //inner for loop end
+					} //for loop end
 				}
 			});
 			

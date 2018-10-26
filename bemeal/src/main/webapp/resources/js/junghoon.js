@@ -550,22 +550,14 @@ junghoon.service = {
 								error:(x,y,z)=>{
 									console.log('error :: '+z)
 									}
-													 
 							})
-							
-							
-							
-							
-							
 						})
-						
 					})
-					
 					},
 				mypage : x => {
 			alert('mp');
 			$.getScript($.script()+'/ui/j_mbrupdate.js', ()=>{
-					$('#content').empty().html(modifyUI())
+					$('#content').empty().html(modifyUI($.cookie('member')))
 				});
 	}
 }
