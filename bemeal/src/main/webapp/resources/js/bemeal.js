@@ -47,7 +47,6 @@ bemeal.router = {
 		},
 		main : ()=>{
 			if($.cookie("member")!==undefined){
-				console.log($.cookie("member"));
 				$('.auth').show();
 				$('.unAuth').hide();
 			}else{
@@ -212,7 +211,11 @@ bemeal.compo=(()=>{
 							)
 						),
 						$('<form/>').addClass('form-inline').append(
-							$('<input/>').addClass('form-control mr-sm-2').attr({type:'text','aria-label':'Search'}),
+							$('<input/>').addClass('form-control mr-sm-2').attr({type:'text','aria-label':'Search'}).keydown(e=>{if(e.keyCode === 13)e.preventDefault();}).keyup(e=>{
+								//검색하기
+								let searchWord = '';
+								console.log('검색어'+e.currentTarget.value);
+							}),
 							$('<button/>').addClass('btn btn-outline-white btn-sm my-0').attr({style:'color:black!important',type:'button',id:'testSearch'}).text('Search').click(e=>{
 								e.preventDefault();
 								$.getScript($.script()+"/junghoon.js",()=>{
@@ -251,22 +254,6 @@ bemeal.compo=(()=>{
 										$('.unAuth').show();
 										$.removeCookie('member');
 										bemeal.router.main();
-									})
-								}),
-								$('<a/>').addClass('dropdown-item auth').attr({href:'#'}).text('댓글 테스트').click(e=>{
-									e.preventDefault();
-									$.getScript($.script()+"/junghoon.js",(e)=>{
-										$(window).off('scroll.category');
-										$('#content').removeClass('mainContent');
-										junghoon.service.comment();
-									})
-								}),
-								$('<a/>').addClass('dropdown-item auth').attr({href:'#'}).text('검색 테스트').click(e=>{
-									e.preventDefault();
-									$.getScript($.script()+"/junghoon.js",(e)=>{
-										$(window).off('scroll.category');
-										$('#content').removeClass('mainContent');
-										junghoon.service.search();
 									})
 								})
 							)
@@ -447,69 +434,48 @@ bemeal.evaluate=(()=>{
 									let $gradeWidth = $('#gradeWidth');
 									let cnt = $gradeCnt.text()*1;
 									let itemCnt = $gradeWidth.data('itemcnt')*1;
-									console.log($gradeWidth);
-									console.log($gradeWidth.width());
-									console.log(cnt);
-									console.log(itemCnt);
 									if(currentRating!=0){
-										console.log('currentRating'+currentRating);
 										let seq = $el.data('seq');
-										$.getJSON($.ctx()+'/grade/retrieve/'+memberId+'/'+seq,d=>{//id와 item_seq를 넘겨줌
-											console.log("grade:"+d);
-											console.log(typeof(d));
-											console.log("gracurrentRatingde:"+currentRating);
-											console.log('width'+((cnt-1)/itemCnt*1)*580)
-											if(d==0){
-												console.log('추가 케이스');
-												$.getJSON($.ctx()+'/grade/add/'+memberId+'/'+seq+'/'+currentRating*2,d=>{
-													console.log('별점 추가'+d);
+										$.ajax({
+											url : $.ctx()+'/grade/evaluate',
+											method : 'post',
+											contentType : 'application/json',
+											data : JSON.stringify({
+												memberId:memberId,
+												seq:seq,
+												currentRating:currentRating*2
+											}),
+											success : r=>{
+												console.log('grade/evluate 리턴:'+r);
+												if(r==='add'){
 													$gradeCnt.html(cnt+1);
 													$gradeWidth.attr({style:'width:'+((cnt+1)/itemCnt)*580+'px'});
-												});
-											}else if(d==currentRating){
-												console.log('삭제 케이스');
-												$.getJSON($.ctx()+'/grade/delete/'+memberId+'/'+seq,d=>{
-													console.log('별점 삭제'+d);
+												}else if(r==='remove'){
 													$el.starRating('setRating', 0);
 													$gradeCnt.html(cnt-1);
 													$gradeWidth.attr({style:'width:'+((cnt-1)/itemCnt)*580+'px'});
-												});
-											} else{
-												console.log('수정 케이스');
-												$.getJSON($.ctx()+'/grade/update/'+memberId+'/'+seq+'/'+currentRating*2,d=>{
-													console.log('별점 수정'+d);
-												});
+												}
+											},
+											error : (e1,e2,e3)=>{
+												console.log(e1);
+												console.log(e2);
+												console.log(e3);
 											}
-											/*switch(d){
-											case 0: // 정보가 없으니 add 
-												console.log('추가 케이스');
-												$.getJSON($.ctx()+'/grade/add/'+memberId+'/'+seq+'/'+currentRating*2,d=>{
-													console.log('별점 추가'+d);
-													$gradeCnt.html(cnt+1);
-													$gradeWidth.attr({style:'width:'+((cnt+1)/itemCnt)*580+'px'});
-												});
-												break;
-											case currentRating: // 이전값과 현재값이 같으므로 삭제
-												console.log('삭제 케이스');
-												$.getJSON($.ctx()+'/grade/delete/'+memberId+'/'+seq,d=>{
-													console.log('별점 삭제'+d);
-													
-													$el.starRating('setRating', 0);
-													$gradeCnt.html(cnt-1);
-													$gradeWidth.attr({style:'width:'+((cnt-1)/itemCnt)*580+'px'});
-												});
-												break;
-											default :  //이전값과 현재값이 다르므로 업데이트 
-												console.log('수정 케이스');
-												$.getJSON($.ctx()+'/grade/update/'+memberId+'/'+seq+'/'+currentRating*2,d=>{
-													console.log('별점 수정'+d);
-												});
-												break;
-											}*/
 										});
-									}
-								}
-								});
+										/*$.getJSON($.ctx()+'/grade/evaluate/'+memberId+'/'+seq+'/'+(currentRating*2), r=>{
+											console.log('grade/evluate 리턴:'+r);
+											if(r==='add'){
+												$gradeCnt.html(cnt+1);
+												$gradeWidth.attr({style:'width:'+((cnt+1)/itemCnt)*580+'px'});
+											}else if(r==='remove'){
+												$el.starRating('setRating', 0);
+												$gradeCnt.html(cnt-1);
+												$gradeWidth.attr({style:'width:'+((cnt-1)/itemCnt)*580+'px'});
+											}
+										});*/
+								   }
+								} //callback end
+								}); //star-rating end
 							let $gift_msg = $('<div/>').addClass('gift_msg').appendTo($gift_details).append(
 									$('<p/>').text(arr[index].explains),
 									$('<a/>').addClass('evaluateToRetrieve').text('상세보기').attr({href:'#','data-seq':arr[index].itemSeq})
