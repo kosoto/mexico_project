@@ -14,4 +14,5 @@ public interface ItemMapper {
 	public List<Item> listSomeCalorie(Item p);
 	public List<Item> listSomeScore(Item p);
 	public List<Item> retrieve(Item p);
+	public List<Item> tag(Item p);
 }

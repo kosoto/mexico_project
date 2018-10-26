@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bemeal.web.cmm.CommonMapper;
+import com.bemeal.web.cmm.Pagination;
 import com.bemeal.web.img.Image;
 import com.bemeal.web.tx.TxService;
 
@@ -29,11 +31,13 @@ public class ItemCtrl {
 	@Autowired Item item;
 	@Autowired Image img;
 	@Autowired ItemMapper itemMapper;
+	@Autowired CommonMapper cmmMapper;
+	@Autowired Pagination pagi;
 	@Autowired TxService tx;
 	@Autowired HashMap<String,Object> map;
 	
 	
-	@GetMapping("/item/list/{brand}/{category}/{sort}")
+	@GetMapping("/item/list/{brand}/{category}/{sort}")//   /{}
 	public @ResponseBody Map<String,Object> list(
 			@PathVariable String brand,
 			@PathVariable String category,
@@ -63,6 +67,33 @@ public class ItemCtrl {
 		logger.info("itemMapper::"+map.get("listsm"));
 		return map;
 	}
+	@GetMapping("/item/pagi/{count}/{pageNum}")// /{pageNum}/{pageSize}/{blockSize}
+	public @ResponseBody HashMap<String, Object> pagination(
+			@PathVariable int count,
+			@PathVariable String pageNum
+			){
+		map.clear();
+		logger.info("count:{}",count);
+	/*	logger.info("pageNum:{}",pageNum);
+		logger.info("pageSize:{}",pageSize);
+		logger.info("blockSize:{}",blockSize);*/
+		
+		map.put("pageNum",pageNum);
+		map.put("count", count);
+		map.put("pageSize", 6);
+		map.put("blockSize", 1);
+		logger.info("map::{}",map);
+		pagi.excute(map);
+		
+		
+/*		logger.info("pagi.getBeginPage():{}",pagi.getBeginPage());
+		logger.info("pagi.getEndPage():{}",pagi.getEndPage());
+		logger.info("pagi.getBeginRow():{}",pagi.getBeginRow());
+		logger.info("pagi.getEndRow():{}",pagi.getEndRow());*/
+		map.put("pagi", pagi);
+		logger.info("map.get(\"pagi\"):{}",map.get("pagi"));
+		return map;
+	}
 	@GetMapping("/item/retrieve/{itemSeq}")
 	public @ResponseBody Map<String, Object> retrieve(@PathVariable String itemSeq ){
 		map.clear();
@@ -70,9 +101,12 @@ public class ItemCtrl {
 		item.setItemSeq(Integer.parseInt(itemSeq));
 		logger.info("itemseq :{}",item);
 		itemMapper.retrieve(item);
+		itemMapper.tag(item);
 		logger.info("item retrieve:{}",itemMapper.retrieve(item));
-		
+		logger.info("itemMapper.tag(item):{}",itemMapper.tag(item));
 		map.put("retrieve", itemMapper.retrieve(item));
+		map.put("rtag", itemMapper.tag(item));
+		logger.info("rtag::{}",map.get("rtag").toString());
 		return map;
 	}
 }
