@@ -32,18 +32,12 @@ public class SearchCtrl {
 	}
 	@PostMapping("/tagSearch")
 	public Map<String,String> tagSearch(
-			@RequestBody HashMap<String, String> t
+			@RequestBody List<?> tagArr
 			){
 		HashMap<String, String> r = new HashMap<>();
 		
-		String[] arr1 = t.get("tagFoodstuffs").split("/");
-		String[] arr2 = t.get("tagTaste").split("/");
-		String[] arr3 = t.get("tagSensitivity").split("/");
-		
-		Util.log.accept("가져온 값 :: "+ arr1.toString() + arr2.toString() + arr3.toString());
-		r.put("tagFoodStuff", t.get("tagFoodstuffs"));
-		r.put("tagTaste",t.get("tagTaste"));
-		r.put("tagSensitivity",t.get("tagSensitivity"));
+		Util.log.accept(tagArr.toString());
+							
 		return r;
 		
 	}

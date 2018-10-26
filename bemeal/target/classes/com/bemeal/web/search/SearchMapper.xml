@@ -50,5 +50,11 @@
 			WHERE ITEM_NAME LIKE #{word} ) A ) B
 	WHERE NO &lt;= 20;
   	</select>
+  	
+  <!-- 	<select id="" resultMap="result" >
+  		SELECT * FROM
+  			
+  	</select> -->
+  	
   </mapper>
   

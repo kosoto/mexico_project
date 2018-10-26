@@ -309,11 +309,11 @@ junghoon.service = {
 								+'                    </div>'
 								+'            </div>'
 								+'            <div class="search-list rounded">'
-								                +''
+								+''
 								+'                <table class="table" id="myTable">'              
 								+'                    <tr>'
 								+'                      <br/><br/><div id="j_title_under">재료</div><br/>'
-								+'<div class="j_btn-group" data-toggle="buttons" >'
+								+'  <div class="j_btn-group" data-toggle="buttons" >'
 								+'  <div  class="btn btn-danger btn-rounded j_btn">'
 								+'    <input id="j_tag" class="j_scbox" type="checkbox" name="1" autocomplete="off"> 닭'
 								+'  </div>&nbsp;'
@@ -492,46 +492,37 @@ junghoon.service = {
 								+'                  가격'
 								+'                  <div class="slidecontainer1">'
 								+'  <input type="range" min="1" max="100" value="50" class="slider" id="myRange">'
-								+'<div class="row">'
-								+'<button class="ss_btn">선택초기화</button>'
-								+'<button id="search_submit" class="ss_btn">검색</button>'
+								+'  <div class="row">'
+								+'  <button class="ss_btn">선택초기화</button>'
+								+'  <button id="search_submit" class="ss_btn">검색</button>'
 								
 								+'    </div>'
 								+'		</div>'
-
-
-								
-								+'                </table>'       
+							    +'                </table>'       
 								+''
  
 								+'            </div>'
 						),
 						$('#tag2search').click(e=>{
-							
 							junghoon.service.search();
 						})
 						$('#search_submit').click(e=>{
-							var foodstuffs = document.forms[0];
-							var taste = document.forms[0];
-							var sensitivity = document.forms[0];
-							var txt = "";
+							var j_tag = document.forms[0];
 						
+							var tagArr = [];
 							var i;
-							var j;
-							var k;
+							
 							for(i = 0; i<j_tag.length; i++){
 								if(j_tag[i].checked){
-									txt = txt + j_tag[i].name+"/";
+									tagArr.add(i);
 								}
 							}
-							
-							alert('선택한 태그 :: '+txt);
-							
+							alert("@@@@@@@@@@"+tagArr.toString());
 							$.ajax({
-								url : $.ctx()+'/search/tagSearch',
+								url : $.ctx()+'/tagSearch',
 								method:'post',
 								contentType:'application/json',
-								data:JSON.stringify({"j_tag":txt}),
+								data:JSON.stringify({"j_tag":tagArr}),
 								success:d=>{                                      
 								alert('success');
 								},
