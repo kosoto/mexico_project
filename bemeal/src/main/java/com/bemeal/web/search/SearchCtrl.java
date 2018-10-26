@@ -19,7 +19,7 @@ import com.bemeal.web.cmm.Util;
 
 
 @RestController
-@RequestMapping("/search")
+
 public class SearchCtrl {
 	private static final Logger logger = LoggerFactory.getLogger(SearchCtrl.class);
 	@Autowired HashMap<String,Object> map;
