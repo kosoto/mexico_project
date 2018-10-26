@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,7 +39,7 @@ public class CommonCtrl {
 	@Autowired HashMap<String, Object> map;
 	/*Taste - evaluate*/
 	@GetMapping("/evaluate/{id}/{pageNum}")
-	public @ResponseBody HashMap<String,Object> evaluate(
+	public HashMap<String,Object> evaluate(
 			@PathVariable String id,
 			@PathVariable String pageNum){
 		map.clear();
@@ -61,76 +63,79 @@ public class CommonCtrl {
 		map.put("page", pageNum);
 		return map;
 	}
-	/*/Taste - evaluate*/
-	
-	/*Taste - grade CRUD + exist*/
-	@GetMapping("/grade/retrieve/{id}/{itemSeq}")
-	public @ResponseBody String retrieveGrade(
-			@PathVariable String id,
-			@PathVariable String itemSeq) {
-		logger.info("==retrieveGrade==");
-		logger.info("넘어온 id {}",id);
-		logger.info("넘어온 itemSeq {}",itemSeq);
-		Function<HashMap<String,Object>, String> f = x->{
-			return cmmMapper.selectOneGrade(x);
-		};
+	@Transactional
+	@PostMapping("/grade/evaluate")
+	public String evaluateGrade(@RequestBody HashMap<String,Object>p) {
+		logger.info("==evaluateGrade==");
+		logger.info("넘어온 id {}",p.get("memberId"));
+		logger.info("넘어온 itemSeq {}",p.get("seq"));
+		logger.info("넘어온 currentRating {}",p.get("currentRating"));
+		double currentRating = ((int) p.get("currentRating"))/2.0;
+		logger.info("넘어온 currentRating {}",currentRating);
+		Function<HashMap<String,Object>,String>pr=x->cmmMapper.selectOneGrade(x);
 		map.clear();
-		map.put("id",id);
-		map.put("itemSeq",itemSeq);
-		String temp = f.apply(map);
-		logger.info("temp : "+temp);
-		return (temp==null)?"0":temp;
-	} 
-	@GetMapping("/grade/add/{id}/{itemSeq}/{grade}")
-	public void addGrade(
+		map.put("id",p.get("memberId"));
+		map.put("itemSeq",p.get("seq"));
+		String temp = pr.apply(map);
+		double prevRating = (temp==null)?0.0:Double.parseDouble(temp);
+		logger.info("prevRating:"+prevRating);
+		Function<HashMap<String,Object>, String>ev=x->{
+			String result = "";
+			if(prevRating==0.0) {// add
+				cmmMapper.insertGrade(x);
+				result = "add";
+			}else if(prevRating==currentRating) {// remove
+				cmmMapper.removeGrade(x);
+				result = "remove";
+			}else { //update
+				cmmMapper.modifyGrade(x);
+				result = "update";
+			}
+			logger.info("result:"+result);
+			return result;
+		};
+		map.put("grade", currentRating);
+		return ev.apply(map);
+	}
+/*	@Transactional
+	@GetMapping("/grade/evaluate/{id}/{itemSeq}/{grade}")
+	public String evaluateGrade(
 			@PathVariable String id,
 			@PathVariable String itemSeq,
 			@PathVariable double grade) {
-		logger.info("==addGrade==");
+		logger.info("==evaluateGrade==");
 		logger.info("넘어온 id {}",id);
 		logger.info("넘어온 itemSeq {}",itemSeq);
 		logger.info("넘어온 currentRating {}",grade/2);
-		Consumer<HashMap<String, Object>> c = x->{
-			logger.info(cmmMapper.insertGrade(x)+"");
-		};
+		double currentRating = grade/2;
+		Function<HashMap<String,Object>,String>pr=x->cmmMapper.selectOneGrade(x);
 		map.clear();
-		map.put("id", id);
-		map.put("itemSeq", itemSeq);
-		map.put("grade", grade/2);
-		c.accept(map);
-	} 
-	@GetMapping("/grade/delete/{id}/{itemSeq}")
-	public void deleteGrade(
-			@PathVariable String id,
-			@PathVariable String itemSeq) {
-		logger.info("==deleteGrade==");
-		logger.info("넘어온 id {}",id);
-		logger.info("넘어온 itemSeq {}",itemSeq);
-		Consumer<HashMap<String, Object>> c = x->{
-			logger.info(cmmMapper.removeGrade(x)+"");
+		map.put("id",id);
+		map.put("itemSeq",itemSeq);
+		String temp = pr.apply(map);
+		double prevRating = (temp==null)?0.0:Double.parseDouble(temp);
+		logger.info("prevRating:"+prevRating);
+		Function<HashMap<String,Object>, String>ev=x->{
+			String result = "";
+			if(prevRating==0.0) {// add
+				cmmMapper.insertGrade(x);
+				result = "add";
+			}else if(prevRating==currentRating) {// remove
+				cmmMapper.removeGrade(x);
+				result = "remove";
+			}else { //update
+				cmmMapper.modifyGrade(x);
+				result = "update";
+			}
+			logger.info("result:"+result);
+			return result;
 		};
-		map.clear();
-		map.put("id", id);
-		map.put("itemSeq", itemSeq);
-		c.accept(map);
-	} 
-	@GetMapping("/grade/update/{id}/{itemSeq}/{grade}")
-	public void updateGrade(
-			@PathVariable String id,
-			@PathVariable String itemSeq,
-			@PathVariable double grade) {
-		logger.info("==updateGrade==");
-		logger.info("넘어온 id {}",id);
-		logger.info("넘어온 itemSeq {}",itemSeq);
-		Consumer<HashMap<String, Object>> c = x->{
-			logger.info(cmmMapper.modifyGrade(x)+"");
-		};
-		map.clear();
-		map.put("id", id);
-		map.put("itemSeq", itemSeq);
-		map.put("grade", grade/2);
-		c.accept(map);
+		map.put("grade", currentRating);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>");
+		//ev.apply(map)
+		return "TEST_VAL";
 	}
+*/	
 	@Transactional
 	@GetMapping("/grade/count/{id}")
 	public HashMap<String, Object> countGrade(@PathVariable String id){

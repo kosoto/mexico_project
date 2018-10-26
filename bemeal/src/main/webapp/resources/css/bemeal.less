@@ -1,6 +1,10 @@
 @main_color_red : #bb1d1e; //rgb(187, 29, 30)
 @main_color_yellow : #fdcf33;  //rgb(253, 207, 51)
 
+* {
+	overflow-style: none;
+}
+
 /* remove screrrorThrownollbar(view) */
 div::-webkit-scrollbar { 
     display: none; 
@@ -25,6 +29,10 @@ header  {
 }
 #content {
 	padding-top : 64px;
+}
+
+.mainContent {
+	margin: 0 150px;
 }
 /* /navi */
 
@@ -75,7 +83,7 @@ header  {
 /* evaluate page */
 .evaluate_progress {
 	position : fixed;
-	top:50px;
+	top:60px;
 	padding-top:15px;
 	left:0;
 	right:0;
@@ -123,6 +131,14 @@ header  {
 }
 
 /* /evaluate page */
+/* search page start*/
+.search_page_head {
+	margin-top:20px;
+	margin-left:10px;
+}
+
+/* search page end*/
+
 /* footer */
 footer {
   bottom: 0;

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.bemeal.web.mbr.MemberMapper;
 
+
 @RestController
 public class TasteCtrl {
 	private static final Logger logger = LoggerFactory.getLogger(TasteCtrl.class);
@@ -38,24 +39,34 @@ public class TasteCtrl {
 		return tmap;
 	}
 	
-	@GetMapping("/cart/add/{id}/{itemSeq}/{quantity}") //cart 등록
-	public void postCart(@PathVariable String id,
-						@PathVariable int itemSeq,
-						@PathVariable int quantity){
-		logger.info("id {} itemSeq {} quantity {}",id,itemSeq,quantity);
+	@PostMapping("/cart/post") //cart 등록
+	public int postCart(@RequestBody Map<String, Object> p){
+		logger.info("id {} itemSeq {} quantity {}",p);
 		tmap.clear();
-		tmap.put("id", id);
-		tmap.put("itemSeq", itemSeq);
-		tmap.put("quantity", quantity);
-		tstMapper.postCart(tmap);
+		tmap.putAll(p);
+		int result = tstMapper.postTaste(tmap);
+		return result;
 	}
 	@GetMapping("/taste/list/{id}/{flag}")
-	public ArrayList<Map<String, Object>>listCart(@PathVariable String id,													@PathVariable String flag){
+	public ArrayList<Map<String, Object>>listCart(@PathVariable String id,
+												@PathVariable String flag){
 		tmap.clear();
 		tmap.put("id", id);
 		tmap.put("flag", flag);
-		ArrayList<Map<String, Object>> tlist = tstMapper.listCart(tmap);
-		//System.out.println(tlist);
+		ArrayList<Map<String, Object>> tlist = null;
+		switch (flag) {
+		case "cart":
+			tlist = tstMapper.listCart(tmap);
+			break;
+		case "buy":
+			tlist = tstMapper.listPayHis(tmap);
+			break;
+		case "gift": //보낸선물함
+			break;
+		default: 	
+			break;
+		}
+		System.out.println(tlist);
 		return tlist;
 	}
 	@PostMapping("/cart/delete") //cart 삭제
@@ -65,4 +76,5 @@ public class TasteCtrl {
 			logger.info("들어온여러개의값 {}, 리턴값 {}",p.get("delList"),result);
 		return result;
 	}
+
 }

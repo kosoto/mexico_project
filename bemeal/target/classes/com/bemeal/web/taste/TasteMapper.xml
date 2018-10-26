@@ -21,15 +21,25 @@
   		<result property="quantity" column="QUANTITY"/>
   		<result property="dirName" column="DIR_NAME"/>
   		<result property="grade" column="GRADE"/>
-  		<result property="tasteDate" column="TASTE_DATE"/>
+  		<result property="tasteDate" column="TASTE_DATE" javaType="java.sql.Timestamp"/>
   		<result property="tasteTime" column="TASTE_TIME"/>
   		<result property="flag" column="FLAG"/>
+  		<result property="paySeq" column="PURCHASE_SEQ"/>
+  		<result property="giftSeq" column="PRESENT_SEQ"/>
+  		<result property="toId" column="TO_ID"/>
+  		<result property="msg" column="MASSAGE"/>
   	</resultMap>
   	<insert id="post">
   		INSERT INTO TASTE
   		(QUANTITY,DIR_NAME,GRADE,FLAG,MEMBER_ID,ITEM_SEQ)
   		VALUES
   		(#{quantity},#{dirName},#{grade},#{flag},#{memberId},#{itemSeq})
+  	</insert>
+  	<insert id="postTaste">
+  		INSERT INTO TASTE
+  		(QUANTITY,FLAG,MEMBER_ID,ITEM_SEQ)
+  		VALUES
+  		(#{quantity},#{flag},#{id},#{itemSeq})
   	</insert>
  	<select id="chartArea" resultType="java.util.HashMap">
  	SELECT GRADE "grade", COUNT(GRADE) AS "cntgrade"
@@ -74,12 +84,6 @@ FROM (SELECT G.TAG_NAME AS "ingre", AVG(T.GRADE) AS "ingreAvg", COUNT(T.GRADE) A
     AND T.FLAG LIKE 'star'
 	GROUP BY I.CATEGORY;
  	</select>
- 	<insert id="postCart">
- 	INSERT INTO TASTE
-	(Flag, MEMBER_ID, ITEM_SEQ,Quantity)
-	VALUES
-	('cart', #{id}, #{itemSeq}, #{quantity});
- 	</insert>
  	<delete id="deleteCart" parameterType="map">
  	DELETE FROM TASTE 
   	WHERE FLAG LIKE "cart" 
@@ -102,6 +106,19 @@ FROM (SELECT G.TAG_NAME AS "ingre", AVG(T.GRADE) AS "ingreAvg", COUNT(T.GRADE) A
 	WHERE T.FLAG LIKE #{flag}
 	AND T.MEMBER_ID LIKE #{id}
 	ORDER BY T.TASTE_DATE DESC, T.TASTE_TIME DESC;
+ 	</select>
+ 	<select id="listPayHis" resultMap="tmap">
+ 	SELECT T.*,I.*, IMG.*, P.*
+       FROM PURCHASE P, ITEM I
+       JOIN TASTE T
+       ON T.ITEM_SEQ LIKE I.ITEM_SEQ
+       JOIN IMAGE IMG
+       ON I.ITEM_SEQ LIKE IMG.ITEM_SEQ
+       WHERE P.PURCHASE_SEQ = T.PURCHASE_SEQ
+       AND (T.FLAG LIKE "buy" OR T.FLAG LIKE "gift")
+       AND T.MEMBER_ID LIKE "test1"
+       AND T.TASTE_DATE BETWEEN '2018-09-16' AND '2018-10-26'
+       ORDER BY T.TASTE_DATE DESC, T.TASTE_TIME DESC;
  	</select>
   </mapper>
 

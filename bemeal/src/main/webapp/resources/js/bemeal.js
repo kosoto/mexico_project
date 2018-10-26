@@ -46,6 +46,13 @@ bemeal.router = {
 			});
 		},
 		main : ()=>{
+			if($.cookie("member")!==undefined){
+				$('.auth').show();
+				$('.unAuth').hide();
+			}else{
+				$('.auth').hide();
+				$('.unAuth').show();
+			}
 			/*메인화면 header, content 그리기*/
 				$('header').remove();
 				$('#content').remove();
@@ -57,7 +64,7 @@ bemeal.router = {
 								arr:[{image:"/web/resources/img/cmm/banner/banner1.jpg"},{image:"/web/resources/img/cmm/banner/banner2.jpg"}]
 							})
 					),					
-					$('<div/>').attr({id:'content',style:'margin:0 150px'})
+					$('<div/>').attr({id:'content'}).addClass('mainContent')
 					/*,$('<footer/>')*/
 				);
 				/*footer 삭제
@@ -142,11 +149,12 @@ bemeal.router = {
 
 bemeal.compo=(()=>{
 	var nav = ()=>{
-		let $window = $(window);
 		return $('<nav/>').addClass('navbar fixed-top navbar-expand-lg navbar-light lighten-5 scrolling-navbar').append(
-					$('<a/>').addClass('navbar-brand').attr({href:'#',id:'logo'}).append($('<strong/>').text('Be meal')).click(e=>{
+					$('<a/>').addClass('navbar-brand').attr({href:'#',id:'logo'}).append($('<strong/>').append($('<img/>').attr({src:$.img()+"/cmm/logo.png"}))).click(e=>{
 						e.preventDefault();
-						$window.off('scroll.category');
+						$(window).off('scroll.category');
+						$('.nav-item').removeClass('active');
+						$('#content').removeClass('mainContent');
 						bemeal.router.main();
 					}),
 					$('<button/>').addClass('navbar-toggler').attr({
@@ -162,44 +170,64 @@ bemeal.compo=(()=>{
 									$('#menu').parent().addClass('active');
 									$.getScript($.script()+"/yoonho.js",()=>{
 										$(window).off('scroll.category');
+										$('#content').removeClass('mainContent');
 										yoonho.service.list();
 									})
 								})
 							),
 							$('<li/>').addClass('nav-item').append(
-								$('<a/>').addClass('nav-link').attr({href:'#',id:'join'}).text('JOIN').click(e=>{
+								$('<a/>').addClass('nav-link unAuth').attr({href:'#',id:'join'}).text('JOIN').click(e=>{
 									e.preventDefault();
 									$('.nav-item').removeClass('active');
 									$('#join').parent().addClass('active');
 									$.getScript($.script()+"/junghoon.js",()=>{
 										$(window).off('scroll.category');
+										$('#content').removeClass('mainContent');
 										junghoon.member.add();
 									})
 								})
 							),
 							$('<li/>').addClass('nav-item').append(
-								$('<a/>').addClass('nav-link').attr({href:'#',id:'taste'}).text('TASTE').hide().click(e=>{
+								$('<a/>').addClass('nav-link auth').attr({href:'#',id:'taste'}).text('TASTE').hide().click(e=>{
 									e.preventDefault();
 									$('.nav-item').removeClass('active');
 									$('#taste').parent().addClass('active');
 									$.getScript($.script()+"/kaeun.js",()=>{
 										$(window).off('scroll.category');
+										$('#content').removeClass('mainContent');
 										kaeun.main.init();
 									})
 								})
 							),
 							$('<li/>').addClass('nav-item').append(
-								$('<a/>').addClass('nav-link').attr({href:'#',id:'evaluate'}).hide().text('평가하기').click(e=>{
+								$('<a/>').addClass('nav-link auth').attr({href:'#',id:'evaluate'}).hide().text('평가하기').click(e=>{
 									e.preventDefault();
 									$('.nav-item').removeClass('active');
 									$('#evaluate').parent().addClass('active');
 									$(window).off('scroll.category');
+									$('#content').removeClass('mainContent');
 									bemeal.evaluate.main();
 								})
 							)
 						),
 						$('<form/>').addClass('form-inline').append(
-							$('<input/>').addClass('form-control mr-sm-2').attr({type:'text','aria-label':'Search'}),
+							$('<input/>').addClass('form-control mr-sm-2').attr({type:'text','aria-label':'Search'}).keydown(e=>{if(e.keyCode === 13)e.preventDefault();}).keyup(e=>{
+								//검색하기
+								let searchWord = e.currentTarget.value;
+								console.log('검색어:'+searchWord);
+								if(searchWord!==''){
+									$.getJSON($.ctx()+"/navSearch/"+searchWord,d=>{
+										$(window).off('scroll.category');
+										bemeal.search.list({
+											word:searchWord,
+											list:d
+										});
+									});	
+								}else{//검색어가 없으면 다시 메인
+									bemeal.router.main();
+								}
+								
+							}),
 							$('<button/>').addClass('btn btn-outline-white btn-sm my-0').attr({style:'color:black!important',type:'button',id:'testSearch'}).text('Search').click(e=>{
 								e.preventDefault();
 								$.getScript($.script()+"/junghoon.js",()=>{
@@ -213,11 +241,31 @@ bemeal.compo=(()=>{
 								$('<i/>').addClass('fa fa-user')
 							),
 							$('<div/>').addClass('dropdown-menu dropdown-menu-right dropdown-unique').attr({id:'info','aria-labelledby':'navbarDropdownMenuLink'}).append(
-								$('<a/>').addClass('dropdown-item').attr({href:'#',id:'login'}).text('로그인').click(e=>{
+								$('<a/>').addClass('dropdown-item unAuth').attr({href:'#',id:'login'}).text('로그인').click(e=>{
 									e.preventDefault();
 									$.getScript($.script()+"/junghoon.js",(e)=>{
 										$(window).off('scroll.category');
+										$('#content').removeClass('mainContent');
 										junghoon.member.login();
+									})
+								}),
+								$('<a/>').addClass('dropdown-item auth').attr({href:'#',id:'login_form'}).text('마이페이지').click(e=>{
+									e.preventDefault();
+									$.getScript($.script()+"/junghoon.js",(e)=>{
+										$(window).off('scroll.category');
+										$('#content').removeClass('mainContent');
+										junghoon.service.mypage();
+									})
+								}),
+								$('<a/>').addClass('dropdown-item auth').attr({href:'#'}).text('로그아웃').click(e=>{
+									e.preventDefault();
+									$.getScript($.script()+"/junghoon.js",(e)=>{
+										$(window).off('scroll.category');
+										//$('#content').removeClass('mainContent');
+										$('.auth').hide();
+										$('.unAuth').show();
+										$.removeCookie('member');
+										bemeal.router.main();
 									})
 								})
 							)
@@ -398,43 +446,48 @@ bemeal.evaluate=(()=>{
 									let $gradeWidth = $('#gradeWidth');
 									let cnt = $gradeCnt.text()*1;
 									let itemCnt = $gradeWidth.data('itemcnt')*1;
-									console.log($gradeWidth);
-									console.log($gradeWidth.width());
-									console.log(cnt);
-									console.log(itemCnt);
 									if(currentRating!=0){
-										console.log('currentRating'+currentRating);
 										let seq = $el.data('seq');
-										$.getJSON($.ctx()+'/grade/retrieve/'+memberId+'/'+seq,d=>{//id와 item_seq를 넘겨줌
-											console.log("grade:"+d);
-											console.log("gracurrentRatingde:"+currentRating);
-											console.log('width'+((cnt-1)/itemCnt*1)*580)
-											switch(d){
-											case 0: // 정보가 없으니 add 
-												$.getJSON($.ctx()+'/grade/add/'+memberId+'/'+seq+'/'+currentRating*2,()=>{
+										$.ajax({
+											url : $.ctx()+'/grade/evaluate',
+											method : 'post',
+											contentType : 'application/json',
+											data : JSON.stringify({
+												memberId:memberId,
+												seq:seq,
+												currentRating:currentRating*2
+											}),
+											success : r=>{
+												console.log('grade/evluate 리턴:'+r);
+												if(r==='add'){
 													$gradeCnt.html(cnt+1);
 													$gradeWidth.attr({style:'width:'+((cnt+1)/itemCnt)*580+'px'});
-												}).fail((jqXHR, textStatus, errorThrown)=>{
-													console.log(jqXHR);
-													console.log(textStatus);
-													console.log(errorThrown);
-												});
-												break;
-											case currentRating: // 이전값과 현재값이 같으므로 삭제 
-												$.getJSON($.ctx()+'/grade/delete/'+memberId+'/'+seq,()=>{
+												}else if(r==='remove'){
 													$el.starRating('setRating', 0);
 													$gradeCnt.html(cnt-1);
 													$gradeWidth.attr({style:'width:'+((cnt-1)/itemCnt)*580+'px'});
-												});
-												break;
-											default :  //이전값과 현재값이 다르므로 업데이트 
-												$.getJSON($.ctx()+'/grade/update/'+memberId+'/'+seq+'/'+currentRating*2);
-												break;
+												}
+											},
+											error : (e1,e2,e3)=>{
+												console.log(e1);
+												console.log(e2);
+												console.log(e3);
 											}
 										});
-									}
-								}
-								});
+										/*$.getJSON($.ctx()+'/grade/evaluate/'+memberId+'/'+seq+'/'+(currentRating*2), r=>{
+											console.log('grade/evluate 리턴:'+r);
+											if(r==='add'){
+												$gradeCnt.html(cnt+1);
+												$gradeWidth.attr({style:'width:'+((cnt+1)/itemCnt)*580+'px'});
+											}else if(r==='remove'){
+												$el.starRating('setRating', 0);
+												$gradeCnt.html(cnt-1);
+												$gradeWidth.attr({style:'width:'+((cnt-1)/itemCnt)*580+'px'});
+											}
+										});*/
+								   }
+								} //callback end
+								}); //star-rating end
 							let $gift_msg = $('<div/>').addClass('gift_msg').appendTo($gift_details).append(
 									$('<p/>').text(arr[index].explains),
 									$('<a/>').addClass('evaluateToRetrieve').text('상세보기').attr({href:'#','data-seq':arr[index].itemSeq})
@@ -456,6 +509,86 @@ bemeal.evaluate=(()=>{
 		main:main,
 		loadPage:loadPage
 		}; 
+})();
+
+bemeal.search=(()=>{
+	var list=x=>{
+		$('header').remove();
+		$('#content').empty();
+		let arr = x.list;
+		let word = x.word;
+		let length = arr.length;
+		let index = 0;
+		let $content =  $('#content').append(
+							$('<h5/>').addClass('search_page_head').append(
+								$('<span/>').append(
+										$('<span/>').text("'"),
+										$('<span/>').text(word),
+										$('<span/>').text("'")
+								),
+								$('<span/>').text('검색결과')
+							)
+						);
+		for(let i=1;i<=((length>20)?5:Math.ceil(length/4));i++){
+			let $gift_slid = $('<div/>').addClass('card-group');
+			$content.append(
+					$('<div>').addClass('col').append(
+							$('<div/>').addClass('card_row').append(
+									$gift_slid
+							)
+					)
+			);
+			for(let j=1;j<=4;j++){
+				let flag = (arr[index]!==undefined);
+				let $gift_c = $('<div/>').addClass('card gift_c').append(
+									$('<div/>').addClass('gift_img').append(
+										(()=>{
+											if(flag){
+												return $('<img/>').attr({src:arr[index].img})
+											}else{
+												return $('<img/>')
+											}
+										})()
+									),
+									$('<div/>').addClass('gift_details').append(
+											$('<h2/>').addClass('evaluative_title').text((flag)?arr[index].itemName:''),
+											$('<div/>').attr({'data-seq':(flag)?arr[index].itemSeq:0}),
+											$('<div/>').addClass('gift_msg').append(
+													$('<p/>').text((flag)?arr[index].explains:''),
+													$('<a/>').addClass('evaluateToRetrieve').text('상세보기').attr({href:'#','data-seq':(flag)?arr[index].itemSeq:''})
+													.click(e=>{
+														e.preventDefault();
+														if(e.currentTarget.dataset.seq!=0){
+															$.getScript($.script()+'/yoonho.js',()=>{
+																yoonho.service.retrieve(e.currentTarget.dataset.seq);
+															});
+														}
+													})
+											)
+									)
+							);
+				if(!flag){
+					$gift_c.attr('style','visibility: hidden;');
+				}
+				//let $gift_details = $('<div/>').addClass('gift_details').appendTo($gift_c);
+				//let $h2 = $('<h2/>').addClass('evaluative_title').text((flag)?arr[index].itemName:'').appendTo($gift_details);
+				//let $star_rating_container = $('<div/>').attr({'data-seq':(flag)?arr[index].itemSeq:0}).appendTo($gift_details)
+				/*let $gift_msg = $('<div/>').addClass('gift_msg').appendTo($gift_details).append(
+						$('<p/>').text((flag)?arr[index].explains:''),
+						$('<a/>').addClass('evaluateToRetrieve').text('상세보기').attr({href:'#','data-seq':(flag)?arr[index].itemSeq:''})
+						.click(e=>{
+							e.preventDefault();
+							if(e.currentTarget.dataset.seq!=0){
+								yoonho.service.retrieve(e.currentTarget.dataset.seq);
+							}
+						})
+				);*/
+				$gift_slid.append($gift_c);
+				index++;
+			}
+		}
+	};
+	return {list:list};
 })();
 
 
