@@ -459,11 +459,15 @@ kaeun.tastes = { //kaeun.tastes.cartList()
 					+'<id="cart_header_end" class="item_header">내역</div></div>');
 			let testId = $.cookie('member')["memberId"];
 			$.getJSON($.ctx()+'/taste/list/'+testId+'/buy',d=>{ //getjosn시작
+				let pay=null;
+				let gift;
+				let paySeq;
 				$.each(d,(i,j)=>{
-					let gift = (d[i].flag==='gift')? '선물' : '구매완료';
+					gift = (d[i].flag==='gift')? '선물' : '구매완료';
+					paySeq = (pay===d[i].paySeq)? '' : 'No.'+d[i].paySeq+'<br/>'+d[i].tasteDate2;
 					ui.grid_list({
 						to: $('#pay_list'),
-						c1:	d[i].paySeq+'<br/>'+d[i].tasteDate,
+						c1:	paySeq,
 						c2:'<img class="cart_img" src="'+d[i].img+'">',
 						c3:d[i].itemName+'<br/>'+d[i].explains,
 						c4:d[i].quantity,
@@ -471,6 +475,7 @@ kaeun.tastes = { //kaeun.tastes.cartList()
 						c6:d[i].quantity*d[i].price,
 						c7: gift
 					});
+					pay = d[i].paySeq;
 				}); //each완료
 				// ★ 페이지네이션
 				$('<div/>').html('<ul class="pagination pagination-sm">'

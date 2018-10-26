@@ -22,6 +22,7 @@
   		<result property="dirName" column="DIR_NAME"/>
   		<result property="grade" column="GRADE"/>
   		<result property="tasteDate" column="TASTE_DATE" javaType="java.sql.Timestamp"/>
+  		<result property="tasteDate2" column="TASTE_DATE2"/>
   		<result property="tasteTime" column="TASTE_TIME"/>
   		<result property="flag" column="FLAG"/>
   		<result property="paySeq" column="PURCHASE_SEQ"/>
@@ -108,7 +109,7 @@ FROM (SELECT G.TAG_NAME AS "ingre", AVG(T.GRADE) AS "ingreAvg", COUNT(T.GRADE) A
 	ORDER BY T.TASTE_DATE DESC, T.TASTE_TIME DESC;
  	</select>
  	<select id="listPayHis" resultMap="tmap">
- 	SELECT T.*,I.*, IMG.*, P.*
+ 	SELECT T.*,I.*, IMG.*, P.*,CAST(T.TASTE_DATE AS CHAR) as TASTE_DATE2
        FROM PURCHASE P, ITEM I
        JOIN TASTE T
        ON T.ITEM_SEQ LIKE I.ITEM_SEQ
