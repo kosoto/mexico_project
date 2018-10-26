@@ -145,8 +145,6 @@ kaeun.ui = {
 		  }
           };
 
-
-
 //cart,payHis,present
 kaeun.payments = {
 		cart : ()=>{ //cart List
@@ -156,7 +154,8 @@ kaeun.payments = {
 			ui.btn({id:'cart_delteall_btn',size:'mini',color:'white',txt:'선택삭제'}).appendTo($('#k_content'));
 			kaeun.tastes.cartList();
 		}, 
-		payment : ()=>{ //payment 화면	
+		payment : ()=>{ //payment 화면
+			
 		},
 		payHis : ()=>{ //read some
 			//$('#k_contentlot').html('<h2>구매함</h2><br><div>날짜선택: 목록보기:(구매완료/사용중) </div><br>');
@@ -165,14 +164,7 @@ kaeun.payments = {
 			/*$('#k_content') 
 			$('<div/>').html("구매내역").addClass("grid_main").attr({id:"content_g"}).appendTo($('#k_content'));*/
 			//contentG2 : 구매내역에 대한코딩
-			$('#k_content').append('<div id="pay_Search"></div>'
-									+'<div id="pay_list" class="list-grid-container">' 
-									+'<div class="item_header">구매날짜</div>' 
-									+'<div class="item_headerinfo_pay">상품정보</div>'
-									+'<div class="item_header">수량</div>' 
-									+'<div class="item_header">상품금액</div>'
-									+'<div class="item_header">총액</div>'
-									+'<id="cart_header_end" class="item_header">내역</div></div>');
+			$('#k_content').append('<div id="pay_Search"></div>');
 			ui.n_div({clazz:'panel panel-default',html:$('<div id="pay_panel"/>').addClass("panel-body"),to:$('#pay_Search')}); //search
 			$('#pay_panel').html('<div class="card bg-transparent">'
 					+'<div class="card-body">'
@@ -221,30 +213,7 @@ kaeun.payments = {
 			/*('#pay_panel_grid')
 			.html('<div class="grid_layout"><div class="grid_k_header><div id="search_form">ㅎㅎ</div></div><div class="grid_k_header><div id="search_btn">ㅎㅎ</div></div></div>')
 			.appendTo($('#pay_panel'));*/
-			let arr = [{img:'사진',name:'상품a',info:'블라블라',num:'3',price:'1000',total:'3000'},
-						{img:'사진2',name:'상품b',info:'블라블라',num:'3',price:'1000',total:'3000'},
-						{img:'사진3',name:'상품a',info:'블라블라',num:'3',price:'1000',total:'3000'}
-					]; 
-			$.each(arr,(i,j)=>{
-				ui.grid_list({
-					to: $('#pay_list'),
-					c1:"2018/10/01", //가능하다면 같은날짜는 합쳐서 ㅎㅎ 
-					c2:'<img class="cart_img" src="http://tong.joins.com/wp-content/uploads/sites/3/2017/05/2017-05-25-11.01.25-1_resized_.jpg">',
-					c3:j.name+'<br/>'+j.info,
-					c4:j.num,
-					c5:j.price,
-					c6:j.total,
-					c7: "사용완료or<br/>선물(to.Id)"	
-				});
-			}); //each완료
-			// ★ 페이지네이션
-			$('<div/>').html('<ul class="pagination pagination-sm">'
-					+'<li class="page-item"><a class="page-link" href="#">Previous</a></li>'
-					+'<li class="page-item"><a class="page-link" href="#">1</a></li>'
-					+'<li class="page-item"><a class="page-link" href="#">2</a></li>'
-					+'<li class="page-item"><a class="page-link" href="#">3</a></li>'
-					+'<li class="page-item"><a class="page-link" href="#">Next</a></li>'
-					+'</ul>').addClass("grid_footer").appendTo($('#k_footer')); 
+			kaeun.tastes.payHisList();
 		},
 		gift : ()=>{ //read some
 			ui.newpage();
@@ -307,13 +276,25 @@ kaeun.payments = {
 			});
 			return false;
 		},
-		putCart : x=>{ //taste write
-			let testId = 'test1'; //x.id
-			let itemSeq = 5;	  //x.itemSequ 
-			let quantity = 2;	  //x.quantity
-			$.getJSON($.ctx()+'/cart/add/'+testId+'/'+itemSeq+'/'+quantity,d=>{
-				alert("성공"); //★이미 장바구니에 담겨져있다면 담겨져있는 item이라고 alert띄워야함
-			})
+		putTaste : x=>{ //taste write
+			alert(x.flag);
+			$.ajax({
+					url: $.ctx()+'/cart/post',
+					type: 'POST',
+					contentType : 'application/json',
+	                data : JSON.stringify({id : $.cookie('member')["memberId"],
+					                	itemSeq: x.itemSeq,
+					                	quantity: x.quantity,
+					                	flag: x.flag}),
+	                success : d=>{
+	                	if(d>0){
+	                		alert('성공');
+	                	}else{
+	                		alert('삽입실패');
+	                	}
+	                },
+	                error : (x,y,z)=>{}
+				})
 		},
 		deleteCart : x=>{ //ajax post? 
 			$.ajax({
@@ -337,10 +318,6 @@ kaeun.payments = {
 				alert(d[0].itemSeq);
             })
 		},
-		putBuy : x=>{
-			//구매하기를 누르면
-			
-		},
 		update : ()=>{ //taste update
 			
 		},
@@ -349,8 +326,33 @@ kaeun.payments = {
 		}
 };
 
-kaeun.tastes = {
-		cartList : ()=>{
+kaeun.tastes = { //kaeun.tastes.cartList()
+		payList : x=>{ //결제중 
+			$('#cart_grid').remove();
+			$('#k_content').append('<div id="cart_grid" class=list-grid-container>' 
+					+'<div class="item_headerinfo">상품정보</div>'
+					+'<div class="item_header">수량</div>' 
+					+'<div class="item_header">상품금액</div>'
+					+'<div class="item_header">총액</div>'
+					+'<div id="cart_header_end" class="item_header">주문</div></div>');	
+			//kaeun.tastes.payList({payList:payList});
+			//kaeun.payments.putTaste({itemSeq:d[i].itemSeq,quantity:d[i].quantity,flag:'buy'});
+			/*$.getJSON($.ctx()+'/taste/list/'+testId+'/cart',d=>{ //getjosn시작
+				$.each(d,(i,j)=>{ //grid_list R
+					ui.grid_list({
+						to: $('#cart_grid'),
+						c1:i,
+						c2:'<img class="cart_img" src="'+d[i].img+'">',
+						c3:d[i].itemName+'<br/>'+d[i].explains,
+						c4:d[i].quantity,
+						c5:d[i].price,
+						c6:d[i].quantity*d[i].price,
+						c7: $('<div/>').attr({id:'cart_btns'+i})	
+					}); 
+				});
+			});*/
+		},
+		cartList : ()=>{ //장바구니
 			$('#cart_grid').remove();
 			$('#k_content').append('<div id="cart_grid" class=list-grid-container>' 
 					+'<div class="item_headerinfo">상품정보</div>'
@@ -358,7 +360,7 @@ kaeun.tastes = {
 					+'<div class="item_header">상품금액</div>'
 					+'<div class="item_header">총액</div>'
 					+'<div id="cart_header_end" class="item_header">주문</div></div>');
-			let testId ='test1';
+			let testId = $.cookie('member')["memberId"];
 			$.getJSON($.ctx()+'/taste/list/'+testId+'/cart',d=>{ //getjosn시작
 				//alert(d[0].itemSeq);
 				$.each(d,(i,j)=>{ //grid_list R
@@ -375,8 +377,9 @@ kaeun.tastes = {
 				ui.btn({id:'cart_order_btn'+i,size:'mini',color:'black',txt:'구매하기'}).appendTo($('#cart_btns'+i))
 				.click(e=>{
 					alert("구매하시겠습니까?");
-					let postList = [d[i].itemSeq];
-					
+					let payList =  [d[i].tasteSeq];
+					//kaeun.tastes.payList({payList:payList});
+					//kaeun.payments.putTaste({itemSeq:d[i].itemSeq,quantity:d[i].quantity,flag:'buy'});
 				});
 				$('<br/>').appendTo($('#cart_btns'+i));
 				ui.btn({id:'cart_gift_btn'+i,size:'mini',color:'red',txt:'선물하기'}).appendTo($('#cart_btns'+i))
@@ -423,6 +426,17 @@ kaeun.tastes = {
 					kaeun.payments.deleteCart({delList:delList});
 				})
 				$('#cart_order_submit').click(e=>{
+					//선택상품 구매
+					alert("선택상품들을 구매하시겠습니까?");
+					let payList = []; 
+					for(let i=0;i<$('input:checkbox[name="cartchk"]').length-1;i++){
+						if($('input:checkbox[id="cart_chk'+i+'"]').is(":checked")){
+							payList.push({tasteSeq:d[i].tasteSeq,
+											itemName:d[i].itemName,
+											itemdQ:d[i].quantity,
+											price:d[i].price});
+						}
+					}
 					//id : 'cart_chk'+i, name:'cartchk'
 				//선택상품만 다음화면으로 넘기는 방법.
 				//.form-check-input이 체크되어있는것들 id를 뽑을수있남?
@@ -433,6 +447,40 @@ kaeun.tastes = {
 				//3 -  cart_chk제품번호
 				})
 		}) //getjson끝		
+		},
+		payHisList : ()=>{
+			$('#cart_grid').remove();
+			$('#k_content').append('<div id="pay_list" class="list-grid-container">' 
+					+'<div class="item_header">구매날짜</div>' 
+					+'<div class="item_headerinfo_pay">상품정보</div>'
+					+'<div class="item_header">수량</div>' 
+					+'<div class="item_header">상품금액</div>'
+					+'<div class="item_header">총액</div>'
+					+'<id="cart_header_end" class="item_header">내역</div></div>');
+			let testId = $.cookie('member')["memberId"];
+			$.getJSON($.ctx()+'/taste/list/'+testId+'/buy',d=>{ //getjosn시작
+				$.each(d,(i,j)=>{
+					let gift = (d[i].flag==='gift')? '선물' : '구매완료';
+					ui.grid_list({
+						to: $('#pay_list'),
+						c1:	d[i].paySeq+'<br/>'+d[i].tasteDate,
+						c2:'<img class="cart_img" src="'+d[i].img+'">',
+						c3:d[i].itemName+'<br/>'+d[i].explains,
+						c4:d[i].quantity,
+						c5:d[i].price,
+						c6:d[i].quantity*d[i].price,
+						c7: gift
+					});
+				}); //each완료
+				// ★ 페이지네이션
+				$('<div/>').html('<ul class="pagination pagination-sm">'
+						+'<li class="page-item"><a class="page-link" href="#">Previous</a></li>'
+						+'<li class="page-item"><a class="page-link" href="#">1</a></li>'
+						+'<li class="page-item"><a class="page-link" href="#">2</a></li>'
+						+'<li class="page-item"><a class="page-link" href="#">3</a></li>'
+						+'<li class="page-item"><a class="page-link" href="#">Next</a></li>'
+						+'</ul>').addClass("grid_footer").appendTo($('#k_content')); 
+			}) //getjson의 끝
 		},
 		analysis : ()=>{ //취향분석
 			ui.newpage();
@@ -587,7 +635,10 @@ kaeun.tastes = {
         	$('#k_header').append('테스트');
         	$('#k_header').append('<button id="testBtn" type="button" class="btn btn-default">cartAdd</button>')
  			$('#testBtn').click(e=>{
- 				kaeun.payments.putCart();
+ 				let itemSeq = 5;	  //x.itemSequ 
+ 				let quantity = 2;	  //x.quantity
+ 				let flag = 'cart';
+ 				kaeun.payments.putTaste({itemSeq:itemSeq,quantity:quantity,flag:'cart'});
  			});
         	$('#k_header').append('<button id="testBtn2" type="button" class="btn btn-default">cartList</button>')
         	$('#testBtn2').click(e=>{
