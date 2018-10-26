@@ -66,7 +66,7 @@ public class MemberCtrlTest {
 			//주소
 			member.setAddress(addrArr[(int)(Math.random()*66)]);*/
 			logger.info(member.toString());
-			mbrMapper.post(member);
+			//mbrMapper.post(member);
 		}
 	}
 

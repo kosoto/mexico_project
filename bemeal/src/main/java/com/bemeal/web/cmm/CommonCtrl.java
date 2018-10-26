@@ -5,10 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -62,22 +64,22 @@ public class CommonCtrl {
 	/*/Taste - evaluate*/
 	
 	/*Taste - grade CRUD + exist*/
-	@GetMapping("/grade/exist/{id}/{itemSeq}")
-	public @ResponseBody String existGrade(
+	@GetMapping("/grade/retrieve/{id}/{itemSeq}")
+	public @ResponseBody String retrieveGrade(
 			@PathVariable String id,
 			@PathVariable String itemSeq) {
-		logger.info("==existGrade==");
+		logger.info("==retrieveGrade==");
 		logger.info("넘어온 id {}",id);
 		logger.info("넘어온 itemSeq {}",itemSeq);
 		Function<HashMap<String,Object>, String> f = x->{
-			return cmmMapper.existGrade(x);
+			return cmmMapper.selectOneGrade(x);
 		};
 		map.clear();
 		map.put("id",id);
 		map.put("itemSeq",itemSeq);
 		String temp = f.apply(map);
 		logger.info("temp : "+temp);
-		return (f.apply(map)==null)?"0":f.apply(map);
+		return (temp==null)?"0":temp;
 	} 
 	@GetMapping("/grade/add/{id}/{itemSeq}/{grade}")
 	public void addGrade(
@@ -88,17 +90,9 @@ public class CommonCtrl {
 		logger.info("넘어온 id {}",id);
 		logger.info("넘어온 itemSeq {}",itemSeq);
 		logger.info("넘어온 currentRating {}",grade/2);
-		Consumer<HashMap<String, Object>> c;
-		if(Double.parseDouble(existGrade(id, itemSeq))==(grade/2)) {
-			c = x->{//update
-				logger.info(cmmMapper.modifyGrade(x)+"");
-			};
-		}else {
-			c = x->{//insert
-				logger.info(cmmMapper.insertGrade(x)+"");
-			};
-		}
-		
+		Consumer<HashMap<String, Object>> c = x->{
+			logger.info(cmmMapper.insertGrade(x)+"");
+		};
 		map.clear();
 		map.put("id", id);
 		map.put("itemSeq", itemSeq);
@@ -120,16 +114,46 @@ public class CommonCtrl {
 		map.put("itemSeq", itemSeq);
 		c.accept(map);
 	} 
+	@GetMapping("/grade/update/{id}/{itemSeq}/{grade}")
+	public void updateGrade(
+			@PathVariable String id,
+			@PathVariable String itemSeq,
+			@PathVariable double grade) {
+		logger.info("==updateGrade==");
+		logger.info("넘어온 id {}",id);
+		logger.info("넘어온 itemSeq {}",itemSeq);
+		Consumer<HashMap<String, Object>> c = x->{
+			logger.info(cmmMapper.modifyGrade(x)+"");
+		};
+		map.clear();
+		map.put("id", id);
+		map.put("itemSeq", itemSeq);
+		map.put("grade", grade/2);
+		c.accept(map);
+	}
+	@Transactional
+	@GetMapping("/grade/count/{id}")
+	public HashMap<String, Object> countGrade(@PathVariable String id){
+		map.clear();
+		logger.info("넘어온 id {}",id);
+		Function<String, String> gradeCnt=x->cmmMapper.countGrade(x);
+		Supplier<Integer> itemCnt=()->cmmMapper.countItem();
+		String cnt = gradeCnt.apply(id);
+		map.put("gradeCnt", (cnt==null)?"0":cnt);
+		map.put("itemCnt", itemCnt.get());
+		return map;
+	}
 	
 	/* /Taste - grade*/
 	
-	//  Item
-	@GetMapping("/item/list/{option}")
-	public @ResponseBody Map<String,Object> list(@PathVariable String option){
-		map.clear();
-		logger.info("넘어온 옵션 {}",option); // 평점,판매량,최신 등등의 옵션으로 해당 옵션의 아이템을 검색
+	@GetMapping("/item/list/{option}/{value}")
+	public @ResponseBody Map<String,Object> list(
+			@PathVariable String option,
+			@PathVariable String value){
 		Function<String,ArrayList<HashMap<String,Object>>> f = x->{
 			ArrayList<HashMap<String,Object>> temp = new ArrayList<>();
+			logger.info("넘어온 옵션:"+option);
+			logger.info("넘어온 값:"+value);
 			switch(x) {
 			case "grade": 
 				temp = cmmMapper.gradList();	
@@ -140,12 +164,32 @@ public class CommonCtrl {
 			case "wish": 
 				temp = cmmMapper.wishList();
 				break;
+			case "gender": 
+				temp = cmmMapper.listByGender(value);
+				break;
+			case "age": 
+				map.clear();
+				map.put("start", value);
+				map.put("end", Integer.parseInt(value)+9);
+				temp = cmmMapper.listByAge(map);
+				break;
+			default : 
+				if(x.substring(0,3).equals("tag"))temp = cmmMapper.tagSerchList(value);
+				break;
 			}
 			logger.info(temp.toString());
 			return temp;
 		};
+		map.clear();
 		map.put("option", option);
 		map.put("list", f.apply(option));
 		return map;
+	}
+	
+	/*tag*/
+	@GetMapping("/tagList")
+	public ArrayList<String> tagList(){
+		Supplier<ArrayList<String>>c=()->cmmMapper.tagList();
+		return c.get();
 	}
 }

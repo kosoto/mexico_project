@@ -9,14 +9,20 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CommonMapper {
 	public void postTag(Map<?,?>p );
-	public String existGrade(HashMap<String,Object> p);
+	public String selectOneGrade(HashMap<String,Object> p);
 	public ArrayList<HashMap<String, Object>> gradList();
 	public ArrayList<HashMap<String, Object>> buyList();
 	public ArrayList<HashMap<String, Object>> wishList();
+	public ArrayList<HashMap<String, Object>> listByGender(String gender);
+	public ArrayList<HashMap<String, Object>> listByAge(HashMap<String, Object>p);
 	public int countRatingsById(String id);
 	public int countUnRatingsById(String id);
 	public ArrayList<HashMap<String, Object>> evaluateList(HashMap<String,Object> p);
 	public int insertGrade(HashMap<String, Object> p);
 	public int removeGrade(HashMap<String, Object> p);
 	public int modifyGrade(HashMap<String, Object> p);
+	public String countGrade(String id);
+	public int countItem();
+	public ArrayList<String> tagList();
+	public ArrayList<HashMap<String, Object>> tagSerchList(String tag);
 }

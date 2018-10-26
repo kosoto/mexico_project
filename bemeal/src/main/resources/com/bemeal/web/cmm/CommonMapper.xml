@@ -31,6 +31,9 @@
   		<result property="tasteDate" column="TASTE_DATE"/>
   		<result property="tasteTime" column="TASTE_TIME"/>
   		<result property="flag" column="FLAG"/>
+  		<result property="tag_seq" column="TAG_SEQ"/>
+  		<result property="tag_flag" column="TAG_FLAG"/>
+  		<result property="tag_name" column="TAG_NAME"/>
   		<result property="avg" column="avg"/>
   		<result property="count" column="COUNT"/>
   		<result property="sum" column="SUM"/>
@@ -47,7 +50,7 @@
 	  	#{itemSeq}	
 		)
   	</insert>
-  	<select id="existGrade" resultType="string">
+  	<select id="selectOneGrade" resultType="string">
   		SELECT GRADE FROM TASTE 
   		WHERE MEMBER_ID LIKE #{id}
   			AND ITEM_SEQ LIKE #{itemSeq}
@@ -102,6 +105,15 @@
 		AND MEMBER_ID LIKE #{id}
 		AND ITEM_SEQ LIKE #{itemSeq}
 	</update>
+	<select id="countGrade" resultType="string">
+	SELECT COUNT(*) FROM TASTE
+	WHERE FLAG LIKE 'star'
+		AND MEMBER_ID LIKE #{id}
+	</select>
+	<select  id="countItem" resultType="int">
+	SELECT COUNT(*) FROM ITEM
+	</select>
+	
  	<select id="gradList" resultMap="result">
 	  	SELECT *
 		FROM
@@ -149,5 +161,67 @@
 			it.item_seq) A) B
 		WHERE NO &lt;= 20
 		ORDER BY NO
+  	</select>
+ 	<select id="listByGender" resultMap="result">
+	  	SELECT * FROM
+		(SELECT ROW_NUMBER() OVER(ORDER BY A.COUNT DESC) as no,A.*
+		FROM
+		(SELECT
+			IT.ITEM_SEQ,
+			IT.ITEM_NAME,
+			IM.IMG,
+			COUNT(T.TASTE_SEQ) AS COUNT	
+		FROM ITEM IT
+			JOIN IMAGE IM ON IM.ITEM_SEQ LIKE IT.ITEM_SEQ
+			JOIN TASTE T ON IT.ITEM_SEQ LIKE T.ITEM_SEQ
+		WHERE T.FLAG LIKE 'WISH'
+			AND t.MEMBER_ID IN (
+				SELECT MEMBER_ID 
+				FROM MEMBER
+				WHERE GENDER LIKE #{gender})
+		GROUP BY
+			IT.ITEM_SEQ) A) B
+		WHERE NO &lt;= 20
+		ORDER BY NO;
+  	</select>
+ 	<select id="listByAge" resultMap="result">
+	  	SELECT * FROM
+			(SELECT ROW_NUMBER() OVER(ORDER BY A.COUNT DESC) AS NO,A.*
+			FROM
+			(SELECT
+				IT.ITEM_SEQ,
+				IT.ITEM_NAME,
+				IM.IMG,
+				COUNT(T.TASTE_SEQ) AS COUNT	
+			FROM ITEM IT
+				JOIN IMAGE IM ON IM.ITEM_SEQ LIKE IT.ITEM_SEQ
+				JOIN TASTE T ON IT.ITEM_SEQ LIKE T.ITEM_SEQ
+			WHERE T.FLAG LIKE 'WISH'
+				AND t.MEMBER_ID IN (
+					SELECT MEMBER_ID 
+					FROM MEMBER
+					WHERE AGE BETWEEN #{start} AND #{end})
+			GROUP BY
+				IT.ITEM_SEQ) A) B
+			WHERE NO &lt;= 20
+			ORDER BY NO
+  	</select>
+  	<select id="tagList" resultType="string">
+  	SELECT TAG_NAME FROM TAG
+  	</select>
+  	<select id="tagSerchList" resultMap="result">
+  	SELECT * FROM
+	(SELECT ROW_NUMBER() OVER() as no,C.*
+	FROM
+	(SELECT A.*,T.TAG_NAME FROM 
+	(SELECT IT.*, IM.IMG,TI.TAG_SEQ,TI.TAG_ITEM_SEQ
+	FROM ITEM IT 
+		JOIN IMAGE IM ON IT.ITEM_SEQ LIKE IM.ITEM_SEQ
+		JOIN TAG_ITEM TI ON  TI.ITEM_SEQ LIKE IT.ITEM_SEQ
+	) A
+		JOIN TAG T ON T.TAG_SEQ LIKE A.TAG_SEQ
+	WHERE T.TAG_NAME LIKE #{tag}) C) B
+	WHERE NO &lt;= 20
+	ORDER BY NO
   	</select>
   </mapper>

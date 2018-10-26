@@ -17,15 +17,14 @@
     	
     <select id="get" resultType="com.bemeal.web.mbr.Member">
     	SELECT 
-    	MEMBER_ID memberId,
-    	PASSWORD,
+    	MEMBER_ID AS memberId,
     	NAME,
     	AGE,
     	SSN,
     	GENDER,
     	ADDRESS,
     	E_MAIL eMail,
-    	PHONE_NUM phoneNum
+    	PHONE_NUM AS phoneNum
     	FROM MEMBER
     	<where>
     		<if test="memberId != null and memberId != ''">
@@ -36,6 +35,19 @@
     		</if>
     	</where>
     </select>
-    
-    
+    <update id="">
+    	UPDATE MEMBER SET 
+    </update>
+    <delete id="delete">
+		DELETE FROM MEMBER
+		WHERE MEMBER_ID LIKE #{memberId}
+	</delete>
+	<update id="put">
+		UPDATE MEMBER SET PASSWORD = #{password}, ADDRESS = {address}, E_MAIL = #{eMail}, PHONE_NUM = #{phoneNum}
+			WHERE MEMBER_ID LIKE #{memberId}
+	</update>
+	
+	
+	
+	
   </mapper>

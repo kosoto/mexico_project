@@ -19,7 +19,7 @@ public class Pagination  {
 		count =  (int) p.get("count");
 		pageSize = (int) p.get("pageSize"); 
 		blockSize = (int) p.get("blockSize");
-		beginPage = Math.floorDiv(pageNum-1, pageSize)*pageSize+1;
+		beginPage = Math.floorDiv(pageNum-1, blockSize)*blockSize+1;
 		endPage = (count>(beginPage+(blockSize-1))*pageSize)?
 				beginPage+(blockSize-1):(int)(Math.ceil(count/(double)pageSize));
 		beginRow = (pageNum-1)*pageSize+1;
@@ -27,7 +27,7 @@ public class Pagination  {
 		prevBlock = beginPage -1;
 		nextBlock = endPage +1;
 		existPrev = (beginPage>1);
-		existNext = (count>endPage*5);
+		existNext = (count>endPage*pageSize);
 		
 	}
 }
