@@ -85,7 +85,7 @@ junghoon.member = (()=>{
 								if(d!=''){//로그인 성공
 									$.cookie("member", d);
 									//nav 버튼 바꾸기
-									$('#taste').show();
+									/*$('#taste').show();
 									$('#join').hide();
 									$('#evaluate').show();
 									$('#info').empty();
@@ -110,7 +110,7 @@ junghoon.member = (()=>{
 									$('<li/>').append($('<a/>').attr({href:"#"}).html('검색 테스트')).appendTo($('#info'))
 									.click(e=>{
 										junghoon.service.search();
-									});
+									});*/
 									//메인화면 보여주기
 									bemeal.router.main();
 								}else{//로그인 실패
