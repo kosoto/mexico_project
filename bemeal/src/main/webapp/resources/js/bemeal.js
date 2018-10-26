@@ -532,7 +532,7 @@ bemeal.search=(()=>{
 		for(let i=1;i<=((length>20)?5:Math.ceil(length/4));i++){
 			let $gift_slid = $('<div/>').addClass('card-group');
 			$content.append(
-					$('<div>').addClass('col').append(
+					$('<div>').addClass('col searchCol').append(
 							$('<div/>').addClass('card_row').append(
 									$gift_slid
 							)
@@ -570,19 +570,6 @@ bemeal.search=(()=>{
 				if(!flag){
 					$gift_c.attr('style','visibility: hidden;');
 				}
-				//let $gift_details = $('<div/>').addClass('gift_details').appendTo($gift_c);
-				//let $h2 = $('<h2/>').addClass('evaluative_title').text((flag)?arr[index].itemName:'').appendTo($gift_details);
-				//let $star_rating_container = $('<div/>').attr({'data-seq':(flag)?arr[index].itemSeq:0}).appendTo($gift_details)
-				/*let $gift_msg = $('<div/>').addClass('gift_msg').appendTo($gift_details).append(
-						$('<p/>').text((flag)?arr[index].explains:''),
-						$('<a/>').addClass('evaluateToRetrieve').text('상세보기').attr({href:'#','data-seq':(flag)?arr[index].itemSeq:''})
-						.click(e=>{
-							e.preventDefault();
-							if(e.currentTarget.dataset.seq!=0){
-								yoonho.service.retrieve(e.currentTarget.dataset.seq);
-							}
-						})
-				);*/
 				$gift_slid.append($gift_c);
 				index++;
 			}
