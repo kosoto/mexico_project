@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+
 @Repository
 public interface SearchMapper {
 	public List<HashMap<String,Object>> navSearchList(String word);
-
 }

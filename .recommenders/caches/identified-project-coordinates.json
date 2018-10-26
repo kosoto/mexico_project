@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 [[{"location":"C:\\Program Files\\Java\\jdk1.8.0_181","type":"JRE","hints":{}},"jre:jre:1.8.0"]]
+=======
+[[{"location":"C:\\Program Files\\Java\\jdk1.8.0_181","type":"JRE","hints":{}},"jre:jre:1.8.0"],[{"location":"C:\\Users\\kim\\Documents\\1018\\bemeal","type":"PROJECT","hints":{"PROJECT_NAME":"bemeal"}},"com.bemeal:web:1.0.0"]]
+>>>>>>> jh
