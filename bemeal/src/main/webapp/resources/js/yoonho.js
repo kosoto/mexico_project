@@ -12,11 +12,11 @@ yoonho.service=(x=>{
 		let category_arr=["카테고리전체","한식","중식","일식","양식","동남아식","다이어트식","건강식","분식"];
 		let sort_arr=["가격","칼로리","평점"];
 
-		let $content = $('#content').attr({style:'font-family: \'Sunflower\', sans-serif;'})
+		let $content = $('#content')//.attr({style:'font-family: \'Sunflower\', sans-serif;'})
 		let $select = $('<div/>')
 		.html('<h2 class="h1-responsive font-weight-bold text-center my-5">Be meal::Our menu</h2>'
 				+'<p class="grey-text text-center w-responsive mx-auto mb-5">맛있는 식사를 위해 </p>')
-		.addClass('container')//.attr({id:'cat_drbx'})
+		.addClass('container')
 			.append($('<span/>').addClass('col-lg-2 mgt50 btn-group')
 				.append($('<div/>').addClass('form-group')
 					.append($('<select/>').addClass('form-control').attr({'id':'brand_menu','role':'menu'}))
@@ -97,13 +97,21 @@ yoonho.service=(x=>{
 		let titles = [];
 		let $window = $(window);
 		let $document = $(document);
-		let page = 2;
+		let page = 1;
 		
-		$section = $('<section align="left"/>').addClass('text-center my-5').appendTo('#yh_container').attr({style:'font-family: \'Sunflower\', sans-serif;'})
+		let length = x.length
+		$section = $('<section align="left"/>').addClass('text-center my-5').appendTo('#yh_container')//.attr({style:'font-family: \'Sunflower\', sans-serif;'})
 		$div_row = $('<div/>').addClass('row').appendTo($section)
-		if(x.length>=12){
-				alert('12보다많다:'+x.length)
-				for(let i = 0 ;i < 12; i++){
+		$.getJSON($.ctx()+'/item/pagi/'+length*1+'/'+(page+""),d=>{//+'/'+(length/6)+'/6/1'
+			console.log(d);
+		})
+		
+		if(length>=6){
+				alert('1. length>=6 ::'+(length>=6))
+				//alert('6보다많다:'+x.length)
+				console.log('(page)*6+6:'+((page)*6+6)+'  //x.length:'+(length>6))//첫화면 true 나와야 함!    <x.length:t?f?    <(x.length)
+				$div_row = $('<div/>').addClass('row').appendTo($section)
+				for(let i = 0 ;i < 6; i++){
 					
 					$div_col = $('<div/>').addClass('col-lg-2 col-md-2 mb-lg-0 mb-2').appendTo($div_row)
 					$div_card = $('<div/>').addClass('card collection-card z-depth-1-half').appendTo($div_col)
@@ -119,9 +127,11 @@ yoonho.service=(x=>{
 				
 				}
 				$window.on('scroll.category',e=>{
-					//alert('(page-1)*12+12<x.length:t?f?:'+((page-1)*12+12)<(x.length))//첫화면 true 나와야 함!
-					if (((page-1)*12+12)<(x.length) && $window.scrollTop() == $document.height() - $window.height()) {
-			        	for(let i = (page-1)*12 ; i < (page-1)*12+12; i++){
+					alert('2. length>=6 ::'+(length>=6))
+					console.log('$window.scrollTop():'+$window.scrollTop()+' // $document.height() : '+$document.height()+' // $window.height() : '+$window.height())
+					console.log('(page-1)*6+6<x.length:t?f?:'+(((page-1)*6+6)<(length)))//첫화면 true 나와야 함!
+					if ( (((page)*6+7)<(length)) && $window.scrollTop() == $document.height() - $window.height()) {
+			        	for(let i = (page)*6 ; i < (page)*7+6; i++){
 							$div_col = $('<div/>').addClass('col-lg-2 col-md-2 mb-lg-0 mb-2').appendTo($div_row)
 							$div_card = $('<div/>').addClass('card collection-card z-depth-1-half').appendTo($div_col)
 							$div_view_zoom = $('<div/>').addClass('view zoom').appendTo($div_card)
@@ -139,7 +149,8 @@ yoonho.service=(x=>{
 			        }
 				})
 		}else {
-			alert('12보다적다:'+x.length)
+			alert('6보다적다:'+x.length)
+			$div_row = $('<div/>').addClass('row').appendTo($section)
 			for(let i = 0 ;i < x.length; i++){
 				$div_col = $('<div/>').addClass('col-lg-2 col-md-2 mb-lg-0 mb-2').appendTo($div_row)
 				$div_card = $('<div/>').addClass('card collection-card z-depth-1-half').appendTo($div_col)
@@ -160,7 +171,7 @@ yoonho.service=(x=>{
 
 	var retrieve = x=>{
 		$.getJSON($.ctx()+'/item/retrieve/'+x,d=>{
-			console.log('d.retrieve[0]::'+d.retrieve[0])
+			console.log('d.retrieve[0]::'+d.retrieve[0]+'//d.rtag[0]::'+d.rtag[0].TAG_NAME)
 			$.magnificPopup.open({
 				closeBtnInside:true,
 				closeOnContentClick:false,
@@ -168,7 +179,7 @@ yoonho.service=(x=>{
 				fixedBgPos: true,
 				fixedContentPos:false,
 				items:{src:
-						yoonho.service.popup(d.retrieve[0])
+						yoonho.service.popup(d)
 				},
 				midClick:true,
 				overflowY:'auto',
@@ -182,20 +193,17 @@ yoonho.service=(x=>{
 		return false;
 	};
 	var popup =x=>{//x:itemSeq
-		alert('몇번?:'+x.itemSeq)
+		let rtrv = x.retrieve[0]
+		alert('몇번?:'+rtrv.itemSeq+'x.rtag[0]'+x.rtag[0].TAG_NAME)
 
 		//component
 		let detail_arr = ["당신이 좋아할 만한 도시락","20대가 많이 구매한 도시락","신제품 도시락","베스트셀러"];
 		
-		let $tag1 = $('<div/>').attr({style:'margin:10px;font-size:18px'}).addClass('badge orange').html('#고소')
-		let $tag2 = $('<div/>').attr({style:'margin:10px;font-size:18px'}).addClass('badge orange').html('#달콤')
-		let $tag3 = $('<div/>').attr({style:'margin:10px;font-size:18px'}).addClass('badge orange').html('#짭짤')
-
 		//modal main  
 		let $div1 = $('<div/>').attr({id:'y_item_detailUI'}).addClass('container yh-mfp-wrap yh-white-popup')//.attr({style:'font-family: \'Sunflower\', sans-serif;'});
 		let $div2 = $('<div/>').addClass('mfp-container detail-main')
 					.append($('<span/>').addClass('col')
-						.append($('<img src="'+x.img+'"/>').addClass('rounded y_img_popup')))
+						.append($('<img src="'+rtrv.img+'"/>').addClass('rounded y_img_popup')))
 		.appendTo($div1);// div2 end
 		
 	
@@ -209,13 +217,11 @@ yoonho.service=(x=>{
 				.click(e=>{
 					alert('장바구니 클릭!')
 					alert('$(\'#item_iptbx\').val()::'+$('#item_iptbx').val())
-					alert('item_seq::'+x.itemSeq)
-					alert('member_id::'+x.memberId)
+					alert('item_seq::'+rtrv.itemSeq)
+					alert('member_id::'+rtrv.memberId)
 					//$.getScript($.script()+'kaeun.js',()=>{})주면 제이슨 던질것
 					//$.magnificPopup.close();//팝업창 끄는 효과 //우리는 멀티팝업 띄워야 함.
 				}))
-				
-
 		.append($('<a/>').attr({id:'detail_pay_btn'}).html('결제하기').addClass('btn btn-warning mgt10-mgb10 mgr10-mgr10')
 			.click(e=>{
 				alert('/결제했슈')
@@ -252,10 +258,10 @@ yoonho.service=(x=>{
 
 		//commentbox1,2write:create
 		let $div5_1 = $('<div/>').addClass('single_comment_area').appendTo($div4_1);
-		let $section6_1 = yoonho.contain.commentWrite({uid:'test2',itemSeq:x.itemSeq}).appendTo($div5_1);
+		let $section6_1 = yoonho.contain.commentWrite({uid:'test2',itemSeq:rtrv.itemSeq}).appendTo($div5_1);
 		
 		//comment list:Read Update Delete
-		$.getJSON($.ctx()+'/brd/read/'+x.itemSeq,d=>{
+		$.getJSON($.ctx()+'/brd/read/'+rtrv.itemSeq,d=>{
 			let $section6_2 = $('<section/>').addClass('my-5').appendTo($div5_1).attr({id:'section6_2'})
 						.append($('<div/>').addClass('card-header border-0 font-weight-bold').html('comments'))
 						
@@ -272,13 +278,13 @@ yoonho.service=(x=>{
 		let $div3_4 = $('<div/>').addClass('container-fluid').appendTo($div2_4);
 		let $div4_4 = $('<div/>').addClass('row').appendTo($div3_4);
 		let $div5_4 = $('<div/>').addClass('col-lg-12 y_bg_popup_gr')
-						.append($('<h2 style="font-size:28px;"/>').addClass('text-center font-weight-bold').html(x.itemName))
-						.append($('<p/>').addClass('text-center').html(x.category))
+						.append($('<h2 style="font-size:28px;"/>').addClass('text-center font-weight-bold').html(rtrv.itemName))
+						.append($('<p/>').addClass('text-center').html(rtrv.category))
 						.appendTo($div4_4);
 		let $star = $('<div/>').addClass('my-rating').attr({id:'my-rating'})
 			.starRating({ //https://github.com/nashio/star-rating-svg
 				initialRating: 0, //초기값  
-				starSize: 32,  //width속성값
+				starSize: 20,  //width속성값
 				minRating : 0.5,
 				emptyColor : 'white',
 				hoverColor : 'orange',
@@ -295,48 +301,56 @@ yoonho.service=(x=>{
 					
 				}
 			}).appendTo($div5_4)
-			let $p6_4_1 = $('<p/>').addClass('text-left').html(x.starCount+'명이 평가했어요!')
-						.append($('<div/>')
-							.append($tag1)
-							.append($tag2)
-							.append($tag3))
+			let $p6_4_1 = $('<div/>').addClass('text-left').html(rtrv.starCount+'명이 별점평가 했어요!')
 						.appendTo($div5_4)
+			let $tag = $('<div/>').appendTo($p6_4_1)
+			$.each(x.rtag, (i,j)=>{
+				if(j.TAG_FLAG=='맛'){
+					$('<div/>').attr({style:'margin:10px;font-size:12px'}).addClass('badge badge-secondary').html(j.TAG_FLAG+'#'+j.TAG_NAME).appendTo($tag);
+				}else if(j.TAG_FLAG=='감성'){
+					$('<div/>').attr({style:'margin:10px;font-size:12px'}).addClass('badge badge-success').html(j.TAG_FLAG+'#'+j.TAG_NAME).appendTo($tag);
+				}else if(j.TAG_FLAG=='재료'){
+					$('<div/>').attr({style:'margin:10px;font-size:12px'}).addClass('badge badge-info').html(j.TAG_FLAG+'#'+j.TAG_NAME).appendTo($tag);
+				}
+				
+			})
 			
 
-			//x.imgSeq,x.itemName,x.img,x.price,x.calorie,x.category,x.explains,x.brand,x.itemSeq
+			//rtrv.imgSeq,rtrv.itemName,rtrv.img,rtrv.price,rtrv.calorie,rtrv.category,rtrv.explains,rtrv.brand,rtrv.itemSeq
 			let $div4_5 = $('<div/>').addClass('row').appendTo($div3_4)
 			let $div5_5 = $('<div/>').addClass('col-lg-12').appendTo($div4_5)
-			let $accordionNav =  $.getScript($.script()+'/ui/y_item_detail_modal.js',()=>{
-				$('<div/>').html(y_item_detail_modalUI()).appendTo($div5_4)
-			})
-			/*let $accordionNav = $('<div class="card"/>').appendTo($div4_5)
-			let $cd_hd = $('<div class="card-header" role="tab" id="headingOne1" role="tab"/>')//.addClass('card-header').attr({id:'headingOne1'})
-						.append($('<a data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne1" aria-expanded="true" aria-controls="collapseOne1"/>')
-							.append($('<h5 class="mb-0"/>').html('Collapsible Group Item #1')
-								.append($('<i class="fa fa-angle-down rotate-icon"/>'))
-							)
-						).appendTo($accordionNav)
-			let $cd_bd = $('<div id="collapseOne1" class="collapse show" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordionEx"/>').appendTo($accordionNav)//.addClass('collapse show').attr({role:'tabpanel',id:'collapseOne1','aria-labelledby':'headingOne1','data-parent':'#accordionEx'})
-			let $cd_bd_in = $('<div class="card-body"/>').html('아코디언').appendTo($cd_bd)*/
+
+			//md-accordion accordion-1
+			let $aNav = $('<div/>').addClass('accordion').attr({'id':'accordionEx23','role':'tablist'}).appendTo($div3_4)
+			let $aNav_crd = $('<div/>').addClass('card').appendTo($aNav)
+			let $aNav_crd_hd = $('<div/>').addClass('card-header blue lighten-3 z-depth-1').attr({'id':'heading96','role':'tab'}).appendTo($aNav_crd)
+			let $aNav_crd_hd_t = $('<h5/>').addClass('text-uppercase mb-0 py-1').appendTo($aNav_crd_hd)
+			let $aNav_crd_hd_t_a = $('<a href="#collapse96"/>').html('Dosirak INFO').addClass('white-text font-weight-bold').attr({'data-toggle':'collapse', 'aria-expanded':'true', 'aria-controls':'collapse96'}).appendTo($aNav_crd_hd_t)
 			
+			let $aNav_crd_ctn = $('<div/>').addClass('collapse show').attr({'id':'collapse96','role':'tabpanel','aria-labelledby':'heading96','data-parent':'#accordionEx23'}).appendTo($aNav_crd)
+			let $aNav_crd_ctn_bd = $('<div/>').addClass('card-body').appendTo($aNav_crd_ctn)
+			let $aNav_crd_ctn_r = $('<div/>').addClass('row my-4').appendTo($aNav_crd_ctn_bd)
 			
-			let $tbl6_5 = $('<div/>').addClass('row').appendTo($('#item_card_body_1'))
-			let $tbody7_5 = $('<div/>').html('업체').addClass('col-sm text-left mgt10-mgb10').appendTo($tbl6_5)
-			let $tbody7_5_1 = $('<div/>').html(x.brand).addClass('col-sm  mgt10-mgb10').appendTo($tbl6_5)
+			let $aNav_crd_ctn_c = $('<div/>').addClass('col-md-12').appendTo($aNav_crd_ctn_r)
 
 			
-			let $tbl6_6 = $('<div/>').addClass('row').appendTo($('#item_card_body_2'))
-			let $tbody7_6 = $('<div/>').html('칼로리').addClass('col-sm text-left mgt10-mgb10').appendTo($tbl6_6)
-			let $tbody7_6_1 = $('<div/>').html(x.calorie+' Kcal').addClass('col-sm  mgt10-mgb10').appendTo($tbl6_6)
+			let $tbl6_5 = $('<div/>').addClass('row').appendTo($aNav_crd_ctn_c)
+			let $tbody7_5 = $('<div/>').html('업체').addClass('col-sm text-left mgt10-mgb10').appendTo($tbl6_5)
+			let $tbody7_5_1 = $('<div/>').html(rtrv.brand).addClass('col-sm  mgt10-mgb10').appendTo($tbl6_5)
+
 			
-			let $tbl6_7 = $('<div/>').addClass('row').appendTo($('#item_card_body_3'))
+			let $tbl6_6 = $('<div/>').addClass('row').appendTo($aNav_crd_ctn_c)
+			let $tbody7_6 = $('<div/>').html('칼로리').addClass('col-sm text-left mgt10-mgb10').appendTo($tbl6_6)
+			let $tbody7_6_1 = $('<div/>').html(rtrv.calorie+' Kcal').addClass('col-sm  mgt10-mgb10').appendTo($tbl6_6)
+			
+			let $tbl6_7 = $('<div/>').addClass('row').appendTo($aNav_crd_ctn_c)
 			let $tbody7_7 = $('<div/>').html('가격').addClass('col-sm text-left mgt10-mgb10').appendTo($tbl6_7)
-			let $tbody7_7_1 = $('<div/>').html(x.price+' 원').addClass('col-sm  mgt10-mgb10').appendTo($tbl6_7)
+			let $tbody7_7_1 = $('<div/>').html(rtrv.price+' 원').addClass('col-sm  mgt10-mgb10').appendTo($tbl6_7)
 			
 			
 			let $tbl6_9 = $('<div/>').addClass('row')
-							.appendTo($div5_5)
-			let $tbody7_9 = $('<div/>').append($('<p/>').attr({style:'font-size:14px;'}).html(x.explains)).addClass('col-sm text-left mgt10-mgb10').appendTo($tbl6_9)
+							.appendTo($aNav_crd_ctn_c)
+			let $tbody7_9 = $('<div/>').append($('<p/>').attr({style:'font-size:14px;'}).html(rtrv.explains)).addClass('col-sm text-left mgt10-mgb10').appendTo($tbl6_9)
 			/*let $accordion = $.getScript($.script()+'/ui/y_item_detail.js',()=>{
 				$('<div/>').html(y_item_detailUI()).appendTo($div5)
 			})*/
