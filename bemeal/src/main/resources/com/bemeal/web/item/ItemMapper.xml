@@ -107,11 +107,18 @@
 			count(*) as starCount
 		FROM
 			ITEM it
-			JOIN image iIM
+			JOIN image img
 				on it.item_seq like img.item_seq
-			JOIN taste
+			JOIN taste t
 				on it.item_seq like t.item_seq	
 		WHERE it.item_seq LIKE #{itemSeq} AND t.flag LIKE 'star'
+  	</select>
+  	<select id="tag" resultMap="result">
+  		select tg.TAG_FLAG,tg.TAG_NAME
+		from tag_item tgi
+			join tag tg
+			on tgi.TAG_SEQ like tg.TAG_SEQ
+		where tgi.ITEM_SEQ like #{itemSeq};
   	</select>
 
   	
