@@ -41,9 +41,9 @@
   	</resultMap>
    <insert id="postTaste">
    INSERT INTO TASTE
-   (QUANTITY, FLAG, MEMBER_ID, ITEM_SEQ, PURCHASE_SEQ)
+   (QUANTITY, FLAG, MEMBER_ID, ITEM_SEQ, PURCHASE_SEQ,TASTE_SEQ)
    VALUES
-   (#{quantity},#{flag},#{memberId},#{itemSeq},#{purSeq})
+   (#{quantity},#{flag},#{memberId},#{itemSeq},#{purSeq},#{tasteSeq})
    </insert>
    <insert id="postPur">
    INSERT INTO PURCHASE
@@ -55,4 +55,10 @@
       MEMBER_ID AS "MEMBERID",PASSWORD,NAME,AGE,SSN,GENDER,ADDRESS,E_MAIL AS "EMAIL",PHONE_NUM AS PHONENUM 
    FROM MEMBER
    </select>
+   <insert id="postPresent">
+   INSERT INTO PRESENT
+   (taste_seq,to_id,massage)
+   VALUES
+   (#{tasteSeq},#{toId},#{massage})
+   </insert>
    </mapper>

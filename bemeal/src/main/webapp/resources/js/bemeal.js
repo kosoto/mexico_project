@@ -213,8 +213,20 @@ bemeal.compo=(()=>{
 						$('<form/>').addClass('form-inline').append(
 							$('<input/>').addClass('form-control mr-sm-2').attr({type:'text','aria-label':'Search'}).keydown(e=>{if(e.keyCode === 13)e.preventDefault();}).keyup(e=>{
 								//검색하기
-								let searchWord = '';
-								console.log('검색어'+e.currentTarget.value);
+								let searchWord = e.currentTarget.value;
+								console.log('검색어:'+searchWord);
+								if(searchWord!==''){
+									$.getJSON($.ctx()+"/navSearch/"+searchWord,d=>{
+										$(window).off('scroll.category');
+										bemeal.search.list({
+											word:searchWord,
+											list:d
+										});
+									});	
+								}else{//검색어가 없으면 다시 메인
+									bemeal.router.main();
+								}
+								
 							}),
 							$('<button/>').addClass('btn btn-outline-white btn-sm my-0').attr({style:'color:black!important',type:'button',id:'testSearch'}).text('Search').click(e=>{
 								e.preventDefault();
@@ -497,6 +509,86 @@ bemeal.evaluate=(()=>{
 		main:main,
 		loadPage:loadPage
 		}; 
+})();
+
+bemeal.search=(()=>{
+	var list=x=>{
+		$('header').remove();
+		$('#content').empty();
+		let arr = x.list;
+		let word = x.word;
+		let length = arr.length;
+		let index = 0;
+		let $content =  $('#content').append(
+							$('<h5/>').addClass('search_page_head').append(
+								$('<span/>').append(
+										$('<span/>').text("'"),
+										$('<span/>').text(word),
+										$('<span/>').text("'")
+								),
+								$('<span/>').text('검색결과')
+							)
+						);
+		for(let i=1;i<=((length>20)?5:Math.ceil(length/4));i++){
+			let $gift_slid = $('<div/>').addClass('card-group');
+			$content.append(
+					$('<div>').addClass('col').append(
+							$('<div/>').addClass('card_row').append(
+									$gift_slid
+							)
+					)
+			);
+			for(let j=1;j<=4;j++){
+				let flag = (arr[index]!==undefined);
+				let $gift_c = $('<div/>').addClass('card gift_c').append(
+									$('<div/>').addClass('gift_img').append(
+										(()=>{
+											if(flag){
+												return $('<img/>').attr({src:arr[index].img})
+											}else{
+												return $('<img/>')
+											}
+										})()
+									),
+									$('<div/>').addClass('gift_details').append(
+											$('<h2/>').addClass('evaluative_title').text((flag)?arr[index].itemName:''),
+											$('<div/>').attr({'data-seq':(flag)?arr[index].itemSeq:0}),
+											$('<div/>').addClass('gift_msg').append(
+													$('<p/>').text((flag)?arr[index].explains:''),
+													$('<a/>').addClass('evaluateToRetrieve').text('상세보기').attr({href:'#','data-seq':(flag)?arr[index].itemSeq:''})
+													.click(e=>{
+														e.preventDefault();
+														if(e.currentTarget.dataset.seq!=0){
+															$.getScript($.script()+'/yoonho.js',()=>{
+																yoonho.service.retrieve(e.currentTarget.dataset.seq);
+															});
+														}
+													})
+											)
+									)
+							);
+				if(!flag){
+					$gift_c.attr('style','visibility: hidden;');
+				}
+				//let $gift_details = $('<div/>').addClass('gift_details').appendTo($gift_c);
+				//let $h2 = $('<h2/>').addClass('evaluative_title').text((flag)?arr[index].itemName:'').appendTo($gift_details);
+				//let $star_rating_container = $('<div/>').attr({'data-seq':(flag)?arr[index].itemSeq:0}).appendTo($gift_details)
+				/*let $gift_msg = $('<div/>').addClass('gift_msg').appendTo($gift_details).append(
+						$('<p/>').text((flag)?arr[index].explains:''),
+						$('<a/>').addClass('evaluateToRetrieve').text('상세보기').attr({href:'#','data-seq':(flag)?arr[index].itemSeq:''})
+						.click(e=>{
+							e.preventDefault();
+							if(e.currentTarget.dataset.seq!=0){
+								yoonho.service.retrieve(e.currentTarget.dataset.seq);
+							}
+						})
+				);*/
+				$gift_slid.append($gift_c);
+				index++;
+			}
+		}
+	};
+	return {list:list};
 })();
 
 
