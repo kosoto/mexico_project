@@ -624,12 +624,103 @@ kaeun.tastes = { //kaeun.tastes.cartList()
  			}); //getjson끝 차트의끝
 		},
          collect : ()=>{ //콜렉션
-        	 ui.newpage();
+        	ui.newpage();
 			$('#k_header').append('콜렉션');
-			$('#k_header').append('');  
-			$('#k_content').append('');
-				
-         },
+			let $k_content = $('#k_content');								/*overflow:auto 넘치면 스크롤만들기 */
+			let $card_group_dir = $('<div/>').addClass('col_card_group').attr({style:'overflow:auto'}).appendTo($k_content);
+			let $card_group_list = $('<div/>').addClass('col_card_group').attr({style:'overflow:auto'}).appendTo($k_content);
+			let arr = ['wish','dir1','dir2','dir3','dir4','dir5','dir6','dir7'] ; /* 해당 유저의 dir_name들을 getJSON으로가져오기 */
+			$.each(arr,(i,j)=>{
+				console.log(j)
+				$('<div/>').addClass('col_card').appendTo($card_group_dir).append(
+					$('<div/>').addClass('view overlay').append(
+						$('<img/>').addClass('card-img-top').attr({src:$.img()+'/cmm/item/dosiroc (1).jpg'/*img 넣기*/,alt:'Card image cap'}),
+						$('<a/>').attr({href:'#','data-name':j}).append(
+							$('<div/>').addClass('mask rgba-white-slight')
+						).click(e=>{
+							e.preventDefault();
+							$('.col_list').attr({style:'visibility:hidden'})
+							console.log(e.currentTarget.dataset.name);
+							$('.'+e.currentTarget.dataset.name+'_list').attr({style:'visibility:visible'})
+							/* 아래 리스트에 해당 콜랙션에 담긴 리스트 보여주기 */
+						})
+					),
+					$('<div/>').addClass('card-body').append(
+						$('<h4/>').addClass('card-title').text(j/* dir_name */)
+						// <p class="card-text">Some quick example text to build on the card title and make up the bulk of the cards content.</p>
+						// <button type="button" class="btn btn-primary btn-md">Read more</button>
+					)
+				);
+				let list = [{img:$.img()+'/cmm/item/dosiroc (1).jpg',itemName:'item_name'}]; /* id,dir_name(j)을 가지고 해당하는 아이템 리스트를 getJSON으로 가져오기  */
+				$.each(list,(x,y)=>{
+					$('<div/>').addClass('col_card col_list '+j+'_list').attr({style:'visibility:hidden'}).appendTo($card_group_list).append(
+						$('<div/>').addClass('view overlay').append(
+							$('<img/>').addClass('card-img-top').attr({src:y.img/*img 넣기*/,alt:'Card image cap'}),
+							$('<a/>').attr({href:'#'}).append(
+								$('<div/>').addClass('mask rgba-white-slight')
+							).click(e=>{
+								e.preventDefault();
+								/* 아이템 디테일 가기? */
+							})
+						),
+						$('<div/>').addClass('card-body').append(
+							$('<h4/>').addClass('card-title').text(y.itemName/* item_name */)
+							// <p class="card-text">Some quick example text to build on the card title and make up the bulk of the cards content.</p>
+							// <button type="button" class="btn btn-primary btn-md">Read more</button>
+						)
+					);
+				});
+			});
+			$('.wish_list').attr({style:'visibility:visible'});
+/*			ui.newpage();
+			$('#k_header').append('콜렉션');
+			let $k_content = $('#k_content');								overflow:auto 넘치면 스크롤만들기 
+			let $card_group_dir = $('<div/>').addClass('card-group').attr({style:'overflow:auto'}).appendTo($k_content);
+			let $card_group_list = $('<div/>').addClass('card-group').attr({style:'overflow:auto'}).appendTo($k_content);
+			let arr = ['wish','dir1','dir2','dir3','dir4','dir5','dir6','dir7'] ;  해당 유저의 dir_name들을 getJSON으로가져오기 
+			$.each(arr,(i,j)=>{
+				console.log(j)
+				$('<div/>').addClass('card mb-3').appendTo($card_group_dir).append(
+						$('<div/>').addClass('view overlay').append(
+								$('<img/>').addClass('card-img-top').attr({src:$.img()+'/cmm/item/dosiroc (1).jpg'img 넣기,alt:'Card image cap'}),
+								$('<a/>').attr({href:'#','data-name':j}).append(
+										$('<div/>').addClass('mask rgba-white-slight')
+								).click(e=>{
+									e.preventDefault();
+									$('.col_list').attr({style:'visibility:hidden'})
+									console.log(e.currentTarget.dataset.name);
+									$('.'+e.currentTarget.dataset.name+'_list').attr({style:'visibility:visible'})
+									 아래 리스트에 해당 콜랙션에 담긴 리스트 보여주기 
+								})
+						),
+						$('<div/>').addClass('card-body').append(
+								$('<h4/>').addClass('card-title').text(j dir_name )
+								// <p class="card-text">Some quick example text to build on the card title and make up the bulk of the cards content.</p>
+								// <button type="button" class="btn btn-primary btn-md">Read more</button>
+						)
+				);
+				let list = [{img:$.img()+'/cmm/item/dosiroc (1).jpg',itemName:'item_name'}];  id,dir_name(j)을 가지고 해당하는 아이템 리스트를 getJSON으로 가져오기  
+				$.each(list,(x,y)=>{
+					$('<div/>').addClass('card mb-3 col_list '+j+'_list').attr({style:'visibility:hidden'}).appendTo($card_group_list).append(
+							$('<div/>').addClass('view overlay').append(
+									$('<img/>').addClass('card-img-top').attr({src:y.imgimg 넣기,alt:'Card image cap'}),
+									$('<a/>').attr({href:'#'}).append(
+											$('<div/>').addClass('mask rgba-white-slight')
+									).click(e=>{
+										e.preventDefault();
+										 아이템 디테일 가기? 
+									})
+							),
+							$('<div/>').addClass('card-body').append(
+									$('<h4/>').addClass('card-title').text(y.itemName item_name )
+									// <p class="card-text">Some quick example text to build on the card title and make up the bulk of the cards content.</p>
+									// <button type="button" class="btn btn-primary btn-md">Read more</button>
+							)
+					);
+				});
+			});
+			$('.wish_list').attr({style:'visibility:visible'});
+*/         },
          test : ()=>{ 
         	 ui.newpage();
         	$('#k_header').append('테스트');
