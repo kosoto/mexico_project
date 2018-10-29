@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.bemeal.web.cmm.Util;
+
+import jdk.nashorn.internal.ir.RuntimeNode.Request;
 
 
 @RestController
@@ -31,14 +32,14 @@ public class SearchCtrl {
 		return f.apply("%"+searchWord+"%");
 	}
 	@PostMapping("/tagSearch")
-	public Map<String,String> tagSearch(
-			@RequestBody List<?> tagArr
-			){
-		HashMap<String, String> r = new HashMap<>();
+	public List<?> tagSearch(
+			@RequestParam(value = "JtagArr[]") List<String> tagArr){
+		//String[] checkTag =  tagArr.getParameterValues("checks");
+		Util.log.accept("tag Search controller");
+		
 		
 		Util.log.accept(tagArr.toString());
-							
-		return r;
+		return searchMapper.tagSearch(tagArr);
 		
 	}
 	

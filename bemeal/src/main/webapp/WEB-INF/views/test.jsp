@@ -38,20 +38,29 @@
 <link rel="stylesheet" type="text/css" href="${context}/resources/css/star-rating-svg.css">
 <!-- kaeun chart -->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<!-- kakao -->
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 </head>
 <body>
 <!-- MDB -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.11/js/mdb.min.js"></script>
-	<div id="star"></div>
-	<script>
-	$('#star').starRating({
-		  starSize: 200,  //width속성값
-		  forceRoundUp:false,
-		  initialRating: 2.7,
-		  strokeColor: '#894A00',
-		  strokeWidth: 10,
-		  readOnly:true
-		});
-	</script> 
+	<a id="kakao-login-btn"></a>
+    <a href="http://developers.kakao.com/logout"></a>
+    <script type='text/javascript'>
+      //<![CDATA[
+        // 사용할 앱의 JavaScript 키를 설정해 주세요.
+        Kakao.init('becce876ca7388cdfaaf1944cb11a411');
+        // 카카오 로그인 버튼을 생성합니다.
+        Kakao.Auth.createLoginButton({
+          container: '#kakao-login-btn',
+          success: function(authObj) {
+            alert(JSON.stringify(authObj));
+          },
+          fail: function(err) {
+             alert(JSON.stringify(err));
+          }
+        });
+      //]]>
+    </script>
 </body>
 </html>

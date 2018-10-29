@@ -286,25 +286,17 @@ junghoon.service = {
 								+'</div>'
 						);
 					}),
+					$('#search2tag')
 					$('#search2tag').click(e=>{
 						$('#search_the_SachalGod').html(
 								'            <div class="search-box rounded">'
 								+'                <div class="row">'
 								+'                    <div class="col-md-3">'
 								+'					<img src="/web/resources/img/junghoon/j_tag.jpg" height="100%" width="100%" margin="5px auto"/>'
-								/*
-								 * +' <button class="j_img" id="search2keyWord"><img
-								 * src="/web/resources/img/junghoon/j_search.jpg"
-								 * height="100%" width="100%"></button> '
-								 */
+							
 								+'                    </div>'
 								+'                    <div class="col-md-3">'
-								/*
-								 * +' <img
-								 * src="/web/resources/img/junghoon/j_tag.jpg"
-								 * height="100%" width="100%" margin="5px
-								 * auto"/>'
-								 */
+								
 								+'					<img src="/web/resources/img/junghoon/j_search.jpg" id="tag2search" height="100%" width="100%" margin="5px auto"/>'
 								+'                    </div>'
 								+'            </div>'
@@ -514,37 +506,29 @@ junghoon.service = {
 							
 							for(i = 0; i<j_tag.length; i++){
 								if(j_tag[i].checked){
-									tagArr.add(i);
+									tagArr.push(i);
 								}
 							}
-							alert("@@@@@@@@@@"+tagArr.toString());
+							alert("@@@@@@@@@@"+tagArr);
 							$.ajax({
 								url : $.ctx()+'/tagSearch',
 								method:'post',
 								contentType:'application/json',
-								data:JSON.stringify({"j_tag":tagArr}),
+								data:JSON.stringify({"JtagArr":tagArr}), // 리스트
 								success:d=>{                                      
 								alert('success');
 								},
 								error:(x,y,z)=>{
 									console.log('error :: '+z)
 									}
-													 
 							})
-							
-							
-							
-							
-							
 						})
-						
 					})
-					
 					},
 				mypage : x => {
 			alert('mp');
 			$.getScript($.script()+'/ui/j_mbrupdate.js', ()=>{
-					$('#content').empty().html(modifyUI())
+					$('#content').empty().html(modifyUI($.cookie('member')))
 				});
 	}
 }
