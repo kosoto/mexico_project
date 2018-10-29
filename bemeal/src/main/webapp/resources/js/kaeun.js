@@ -626,16 +626,55 @@ kaeun.tastes = { //kaeun.tastes.cartList()
          collect : ()=>{ //콜렉션
         	ui.newpage();
 			$('#k_header').append('콜렉션');
-			let $k_content = $('#k_content');								/*overflow:auto 넘치면 스크롤만들기 */
-			let $card_group_dir = $('<div/>').addClass('col_card_group').attr({style:'overflow:auto'}).appendTo($k_content);
-			let $card_group_list = $('<div/>').addClass('col_card_group').attr({style:'overflow:auto'}).appendTo($k_content);
+			let $k_content = $('#k_content');
+			var drag = false;
+			var x,preX;
+			let $card_group_dir = 
+				$('<div/>').addClass('card-group col_card_group').attr({style:'overflow:auto;flex-flow:row nowrap;'}).appendTo($k_content)
+					.mousedown(e=>{
+						e.preventDefault();
+						/*//let target = $(this);
+						let target = e.currentTarget;
+						//let target = $card_group_dir;
+						target.data('drag',true);
+						target.data('scrollLeft',target.scrollLeft())
+						target.data('preX',e.screenX)
+						target.attr({style:'cursor:pointer;'})*/
+						drag = true;
+						x = $(this).scrollLeft();
+						preX = e.screenX;
+						$(this).attr({style:'cursor:pointer;'});
+					})
+					.mousemove(e=>{
+						/*//let target = $(this);
+						let target = e.currentTarget;
+						//let target = $card_group_dir;
+						if(target.data('drag')){
+							target.scrollLeft(target.data('scrollLeft') - e.screenX + target.data('preX'));
+							return false;
+						}*/
+						if(drag){
+							$(this).scrollLeft(x - e.screenX + preX);
+							return false;
+						}
+					})
+					.mouseup(e=>{
+						/*//let target = $(this);
+						let target = e.currentTarget;
+						//let target = $card_group_dir;
+						target.data('drag',false);
+						target.attr({style:'cursor:default;'})*/
+						drag = false;
+						$(this).attr({style:'cursor:default;'});
+					});
+			let $card_group_list = $('<div/>').addClass('card-group col_card_group').attr({style:'overflow:auto;flex-wrap:nowrap;'}).appendTo($k_content);
 			let arr = ['wish','dir1','dir2','dir3','dir4','dir5','dir6','dir7'] ; /* 해당 유저의 dir_name들을 getJSON으로가져오기 */
 			$.each(arr,(i,j)=>{
 				console.log(j)
-				$('<div/>').addClass('col_card').appendTo($card_group_dir).append(
+				$('<div/>').addClass('card col_card').appendTo($card_group_dir).append(
 					$('<div/>').addClass('view overlay').append(
-						$('<img/>').addClass('card-img-top').attr({src:$.img()+'/cmm/item/dosiroc (1).jpg'/*img 넣기*/,alt:'Card image cap'}),
-						$('<a/>').attr({href:'#','data-name':j}).append(
+						$('<img/>').addClass('card-img-top').attr({src:$.img()+'/cmm/item/dosiroc (1).jpg'/*img 넣기*/,alt:'Card image cap',style:'pointer-events:none'}),
+						$('<a/>').attr({'data-name':j}).append(
 							$('<div/>').addClass('mask rgba-white-slight')
 						).click(e=>{
 							e.preventDefault();
@@ -653,10 +692,10 @@ kaeun.tastes = { //kaeun.tastes.cartList()
 				);
 				let list = [{img:$.img()+'/cmm/item/dosiroc (1).jpg',itemName:'item_name'}]; /* id,dir_name(j)을 가지고 해당하는 아이템 리스트를 getJSON으로 가져오기  */
 				$.each(list,(x,y)=>{
-					$('<div/>').addClass('col_card col_list '+j+'_list').attr({style:'visibility:hidden'}).appendTo($card_group_list).append(
+					$('<div/>').addClass('card col_card col_list '+j+'_list').attr({style:'visibility:hidden'}).appendTo($card_group_list).append(
 						$('<div/>').addClass('view overlay').append(
-							$('<img/>').addClass('card-img-top').attr({src:y.img/*img 넣기*/,alt:'Card image cap'}),
-							$('<a/>').attr({href:'#'}).append(
+							$('<img/>').addClass('card-img-top').attr({src:y.img/*img 넣기*/,alt:'Card image cap',style:'pointer-events:none'}),
+							$('<a/>').append(
 								$('<div/>').addClass('mask rgba-white-slight')
 							).click(e=>{
 								e.preventDefault();
