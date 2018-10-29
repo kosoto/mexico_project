@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.bemeal.web.cmm.Pagination;
 import com.bemeal.web.mbr.MemberMapper;
 
 
@@ -21,7 +23,8 @@ public class TasteCtrl {
 	@Autowired TasteMapper tstMapper;
 	@Autowired MemberMapper mbrMapper;
 	@Autowired HashMap<String,Object> tmap;
-
+	@Autowired Pagination page;
+	
 	@Transactional
 	@GetMapping("/chart/{id}")
 	public Map<String,Object> chart(@PathVariable String id){
@@ -47,7 +50,7 @@ public class TasteCtrl {
 		int result = tstMapper.postTaste(tmap);
 		return result;
 	}
-	@GetMapping("/taste/list/{id}/{flag}")
+	@GetMapping("/taste/list/{id}/{flag}")//페이지no.star날짜 end날짜
 	public ArrayList<Map<String, Object>>listCart(@PathVariable String id,
 												@PathVariable String flag){
 		tmap.clear();
@@ -76,5 +79,62 @@ public class TasteCtrl {
 			logger.info("들어온여러개의값 {}, 리턴값 {}",p.get("delList"),result);
 		return result;
 	}
+    @GetMapping("/pay/list")//페이지no.star날짜 end날짜
+    public ArrayList<Map<String, Object>>listPay(){
+          tmap.clear();
+          System.out.println("test1");
+          ArrayList<Map<String, Object>> tlist = tstMapper.listPayHis(tmap); //listPay
+          System.out.println(tlist);
+          return tlist;
+    }
+    
+    @Transactional
+    @PostMapping("/pay/post") 
+    public int postPay(@RequestBody Map<String, Object> p){
+          tmap.clear();
+          tstMapper.postPay(p);           
+          tmap.put("purchaseSeq", p.get("purchaseSeq").toString());
+               System.out.println("p :"+p);
+          tmap.put("flag", "buy");
+          tmap.putAll(p);
+               System.out.println("tmap : "+tmap);
+          int result = tstMapper.postTastePay(tmap);
+          return result; 
+    } 
+    
+	@PostMapping("/payhis/search") //cart 삭제
+	public Map<String, Object> searchList(@RequestBody HashMap<String, Object> p){
+		/*{id : $.cookie('member')["memberId"],
+			prevDay: x.prevDay,
+			day: x.day,
+			pageNo: x.pageNo,
+			flag : 
+			keyword : }*/
+			System.out.println("payHis들어옴");
+		tmap.clear();
+		tmap.putAll(p);
+		p.put("count", tstMapper.countTaste(p));
+		p.put("pageNum", p.get("pageNo"));
+		p.put("pageSize", 5);
+		p.put("blockSize", 5);
+		page.excute(p);
+		page.setBeginRow(page.getBeginRow()-1);
+		tmap.put("page",page);
+			logger.info("page :  {}",tmap.get("page"));
+			System.out.println("tmap : "+tmap);
+		ArrayList<Map<String, Object>> tlist = tstMapper.listPayHis(tmap);
+		tmap.put("tlist",tlist);
+		System.out.println("맵: "+tmap);
+		return tmap;
+	}
+    @PostMapping("/gift/post") //cart 등록
+    public int postGift(@RequestBody Map<String, Object> p){
+          //logger.info("id {} itemSeq {} quantity {}",p);
+          tmap.clear();
+          //paypost와 같어 {flag}로 나눈다. 당연히 등록되는 flag도 gift는 gift로
+          //gift일때는 선물이 하나더 추가임
+          //문제는 taste가 가져와야한다는거얌
+          return 0;
+    }
 
 }

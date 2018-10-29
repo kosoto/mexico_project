@@ -160,6 +160,11 @@ kaeun.payments = {
 		payHis : ()=>{ //read some
 			//$('#k_contentlot').html('<h2>구매함</h2><br><div>날짜선택: 목록보기:(구매완료/사용중) </div><br>');
 			ui.newpage();
+			var day = new Date();
+            var prevDate = new Date(new Date().setMonth(new Date().getMonth()-1));
+            let pageNo = "1";
+            let flag = ["buy","gift"];
+            let keyword = null;
 			$('#k_header').append('구매함');
 			/*$('#k_content') 
 			$('<div/>').html("구매내역").addClass("grid_main").attr({id:"content_g"}).appendTo($('#k_content'));*/
@@ -176,11 +181,15 @@ kaeun.payments = {
 					+'Date :　'
 					+'  </div>'
 					+'  <div class="col-md-auto">'
-					+'    <input type="date" value="2011-08-19" class="form-control-sm" placeholder="First name">'
+					+'    <input id="startDate" type="date" value="'
+                    +$.datepicker.formatDate('yy-mm-dd', prevDate)
+                    +'" class="form-control-sm" placeholder="First name">'
 					+'  </div>'
 					+'  <p>~</p>' 
 					+'  <div class="col">'
-					+'    <input type="date" value="2011-08-19" class="form-control-sm" placeholder="Last name">'
+					+'    <input id="endDate" type="date" value="'
+					+$.datepicker.formatDate('yy-mm-dd', day)
+					+'" class="form-control-sm" placeholder="Last name">'
 					+'  </div>'
 					+'</div>    '
 					/*+'<div class="col-md-auto">'*/
@@ -191,8 +200,7 @@ kaeun.payments = {
 					+'<div class="col-md-auto">'
 					+'<select class="form-control-sm" id="pay_status" >' //상태선택
 				    +'<option>구매내역　　　</option>'
-				    +'<option>사용중</option>'
-				    +'<option>사용완료</option>'
+				    +'<option>구매완료</option>'
 				    +'<option>선물</option>'
 				    +'</select>'
 				    +'</div>' //col끝
@@ -210,10 +218,9 @@ kaeun.payments = {
 					+'</div>'
 					+'</div>' 
 					+'</div>');
-			/*('#pay_panel_grid')
-			.html('<div class="grid_layout"><div class="grid_k_header><div id="search_form">ㅎㅎ</div></div><div class="grid_k_header><div id="search_btn">ㅎㅎ</div></div></div>')
-			.appendTo($('#pay_panel'));*/
-			kaeun.tastes.payHisList();
+			kaeun.tastes.payHisList({prevDate:prevDate,day:day,pageNo:pageNo,flag:flag,keyword:keyword}); //prevDay,day(필수),페이지 상세검색(필수),상품명(필수는아님)
+			/*
+			flag:x.flag flag는 array로?하나각각인지 두개인지 default값은 두개다 */
 		},
 		gift : ()=>{ //read some
 			ui.newpage();
@@ -314,9 +321,7 @@ kaeun.payments = {
 		},
 		listCart : x=>{
 			let testId = 'test1';
-			$.getJSON($.ctx()+'/taste/list/'+testId+'/cart',d=>{
-				alert(d[0].itemSeq);
-            })
+			
 		},
 		update : ()=>{ //taste update
 			
@@ -328,29 +333,48 @@ kaeun.payments = {
 
 kaeun.tastes = { //kaeun.tastes.cartList()
 		payList : x=>{ //결제중 
-			$('#cart_grid').remove();
-			$('#k_content').append('<div id="cart_grid" class=list-grid-container>' 
-					+'<div class="item_headerinfo">상품정보</div>'
-					+'<div class="item_header">수량</div>' 
-					+'<div class="item_header">상품금액</div>'
-					+'<div class="item_header">총액</div>'
-					+'<div id="cart_header_end" class="item_header">주문</div></div>');	
-			//kaeun.tastes.payList({payList:payList});
-			//kaeun.payments.putTaste({itemSeq:d[i].itemSeq,quantity:d[i].quantity,flag:'buy'});
-			/*$.getJSON($.ctx()+'/taste/list/'+testId+'/cart',d=>{ //getjosn시작
-				$.each(d,(i,j)=>{ //grid_list R
-					ui.grid_list({
-						to: $('#cart_grid'),
-						c1:i,
-						c2:'<img class="cart_img" src="'+d[i].img+'">',
-						c3:d[i].itemName+'<br/>'+d[i].explains,
-						c4:d[i].quantity,
-						c5:d[i].price,
-						c6:d[i].quantity*d[i].price,
-						c7: $('<div/>').attr({id:'cart_btns'+i})	
-					}); 
-				});
-			});*/
+            $('#cart_grid').remove();
+            $('#k_content').append('<div id="cart_grid" class=list-grid-container>'
+                       +'<div class="item_header">No</div>'
+                       +'<div class="item_headerinfo_pay">상품정보</div>'
+                       +'<div class="item_header">수량</div>'
+                       +'<div class="item_header">상품금액</div>'
+                       +'<div class="item_header">총액</div>'
+                       +'<id="cart_header_end" class="item_header">내역</div></div>');    
+            let payList = [];
+            $.each(x,(i,j)=>{
+                 payList.push({itemSeq:j.itemSeq,quantity:j.quantity});
+                 ui.grid_list({
+                       to: $('#cart_grid'),
+                       c1:'No.'+(i+1),
+                       c2:'<img class="cart_img" src="'+j.img+'">',
+                       c3:j.itemName+'<br/>'+j.explains,
+                       c4:j.quantity,
+                       c5:j.price,
+                       c6:j.quantity*j.price,
+                       c7: $('<div/>').attr({id:'cart_btns'+i}) 
+                 });  
+            }); //each문 끝
+                 $('#cart_grid').append('<div class="item_result"><div id="cart_pay"></div></div>'); //주문결제  
+                 ui.btn({id:'cart_gift_submit',size:'big',color:'red',txt:'결제하기'}).appendTo($('#cart_pay'))
+                 .click(e=>{
+                       $.ajax({
+                            url: $.ctx()+'/pay/post',
+                            type: 'POST',
+                            contentType : 'application/json',
+                       data : JSON.stringify({id : $.cookie('member')["memberId"],
+                                                 payList:payList
+                                                 }),
+                       success : d=>{
+                            if(d>0){
+                                  alert('성공'+d);
+                            }else{
+                                  alert('삽입실패');
+                            }
+                       },
+                       error : (x,y,z)=>{}
+                       }); //ajax 끝                   
+            }) //click끝
 		},
 		cartList : ()=>{ //장바구니
 			$('#cart_grid').remove();
@@ -377,9 +401,13 @@ kaeun.tastes = { //kaeun.tastes.cartList()
 				ui.btn({id:'cart_order_btn'+i,size:'mini',color:'black',txt:'구매하기'}).appendTo($('#cart_btns'+i))
 				.click(e=>{
 					alert("구매하시겠습니까?");
-					let payList =  [d[i].tasteSeq];
-					//kaeun.tastes.payList({payList:payList});
-					//kaeun.payments.putTaste({itemSeq:d[i].itemSeq,quantity:d[i].quantity,flag:'buy'});
+					let payList =  [{itemSeq:d[i].itemSeq,
+                        quantity:d[i].quantity,
+                        itemName:d[i].itemName,
+                        price:d[i].price,
+                        explains:d[i].explains,
+                        img:d[i].img}];
+					kaeun.tastes.payList(payList);
 				});
 				$('<br/>').appendTo($('#cart_btns'+i));
 				ui.btn({id:'cart_gift_btn'+i,size:'mini',color:'red',txt:'선물하기'}).appendTo($('#cart_btns'+i))
@@ -431,25 +459,22 @@ kaeun.tastes = { //kaeun.tastes.cartList()
 					let payList = []; 
 					for(let i=0;i<$('input:checkbox[name="cartchk"]').length-1;i++){
 						if($('input:checkbox[id="cart_chk'+i+'"]').is(":checked")){
-							payList.push({tasteSeq:d[i].tasteSeq,
-											itemName:d[i].itemName,
-											itemdQ:d[i].quantity,
-											price:d[i].price});
+							payList.push({itemSeq:d[i].itemSeq,
+                                quantity:d[i].quantity,
+                                itemName:d[i].itemName,
+                                 price:d[i].price,
+                                explains:d[i].explains,
+                                 img:d[i].img});
 						}
 					}
-					//id : 'cart_chk'+i, name:'cartchk'
-				//선택상품만 다음화면으로 넘기는 방법.
-				//.form-check-input이 체크되어있는것들 id를 뽑을수있남?
-				//attr(id) 를 하면 그값들에대한 id를 알수있지...? 
-				//만약 리턴된 아이디가 cart_chk1이면, 
-				//1 -  cart_chk제품번호 ㄴ 체크뒤에 들어가는 이름은 제품번호임 
-				//2 -  cart_chk제품번호
-				//3 -  cart_chk제품번호
-				})
+					kaeun.tastes.payList(payList);
+				})//cart_order_submit 끝
 		}) //getjson끝		
 		},
-		payHisList : ()=>{
-			$('#cart_grid').remove();
+		payHisList : x=>{
+			//kaeun.tastes.payHisList({prevDate:prevDate,day:day,pageNo:pageNo,flag:flag,keyword:keyword});
+			$('#pay_list').remove();
+			$('#pageNation').remove();
 			$('#k_content').append('<div id="pay_list" class="list-grid-container">' 
 					+'<div class="item_header">구매날짜</div>' 
 					+'<div class="item_headerinfo_pay">상품정보</div>'
@@ -457,35 +482,86 @@ kaeun.tastes = { //kaeun.tastes.cartList()
 					+'<div class="item_header">상품금액</div>'
 					+'<div class="item_header">총액</div>'
 					+'<id="cart_header_end" class="item_header">내역</div></div>');
-			let testId = $.cookie('member')["memberId"];
-			$.getJSON($.ctx()+'/taste/list/'+testId+'/buy',d=>{ //getjosn시작
-				let pay=null;
-				let gift;
-				let paySeq;
-				$.each(d,(i,j)=>{
-					gift = (d[i].flag==='gift')? '선물' : '구매완료';
-					paySeq = (pay===d[i].paySeq)? '' : 'No.'+d[i].paySeq+'<br/>'+d[i].tasteDate2;
-					ui.grid_list({
-						to: $('#pay_list'),
-						c1:	paySeq,
-						c2:'<img class="cart_img" src="'+d[i].img+'">',
-						c3:d[i].itemName+'<br/>'+d[i].explains,
-						c4:d[i].quantity,
-						c5:d[i].price,
-						c6:d[i].quantity*d[i].price,
-						c7: gift
-					});
-					pay = d[i].paySeq;
-				}); //each완료
-				// ★ 페이지네이션
-				$('<div/>').html('<ul class="pagination pagination-sm">'
-						+'<li class="page-item"><a class="page-link" href="#">Previous</a></li>'
-						+'<li class="page-item"><a class="page-link" href="#">1</a></li>'
-						+'<li class="page-item"><a class="page-link" href="#">2</a></li>'
-						+'<li class="page-item"><a class="page-link" href="#">3</a></li>'
-						+'<li class="page-item"><a class="page-link" href="#">Next</a></li>'
-						+'</ul>').addClass("grid_footer").appendTo($('#k_content')); 
-			}) //getjson의 끝
+			$.ajax({
+				url: $.ctx()+'/payhis/search',
+				type: 'POST',
+				contentType : 'application/json',
+                data : JSON.stringify({id : $.cookie('member')["memberId"],
+                					prevDate: x.prevDate,
+                					day: x.day,
+                					pageNo: x.pageNo,
+                					keyword: x.keyword,
+                					flag:x.flag}),
+                success : d=>{
+                		alert("성공");
+                		let pay=null;
+        				let gift;
+        				let paySeq;
+                		$.each(d.tlist,(i,j)=>{
+        					gift = (d.tlist[i].flag==='gift')? '선물' : '구매완료';
+        					paySeq = (pay===d.tlist[i].paySeq)? '' : d.tlist[i].tasteDate2+'<br/>Order No.'+d.tlist[i].paySeq;
+        					ui.grid_list({
+        						to: $('#pay_list'),
+        						c1:	paySeq,
+        						c2:'<img class="cart_img" src="'+d.tlist[i].img+'">',
+        						c3:d.tlist[i].itemName+'<br/>'+d.tlist[i].explains,
+        						c4:d.tlist[i].quantity,
+        						c5:d.tlist[i].price,
+        						c6:d.tlist[i].quantity*d.tlist[i].price,
+        						c7: gift
+        					});
+        					pay = d.tlist[i].paySeq;
+        				}); //each완료
+                		//페이지네이션
+                		$('<div/>').html('<ul id="pageNation" class="pagination pagination-sm"/>').appendTo($('#k_content'));
+                		let p = d.page;
+                		alert(d.page);
+                		let prev = (p.existPrev)? '':'disabled';
+                		let next = (p.existNext)? '':'disabled';
+                		let begin = p.beginPage -1;
+                		let end = p.endPage+1;
+                		for(let i=begin;i<=end;i++){
+                			let y = (i==x.pageNo)? 'active' : 
+											(i == begin) ? prev : 
+												(i == end) ? next : '';
+                			$('<li/>')
+    						.addClass('page-item '+y)
+    						.append(
+    								$('<a/>')
+    								.attr('style','cursor:pointer')
+    								.addClass('page-link')
+    								.html(
+    										(i == begin)
+    											? 'Prev' : (i == end)
+    															? 'Next' : i
+    									)
+    						).appendTo($('#pageNation'))
+    						.click(function(e){
+    							e.preventDefault();
+    							if(i != begin && i != end){
+    								$('li').removeClass('active');
+    								$(this).addClass('active');
+    							}
+    							kaeun.tastes.payHisList(
+    											{id : $.cookie('member')["memberId"],
+			                					prevDate: x.prevDate,
+			                					day: x.day,
+			                					pageNo: i+'',
+			                					keyword: x.keyword,
+			                					flag:x.flag});
+    						});
+    						$('.disabled').off("click");
+                		}
+                		/*$('<div/>').html('<ul class="pagination pagination-sm">'
+        						+'<li class="page-item"><a class="page-link" href="#">Previous</a></li>'
+        						+'<li class="page-item"><a class="page-link" href="#">1</a></li>'
+        						+'<li class="page-item"><a class="page-link" href="#">2</a></li>'
+        						+'<li class="page-item"><a class="page-link" href="#">3</a></li>'
+        						+'<li class="page-item"><a class="page-link" href="#">Next</a></li>'
+        						+'</ul>').addClass("grid_footer").appendTo($('#k_content')); */
+                },
+                error : (x,y,z)=>{}
+			}); //ajax끝
 		},
 		analysis : ()=>{ //취향분석
 			ui.newpage();

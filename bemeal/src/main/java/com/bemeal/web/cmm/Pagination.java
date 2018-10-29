@@ -16,9 +16,9 @@ public class Pagination  {
 		/* 필요한 파라미터 : 
 		 * pageNum, count, pageSize, blockSize */
 		pageNum = Integer.parseInt((String) p.get("pageNum"));
-		count =  (int) p.get("count");
+		count =  (int) p.get("count"); 
 		pageSize = (int) p.get("pageSize"); 
-		blockSize = (int) p.get("blockSize");
+		blockSize = (int) p.get("blockSize"); 
 		beginPage = Math.floorDiv(pageNum-1, blockSize)*blockSize+1;
 		endPage = (count>(beginPage+(blockSize-1))*pageSize)?
 				beginPage+(blockSize-1):(int)(Math.ceil(count/(double)pageSize));

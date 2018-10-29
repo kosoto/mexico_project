@@ -108,19 +108,98 @@ FROM (SELECT G.TAG_NAME AS "ingre", AVG(T.GRADE) AS "ingreAvg", COUNT(T.GRADE) A
 	AND T.MEMBER_ID LIKE #{id}
 	ORDER BY T.TASTE_DATE DESC, T.TASTE_TIME DESC;
  	</select>
- 	<select id="listPayHis" resultMap="tmap">
- 	SELECT T.*,I.*, IMG.*, P.*,CAST(T.TASTE_DATE AS CHAR) as TASTE_DATE2
+
+ 	     <select id="payList" resultMap="tmap">
+     SELECT it.*,img.*
+           FROM
+                ITEM it
+                JOIN image img
+                on it.item_seq like img.item_seq
+           <choose>
+            <when test="delList.size != 0">
+                WHERE ITEM_SEQ IN
+                <foreach collection="payList" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </when>
+        </choose>
+     </select>
+     <insert id="postPay" parameterType="java.util.Map">
+     INSERT INTO PURCHASE(MEMBER_ID) VALUES (#{id})
+           <selectKey keyProperty="purchaseSeq" resultType="Integer" order="AFTER">
+                SELECT LAST_INSERT_ID() as purchaseSeq
+     </selectKey>
+     </insert>
+      <insert id="postTastePay" >
+           INSERT INTO TASTE
+           (FLAG,PURCHASE_SEQ,MEMBER_ID,ITEM_SEQ,QUANTITY)
+           VALUES
+            <foreach collection="payList" index="index" item="item" separator=",">
+          (#{flag},#{purchaseSeq},#{id},#{item.itemSeq},#{item.quantity})
+            </foreach>
+     </insert>
+     <insert id="postPresnet">
+           INSERT INTO PRESENT
+           (TASTE_SEQ,TO_ID,MESSAGE)
+           VALUES
+           <foreach collection="presentList" index="index" item="item" separator=",">
+           (#{item},#{toId},#{message})
+            </foreach>
+     </insert>
+     
+      <select id="listPayHis" resultMap="tmap">
+ 	   SELECT T.*,I.*, IMG.*, P.*,CAST(T.TASTE_DATE AS CHAR) as TASTE_DATE2
        FROM PURCHASE P, ITEM I
        JOIN TASTE T
        ON T.ITEM_SEQ LIKE I.ITEM_SEQ
        JOIN IMAGE IMG
        ON I.ITEM_SEQ LIKE IMG.ITEM_SEQ
        WHERE P.PURCHASE_SEQ = T.PURCHASE_SEQ
-       AND (T.FLAG LIKE "buy" OR T.FLAG LIKE "gift")
-       AND T.MEMBER_ID LIKE "test1"
-       AND T.TASTE_DATE BETWEEN '2018-09-16' AND '2018-10-26'
-       ORDER BY T.TASTE_DATE DESC, T.TASTE_TIME DESC;
+      <choose>
+            <when test="flag.size != 0">
+                AND (T.FLAG IN 
+                <foreach collection="flag" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+                )
+            </when>
+        </choose>
+       AND T.MEMBER_ID LIKE #{id}
+       <choose>
+	       <when test="keyword != null">
+	        AND I.ITEM_NAME LIKE #{keyword}
+	       </when>
+       </choose>
+       AND T.TASTE_DATE BETWEEN #{prevDate} AND #{day}
+       ORDER BY T.TASTE_DATE DESC, T.TASTE_TIME DESC
+       LIMIT #{page.beginRow}, #{page.endRow};
  	</select>
+ 	
+     <select id="countTaste" resultType="int">
+     	  SELECT COUNT(*)
+       FROM PURCHASE P, ITEM I
+       JOIN TASTE T
+       ON T.ITEM_SEQ LIKE I.ITEM_SEQ
+       JOIN IMAGE IMG
+       ON I.ITEM_SEQ LIKE IMG.ITEM_SEQ
+       WHERE P.PURCHASE_SEQ = T.PURCHASE_SEQ
+      		<choose>
+            <when test="flag.size != 0">
+                AND (T.FLAG IN 
+                <foreach collection="flag" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+                )
+            </when>
+        </choose>
+       AND T.MEMBER_ID LIKE #{id}
+       <choose>
+	       <when test="keyword != null">
+	        AND I.ITEM_NAME LIKE #{keyword}
+	       </when>
+       </choose>
+       AND T.TASTE_DATE BETWEEN #{prevDate} AND #{day};
+     </select>
   </mapper>
 
   
