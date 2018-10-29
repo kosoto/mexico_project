@@ -37,14 +37,16 @@ public class MemberCtrl {
 		Util.log.accept("add() :: 넘어온 정보 :: "+mbr);
 		HashMap<String, Object> r = new HashMap<>();
 		String ssn = String.valueOf(mbr.getSsn());
-		Util.log.accept(ssn);
-		mbr.setAge( 2019 - Integer.parseInt(
-		((Integer.parseInt(ssn.substring(0, 2)) 
-		> Integer.parseInt(new SimpleDateFormat("yyyy")
-		.format(new Date())
-		.substring(2)))? "19" : "20")+ssn.substring(0, 2)));
-		
-		mbr.setGender((ssn.split("-")[1].equals("1"))?"남":"여");
+		int age;
+		int Jssn = Integer.parseInt(ssn.substring(0,2));
+		if(Jssn<10) {
+			age = 2019 - (Jssn + 2000);
+		}else {
+			age = 2019 - (Jssn + 1900);
+		}
+		mbr.setAge(age);
+		String Gender = String.valueOf(ssn.charAt(7));
+		mbr.setGender((Gender.equals("1"))?"남":"여");
 		
 		r.put("memberId", mbr.getMemberId());
 		r.put("password", mbr.getPassword());
@@ -59,7 +61,6 @@ public class MemberCtrl {
 		System.out.println("r :: "+ r.toString());
 		Function<Member, Integer>f=x-> {
 			Member m = x;
-			
 			return mbrMapper.post(r);
 		};
 		return f.apply(mbr);
@@ -72,19 +73,17 @@ public class MemberCtrl {
 		return f.apply(member);
 	}
 	@PostMapping("/login")
-	public Member login(@RequestBody Member mbr) {
+	public Member login(@RequestBody Member member) {
 		Function<Member, Member>f=x->mbrMapper.get(x);
-		return f.apply(mbr);
+		return f.apply(member);
 	}
 	@PostMapping("/modify")
-	public void modify(@ModelAttribute("member") Member member, @ModelAttribute("user") Member user) {
-		logger.info("modify()");
-		Util.log.accept("update 넘어온 아이디 값 :: "+user.getMemberId());
-		member.setMemberId(user.getMemberId());
-		mbrMapper.modify(member);
+	public int modify(@ModelAttribute("member") Member member) {
+		Util.log.accept("Modify 넘어온 아이디 값 :: "+member.getMemberId());
+		member.setMemberId(member.getMemberId());
+		Function<Member, Integer>f=x->mbrMapper.modify(member);
+		return f.apply(member);
 	}
-	
-	
 	public void logout() {
 		
 	}

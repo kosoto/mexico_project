@@ -40,6 +40,13 @@
   		<result property="sum" column="SUM"/>
   		<result property="no" column="NO"/>
   	</resultMap>
+  	
+  	<select id="tagSearch" resultMap="result">
+  		SELECT * FROM 
+  			
+  	
+  	</select> 
+  	
   	<select id="navSearchList" resultMap="result">
   	<!-- SELECT * FROM
 		(SELECT A.*, ROW_NUMBER() OVER() AS NO
@@ -74,5 +81,11 @@
 		WHERE NO &lt;= 20) C
 			JOIN IMAGE IM ON IM.ITEM_SEQ LIKE C.ITEM_SEQ
   	</select>
+  	
+  <!-- 	<select id="" resultMap="result" >
+  		SELECT * FROM
+  			
+  	</select> -->
+  	
   </mapper>
   

@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.bemeal.web.cmm.Util;
+
+import jdk.nashorn.internal.ir.RuntimeNode.Request;
 
 
 @RestController
@@ -29,20 +32,14 @@ public class SearchCtrl {
 		return f.apply("%"+searchWord+"%");
 	}
 	@PostMapping("/tagSearch")
-	public Map<String,String> tagSearch(
-			@RequestBody HashMap<String, String> t
-			){
-		HashMap<String, String> r = new HashMap<>();
+	public List<?> tagSearch(
+			@RequestParam(value = "JtagArr[]") List<String> tagArr){
+		//String[] checkTag =  tagArr.getParameterValues("checks");
+		Util.log.accept("tag Search controller");
 		
-		String[] arr1 = t.get("tagFoodstuffs").split("/");
-		String[] arr2 = t.get("tagTaste").split("/");
-		String[] arr3 = t.get("tagSensitivity").split("/");
 		
-		Util.log.accept("가져온 값 :: "+ arr1.toString() + arr2.toString() + arr3.toString());
-		r.put("tagFoodStuff", t.get("tagFoodstuffs"));
-		r.put("tagTaste",t.get("tagTaste"));
-		r.put("tagSensitivity",t.get("tagSensitivity"));
-		return r;
+		Util.log.accept(""+ tagArr.toString());
+		return searchMapper.tagSearch(tagArr);
 		
 	}
 	
