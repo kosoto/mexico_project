@@ -300,7 +300,7 @@ junghoon.service = {
 								+'					<img src="/web/resources/img/junghoon/j_search.jpg" id="tag2search" height="100%" width="100%" margin="5px auto"/>'
 								+'                    </div>'
 								+'            </div>'
-								+'            <div class="mfp-container search-list rounded">'
+								+'            <div class="j mfp-container search-list rounded">'
 								+''
 								+'                <table class="table" id="myTable">'              
 								+'                    <tr>'

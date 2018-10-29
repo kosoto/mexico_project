@@ -5,6 +5,22 @@
 	overflow-style: none;
 }
 
+.text-shadow-black {
+	text-shadow : 
+	-1px 0 #000,
+	0 1px #000, 
+	1px 0 #000, 
+	0 -1px #000;
+}
+
+.text-shadow-white {
+	text-shadow : 
+	-1px 0 #fff,
+	0 1px #fff, 
+	1px 0 #fff, 
+	0 -1px #fff;
+}
+
 /* remove screrrorThrownollbar(view) */
 div::-webkit-scrollbar { 
     display: none; 
@@ -179,3 +195,13 @@ footer {
   color: #ffffff;
 }
 
+.col_card_group{
+	display:flex;
+	min-width: 100%;
+  	min-height: 200px;
+  	overflow-x: auto;
+	.col_card{
+		 min-width: 200px;
+ 		 margin: 5px;
+	}
+}

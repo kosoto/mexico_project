@@ -285,8 +285,8 @@ bemeal.compo=(()=>{
 			let $temp = $('<div/>').addClass('carousel-item'+((i==0)?' active':'')).appendTo($inner);
 			let $span = $('<span/>').appendTo($temp);
 			for(let j=i*row_size;j<(i+1)*row_size;j++){
-				$('<div/>').text(arr[j].itemName).appendTo($span);
-				$('<img/>').attr({
+				$('<div/>').addClass('text-shadow-black').text(arr[j].itemName).appendTo($span);
+				$('<img/>').addClass('img-fluid').attr({
 					src:arr[j].img,
 					alt:arr[j].itemName,
 					style:"width:"+(100/row_size)+"%;height:150px"
@@ -420,10 +420,10 @@ bemeal.evaluate=(()=>{
 						for(let j=1;j<=4;j++,index++){
 							$('<div/>').addClass('card gift_c').appendTo($gift_slid).append(
 								$('<div/>').addClass('gift_img').append(
-									$('<img/>').attr({src:arr[index].img})
+									$('<img/>').addClass('img-fluid').attr({src:arr[index].img})
 								),
 								$('<div/>').addClass('gift_details').append(
-									$('<h2/>').addClass('evaluative_title').text(arr[index].itemName),
+									$('<h2/>').addClass('evaluative_title text-shadow-white').text(arr[index].itemName),
 									$('<div/>').attr({'data-seq':arr[index].itemSeq}).starRating({ //https://github.com/nashio/star-rating-svg
 												initialRating: 0, //초기값  
 												starSize: 32,  //width속성값
