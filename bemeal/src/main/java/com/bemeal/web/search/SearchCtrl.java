@@ -38,7 +38,7 @@ public class SearchCtrl {
 		Util.log.accept("tag Search controller");
 		
 		
-		Util.log.accept(tagArr.toString());
+		Util.log.accept(""+ tagArr.toString());
 		return searchMapper.tagSearch(tagArr);
 		
 	}

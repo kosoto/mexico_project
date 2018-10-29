@@ -289,7 +289,7 @@ junghoon.service = {
 					$('#search2tag')
 					$('#search2tag').click(e=>{
 						$('#search_the_SachalGod').html(
-								'            <div class="search-box rounded">'
+								 '<div class="search-box rounded">'
 								+'                <div class="row">'
 								+'                    <div class="col-md-3">'
 								+'					<img src="/web/resources/img/junghoon/j_tag.jpg" height="100%" width="100%" margin="5px auto"/>'
@@ -500,16 +500,21 @@ junghoon.service = {
 						})
 						$('#search_submit').click(e=>{
 							var j_tag = document.forms[0];
-						
+								console.log('#search_the_SachalGod:checked:: '+JSON.stringify($('#search_the_SachalGod:checked')));
+							console.log("document.forms::"+JSON.stringify(document.forms));
+							console.log("document.forms.length::"+document.forms.length)
+							
 							var tagArr = [];
 							var i;
-							
+							console.log("j_tag.length::"+j_tag.length);
 							for(i = 0; i<j_tag.length; i++){
+								console.log("j_tag[i].checked::"+j_tag[i].checked);
 								if(j_tag[i].checked){
 									tagArr.push(i);
 								}
+								
 							}
-							alert("@@@@@@@@@@"+tagArr);
+							console.log("@@@@@@@@@@"+tagArr[1]);
 							$.ajax({
 								url : $.ctx()+'/tagSearch',
 								method:'post',
