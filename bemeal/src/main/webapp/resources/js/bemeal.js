@@ -316,7 +316,7 @@ bemeal.compo=(()=>{
 						    if (direction == 'right') $(this).carousel('prev');
 						  },
 						  allowPageScroll:"vertical"
-						});;
+						});
 	};
 	var banner = x=>{ /* x.id, x.arr 배너에 보여줄 이미지들*/
 		let $div = $('<div/>').attr({id:x.id,'data-ride':'carousel'}).addClass('carousel slide')
