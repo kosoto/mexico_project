@@ -84,33 +84,6 @@ junghoon.member = (()=>{
 								console.log(d);
 								if(d!=''){//로그인 성공
 									$.cookie("member", d);
-									//nav 버튼 바꾸기
-									/*$('#taste').show();
-									$('#join').hide();
-									$('#evaluate').show();
-									$('#info').empty();
-									$('<li/>').append($('<a/>').attr({id:"login_form", href:"#"}).html('마이페이지')).appendTo($('#info'))
-									.click(e=>{
-										junghoon.service.mypage();
-									});
-									
-									$('<li/>').append($('<a/>').attr({href:"#"}).html('로그아웃')).appendTo($('#info'))
-									.click(e=>{
-										//nav 버튼 바꾸기
-										$('#taste').hide();
-										$('#join').show();
-										$('#evaluate').hide();
-										$.removeCookie('member');
-										bemeal.main.init();
-									});
-									$('<li/>').append($('<a/>').attr({href:"#"}).html('댓글 테스트')).appendTo($('#info'))
-									.click(e=>{
-										junghoon.service.comment();
-									});
-									$('<li/>').append($('<a/>').attr({href:"#"}).html('검색 테스트')).appendTo($('#info'))
-									.click(e=>{
-										junghoon.service.search();
-									});*/
 									//메인화면 보여주기
 									bemeal.router.main();
 								}else{//로그인 실패
@@ -226,36 +199,37 @@ junghoon.service = {
 								fixedBgPos:true,
 								fixedContentPos:false,
 								items:{src:
-									'<div class="container search-table" id="search_the_SachalGod">'
-									+ '            <div class="search-box rounded">'
-									+ '                <div class="row">'
-									+ '                    <div class="col-md-3">'
-									+ '					<img src="/web/resources/img/junghoon/j_search.jpg" height="100%" width="100%" margin="5px auto"/>'
-									+ '                    </div>'
-									+ '                    <div class="col-md-3">'
-									+ '					<img src="/web/resources/img/junghoon/j_tag.jpg" id="search2tag" height="100%" width="100%" margin="5px auto"/>'
-									+ '                    </div>'
-									+ '            </div>'
-									+ '            <div class="search-keyword">'
-									+ '           <br/><br/> '
-									+ '<form class="form-inline md-form mr-auto mb-4">'
-									+ '  <input class="j_form-control mr-sm-2"  type="text" placeholder="Search" aria-label="Search">'
-									+ '  <button class="btn btn-outline-warning btn-rounded btn-sm my-0" type="submit">Search</button>'
-									+ '</form>'
-									+ '            <div>'
-									+ '            <div>'
-									+ '					<img src="/web/resources/img/junghoon/실검.png" id="popular_searches" height="30%" width="30%" />'
-									+ '					<img src="/web/resources/img/junghoon/내연인검.png" id="myage_popular" height="30%" width="30%" margin="5px auto"/>'
-									+ '            </div>'
-									+ '                <ul id="popular_search_time">'
-									+ '                    <li>1위 GS도시락</li>'
-									+ '                    <li>2위 치킨도시락</li>'
-									+ '                    <li>3위 한솥도시락</li>'
-									+ '                    <li>4위 라면tep</li>'
-									+ '                    <li>5위 양념치킨</li>' + '                </ul>' + ''
-									+ '    </div>'
-
-									+ '            </div>' + '        </div>'
+									$('<div/>').addClass('container search-table').attr({id:'search_the_SachalGod'}).append(
+										$('<div/>').addClass('search-box rounded').append(
+												$('<div/>').addClass('row').append(
+													$('<div/>').addClass('col-md-3').append(
+														$('<img/>').attr({src:'/web/resources/img/junghoon/j_search.jpg',style:'height:100%; width:100%; margin:5px auto;'})
+													),
+													$('<div/>').addClass('col-md-3').append(
+															$('<img/>').attr({src:'/web/resources/img/junghoon/j_tag.jpg',id:'search2tag',style:'height:100%; width:100%; margin:5px auto;'})
+													)
+												),
+												$('<div/>').addClass('search-keyword'),
+												$('<br/>'),$('<br/>'),
+												$('<form/>').addClass('form-inline md-form mr-auto mb-4').append(
+													$('<input/>').addClass('j_form-control mr-sm-2').attr({type:'text',placeholder:'Search','aria-label':'Search'}),
+													$('<button/>').addClass('btn btn-outline-warning btn-rounded btn-sm my-0').attr({type:'submit'}).text('Search')
+												),
+												$('<div/>').append(
+													$('<div/>').append(
+														$('<img/>').attr({src:'/web/resources/img/junghoon/실검.png',id:'popular_searches',style:'height:30%; width:30%;'}),
+														$('<img/>').attr({src:'/web/resources/img/junghoon/내연인검.png',id:'myage_popular',style:'height:30%; width:30%; margin:5px auto;'})
+													),
+													$('<ul/>').attr({id:'popular_search_time'}).append(
+														$('<li/>').text('1위 GS도시락'),
+														$('<li/>').text('2위 치킨도시락'),
+														$('<li/>').text('3위 한솥도시락'),
+														$('<li/>').text('4위 라면tep'),
+														$('<li/>').text('5위 양념치킨')
+													)
+												)
+										)
+									)
 									},
 								midClick:true,
 								overflowY:'auto',
@@ -264,257 +238,238 @@ junghoon.service = {
 				
 					$('#popular_searches').click(e=>{
 						$('#popular_search_time').html(
-								'                    <li>1위 GS도시락</li>'
-								+ '                    <li>2위 치킨도시락</li>'
-								+ '                    <li>3위 한솥도시락</li>'
-								+ '                    <li>4위 라면tep</li>'
-								+ '                    <li>5위 양념치킨</li>'
-								
-								+''
-								+'</div>'
+							$('<li/>').text('1위 GS도시락'),
+							$('<li/>').text('2위 치킨도시락'),
+							$('<li/>').text('3위 한솥도시락'),
+							$('<li/>').text('4위 라면tep'),
+							$('<li/>').text('5위 양념치킨')		
 						);
 					}),
 					$('#myage_popular').click(e=>{
 						$('#popular_search_time').html(
-								 '                    <li>1위 로그인 한</li>'
-								+'                    <li>2위 내 정보의</li>'
-								+'                    <li>3위 연령대가</li>'
-								+'                    <li>4위 관심있는</li>'
-								+'                    <li>5위 검색어</li>'
-							
-								+''
-								+'</div>'
+							$('<li/>').text('1위 로그인 한'),
+							$('<li/>').text('2위 내 정보의'),
+							$('<li/>').text('3위 연령대가'),
+							$('<li/>').text('4위 관심있는'),
+							$('<li/>').text('5위 검색어')	
 						);
 					}),
-					$('#search2tag')
 					$('#search2tag').click(e=>{
 						$('#search_the_SachalGod').html(
-								 '<div class="search-box rounded">'
-								+'                <div class="row">'
-								+'                    <div class="col-md-3">'
-								+'					<img src="/web/resources/img/junghoon/j_tag.jpg" height="100%" width="100%" margin="5px auto"/>'
-							
-								+'                    </div>'
-								+'                    <div class="col-md-3">'
-								
-								+'					<img src="/web/resources/img/junghoon/j_search.jpg" id="tag2search" height="100%" width="100%" margin="5px auto"/>'
-								+'                    </div>'
-								+'            </div>'
-								+'            <div class="search-list rounded">'
-								+''
-								+'                <table class="table" id="myTable">'              
-								+'                    <tr>'
-								+'                      <br/><br/><div id="j_title_under">재료</div><br/>'
-								+'  <div class="j_btn-group" data-toggle="buttons" >'
-								+'  <div  class="btn btn-danger btn-rounded j_btn">'
-								+'    <input id="j_tag" class="j_scbox" type="checkbox" name="1" autocomplete="off"> 닭'
-								+'  </div>&nbsp;'
-								+'  <div class="btn btn-danger btn-rounded j_btn">'
-								+'    <input id="j_tag" class="j_scbox" type="checkbox" name="2" autocomplete="off"> 오리'
-								+'  </div>&nbsp;'
-								+'  <div class="btn btn-danger btn-rounded j_btn">'
-								+'    <input id="j_tag" class="j_scbox" type="checkbox" name="3" autocomplete="off"> 오징어'
-								+'  </div>&nbsp;'
-								+'  <div class="btn btn-danger btn-rounded  j_btn">'
-								+'    <input id="j_tag" class="j_scbox" type="checkbox"name="4" autocomplete="off"> 소고기'
-								+'  </div>&nbsp;'
-								+'  <div class="btn btn-danger btn-rounded j_btn">'
-								+'    <input id="j_tag" class="j_scbox" type="checkbox" name="5" autocomplete="off"> 버섯'
-								+'  </div>&nbsp;'
-								+'  <div class="btn btn-danger btn-rounded j_btn">'
-								+'    <input id="j_tag" class="j_scbox" type="checkbox"name="6" autocomplete="off"> 김치'
-								+'  </div>&nbsp;'
-								+'  <div class="btn btn-danger btn-rounded j_btn">'
-								+'    <input id="j_tag" class="j_scbox" type="checkbox" name="7"  autocomplete="off"> 계란'
-								+'  </div>&nbsp;'
-								+'  <div class="btn btn-danger btn-rounded j_btn">'
-								+'    <input id="j_tag" class="j_scbox" type="checkbox" name="8"  autocomplete="off"> 더덕'
-								+'  </div>&nbsp;'
-								+'  <div class="btn btn-danger btn-rounded j_btn">'
-								+'    <input id="j_tag" class="j_scbox" type="checkbox" type="" name="9" autocomplete="off"> 새우'
-								+'  </div>&nbsp;'
-								+'  <div class="btn btn-danger btn-rounded j_btn">'
-								+'    <input id="j_tag" class="j_scbox" type="checkbox" type="" name="10" autocomplete="off"> 고등어'
-								+'  </div>&nbsp;'
-								+'  <div class="btn btn-danger btn-rounded j_btn">'
-								+'    <input id="j_tag" class="j_scbox" type="checkbox" name="11" autocomplete="off"> 갈치'
-								+'  </div>&nbsp;'
-								+'  <div class="btn btn-danger btn-rounded j_btn">'
-								+'    <input id="j_tag" class="j_scbox" type="checkbox" name="12" autocomplete="off"> 문어'
-								+'  </div>&nbsp;'
-								+'  <div class="btn btn-danger btn-rounded j_btn">'
-								+'    <input id="j_tag" class="j_scbox" type="checkbox" name="13"  autocomplete="off"> 장어'
-								+'  </div>&nbsp;'
-								+'  <div class="btn btn-danger btn-rounded j_btn">'
-								+'    <input id="j_tag" class="j_scbox" type="checkbox" name="14"  autocomplete="off"> 감자'
-								+'  </div>&nbsp;'
-								+'  <div class="btn btn-danger btn-rounded j_btn">'
-								+'    <input id="j_tag" class="j_scbox" type="checkbox" name="15"  autocomplete="off"> 고구마'
-								+'  </div>&nbsp;'
-								+'  <div class="btn btn-danger btn-rounded j_btn">'
-								+'    <input id="j_tag" class="j_scbox" type="checkbox" name="16" autocomplete="off"> 어묵'
-								+'  </div>&nbsp;'
-								+'  <div class="btn btn-danger btn-rounded j_btn">'
-								+'    <input id="j_tag" class="j_scbox" type="checkbox" name="17"  autocomplete="off"> 소시지'
-								+'  </div>&nbsp;'
-								+'  <div class="btn btn-danger btn-rounded j_btn">'
-								+'    <input id="j_tag" class="j_scbox" type="checkbox" name="18"  autocomplete="off"> 돼지'
-								+'  </div>&nbsp;'
-								+'  <div class="btn btn-danger btn-rounded j_btn">'
-								+'    <input id="j_tag" class="j_scbox" type="checkbox" name="19"  autocomplete="off"> 치즈'
-								+'  </div>&nbsp;'								
+								'<div class="search-box rounded">'
+								+'<div class="row">'
+									+'<div class="col-md-3">'
+										+'<img src="/web/resources/img/junghoon/j_tag.jpg" height="100%" width="100%" margin="5px auto"/>'
+									+'</div>'
+									+'<div class="col-md-3">'
+										+'<img src="/web/resources/img/junghoon/j_search.jpg" id="tag2search" height="100%" width="100%" margin="x auto"/>'
+									+'</div>'
 								+'</div>'
-								+'                    </tr>'
-								+'                    <tr>'
-								+'                    <br/><br/><div id="j_title_under">맛</div><br/>'
-								+'        <div class="j_btn-group" data-toggle="buttons" >'
-								+'              <div  class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="20" autocomplete="off"> 고소'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox"name="21"  autocomplete="off"> 달달'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="22" type="" autocomplete="off"> 잡짤'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded  j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="23" type="" autocomplete="off"> 달콤'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="24"  type="" autocomplete="off"> 매콤'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="25" type="" autocomplete="off"> 새콤'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="26" type="" autocomplete="off"> 씁쓸'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="27" type="" autocomplete="off"> 감칠맛'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="28" type="" autocomplete="off"> 담백'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="29" type="" autocomplete="off"> 느끼'
-								+'              </div>'
+							+'<div class="search-list rounded">'
+								+'<table class="table" id="myTable">'             
+									+'<tr>'
+										+'<br/><br/>'
+										+'<div id="j_title_under">재료</div>'
+										+'<br/>'
+										+'<div class="j_btn-group" data-toggle="buttons" >'
+											+'<div  class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="1" autocomplete="off"> 닭'
+											+'</div>&nbsp;'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="2" autocomplete="off"> 오리'
+											+'</div>&nbsp;'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="3" autocomplete="off"> 오징어'
+											+'</div>&nbsp;'
+											+'<div class="btn btn-danger btn-rounded  j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox"name="4" autocomplete="off"> 소고기'
+											+'</div>&nbsp;'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="5" autocomplete="off"> 버섯'
+											+'</div>&nbsp;'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox"name="6" autocomplete="off"> 김치'
+											+'</div>&nbsp;'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="7"  autocomplete="off"> 계란'
+											+'</div>&nbsp;'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="8"  autocomplete="off"> 더덕'
+											+'</div>&nbsp;'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" type="" name="9" autocomplete="off"> 새우'
+											+'</div>&nbsp;'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" type="" name="10" autocomplete="off"> 고등어'
+											+'</div>&nbsp;'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="11" autocomplete="off"> 갈치'
+											+'</div>&nbsp;'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="12" autocomplete="off"> 문어'
+											+'</div>&nbsp;'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="13"  autocomplete="off"> 장어'
+											+'</div>&nbsp;'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="14"  autocomplete="off"> 감자'
+											+'</div>&nbsp;'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="15"  autocomplete="off"> 고구마'
+											+'</div>&nbsp;'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="16" autocomplete="off"> 어묵'
+											+'</div>&nbsp;'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="17"  autocomplete="off"> 소시지'
+											+'</div>&nbsp;'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="18"  autocomplete="off"> 돼지'
+											+'</div>&nbsp;'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="19"  autocomplete="off"> 치즈'
+											+'</div>&nbsp;'							
+										+'</div>'
+									+'</tr>'
+									+'<tr>'
+										+'<br/><br/>'
+										+'<div id="j_title_under">맛</div>'
+										+'<br/>'
+										+'<div class="j_btn-group" data-toggle="buttons" >'
+											+'<div  class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="20" autocomplete="off"> 고소'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox"name="21"  autocomplete="off"> 달달'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="22" type="" autocomplete="off"> 잡짤'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded  j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="23" type="" autocomplete="off"> 달콤'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="24"  type="" autocomplete="off"> 매콤'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="25" type="" autocomplete="off"> 새콤'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="26" type="" autocomplete="off"> 씁쓸'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="27" type="" autocomplete="off"> 감칠맛'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="28" type="" autocomplete="off"> 담백'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="29" type="" autocomplete="off"> 느끼'
+											+'</div>'
+										+'</div>'
+										+'<br/><br/>'
+										+'<div id="j_title_under">감성</div>'
+										+'<br/>'
+										+'<div class="j_btn-group" data-toggle="buttons" >'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="33" type="" autocomplete="off"> 봄'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="34" type="" autocomplete="off"> 여름'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="35" type="" autocomplete="off"> 가을'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="36" type="" autocomplete="off"> 겨울'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="30" type="" autocomplete="off"> 빨간'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="31" type="" autocomplete="off"> 얼큰한'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="32" type="" autocomplete="off"> 얼얼한'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="37" type="" autocomplete="off"> 둘이서'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="38" type="" autocomplete="off"> 엄마가 해준'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="39" type="" autocomplete="off"> 건강한'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="40" type="" autocomplete="off"> 야식'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="41" type="" autocomplete="off"> 아침'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="42" type="" autocomplete="off"> 점심'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="43" type="" autocomplete="off"> 저녁'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="44" type="" autocomplete="off"> 말랑한'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="45" type="" autocomplete="off"> 야들한'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="46" type="" autocomplete="off"> 부드러운'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="47" type="" autocomplete="off"> 말캉한'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="48" type="" autocomplete="off"> 샤르르'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="49" type="" autocomplete="off"> 찐한'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="50" type="" autocomplete="off"> 힐링'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="51" type="" autocomplete="off"> 알콜'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="52" type="" autocomplete="off"> 맥주'
+											+'</div>'
+											+'<div class="btn btn-danger btn-rounded j_btn">'
+												+'<input id="j_tag" class="j_scbox" type="checkbox" name="53" type="" autocomplete="off"> 푸짐한'
+											+'</div>'
+										+'</div>'
+										+'<br/><br/>'
+									+'</tr>'
+									+'<tr>'
+										+'<br/><br/>'
+									+'</tr>'
+								+'가격'
+									+'<div class="slidecontainer1">'
+										+'<input type="range" min="1" max="100" value="50" class="slider" id="myRange">'
+										+'<div class="row">'
+											+'<button class="ss_btn">선택초기화</button>'
+											+'<button id="search_submit" class="ss_btn">검색</button>'
+										+'</div>'
+									+'</div>'
+								+'</table>'
+							+'</div>'
 
-								+'              </div>'
-								+'                      <br/><br/><div id="j_title_under">감성</div><br/>'
-								+'        <div class="j_btn-group" data-toggle="buttons" >'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="33" type="" autocomplete="off"> 봄'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="34" type="" autocomplete="off"> 여름'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="35" type="" autocomplete="off"> 가을'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="36" type="" autocomplete="off"> 겨울'
-								+'              </div>'
-								+'               <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="30" type="" autocomplete="off"> 빨간'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="31" type="" autocomplete="off"> 얼큰한'
-								+'				</div>'
-								+'               <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="32" type="" autocomplete="off"> 얼얼한'
-								+'              </div>'
-								+'               <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="37" type="" autocomplete="off"> 둘이서'
-								+'              </div>'
-								+'               <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="38" type="" autocomplete="off"> 엄마가 해준'
-								+'              </div>'
-								+'               <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="39" type="" autocomplete="off"> 건강한'
-								+'              </div>'
-								+'                <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="40" type="" autocomplete="off"> 야식'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="41" type="" autocomplete="off"> 아침'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="42" type="" autocomplete="off"> 점심'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="43" type="" autocomplete="off"> 저녁'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="44" type="" autocomplete="off"> 말랑한'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="45" type="" autocomplete="off"> 야들한'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="46" type="" autocomplete="off"> 부드러운'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="47" type="" autocomplete="off"> 말캉한'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="48" type="" autocomplete="off"> 샤르르'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="49" type="" autocomplete="off"> 찐한'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="50" type="" autocomplete="off"> 힐링'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="51" type="" autocomplete="off"> 알콜'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="52" type="" autocomplete="off"> 맥주'
-								+'              </div>'
-								+'              <div class="btn btn-danger btn-rounded j_btn">'
-								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="53" type="" autocomplete="off"> 푸짐한'
-
-								+'              </div>'
-								+'            </div><br/><br/>'
-								+'                    </tr>'
-								+'                    <tr>'
-								
-								+'                      <br/><br/>'
-								+'                   </tr>'
-								+'                  가격'
-								+'                  <div class="slidecontainer1">'
-								+'  <input type="range" min="1" max="100" value="50" class="slider" id="myRange">'
-								+'  <div class="row">'
-								+'  <button class="ss_btn">선택초기화</button>'
-								+'  <button id="search_submit" class="ss_btn">검색</button>'
-								
-								+'    </div>'
-								+'		</div>'
-							    +'                </table>'       
-								+''
- 
-								+'            </div>'
 						),
 						$('#tag2search').click(e=>{
 							junghoon.service.search();
 						})
 						$('#search_submit').click(e=>{
-							var j_tag = document.forms[0];
-								console.log('#search_the_SachalGod:checked:: '+JSON.stringify($('#search_the_SachalGod:checked')));
-							console.log("document.forms::"+JSON.stringify(document.forms));
-							console.log("document.forms.length::"+document.forms.length)
-							
 							var tagArr = [];
-							var i;
-							console.log("j_tag.length::"+j_tag.length);
-							for(i = 0; i<j_tag.length; i++){
-								console.log("j_tag[i].checked::"+j_tag[i].checked);
-								if(j_tag[i].checked){
-									tagArr.push(i);
-								}
+							$.each($('.j_scbox:checked'),(i,j)=>{
+								tagArr.push(j.name);
 								
-							}
-							console.log("@@@@@@@@@@"+tagArr[1]);
+							});
 							$.ajax({
 								url : $.ctx()+'/tagSearch',
 								method:'post',

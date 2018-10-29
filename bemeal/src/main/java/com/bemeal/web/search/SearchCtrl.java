@@ -12,11 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.bemeal.web.cmm.Util;
-
-import jdk.nashorn.internal.ir.RuntimeNode.Request;
 
 
 @RestController
@@ -33,13 +30,13 @@ public class SearchCtrl {
 	}
 	@PostMapping("/tagSearch")
 	public List<?> tagSearch(
-			@RequestParam(value = "JtagArr[]") List<String> tagArr){
-		//String[] checkTag =  tagArr.getParameterValues("checks");
+			@RequestBody HashMap<String,Object> tagArr){
+		logger.info("넘어온 배열 {}",tagArr.toString());
 		Util.log.accept("tag Search controller");
 		
 		
 		Util.log.accept(""+ tagArr.toString());
-		return searchMapper.tagSearch(tagArr);
+		return null;/*searchMapper.tagSearch(tagArr);*/
 		
 	}
 	
