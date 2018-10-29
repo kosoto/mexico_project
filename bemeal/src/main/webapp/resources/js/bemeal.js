@@ -226,7 +226,7 @@ bemeal.compo=(()=>{
 							$('<button/>').addClass('btn btn-outline-white btn-sm my-0').attr({style:'color:black!important',type:'button',id:'testSearch'}).text('Search').click(e=>{
 								e.preventDefault();
 								$.getScript($.script()+"/junghoon.js",()=>{
-									//$(window).off('scroll.category');
+									$(window).off('scroll.category');
 									junghoon.service.search();
 								})
 							})
@@ -514,6 +514,7 @@ bemeal.search=(()=>{
 			let $gift_slid = $('<div/>').addClass('card-group');
 			$content.append(
 					$('<div>').addClass('col searchCol').append(
+							
 							$('<div/>').addClass('card_row').append(
 									$gift_slid
 							)

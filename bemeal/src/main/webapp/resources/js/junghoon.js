@@ -289,7 +289,7 @@ junghoon.service = {
 					$('#search2tag')
 					$('#search2tag').click(e=>{
 						$('#search_the_SachalGod').html(
-								 '<div class="search-box rounded">'
+								 '<div id="j_sboxbox" class="search-box rounded">'
 								+'                <div class="row">'
 								+'                    <div class="col-md-3">'
 								+'					<img src="/web/resources/img/junghoon/j_tag.jpg" height="100%" width="100%" margin="5px auto"/>'
@@ -300,12 +300,12 @@ junghoon.service = {
 								+'					<img src="/web/resources/img/junghoon/j_search.jpg" id="tag2search" height="100%" width="100%" margin="5px auto"/>'
 								+'                    </div>'
 								+'            </div>'
-								+'            <div class="search-list rounded">'
+								+'            <div class="mfp-container search-list rounded">'
 								+''
 								+'                <table class="table" id="myTable">'              
 								+'                    <tr>'
 								+'                      <br/><br/><div id="j_title_under">재료</div><br/>'
-								+'  <div class="j_btn-group" data-toggle="buttons" >'
+								+'  <div class="row j_btn-group" data-toggle="buttons" >'
 								+'  <div  class="btn btn-danger btn-rounded j_btn">'
 								+'    <input id="j_tag" class="j_scbox" type="checkbox" name="1" autocomplete="off"> 닭'
 								+'  </div>&nbsp;'
@@ -367,7 +367,7 @@ junghoon.service = {
 								+'                    </tr>'
 								+'                    <tr>'
 								+'                    <br/><br/><div id="j_title_under">맛</div><br/>'
-								+'        <div class="j_btn-group" data-toggle="buttons" >'
+								+'        <div class="row j_btn-group" data-toggle="buttons" >'
 								+'              <div  class="btn btn-danger btn-rounded j_btn">'
 								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="20" autocomplete="off"> 고소'
 								+'              </div>'
@@ -401,7 +401,7 @@ junghoon.service = {
 
 								+'              </div>'
 								+'                      <br/><br/><div id="j_title_under">감성</div><br/>'
-								+'        <div class="j_btn-group" data-toggle="buttons" >'
+								+'        <div class="row j_btn-group" data-toggle="buttons" >'
 								+'              <div class="btn btn-danger btn-rounded j_btn">'
 								+'                <input id="j_tag" class="j_scbox" type="checkbox" name="33" type="" autocomplete="off"> 봄'
 								+'              </div>'
@@ -483,7 +483,7 @@ junghoon.service = {
 								+'                   </tr>'
 								+'                  가격'
 								+'                  <div class="slidecontainer1">'
-								+'  <input type="range" min="1" max="100" value="50" class="slider" id="myRange">'
+								+'  <input type="range" class="slider" id="myRange">'
 								+'  <div class="row">'
 								+'  <button class="ss_btn">선택초기화</button>'
 								+'  <button id="search_submit" class="ss_btn">검색</button>'
@@ -492,9 +492,18 @@ junghoon.service = {
 								+'		</div>'
 							    +'                </table>'       
 								+''
- 
+								
 								+'            </div>'
 						),
+						$('#myRange').slider({
+							value: 50000,
+							min:1000,
+							slide:function(event, ui){
+								
+							}
+						})
+						
+						
 						$('#tag2search').click(e=>{
 							junghoon.service.search();
 						})
