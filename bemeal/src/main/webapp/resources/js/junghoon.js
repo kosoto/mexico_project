@@ -286,10 +286,10 @@ junghoon.service = {
 								+'</div>'
 						);
 					}),
-					$('#search2tag')
+					
 					$('#search2tag').click(e=>{
 						$('#search_the_SachalGod').html(
-								 '<div id="j_sboxbox" class="search-box rounded">'
+								 '<div id="j_sboxbox" class="<sea></sea>rch-box rounded">'
 								+'                <div class="row">'
 								+'                    <div class="col-md-3">'
 								+'					<img src="/web/resources/img/junghoon/j_tag.jpg" height="100%" width="100%" margin="5px auto"/>'
@@ -481,9 +481,9 @@ junghoon.service = {
 								
 								+'                      <br/><br/>'
 								+'                   </tr>'
-								+'                  가격'
-								+'                  <div class="slidecontainer1">'
-								+'  <input type="range" class="slider" id="myRange">'
+								+'                  <div class="slidecontainer">'
+								+'		<p>가격 : <span id="sliderValue"></span></p>'
+								+'  <input type="range" max="50000" min="0" value:"25000" min="1"  class="slider" id="myRange">'
 								+'  <div class="row">'
 								+'  <button class="ss_btn">선택초기화</button>'
 								+'  <button id="search_submit" class="ss_btn">검색</button>'
@@ -494,22 +494,24 @@ junghoon.service = {
 								+''
 								
 								+'            </div>'
-						),
-						$('#myRange').slider({
-							value: 50000,
-							min:1000,
-							slide:function(event, ui){
 								
-							}
-						})
+						)
 						
+						var slider = document.getElementById("myRange");
+						var output = document.getElementById("sliderValue");
+						output.innerHTML =slider.value;
+						
+						slider.oninput = function(){
+							output.innerHTML = this.value;
+						}
 						
 						$('#tag2search').click(e=>{
 							junghoon.service.search();
 						})
 						$('#search_submit').click(e=>{
 							var j_tag = document.forms[0];
-								console.log('#search_the_SachalGod:checked:: '+JSON.stringify($('#search_the_SachalGod:checked')));
+							console.log("output.innerHTML:: "+output.innerHTML);	
+							console.log('#search_the_SachalGod:checked:: '+JSON.stringify($('#search_the_SachalGod:checked')));
 							console.log("document.forms::"+JSON.stringify(document.forms));
 							console.log("document.forms.length::"+document.forms.length)
 							
@@ -519,7 +521,7 @@ junghoon.service = {
 							for(i = 0; i<j_tag.length; i++){
 								console.log("j_tag[i].checked::"+j_tag[i].checked);
 								if(j_tag[i].checked){
-									tagArr.push(i);
+									tagArr.push(i);                                                                                 
 								}
 								
 							}
@@ -528,7 +530,8 @@ junghoon.service = {
 								url : $.ctx()+'/tagSearch',
 								method:'post',
 								contentType:'application/json',
-								data:JSON.stringify({"JtagArr":tagArr}), // 리스트
+								data:JSON.stringify({"JtagArr":tagArr,
+													 "valueRange":output.innerHTML}), // 리스트
 								success:d=>{                                      
 								alert('success');
 								},
@@ -537,6 +540,7 @@ junghoon.service = {
 									}
 							})
 						})
+						
 					})
 					},
 				mypage : x => {
