@@ -17,11 +17,11 @@
             }
 
 .k_contentlot { grid-area: main;
-				background-color: #fdd734;
+				/* background-color: #fdd734; */
 				font-family: 'Gothic A1', sans-serif; 
 				}
 .k_rightlot { grid-area: right; 
-				background-color: #fdd734;}
+				/* background-color: #fdd734; */}
 
 /*  navi */
 .k_navi{

@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 [[{"location":"C:\\Program Files\\Java\\jdk1.8.0_181","type":"JRE","hints":{}},"jre:jre:1.8.0"],[{"location":"C:\\Program Files\\Java\\jdk1.8.0_181\\jre\\lib\\ext\\nashorn.jar","type":"JAR","hints":{}},"ABSENT"],[{"location":"C:\\Users\\kim\\Documents\\1018\\bemeal","type":"PROJECT","hints":{"PROJECT_NAME":"bemeal"}},"com.bemeal:web:1.0.0"]]
 =======
 {}
@@ -7,3 +8,6 @@
 =======
 {}
 >>>>>>> jh
+=======
+[[{"location":"C:\\Users\\KAN\\Documents\\1017\\bemeal","type":"PROJECT","hints":{"PROJECT_NAME":"bemeal"}},"com.bemeal:web:1.0.0"]]
+>>>>>>> ke

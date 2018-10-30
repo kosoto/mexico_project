@@ -19,4 +19,9 @@ public interface TasteMapper {
 	public ArrayList<Map<String, Object>> chartTaste();
 	public ArrayList<Map<String, Object>> chartEmotion(); 
 	public ArrayList<Map<String, Object>> chartMenu();
+	public ArrayList<Map<String, Object>> payList(Map<String, Object> p);
+	public int postPay(Map<String, Object> p);
+	public int postTastePay(Map<String, Object> p);
+	public int postPresnet(Map<String, Object> p);
+	public int countTaste(Map<String, Object> p);
 }
