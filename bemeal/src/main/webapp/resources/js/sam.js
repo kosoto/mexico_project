@@ -11,7 +11,7 @@ sam.util = {
 						closeOnContentClick:false,
 						alignTop: true,
 						fixedBgPos:true,
-						fixedContentPos:false,
+						fixedContentPos:auto,
 						items:{src:
 							'<form class="white-popup">'
 							+	'<div class="form-group">'

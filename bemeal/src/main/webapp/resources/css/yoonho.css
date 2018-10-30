@@ -48,24 +48,21 @@
   }
 }
 
-/* active scroll */
-#y_item_detailUI{
+/*  */
+ #y_item_detailUI{
 	width: auto;
 	height: 650px;
 	margin:auto;
-	overflow-y: scroll; 
+	overflow-y: scroll;  
 	margin-bottom: auto;
-}
-.y_item_detailUI{
+} 
+ .y_item_detailUI{
 	width: auto;
 	height: 650px;
 	margin:auto;
-	overflow-y: scroll; 
+	overflow-y: scroll;
 	margin-bottom: auto;
 }
-
-
-
 
 .navbar {
   margin-bottom: 0;
@@ -82,7 +79,7 @@
   background-color: #FFFFFF;/* #f1f1f1 */
   height: 100%;
   width:30%;
-  /* position:fixed; */
+  position:fixed;
   float:right; 
   
 }
@@ -90,10 +87,6 @@
 .p.float.left{
 	float:left;
 }
-
-
-
-/* if junghoon`s comment imported, you must delete comment-testbox class */
 
 .comment-testbox{
 	width:100%;
@@ -195,13 +188,6 @@ display: block;
 .show {display: block;}
 
 
-
-
-
-/* body {
-            background-color: #eeeeee;
-        }
- */
 .h7 {
     font-size: 0.8rem;
 }
@@ -253,7 +239,7 @@ display: block;
   width: 70%;
   height: 90%;
   z-index: 1043;
-  position: absolute;
+  position: absolute; 
   outline: none !important;
   -webkit-backface-visibility: hidden; }
 
@@ -264,9 +250,9 @@ display: block;
   left: 0;
   top: 0;
   padding: 0 8px;
-/*   -webkit-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  box-sizing: border-box; */ }
+  box-sizing: border-box; }
 
 .yh-mfp-container:before {
   content: '';
@@ -620,14 +606,14 @@ img.yh-mfp-img {
   right: 0;
   padding-top: 0; }
 .yh-white-popup {
-    position: relative;
+  	position: relative; 
     background: #FFF;
     padding: 20px;
     width:auto;
     max-width: 1100px;
     margin: 20px auto;
     /* max-height: 100%; */
-    /* overflow-y: scroll; */
+    overflow-y: scroll;
 }
 
 

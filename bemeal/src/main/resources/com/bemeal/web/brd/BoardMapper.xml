@@ -47,23 +47,48 @@
 
   	
    	<select id="get" resultMap="result">
-		SELECT B.*
+		SELECT atc.*,img.img
+		FROM ARTICLE atc
+		JOIN IMAGE img
+			on atc.member_id like img.member_id
+		WHERE atc.ITEM_SEQ LIKE #{itemSeq}
+		ORDER BY atc.article_seq
+<!-- 		SELECT B.*
 		FROM (
 				SELECT ROW_NUMBER() OVER() AS no,A.*
 				FROM (
-					SELECT *
-					FROM ARTICLE
-					WHERE ITEM_SEQ LIKE #{itemSeq}
-				)A)B
-		ORDER BY B.no 
+					SELECT atc.*,img.img
+					FROM ARTICLE atc
+					JOIN IMAGE img
+						on atc.member_id like img.member_id
+					WHERE atc.ITEM_SEQ LIKE #{itemSeq}
+				)A
+		)B
+		ORDER BY B.no  -->
   	</select>
-  	<!--
-  	<update id="put">
   	
+  	<select id="retrieve" resultMap="result">
+		SELECT atc.*,img.img
+		FROM ARTICLE atc
+		JOIN IMAGE img
+			on atc.member_id like img.member_id
+		WHERE atc.ARTICLE_SEQ = #{articleSeq}
+  	</select> 	 	
+  	
+  	<update id="put">
+  		UPDATE ARTICLE 
+		SET content = #{content} 
+		WHERE article_seq = #{articleSeq} 
+			and member_id = #{memberId}
   	</update>
   	
   	<delete id="delete">
-  	
-  	</delete> -->
+		DELETE atc.*
+		FROM ARTICLE atc
+			JOIN MEMBER mb ON atc.member_id like mb.member_id
+		WHERE atc.ARTICLE_SEQ like #{articleSeq}
+		and atc.member_id like #{memberId} 
+		and mb.password like #{password}
+  	</delete> 
   	
   </mapper>
