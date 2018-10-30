@@ -1,5 +1,6 @@
 package com.bemeal.web.search;
 
+import java.time.temporal.ValueRange;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,12 +32,16 @@ public class SearchCtrl {
 	@PostMapping("/tagSearch")
 	public List<?> tagSearch(
 			@RequestBody HashMap<String,Object> tagArr){
-		logger.info("넘어온 배열 {}",tagArr.toString());
 		Util.log.accept("tag Search controller");
+		HashMap<String, String> r = new HashMap<>();
+		Util.log.accept("item seq 값 ::"+tagArr.get("JtagArr"));
+		Util.log.accept("value Range 값 ::"+tagArr.get("valueRange"));
+		logger.info("넘어온 배열 {}",tagArr.toString());
 		
+		r.put("tag", String.valueOf(tagArr.get("JtagArr")));
+		r.put("value", String.valueOf(tagArr.get("ValueRange")));
+		return null;//searchMapper.tagSearch(r);
 		
-		Util.log.accept(""+ tagArr.toString());
-		return null;/*searchMapper.tagSearch(tagArr);*/
 		
 	}
 	

@@ -69,7 +69,9 @@ public class MemberCtrl {
 	public int delete(@RequestBody Member member) {
 		Util.log.accept("delete 넘어온 아이디 값 :: "+member.getMemberId());
 		member.setMemberId(member.getMemberId());
-		Function<Member, Integer>f=x->mbrMapper.delete(member);
+		Function<Member, Integer>f=x->
+			{return mbrMapper.delete(member);
+		};
 		return f.apply(member);
 	}
 	@PostMapping("/login")
@@ -78,10 +80,20 @@ public class MemberCtrl {
 		return f.apply(member);
 	}
 	@PostMapping("/modify")
-	public int modify(@ModelAttribute("member") Member member) {
-		Util.log.accept("Modify 넘어온 아이디 값 :: "+member.getMemberId());
-		member.setMemberId(member.getMemberId());
-		Function<Member, Integer>f=x->mbrMapper.modify(member);
+	public int modify(@RequestBody Member member) {
+		HashMap<String, Object> r = new HashMap<>();
+		
+		r.put("memberId", member.getMemberId());
+		r.put("password", member.getPassword());
+		r.put("address", member.getAddress());
+		r.put("eMail", member.getEMail());
+		r.put("phoneNum", member.getPhoneNum());
+		
+		Util.log.accept("정보수정 자바 컨트롤러");
+		Function<Member, Integer>f=x->{
+			return mbrMapper.modify(r);
+		};
+		Util.log.accept("정보수정 자바 컨트롤러2");
 		return f.apply(member);
 	}
 	public void logout() {
