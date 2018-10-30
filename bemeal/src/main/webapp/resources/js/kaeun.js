@@ -38,7 +38,7 @@ kaeun.main=(()=>{
      return {init:init};
 })();
 
-//payment관련 해서 : cart, payHis, present
+//payment관련 해서 : cart, payHis,present
 kaeun.payment = (x=>{ //kaeun.payment(cart); kaeun.payment(payHis);
 	var ctx;
 	var init= ()=>{
@@ -160,6 +160,11 @@ kaeun.payments = {
 		payHis : ()=>{ //read some
 			//$('#k_contentlot').html('<h2>구매함</h2><br><div>날짜선택: 목록보기:(구매완료/사용중) </div><br>');
 			ui.newpage();
+			var day = new Date();
+            var prevDate = new Date(new Date().setMonth(new Date().getMonth()-1));
+            let pageNo = "1";
+            let flag = ["buy","gift"];
+            let keyword = null;
 			$('#k_header').append('구매함');
 			/*$('#k_content') 
 			$('<div/>').html("구매내역").addClass("grid_main").attr({id:"content_g"}).appendTo($('#k_content'));*/
@@ -171,49 +176,59 @@ kaeun.payments = {
 					+'<div class ="row">'
 					+' <div class = "col-8" id="pay_search">'
 					+' <form>'
-					+'<div class="form-row">'
-					+'  <div class="col-md-auto">'
-					+'Date :　'
-					+'  </div>'
-					+'  <div class="col-md-auto">'
-					+'    <input type="date" value="2011-08-19" class="form-control-sm" placeholder="First name">'
-					+'  </div>'
-					+'  <p>~</p>' 
-					+'  <div class="col">'
-					+'    <input type="date" value="2011-08-19" class="form-control-sm" placeholder="Last name">'
-					+'  </div>'
-					+'</div>    '
-					/*+'<div class="col-md-auto">'*/
-					+'<div class="row">' //상품선택+search input
-					+'  <div class="col-md-auto">'
-					+'상세 : '
-					+'  </div>'
-					+'<div class="col-md-auto">'
-					+'<select class="form-control-sm" id="pay_status" >' //상태선택
-				    +'<option>구매내역　　　</option>'
-				    +'<option>사용중</option>'
-				    +'<option>사용완료</option>'
-				    +'<option>선물</option>'
-				    +'</select>'
-				    +'</div>' //col끝
-				    +'<div class="col-md">'
-					+'<div class="md-form active-pink-2 mb-3 mt-0">' //search input
-					+'<input class="pay_search_input" type="text" placeholder="상품명" aria-label="Search">'
-					+'</div>'
-					+'</div>' //col끝
-					+'</div>' //row끝
-					+'</form>  '
+						+'<div class="form-row">'
+						+'  <div class="col-md-auto">'
+							+'Date :　'
+							+'  </div>'
+						+'  <div class="col-md-auto">'
+							+'    <input id="startDate" type="date" value="'
+		                    +$.datepicker.formatDate('yy-mm-dd', prevDate)
+		                    +'" class="form-control-sm" placeholder="First name">'
+							+'  </div>'
+							+'  <p>~</p>' 
+							+'  <div class="col">'
+							+'    <input id="endDate" type="date" value="'
+							+$.datepicker.formatDate('yy-mm-dd', day)
+							+'" class="form-control-sm" placeholder="Last name">'
+							+'  </div>'
+							+'</div>    '
+							/*+'<div class="col-md-auto">'*/
+						+'<div class="row">' //상품선택+search input
+							+'  <div class="col-md-auto">'
+								+'상세 : '
+								+'  </div>'
+							+'<div class="col-md-auto">'
+								+'<select class="form-control-sm" id="pay_status" >' //상태선택
+							    +'<option>구매내역　　　</option>'
+							    +'<option>구매완료</option>'
+							    +'<option>선물</option>'
+							    +'</select>'
+							    +'</div>' //col끝
+						    +'<div class="col-md">'
+						    +'<div class="md-form active-pink-2 mb-3 mt-0">' //search input
+								+'<input id="keyword" class="pay_search_input" type="text" placeholder="상품명" aria-label="Search">'
+							+'</div>'
+							+'</div>' //col끝
+						+'</div>' //row끝
+						+'</form>  '
 					+'  </div>'
 					+'  <div class = "col">'
-					+'    <button id="pay_search_btn">Search버튼</button>'
+						+'    <button id="pay_search_btn" class="btn-two redp big">Search버튼</button>'
 					+'  </div>'
 					+'</div>'
 					+'</div>' 
 					+'</div>');
-			/*('#pay_panel_grid')
-			.html('<div class="grid_layout"><div class="grid_k_header><div id="search_form">ㅎㅎ</div></div><div class="grid_k_header><div id="search_btn">ㅎㅎ</div></div></div>')
-			.appendTo($('#pay_panel'));*/
-			kaeun.tastes.payHisList();
+			kaeun.tastes.payHisList({prevDate:prevDate,day:day,pageNo:pageNo,flag:flag,keyword:keyword}); 
+			$('#pay_search_btn').click(e=>{
+				prevDate = $('#startDate').val();
+				day = $('#endDate').val();
+				flag = ($('#pay_status option:selected').val()==='선물')? ["gift"] :
+								($('#pay_status option:selected').val()==='구매완료')? ["buy"] : ["buy","gift"];
+				keyword = ($('#keyword').val()!=='')? '%'+$('#keyword').val()+'%' : null;
+				console.log('시작: '+prevDate + ' 끝: ' + day + ' flag: '+flag+' keyword: '+keyword+' pageNo: '+pageNo);
+				kaeun.tastes.payHisList({prevDate:prevDate,day:day,pageNo:pageNo,flag:flag,keyword:keyword});
+			})
+			//flag:default가 buy+gift임 */
 		},
 		gift : ()=>{ //read some
 			ui.newpage();
@@ -247,6 +262,8 @@ kaeun.payments = {
 			// ★ 페이지네이션
 		},
 		giftPopup : x=>{
+			var toId = '';
+			var chkId = false;
 			$.magnificPopup.open({
 				closeBtnInside:true,
 				closeOnContentClick:false,
@@ -254,25 +271,44 @@ kaeun.payments = {
 				fixedBgPos:true,
 				fixedContentPos:false,
 				items:{src:
-					'<form class="white-popup">'
-					+'선물하기' //선물하기 팝업
-					+	'<div class="form-group">'
-					+       '<label for="text">To.Id:</label>'
-			    	+		'<input type="text" class="form-control" id="gift_toid">' //아이디가 없으면 없다고 떠야함
-			    	  +   '<div class="form-group">'
-						+		'<label for="pwd">Message:</label>'
-						+		'<textarea type="text" class="form-control" rows="3" id="gift_msg"/>'
-					    +   '</div>'
-					    +	'<button type="submit" class="btn btn-default">Submit</button>'
-		    		+	'</div>'
-					+'</form>'
+					$('<form/>').addClass("white-popup")
+								.html('선물하기')
+								.append(
+									$('<div/>').addClass("form-group")
+										.append(
+												$('<label/>').html("To.Id")
+												,$('<input/>').attr({type:"text",id:"gift_toId"}).addClass("form-control")
+												.keydown(e=>{if(e.keyCode === 13)e.preventDefault();})
+												.keyup(e=>{
+															  toId = e.currentTarget.value;
+															  console.log(toId);
+															  if(toId!==''){
+																  chkId = true;
+																  //★겟제이슨 멤버 retrieve가 있으면 true로 바뀜
+															  }else{
+															  }
+															})
+														)
+								   ,$('<div/>').addClass("form-group")
+								   		.append(
+								   				$('<label/>').html("Message")
+												,$('<textarea/>').attr({type:"text",id:"gift_msg"}).addClass("form-control")
+								   				)
+						   		   ,ui.btn({id:'gift_submit',size:'big',color:'black',txt:'보내기'})
+										)
 				},
 				midClick:true,
 				overflowY:'auto',
 				removalDelay:'0',
 				type:'inline'}); 
-			$('.btn').on('click',function(){
-				alert($('#code').val());
+			$('#gift_submit').click(e=>{
+				//chkId가 true일때만!
+				//★ 보내려는 사람 아이디랑,메세지도 함께 넣어야하는데... 잘못하면 payList쿼리가 깨진다?
+				console.log('payList: '+x);
+				console.log('toId: '+$('#gift_toId').val());
+				console.log('msg: '+$('#gift_msg').val());
+				kaeun.tastes.payList({payList:x,toId:$('#gift_toId').val(),msg:$('#gift_msg').val()});
+				
 			});
 			return false;
 		},
@@ -288,7 +324,7 @@ kaeun.payments = {
 					                	flag: x.flag}),
 	                success : d=>{
 	                	if(d>0){
-	                		alert('성공');
+	                		
 	                	}else{
 	                		alert('삽입실패');
 	                	}
@@ -314,9 +350,7 @@ kaeun.payments = {
 		},
 		listCart : x=>{
 			let testId = 'test1';
-			$.getJSON($.ctx()+'/taste/list/'+testId+'/cart',d=>{
-				alert(d[0].itemSeq);
-            })
+			
 		},
 		update : ()=>{ //taste update
 			
@@ -328,29 +362,48 @@ kaeun.payments = {
 
 kaeun.tastes = { //kaeun.tastes.cartList()
 		payList : x=>{ //결제중 
-			$('#cart_grid').remove();
-			$('#k_content').append('<div id="cart_grid" class=list-grid-container>' 
-					+'<div class="item_headerinfo">상품정보</div>'
-					+'<div class="item_header">수량</div>' 
-					+'<div class="item_header">상품금액</div>'
-					+'<div class="item_header">총액</div>'
-					+'<div id="cart_header_end" class="item_header">주문</div></div>');	
-			//kaeun.tastes.payList({payList:payList});
-			//kaeun.payments.putTaste({itemSeq:d[i].itemSeq,quantity:d[i].quantity,flag:'buy'});
-			/*$.getJSON($.ctx()+'/taste/list/'+testId+'/cart',d=>{ //getjosn시작
-				$.each(d,(i,j)=>{ //grid_list R
-					ui.grid_list({
-						to: $('#cart_grid'),
-						c1:i,
-						c2:'<img class="cart_img" src="'+d[i].img+'">',
-						c3:d[i].itemName+'<br/>'+d[i].explains,
-						c4:d[i].quantity,
-						c5:d[i].price,
-						c6:d[i].quantity*d[i].price,
-						c7: $('<div/>').attr({id:'cart_btns'+i})	
-					}); 
-				});
-			});*/
+            $('#cart_grid').remove();
+            $('#k_content').append('<div id="cart_grid" class=list-grid-container>'
+                       +'<div class="item_header">No</div>'
+                       +'<div class="item_headerinfo_pay">상품정보</div>'
+                       +'<div class="item_header">수량</div>'
+                       +'<div class="item_header">상품금액</div>'
+                       +'<div class="item_header">총액</div>'
+                       +'<id="cart_header_end" class="item_header">내역</div></div>');    
+            let payList = [];
+            $.each(x.payList,(i,j)=>{
+                 payList.push({itemSeq:j.itemSeq,quantity:j.quantity});
+                 ui.grid_list({
+                       to: $('#cart_grid'),
+                       c1:'No.'+(i+1),
+                       c2:'<img class="cart_img" src="'+j.img+'">',
+                       c3:j.itemName+'<br/>'+j.explains,
+                       c4:j.quantity,
+                       c5:j.price,
+                       c6:j.quantity*j.price,
+                       c7: $('<div/>').attr({id:'cart_btns'+i}) 
+                 });  
+            }); //each문 끝
+                 $('#cart_grid').append('<div class="item_result"><div id="cart_pay"></div></div>'); //주문결제  
+                 ui.btn({id:'cart_gift_submit',size:'big',color:'red',txt:'결제하기'}).appendTo($('#cart_pay'))
+                 .click(e=>{
+                       $.ajax({
+                            url: $.ctx()+'/pay/post',
+                            type: 'POST',
+                            contentType : 'application/json',
+                       data : JSON.stringify({id : $.cookie('member')["memberId"],
+                                                 payList:payList
+                                                 }),
+                       success : d=>{
+                            if(d>0){
+                                  alert('결제완료');
+                            }else{
+                                  alert('삽입실패');
+                            }
+                       },
+                       error : (x,y,z)=>{}
+                       }); //ajax 끝                   
+            }) //click끝
 		},
 		cartList : ()=>{ //장바구니
 			$('#cart_grid').remove();
@@ -362,7 +415,7 @@ kaeun.tastes = { //kaeun.tastes.cartList()
 					+'<div id="cart_header_end" class="item_header">주문</div></div>');
 			let testId = $.cookie('member')["memberId"];
 			$.getJSON($.ctx()+'/taste/list/'+testId+'/cart',d=>{ //getjosn시작
-				//alert(d[0].itemSeq);
+				
 				$.each(d,(i,j)=>{ //grid_list R
 					ui.grid_list({
 						to: $('#cart_grid'),
@@ -376,15 +429,27 @@ kaeun.tastes = { //kaeun.tastes.cartList()
 					}); 
 				ui.btn({id:'cart_order_btn'+i,size:'mini',color:'black',txt:'구매하기'}).appendTo($('#cart_btns'+i))
 				.click(e=>{
-					alert("구매하시겠습니까?");
-					let payList =  [d[i].tasteSeq];
-					//kaeun.tastes.payList({payList:payList});
-					//kaeun.payments.putTaste({itemSeq:d[i].itemSeq,quantity:d[i].quantity,flag:'buy'});
+					alert("해당 상품을 구매하시겠습니까?");
+					let payList =  [{itemSeq:d[i].itemSeq,
+                        quantity:d[i].quantity,
+                        itemName:d[i].itemName,
+                        price:d[i].price,
+                        explains:d[i].explains,
+                        img:d[i].img}];
+					let delList = [d[i].tasteSeq];
+					kaeun.tastes.payList({payList:payList});
 				});
 				$('<br/>').appendTo($('#cart_btns'+i));
 				ui.btn({id:'cart_gift_btn'+i,size:'mini',color:'red',txt:'선물하기'}).appendTo($('#cart_btns'+i))
 				.click(e=>{
-					kaeun.payments.giftPopup();
+					alert("해당상품을 선물하시겠습니까?");
+					let payList =  [{itemSeq:d[i].itemSeq,
+                        quantity:d[i].quantity,
+                        itemName:d[i].itemName,
+                        price:d[i].price,
+                        explains:d[i].explains,
+                        img:d[i].img}];
+					kaeun.payments.giftPopup(payList);
 				});
 				$('<br/>').appendTo($('#cart_btns'+i));
 				ui.btn({id:'cart_delete_btn'+i,size:'mini',color:'white',txt:'삭제하기'}).appendTo($('#cart_btns'+i))
@@ -409,7 +474,19 @@ kaeun.tastes = { //kaeun.tastes.cartList()
 				ui.btn({id:'cart_gift_submit',size:'big',color:'red',txt:'선물하기'}).appendTo($('#cart_pay'));
 				ui.btn({id:'cart_order_submit',size:'big',color:'black',txt:'구매하기'}).appendTo($('#cart_pay'));
 				$('#cart_gift_submit').click(e=>{
-					kaeun.payments.giftPopup();
+					alert("선택상품들을 선물하시겠습니까?");
+					let payList = []; 
+					for(let i=0;i<$('input:checkbox[name="cartchk"]').length-1;i++){
+						if($('input:checkbox[id="cart_chk'+i+'"]').is(":checked")){
+							payList.push({itemSeq:d[i].itemSeq,
+                                quantity:d[i].quantity,
+                                itemName:d[i].itemName,
+                                 price:d[i].price,
+                                explains:d[i].explains,
+                                 img:d[i].img});
+						}
+					}
+					kaeun.payments.giftPopup(payList);
 				})
 				/*이벤트들 모음*/
 				$('#cart_all_chk').change(function () {
@@ -429,27 +506,26 @@ kaeun.tastes = { //kaeun.tastes.cartList()
 					//선택상품 구매
 					alert("선택상품들을 구매하시겠습니까?");
 					let payList = []; 
+					let delList = [];
 					for(let i=0;i<$('input:checkbox[name="cartchk"]').length-1;i++){
 						if($('input:checkbox[id="cart_chk'+i+'"]').is(":checked")){
-							payList.push({tasteSeq:d[i].tasteSeq,
-											itemName:d[i].itemName,
-											itemdQ:d[i].quantity,
-											price:d[i].price});
+							payList.push({itemSeq:d[i].itemSeq,
+                                quantity:d[i].quantity,
+                                itemName:d[i].itemName,
+                                 price:d[i].price,
+                                explains:d[i].explains,
+                                 img:d[i].img});
+							delList.push(d[i].tasteSeq);
 						}
 					}
-					//id : 'cart_chk'+i, name:'cartchk'
-				//선택상품만 다음화면으로 넘기는 방법.
-				//.form-check-input이 체크되어있는것들 id를 뽑을수있남?
-				//attr(id) 를 하면 그값들에대한 id를 알수있지...? 
-				//만약 리턴된 아이디가 cart_chk1이면, 
-				//1 -  cart_chk제품번호 ㄴ 체크뒤에 들어가는 이름은 제품번호임 
-				//2 -  cart_chk제품번호
-				//3 -  cart_chk제품번호
-				})
+					kaeun.tastes.payList({payList:payList});
+				})//cart_order_submit 끝
 		}) //getjson끝		
 		},
-		payHisList : ()=>{
-			$('#cart_grid').remove();
+		payHisList : x=>{
+			//kaeun.tastes.payHisList({prevDate:prevDate,day:day,pageNo:pageNo,flag:flag,keyword:keyword});
+			$('#pay_list').remove();
+			$('#pageNation').remove();
 			$('#k_content').append('<div id="pay_list" class="list-grid-container">' 
 					+'<div class="item_header">구매날짜</div>' 
 					+'<div class="item_headerinfo_pay">상품정보</div>'
@@ -457,30 +533,85 @@ kaeun.tastes = { //kaeun.tastes.cartList()
 					+'<div class="item_header">상품금액</div>'
 					+'<div class="item_header">총액</div>'
 					+'<id="cart_header_end" class="item_header">내역</div></div>');
-			let testId = $.cookie('member')["memberId"];
-			$.getJSON($.ctx()+'/taste/list/'+testId+'/buy',d=>{ //getjosn시작
-				$.each(d,(i,j)=>{
-					let gift = (d[i].flag==='gift')? '선물' : '구매완료';
-					ui.grid_list({
-						to: $('#pay_list'),
-						c1:	d[i].paySeq+'<br/>'+d[i].tasteDate,
-						c2:'<img class="cart_img" src="'+d[i].img+'">',
-						c3:d[i].itemName+'<br/>'+d[i].explains,
-						c4:d[i].quantity,
-						c5:d[i].price,
-						c6:d[i].quantity*d[i].price,
-						c7: gift
-					});
-				}); //each완료
-				// ★ 페이지네이션
-				$('<div/>').html('<ul class="pagination pagination-sm">'
-						+'<li class="page-item"><a class="page-link" href="#">Previous</a></li>'
-						+'<li class="page-item"><a class="page-link" href="#">1</a></li>'
-						+'<li class="page-item"><a class="page-link" href="#">2</a></li>'
-						+'<li class="page-item"><a class="page-link" href="#">3</a></li>'
-						+'<li class="page-item"><a class="page-link" href="#">Next</a></li>'
-						+'</ul>').addClass("grid_footer").appendTo($('#k_content')); 
-			}) //getjson의 끝
+			$.ajax({
+				url: $.ctx()+'/payhis/search',
+				type: 'POST',
+				contentType : 'application/json',
+                data : JSON.stringify({id : $.cookie('member')["memberId"],
+                					prevDate: x.prevDate,
+                					day: x.day,
+                					pageNo: x.pageNo,
+                					keyword: x.keyword,
+                					flag:x.flag}),
+                success : d=>{
+                		
+                		let pay=null;
+        				let gift;
+        				let paySeq;
+                		$.each(d.tlist,(i,j)=>{
+        					gift = (d.tlist[i].flag==='gift')? '선물' : '구매완료';
+        					paySeq = (pay===d.tlist[i].paySeq)? '' : d.tlist[i].tasteDate2+'<br/>Order No.'+d.tlist[i].paySeq;
+        					ui.grid_list({
+        						to: $('#pay_list'),
+        						c1:	paySeq,
+        						c2:'<img class="cart_img" src="'+d.tlist[i].img+'">',
+        						c3:d.tlist[i].itemName+'<br/>'+d.tlist[i].explains,
+        						c4:d.tlist[i].quantity,
+        						c5:d.tlist[i].price,
+        						c6:d.tlist[i].quantity*d.tlist[i].price,
+        						c7: gift
+        					});
+        					pay = d.tlist[i].paySeq;
+        				}); //each완료
+                		//페이지네이션
+                		$('<div/>').html('<ul id="pageNation" class="pagination pagination-sm"/>').appendTo($('#k_content'));
+                		let p = d.page;
+                		let prev = (p.existPrev)? '':'disabled';
+                		let next = (p.existNext)? '':'disabled';
+                		let begin = p.beginPage -1;
+                		let end = p.endPage+1;
+                		for(let i=begin;i<=end;i++){
+                			let y = (i==x.pageNo)? 'active' : 
+											(i == begin) ? prev : 
+												(i == end) ? next : '';
+                			$('<li/>')
+    						.addClass('page-item '+y)
+    						.append(
+    								$('<a/>')
+    								.attr('style','cursor:pointer')
+    								.addClass('page-link')
+    								.html(
+    										(i == begin)
+    											? 'Prev' : (i == end)
+    															? 'Next' : i
+    									)
+    						).appendTo($('#pageNation'))
+    						.click(function(e){
+    							e.preventDefault();
+    							if(i != begin && i != end){
+    								$('li').removeClass('active');
+    								$(this).addClass('active');
+    							}
+    							kaeun.tastes.payHisList(
+    											{id : $.cookie('member')["memberId"],
+			                					prevDate: x.prevDate,
+			                					day: x.day,
+			                					pageNo: i+'',
+			                					keyword: x.keyword,
+			                					flag:x.flag});
+    						});
+    						$('.disabled').off("click");
+                		}
+                		/*$('<div/>').html('<ul class="pagination pagination-sm">'
+        						+'<li class="page-item"><a class="page-link" href="#">Previous</a></li>'
+        						+'<li class="page-item"><a class="page-link" href="#">1</a></li>'
+        						+'<li class="page-item"><a class="page-link" href="#">2</a></li>'
+        						+'<li class="page-item"><a class="page-link" href="#">3</a></li>'
+        						+'<li class="page-item"><a class="page-link" href="#">Next</a></li>'
+        						+'</ul>').addClass("grid_footer").appendTo($('#k_content')); */
+                },
+                error : (x,y,z)=>{}
+			}); //ajax끝
 		},
 		analysis : ()=>{ //취향분석
 			ui.newpage();
@@ -624,12 +755,226 @@ kaeun.tastes = { //kaeun.tastes.cartList()
  			}); //getjson끝 차트의끝
 		},
          collect : ()=>{ //콜렉션
-        	 ui.newpage();
-			$('#k_header').append('콜렉션');
-			$('#k_header').append('');  
-			$('#k_content').append('');
-				
+        	ui.newpage();
+			//$('#k_header').append('콜렉션');
+			let $k_content = $('#k_content');
+			var down,x,left; // 콜렉션 폴더들 x축 scroll에 필요한 변수들
+			let $title = $('<div/>').addClass('col_list_box').appendTo($k_content).append(
+							$('<h4/>').text('나의 콜렉션들').attr({style:'display:inline;'}), 
+							$('<a/>').addClass('btn-floating btn-lg').attr({style:'position:relative;','data-flag':true}).append(
+								$('<i/>').addClass('fa fa-plus-square-o').attr({'aria-hidden':true}) // + 추가 버튼
+							).click(e=>{  //버튼 클릭시 flag를 불러와서 true이면 input태크를 보여주고(show) false이면 안보여주기(hide)
+								e.preventDefault();
+								let target = $(e.currentTarget);
+								if(target.data('flag')){
+									$('#add_directory').show();
+									target.data('flag',false);
+								}else{
+									$('#add_directory').hide();
+									target.data('flag',true);
+								}
+							}),
+							$('<div/>').attr({id:'add_directory',style:'position:absolute;z-index:1000;display:inline'}).hide().append(
+									$('<input/>').attr({id:'add_dir_name'}).text('입력창'),
+									$('<button/>').text('추가').click(e=>{
+										let new_dir_name = $('#add_dir_name').val();
+										let id = $.cookie('member')['memberId'];
+										$.getJSON('',d=>{//id와 입력어를 가지고 DB에 저장
+											//콜백으로 콜렉션 리스트에 방금 입력한 폴더를 그리기
+											$('#card_group_dir').append(
+												//이안은 샘플소스 
+												$('<div/>').addClass('card col_card').append(
+													$('<div/>').addClass('view overlay').append(
+														$('<img/>').addClass('card-img-top').attr({src:$.img()+'/cmm/item/dosiroc (1).jpg'/*img 넣기*/,alt:'Card image cap',style:'pointer-events:none'}),
+														$('<a/>').attr({href:'#','data-name':j}).append(
+															$('<div/>').addClass('mask rgba-white-slight')
+														).click(e=>{
+															e.preventDefault();
+															$card_group_list.empty();
+															let list = [];
+															for(let k=2;k<12;k++){
+																list.push({img:$.img()+'/cmm/item/dosiroc ('+k+').jpg',itemName:'item_name'});
+															}
+															kaeun.tastes.collection_list({
+																dir:e.currentTarget.dataset.name,
+																parent:$('#card_group_dir'),
+																list:list
+															});
+															 /*아래 리스트에 해당 콜랙션에 담긴 리스트 보여주기 */
+														})
+													),
+													$('<div/>').addClass('card-body').append(
+														$('<h4/>').addClass('card-title').text(j /*dir_name*/ )
+														// <p class="card-text">Some quick example text to build on the card title and make up the bulk of the cards content.</p>
+														// <button type="button" class="btn btn-primary btn-md">Read more</button>
+													)
+												)
+												//샘플소스 끝
+											);
+										});
+									})	
+							)
+				);
+			let $card_group_dir = 
+				$('<div/>').addClass('card-group col_card_group').attr({id:'card_group_dir',style:'overflow:auto;flex-flow:row nowrap;'}).appendTo($title)
+					.mousedown(e=>{
+						e.preventDefault();
+					    down = true;
+					    x = e.pageX;
+					    left = $card_group_dir.scrollLeft();
+					})
+					.mousemove(e=>{
+						if(down) {$card_group_dir.scrollLeft(left - e.pageX + x);};
+					})
+					.mouseup(e=>{down = false;});
+			var down2,x2,left2;
+			let $div = $('<div/>').addClass('col_list_box').appendTo($k_content).append(
+							$('<h4/>').attr({'id':'col_title',style:'display:inline;'}),
+							$('<a/>').addClass('btn-floating btn-lg').attr({style:'position:relative;','data-flag':true}).append(
+									$('<i/>').addClass('fa fa-plus-square-o').attr({'aria-hidden':true})
+								).click(e=>{
+									e.preventDefault();
+									let target = $(e.currentTarget);
+									if(target.data('flag')){
+										$('#search_col_list').show();
+										target.data('flag',false);
+									}else{
+										$('#search_col_list').hide();
+										target.data('flag',true);
+									}
+								}),
+								$('<div/>').attr({id:'search_col_list',style:'position:absolute;z-index:1000;display:inline-block'}).hide().append(
+										$('<input/>').text('입력창').attr({placeholder:'검색'}).keydown(e=>{if(e.keyCode === 13)e.preventDefault();}).keyup(e=>{
+											//검색하기
+											let searchWord = e.currentTarget.value; //input태크에 입력한 현재 검색어
+											$.getJSON($.ctx()+'/navSearch/'+searchWord,d=>{ //다른 메소드를 사용해도 됨
+												// 가져온 데이터로 아래의 div에 그리기, 넘어온 d는 List<HashMap<>>
+												$.each(d,(i,j)=>{
+													$('<div/>').addClass('card col_card').appendTo($('#searched_list')).append(
+														$('<div/>').addClass('view overlay').append(
+																$('<img/>').addClass('card-img-top').attr({src:j.img/*img 넣기*/,alt:'Card image cap',style:'pointer-events:none'}),
+																$('<a/>').attr({'data-itemSeq':j.itemSeq}).append(
+																	$('<div/>').addClass('mask rgba-white-slight')
+																).click(evt=>{
+																	evt.preventDefault();
+																	//클릭하면 현재 디렉토리에 아이템 추가하기
+																	let dir = $('#col_title').text(); //현재 선택된 dir_name
+																	let item_seq = evt.currentTarget.dataset.itemSeq; 
+																	//클릭한 아이템의 seq. 값이 안찍히면 evt.currentTarget.data('itemSeq') 해보기
+																	
+																	//getJSON uri 정하고 주석풀기
+																	/*$.getJSON($.ctx()+'/???/'+dir+'/'+item_seq,data=>{
+																		//DB에 저장한후 실시간으로 리스트에 추가하기..
+																		$('#card_group_list').append(
+																			$('<div/>').addClass('card col_card').append(
+																					$('<div/>').addClass('view overlay').append(
+																						$('<img/>').addClass('card-img-top').attr({src:j.imgimg 넣기,alt:'Card image cap',style:'pointer-events:none'}),
+																						$('<a/>').append(
+																							$('<div/>').addClass('mask rgba-white-slight')
+																						).click(e=>{
+																							e.preventDefault();
+																							 //아이템 디테일 가기? 
+																						})
+																					),
+																					$('<div/>').addClass('card-body').append(
+																						$('<h4/>').addClass('card-title').text(j.itemName+x item_name )
+																						// <p class="card-text">Some quick example text to build on the card title and make up the bulk of the cards content.</p>
+																						// <button type="button" class="btn btn-primary btn-md">Read more</button>
+																					)
+																				)	
+																		)
+																	});*/
+																	
+																})
+															),
+															$('<div/>').addClass('card-body').append(
+																$('<h4/>').addClass('card-title').text(j.itemName /*item_name*/ )
+																// <p class="card-text">Some quick example text to build on the card title and make up the bulk of the cards content.</p>
+																// <button type="button" class="btn btn-primary btn-md">Read more</button>
+															)
+													);
+												});
+											});
+											
+										}),
+										$('<div/>').attr({id:'searched_list',style:'width:350px;height:400px;background-color:#fff;overflow-y:scroll;'})//검색된 아이템 리스트
+								)
+						);
+			let $card_group_list = 
+				$('<div/>').addClass('card-group col_card_group').attr({id:'card_group_list',style:'overflow:auto;flex-wrap:nowrap;'}).appendTo($div)
+					.mousedown(e=>{
+						e.preventDefault();
+					    down2 = true;
+					    x2 = e.pageX;
+					    left2 = $card_group_list.scrollLeft();
+					})
+					.mousemove(e=>{
+						if(down2) {$card_group_list.scrollLeft(left2 - e.pageX + x2);};
+					})
+					.mouseup(e=>{down2 = false;});
+			let arr = ['wish','dir1','dir2','dir3','dir4','dir5','dir6','dir7','dir8'] ; /* 해당 유저의 dir_name들을 getJSON으로가져오기 */
+			$.each(arr,(i,j)=>{
+				console.log(j)
+				$('<div/>').addClass('card col_card').appendTo($card_group_dir).append(
+					$('<div/>').addClass('view overlay').append(
+						$('<img/>').addClass('card-img-top').attr({src:$.img()+'/cmm/item/dosiroc (1).jpg'/*img 넣기*/,alt:'Card image cap',style:'pointer-events:none'}),
+						$('<a/>').attr({href:'#','data-name':j}).append(
+							$('<div/>').addClass('mask rgba-white-slight')
+						).click(e=>{
+							e.preventDefault();
+							$card_group_list.empty();
+							let list = [];
+							for(let k=2;k<12;k++){
+								list.push({img:$.img()+'/cmm/item/dosiroc ('+k+').jpg',itemName:'item_name'});
+							}
+							kaeun.tastes.collection_list({
+								dir:e.currentTarget.dataset.name,
+								parent:$card_group_list,
+								list:list
+							});
+							 /*아래 리스트에 해당 콜랙션에 담긴 리스트 보여주기 */
+						})
+					),
+					$('<div/>').addClass('card-body').append(
+						$('<h4/>').addClass('card-title').text(j /*dir_name*/ )
+						// <p class="card-text">Some quick example text to build on the card title and make up the bulk of the cards content.</p>
+						// <button type="button" class="btn btn-primary btn-md">Read more</button>
+					)
+				);
+			});
+			let list = [];
+			for(let k=2;k<12;k++){
+				list.push({img:$.img()+'/cmm/item/dosiroc ('+k+').jpg',itemName:'item_name'});
+			}
+			kaeun.tastes.collection_list({
+				dir:'wish',
+				parent:$card_group_list,
+				list:list
+			});
+			
+			
          },
+		 collection_list:d=>{
+			 $('#col_title').text(d.dir);
+			 $.each(d.list,(x,y)=>{
+					$('<div/>').addClass('card col_card').appendTo(d.parent).append(
+						$('<div/>').addClass('view overlay').append(
+							$('<img/>').addClass('card-img-top').attr({src:y.img/*img 넣기*/,alt:'Card image cap',style:'pointer-events:none'}),
+							$('<a/>').append(
+								$('<div/>').addClass('mask rgba-white-slight')
+							).click(e=>{
+								e.preventDefault();
+								 //아이템 디테일 가기? 
+							})
+						),
+						$('<div/>').addClass('card-body').append(
+							$('<h4/>').addClass('card-title').text(y.itemName+x /*item_name*/ )
+							// <p class="card-text">Some quick example text to build on the card title and make up the bulk of the cards content.</p>
+							// <button type="button" class="btn btn-primary btn-md">Read more</button>
+						)
+					);
+				});
+		 },
          test : ()=>{ 
         	 ui.newpage();
         	$('#k_header').append('테스트');
@@ -640,7 +985,7 @@ kaeun.tastes = { //kaeun.tastes.cartList()
  				let flag = 'cart';
  				kaeun.payments.putTaste({itemSeq:itemSeq,quantity:quantity,flag:'cart'});
  			});
-        	$('#k_header').append('<button id="testBtn2" type="button" class="btn btn-default">cartList</button>')
+        	$('#k_header').append('<button id="testBtn2" type="button" class="btn btn-default">delPayhis</button>')
         	$('#testBtn2').click(e=>{
  				kaeun.payments.listCart();
  			});

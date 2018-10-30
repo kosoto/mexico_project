@@ -5,6 +5,22 @@
 	overflow-style: none;
 }
 
+.text-shadow-black {
+	text-shadow : 
+	-1px 0 #000,
+	0 1px #000, 
+	1px 0 #000, 
+	0 -1px #000;
+}
+
+.text-shadow-white {
+	text-shadow : 
+	-1px 0 #fff,
+	0 1px #fff, 
+	1px 0 #fff, 
+	0 -1px #fff;
+}
+
 /* remove screrrorThrownollbar(view) */
 div::-webkit-scrollbar { 
     display: none; 
@@ -16,19 +32,19 @@ div::-webkit-scrollbar {
 }
 
 .top-nav-collapse {
-    background-color: #ffc107;
+    background-color: @main_color_yellow;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 991px) {
     .navbar {
-        background-color: #4285F4;
+        background-color: @main_color_yellow;
     }
 }
 header  {
 	padding-top : 64px;
 }
 #content {
-	padding-top : 64px;
+	padding-top : 80px;
 }
 
 .mainContent {
@@ -130,6 +146,10 @@ header  {
 	position : relative;
 }
 
+.evaluateToRetrieve{
+	font-size : 25px;	
+}
+
 /* /evaluate page */
 /* search page start*/
 .search_page_head {
@@ -175,3 +195,30 @@ footer {
   color: #ffffff;
 }
 
+.col_card_group{
+	display:flex;
+	min-width: 100%;
+  	min-height: 200px;
+  	overflow-x: auto;
+	.col_card{
+		 min-width: 200px;
+		 max-width: 200px;
+ 		 margin: 5px;
+	}
+}
+
+.col_list_box {
+	border : 1px solid #fff;
+	
+}
+
+#col_title{
+	margin-left:50px;
+	margin-top:5px;
+}
+
+.login_form{
+	max-width:400px;
+	margin:auto;
+	margin-top:100px;
+}

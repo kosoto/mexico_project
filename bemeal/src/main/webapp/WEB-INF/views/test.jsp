@@ -38,20 +38,12 @@
 <link rel="stylesheet" type="text/css" href="${context}/resources/css/star-rating-svg.css">
 <!-- kaeun chart -->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<!-- kakao -->
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 </head>
 <body>
 <!-- MDB -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.11/js/mdb.min.js"></script>
-	<div id="star"></div>
-	<script>
-	$('#star').starRating({
-		  starSize: 200,  //width속성값
-		  forceRoundUp:false,
-		  initialRating: 2.7,
-		  strokeColor: '#894A00',
-		  strokeWidth: 10,
-		  readOnly:true
-		});
-	</script> 
+	
 </body>
 </html>

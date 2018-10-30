@@ -40,15 +40,55 @@
   		<result property="sum" column="SUM"/>
   		<result property="no" column="NO"/>
   	</resultMap>
+  	
+  	<select id="tagSearch" resultMap="result">
+  		SELECT * FROM 
+  			
+  	
+  	</select> 
+  	
   	<select id="navSearchList" resultMap="result">
-  	SELECT * FROM
+  	<!-- SELECT * FROM
 		(SELECT A.*, ROW_NUMBER() OVER() AS NO
 		FROM
 			(SELECT IT.*,IM.IMG
 			FROM ITEM IT
 				JOIN IMAGE IM ON IM.ITEM_SEQ LIKE IT.ITEM_SEQ
 			WHERE ITEM_NAME LIKE #{word} ) A ) B
-	WHERE NO &lt;= 20;
+	WHERE NO &lt;= 20; -->
+	SELECT * FROM
+		(SELECT 
+			B.*
+		FROM
+			(SELECT A.*, ROW_NUMBER() OVER() AS NO
+			FROM
+				(SELECT 
+					ITEM_SEQ,ITEM_NAME,EXPLAINS
+				FROM
+					(SELECT X.*,T.TAG_NAME FROM
+					(SELECT 
+						IT.ITEM_SEQ,IT.ITEM_NAME,IT.EXPLAINS,TI.TAG_SEQ
+					FROM ITEM IT 
+						JOIN TAG_ITEM TI ON TI.ITEM_SEQ LIKE IT.ITEM_SEQ) X
+						JOIN TAG T ON T.TAG_SEQ LIKE X.TAG_SEQ) Y
+				WHERE TAG_NAME LIKE #{word}
+				GROUP BY ITEM_NAME
+				UNION
+				SELECT 
+					 IT.ITEM_SEQ,IT.ITEM_NAME,IT.EXPLAINS
+				FROM ITEM IT			
+				WHERE ITEM_NAME LIKE #{word}) A ) B
+		WHERE NO &lt;= 20) C
+			JOIN IMAGE IM ON IM.ITEM_SEQ LIKE C.ITEM_SEQ
   	</select>
+  	
+ 	<!-- <select id="tagSearch" resultMap="result" >
+  		SELECT * FROM 
+  		ITEM_SEQ, ITEM_NAME, EXPLAINS
+  		FROM ITEM
+  		WHERER TAG_SEQ LIKE #{}
+  			
+  	</select>  -->
+  
   </mapper>
   

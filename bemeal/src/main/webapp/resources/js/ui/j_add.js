@@ -22,7 +22,7 @@
 	+'      <label for="phoneNum"><b>전화번호</b></label>'
 	+'      <input type="text" id="phoneNum" placeholder="전화번호를 입력해주세요" required><br>'
 	+'		<p>이미 회원이신가요?<a id ="join_to_login" href="#"  style="color:dodgerblue"> 여기서 </a>로그인하세요.</p>'
-	+'        <button class="j_button" type="submit" id="join_submit_btn" class="join_submit_btn">회원가입</button>'
+	+'        <button class="j_button" type="button" id="join_submit_btn" class="join_submit_btn">회원가입</button>'
 	+'    </div>'
 	+'  </form>'
 	+'</div>'
