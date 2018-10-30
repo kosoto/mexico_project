@@ -29,6 +29,7 @@ bemeal.main = (()=>{
 })();
 bemeal.router = {
 		init : x=>{
+			Kakao.init('6e4c0a585a61ab7dce05a93ff2582a90');
 			$.when(
 				$.getScript(x+"/resources/js/router.js",()=>{
 					$.extend(new Session(x));

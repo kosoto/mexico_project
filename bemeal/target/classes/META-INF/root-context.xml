@@ -105,5 +105,6 @@
 		</mvc:interceptor>
 	</mvc:interceptors> -->
 	<tx:annotation-driven />
+	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 	
 </beans>
