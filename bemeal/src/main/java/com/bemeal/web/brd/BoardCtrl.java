@@ -38,32 +38,39 @@ public class BoardCtrl {
 	@PostMapping(value="/brd/write")
 	@ResponseBody Map<String,Object> brdWrite(@RequestBody Map<String,Object> param){
 		map.clear();
-		logger.info("board write param:{}",param);
+//		logger.info("board write param:{}",param);
 		brdMapper.post(param);
-		logger.info("brdwrite brdMapper.get(param):{}",brdMapper.get(param));
+		logger.info("brdwrite brdMapper.retrieve(param):{}",brdMapper.get(param));
 		map.put("write", brdMapper.get(param));
+//		map.put("write", brdMapper.get(param));
 		return map;
 	}
 	
 	@GetMapping(value="/brd/read/{itemSeq}")
 	@ResponseBody Map<String,Object> brdRead(@PathVariable String itemSeq){
 		map.clear();
-		logger.info("board read param:{}"+itemSeq);
+//		logger.info("board read param:{}"+itemSeq);
 		map.put("itemSeq", itemSeq);
 		map.put("read",brdMapper.get(map));
-		
 		logger.info("map.get(\"read\"):{}",map.get("read"));
 		return map;
 	}
 	
 	@PostMapping("/brd/modify")
-	public void brdModify(@RequestBody Map<String,Object> param){
-		
+	@ResponseBody Map<String,Object> brdModify(@RequestBody Map<String,Object> param){
+		map.clear();
+		logger.info("param:{}",param.toString());
+		brdMapper.put(param);
+		logger.info("brdMapper.get(map)::{}",brdMapper.retrieve(param));
+		map.put("modify",brdMapper.retrieve(param));
+		return map;
 	}
 	
 	@PostMapping("/brd/delete")
 	public void brdDelete(@RequestBody Map<String,Object> param){
-		
+		map.clear();
+		logger.info("/brd/delete param:{}",param);
+		brdMapper.delete(param);
 	}
 	
 }

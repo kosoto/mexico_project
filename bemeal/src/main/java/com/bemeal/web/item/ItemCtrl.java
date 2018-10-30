@@ -64,7 +64,7 @@ public class ItemCtrl {
 		}/*else {
 			map.put("listsm", itemMapper.listSomeScore(item));
 		}*///그냥평점으로하면 한 아이템당 여러 아이디가 평가한 평점들을 나열하기 때문에  평균평점으로 sort해야함
-		logger.info("itemMapper::"+map.get("listsm"));
+		logger.info("itemMapper:map.get(\"listsm\"):{}",map.get("listsm"));
 		return map;
 	}
 	@GetMapping("/item/pagi/{count}/{pageNum}")// /{pageNum}/{pageSize}/{blockSize}
@@ -73,40 +73,32 @@ public class ItemCtrl {
 			@PathVariable String pageNum
 			){
 		map.clear();
-		logger.info("count:{}",count);
-	/*	logger.info("pageNum:{}",pageNum);
-		logger.info("pageSize:{}",pageSize);
-		logger.info("blockSize:{}",blockSize);*/
-		
+		//logger.info("count:{}",count);
 		map.put("pageNum",pageNum);
 		map.put("count", count);
 		map.put("pageSize", 6);
 		map.put("blockSize", 1);
-		logger.info("map::{}",map);
+		//logger.info("map::{}",map);
 		pagi.excute(map);
-		
-		
-/*		logger.info("pagi.getBeginPage():{}",pagi.getBeginPage());
-		logger.info("pagi.getEndPage():{}",pagi.getEndPage());
-		logger.info("pagi.getBeginRow():{}",pagi.getBeginRow());
-		logger.info("pagi.getEndRow():{}",pagi.getEndRow());*/
+		map.clear();
 		map.put("pagi", pagi);
+
 		logger.info("map.get(\"pagi\"):{}",map.get("pagi"));
 		return map;
 	}
 	@GetMapping("/item/retrieve/{itemSeq}")
 	public @ResponseBody Map<String, Object> retrieve(@PathVariable String itemSeq ){
 		map.clear();
-		logger.info("itemseq int:{}",Integer.parseInt(itemSeq));
+		//logger.info("itemseq int:{}",Integer.parseInt(itemSeq));
 		item.setItemSeq(Integer.parseInt(itemSeq));
-		logger.info("itemseq :{}",item);
+//		logger.info("itemseq :{}",item);
 		itemMapper.retrieve(item);
 		itemMapper.tag(item);
-		logger.info("item retrieve:{}",itemMapper.retrieve(item));
-		logger.info("itemMapper.tag(item):{}",itemMapper.tag(item));
+//		logger.info("item retrieve:{}",itemMapper.retrieve(item));
+//		logger.info("itemMapper.tag(item):{}",itemMapper.tag(item));
 		map.put("retrieve", itemMapper.retrieve(item));
 		map.put("rtag", itemMapper.tag(item));
-		logger.info("rtag::{}",map.get("rtag").toString());
+//		logger.info("rtag::{}",map.get("rtag").toString());
 		return map;
 	}
 }
