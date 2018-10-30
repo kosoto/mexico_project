@@ -44,7 +44,7 @@ ui = {
 							$('<div/>').addClass("col").attr({id:x.id})
 							));*/
 		},
-		n_div : x=>{ // kui.n_div({clazz:'',html:'',to:''});
+		n_div : x=>{ // ui.n_div({clazz:'',html:'',to:''});
 			return $('<div/>').addClass(x.clazz).html(x.html).appendTo(x.to);
 		},
 		div : x=>{// ui.div({id:"",clazz:""})

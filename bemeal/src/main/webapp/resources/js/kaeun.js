@@ -38,7 +38,7 @@ kaeun.main=(()=>{
      return {init:init};
 })();
 
-//payment관련 해서 : cart, payHis, present
+//payment관련 해서 : cart, payHis,present
 kaeun.payment = (x=>{ //kaeun.payment(cart); kaeun.payment(payHis);
 	var ctx;
 	var init= ()=>{
@@ -176,51 +176,59 @@ kaeun.payments = {
 					+'<div class ="row">'
 					+' <div class = "col-8" id="pay_search">'
 					+' <form>'
-					+'<div class="form-row">'
-					+'  <div class="col-md-auto">'
-					+'Date :　'
-					+'  </div>'
-					+'  <div class="col-md-auto">'
-					+'    <input id="startDate" type="date" value="'
-                    +$.datepicker.formatDate('yy-mm-dd', prevDate)
-                    +'" class="form-control-sm" placeholder="First name">'
-					+'  </div>'
-					+'  <p>~</p>' 
-					+'  <div class="col">'
-					+'    <input id="endDate" type="date" value="'
-					+$.datepicker.formatDate('yy-mm-dd', day)
-					+'" class="form-control-sm" placeholder="Last name">'
-					+'  </div>'
-					+'</div>    '
-					/*+'<div class="col-md-auto">'*/
-					+'<div class="row">' //상품선택+search input
-					+'  <div class="col-md-auto">'
-					+'상세 : '
-					+'  </div>'
-					+'<div class="col-md-auto">'
-					+'<select class="form-control-sm" id="pay_status" >' //상태선택
-				    +'<option>구매내역　　　</option>'
-				    +'<option>구매완료</option>'
-				    +'<option>선물</option>'
-				    +'</select>'
-				    +'</div>' //col끝
-				    +'<div class="col-md">'
-					+'<div class="md-form active-pink-2 mb-3 mt-0">' //search input
-					+'<input class="pay_search_input" type="text" placeholder="상품명" aria-label="Search">'
-					+'</div>'
-					+'</div>' //col끝
-					+'</div>' //row끝
-					+'</form>  '
+						+'<div class="form-row">'
+						+'  <div class="col-md-auto">'
+							+'Date :　'
+							+'  </div>'
+						+'  <div class="col-md-auto">'
+							+'    <input id="startDate" type="date" value="'
+		                    +$.datepicker.formatDate('yy-mm-dd', prevDate)
+		                    +'" class="form-control-sm" placeholder="First name">'
+							+'  </div>'
+							+'  <p>~</p>' 
+							+'  <div class="col">'
+							+'    <input id="endDate" type="date" value="'
+							+$.datepicker.formatDate('yy-mm-dd', day)
+							+'" class="form-control-sm" placeholder="Last name">'
+							+'  </div>'
+							+'</div>    '
+							/*+'<div class="col-md-auto">'*/
+						+'<div class="row">' //상품선택+search input
+							+'  <div class="col-md-auto">'
+								+'상세 : '
+								+'  </div>'
+							+'<div class="col-md-auto">'
+								+'<select class="form-control-sm" id="pay_status" >' //상태선택
+							    +'<option>구매내역　　　</option>'
+							    +'<option>구매완료</option>'
+							    +'<option>선물</option>'
+							    +'</select>'
+							    +'</div>' //col끝
+						    +'<div class="col-md">'
+						    +'<div class="md-form active-pink-2 mb-3 mt-0">' //search input
+								+'<input id="keyword" class="pay_search_input" type="text" placeholder="상품명" aria-label="Search">'
+							+'</div>'
+							+'</div>' //col끝
+						+'</div>' //row끝
+						+'</form>  '
 					+'  </div>'
 					+'  <div class = "col">'
-					+'    <button id="pay_search_btn">Search버튼</button>'
+						+'    <button id="pay_search_btn" class="btn-two redp big">Search버튼</button>'
 					+'  </div>'
 					+'</div>'
 					+'</div>' 
 					+'</div>');
-			kaeun.tastes.payHisList({prevDate:prevDate,day:day,pageNo:pageNo,flag:flag,keyword:keyword}); //prevDay,day(필수),페이지 상세검색(필수),상품명(필수는아님)
-			/*
-			flag:x.flag flag는 array로?하나각각인지 두개인지 default값은 두개다 */
+			kaeun.tastes.payHisList({prevDate:prevDate,day:day,pageNo:pageNo,flag:flag,keyword:keyword}); 
+			$('#pay_search_btn').click(e=>{
+				prevDate = $('#startDate').val();
+				day = $('#endDate').val();
+				flag = ($('#pay_status option:selected').val()==='선물')? ["gift"] :
+								($('#pay_status option:selected').val()==='구매완료')? ["buy"] : ["buy","gift"];
+				keyword = ($('#keyword').val()!=='')? '%'+$('#keyword').val()+'%' : null;
+				console.log('시작: '+prevDate + ' 끝: ' + day + ' flag: '+flag+' keyword: '+keyword+' pageNo: '+pageNo);
+				kaeun.tastes.payHisList({prevDate:prevDate,day:day,pageNo:pageNo,flag:flag,keyword:keyword});
+			})
+			//flag:default가 buy+gift임 */
 		},
 		gift : ()=>{ //read some
 			ui.newpage();
@@ -254,6 +262,8 @@ kaeun.payments = {
 			// ★ 페이지네이션
 		},
 		giftPopup : x=>{
+			var toId = '';
+			var chkId = false;
 			$.magnificPopup.open({
 				closeBtnInside:true,
 				closeOnContentClick:false,
@@ -261,25 +271,44 @@ kaeun.payments = {
 				fixedBgPos:true,
 				fixedContentPos:false,
 				items:{src:
-					'<form class="white-popup">'
-					+'선물하기' //선물하기 팝업
-					+	'<div class="form-group">'
-					+       '<label for="text">To.Id:</label>'
-			    	+		'<input type="text" class="form-control" id="gift_toid">' //아이디가 없으면 없다고 떠야함
-			    	  +   '<div class="form-group">'
-						+		'<label for="pwd">Message:</label>'
-						+		'<textarea type="text" class="form-control" rows="3" id="gift_msg"/>'
-					    +   '</div>'
-					    +	'<button type="submit" class="btn btn-default">Submit</button>'
-		    		+	'</div>'
-					+'</form>'
+					$('<form/>').addClass("white-popup")
+								.html('선물하기')
+								.append(
+									$('<div/>').addClass("form-group")
+										.append(
+												$('<label/>').html("To.Id")
+												,$('<input/>').attr({type:"text",id:"gift_toId"}).addClass("form-control")
+												.keydown(e=>{if(e.keyCode === 13)e.preventDefault();})
+												.keyup(e=>{
+															  toId = e.currentTarget.value;
+															  console.log(toId);
+															  if(toId!==''){
+																  chkId = true;
+																  //★겟제이슨 멤버 retrieve가 있으면 true로 바뀜
+															  }else{
+															  }
+															})
+														)
+								   ,$('<div/>').addClass("form-group")
+								   		.append(
+								   				$('<label/>').html("Message")
+												,$('<textarea/>').attr({type:"text",id:"gift_msg"}).addClass("form-control")
+								   				)
+						   		   ,ui.btn({id:'gift_submit',size:'big',color:'black',txt:'보내기'})
+										)
 				},
 				midClick:true,
 				overflowY:'auto',
 				removalDelay:'0',
 				type:'inline'}); 
-			$('.btn').on('click',function(){
-				alert($('#code').val());
+			$('#gift_submit').click(e=>{
+				//chkId가 true일때만!
+				//★ 보내려는 사람 아이디랑,메세지도 함께 넣어야하는데... 잘못하면 payList쿼리가 깨진다?
+				console.log('payList: '+x);
+				console.log('toId: '+$('#gift_toId').val());
+				console.log('msg: '+$('#gift_msg').val());
+				kaeun.tastes.payList({payList:x,toId:$('#gift_toId').val(),msg:$('#gift_msg').val()});
+				
 			});
 			return false;
 		},
@@ -295,7 +324,7 @@ kaeun.payments = {
 					                	flag: x.flag}),
 	                success : d=>{
 	                	if(d>0){
-	                		alert('성공');
+	                		
 	                	}else{
 	                		alert('삽입실패');
 	                	}
@@ -342,7 +371,7 @@ kaeun.tastes = { //kaeun.tastes.cartList()
                        +'<div class="item_header">총액</div>'
                        +'<id="cart_header_end" class="item_header">내역</div></div>');    
             let payList = [];
-            $.each(x,(i,j)=>{
+            $.each(x.payList,(i,j)=>{
                  payList.push({itemSeq:j.itemSeq,quantity:j.quantity});
                  ui.grid_list({
                        to: $('#cart_grid'),
@@ -367,7 +396,7 @@ kaeun.tastes = { //kaeun.tastes.cartList()
                                                  }),
                        success : d=>{
                             if(d>0){
-                                  alert('성공'+d);
+                                  alert('결제완료');
                             }else{
                                   alert('삽입실패');
                             }
@@ -386,7 +415,7 @@ kaeun.tastes = { //kaeun.tastes.cartList()
 					+'<div id="cart_header_end" class="item_header">주문</div></div>');
 			let testId = $.cookie('member')["memberId"];
 			$.getJSON($.ctx()+'/taste/list/'+testId+'/cart',d=>{ //getjosn시작
-				//alert(d[0].itemSeq);
+				
 				$.each(d,(i,j)=>{ //grid_list R
 					ui.grid_list({
 						to: $('#cart_grid'),
@@ -400,19 +429,27 @@ kaeun.tastes = { //kaeun.tastes.cartList()
 					}); 
 				ui.btn({id:'cart_order_btn'+i,size:'mini',color:'black',txt:'구매하기'}).appendTo($('#cart_btns'+i))
 				.click(e=>{
-					alert("구매하시겠습니까?");
+					alert("해당 상품을 구매하시겠습니까?");
 					let payList =  [{itemSeq:d[i].itemSeq,
                         quantity:d[i].quantity,
                         itemName:d[i].itemName,
                         price:d[i].price,
                         explains:d[i].explains,
                         img:d[i].img}];
-					kaeun.tastes.payList(payList);
+					let delList = [d[i].tasteSeq];
+					kaeun.tastes.payList({payList:payList});
 				});
 				$('<br/>').appendTo($('#cart_btns'+i));
 				ui.btn({id:'cart_gift_btn'+i,size:'mini',color:'red',txt:'선물하기'}).appendTo($('#cart_btns'+i))
 				.click(e=>{
-					kaeun.payments.giftPopup();
+					alert("해당상품을 선물하시겠습니까?");
+					let payList =  [{itemSeq:d[i].itemSeq,
+                        quantity:d[i].quantity,
+                        itemName:d[i].itemName,
+                        price:d[i].price,
+                        explains:d[i].explains,
+                        img:d[i].img}];
+					kaeun.payments.giftPopup(payList);
 				});
 				$('<br/>').appendTo($('#cart_btns'+i));
 				ui.btn({id:'cart_delete_btn'+i,size:'mini',color:'white',txt:'삭제하기'}).appendTo($('#cart_btns'+i))
@@ -437,7 +474,19 @@ kaeun.tastes = { //kaeun.tastes.cartList()
 				ui.btn({id:'cart_gift_submit',size:'big',color:'red',txt:'선물하기'}).appendTo($('#cart_pay'));
 				ui.btn({id:'cart_order_submit',size:'big',color:'black',txt:'구매하기'}).appendTo($('#cart_pay'));
 				$('#cart_gift_submit').click(e=>{
-					kaeun.payments.giftPopup();
+					alert("선택상품들을 선물하시겠습니까?");
+					let payList = []; 
+					for(let i=0;i<$('input:checkbox[name="cartchk"]').length-1;i++){
+						if($('input:checkbox[id="cart_chk'+i+'"]').is(":checked")){
+							payList.push({itemSeq:d[i].itemSeq,
+                                quantity:d[i].quantity,
+                                itemName:d[i].itemName,
+                                 price:d[i].price,
+                                explains:d[i].explains,
+                                 img:d[i].img});
+						}
+					}
+					kaeun.payments.giftPopup(payList);
 				})
 				/*이벤트들 모음*/
 				$('#cart_all_chk').change(function () {
@@ -457,6 +506,7 @@ kaeun.tastes = { //kaeun.tastes.cartList()
 					//선택상품 구매
 					alert("선택상품들을 구매하시겠습니까?");
 					let payList = []; 
+					let delList = [];
 					for(let i=0;i<$('input:checkbox[name="cartchk"]').length-1;i++){
 						if($('input:checkbox[id="cart_chk'+i+'"]').is(":checked")){
 							payList.push({itemSeq:d[i].itemSeq,
@@ -465,9 +515,10 @@ kaeun.tastes = { //kaeun.tastes.cartList()
                                  price:d[i].price,
                                 explains:d[i].explains,
                                  img:d[i].img});
+							delList.push(d[i].tasteSeq);
 						}
 					}
-					kaeun.tastes.payList(payList);
+					kaeun.tastes.payList({payList:payList});
 				})//cart_order_submit 끝
 		}) //getjson끝		
 		},
@@ -493,7 +544,7 @@ kaeun.tastes = { //kaeun.tastes.cartList()
                 					keyword: x.keyword,
                 					flag:x.flag}),
                 success : d=>{
-                		alert("성공");
+                		
                 		let pay=null;
         				let gift;
         				let paySeq;
@@ -515,7 +566,6 @@ kaeun.tastes = { //kaeun.tastes.cartList()
                 		//페이지네이션
                 		$('<div/>').html('<ul id="pageNation" class="pagination pagination-sm"/>').appendTo($('#k_content'));
                 		let p = d.page;
-                		alert(d.page);
                 		let prev = (p.existPrev)? '':'disabled';
                 		let next = (p.existNext)? '':'disabled';
                 		let begin = p.beginPage -1;
@@ -721,7 +771,7 @@ kaeun.tastes = { //kaeun.tastes.cartList()
  				let flag = 'cart';
  				kaeun.payments.putTaste({itemSeq:itemSeq,quantity:quantity,flag:'cart'});
  			});
-        	$('#k_header').append('<button id="testBtn2" type="button" class="btn btn-default">cartList</button>')
+        	$('#k_header').append('<button id="testBtn2" type="button" class="btn btn-default">delPayhis</button>')
         	$('#testBtn2').click(e=>{
  				kaeun.payments.listCart();
  			});

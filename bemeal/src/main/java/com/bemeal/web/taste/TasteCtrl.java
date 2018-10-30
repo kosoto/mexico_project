@@ -99,6 +99,8 @@ public class TasteCtrl {
           tmap.putAll(p);
                System.out.println("tmap : "+tmap);
           int result = tstMapper.postTastePay(tmap);
+          //★장바구니 삭제 : delList가 와야함 
+          int resultDel = tstMapper.deleteCart(tmap);
           return result; 
     } 
     

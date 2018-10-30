@@ -172,7 +172,7 @@ FROM (SELECT G.TAG_NAME AS "ingre", AVG(T.GRADE) AS "ingreAvg", COUNT(T.GRADE) A
        </choose>
        AND T.TASTE_DATE BETWEEN #{prevDate} AND #{day}
        ORDER BY T.TASTE_DATE DESC, T.TASTE_TIME DESC
-       LIMIT #{page.beginRow}, #{page.endRow};
+       LIMIT #{page.beginRow}, #{page.pageSize};
  	</select>
  	
      <select id="countTaste" resultType="int">
