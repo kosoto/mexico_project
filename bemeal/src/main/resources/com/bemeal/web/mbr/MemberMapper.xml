@@ -14,7 +14,7 @@
            MEMBER_ID AS "MEMBERID",PASSWORD,NAME,AGE,SSN,GENDER,ADDRESS,E_MAIL AS "EMAIL",PHONE_NUM AS PHONENUM 
         FROM MEMBER
     </select>
-    	
+    
     <select id="get" resultType="com.bemeal.web.mbr.Member">
     	SELECT 
     	MEMBER_ID AS memberId,
@@ -40,7 +40,7 @@
 		WHERE MEMBER_ID LIKE #{memberId}
 	</delete>
 	<update id="modify">
-		UPDATE MEMBER SET PASSWORD = #{password}, ADDRESS = {address}, E_MAIL = #{eMail}, PHONE_NUM = #{phoneNum}
+		UPDATE MEMBER SET PASSWORD = #{password}, ADDRESS = #{address}, E_MAIL = #{eMail}, PHONE_NUM = #{phoneNum}
 			WHERE MEMBER_ID LIKE #{memberId}
 	</update>
 	

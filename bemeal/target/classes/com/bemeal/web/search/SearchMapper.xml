@@ -82,10 +82,13 @@
 			JOIN IMAGE IM ON IM.ITEM_SEQ LIKE C.ITEM_SEQ
   	</select>
   	
-  <!-- 	<select id="" resultMap="result" >
-  		SELECT * FROM
+ 	<!-- <select id="tagSearch" resultMap="result" >
+  		SELECT * FROM 
+  		ITEM_SEQ, ITEM_NAME, EXPLAINS
+  		FROM ITEM
+  		WHERER TAG_SEQ LIKE #{}
   			
-  	</select> -->
-  	
+  	</select>  -->
+  
   </mapper>
   
