@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!--
 Author: W3layouts
 Author URL: http://w3layouts.com
@@ -11,7 +10,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	<head>
 		<title>0hh Website Template | Home :: W3layouts</title>
 		<meta name="keywords" content="404 iphone web template, Android web template, Smartphone web template, free webdesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" />
-		<link href="${context}/resources/css/404/style.css" rel="stylesheet" type="text/css"  media="all" />
+		<link href="/web/resources/css/404/style.css" rel="stylesheet" type="text/css"  media="all" />
 	</head>
 	<body>
 		<!--start-wrap--->
@@ -25,7 +24,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<!---End-header---->
 			<!--start-content------>
 			<div class="content">
-				<img src="${context}/resources/img/404/error-img.png" title="error" />
+				<img src="/web/resources/img/404/error-img.png" title="error" />
 				<p><span><label>O</label>hh.....</span>You Requested the page that is no longer There.</p>
 				<a href="http://localhost:8080/web/WEB-INF/views/main.jsp">Back To Home</a>
 				<div class="copy-right">

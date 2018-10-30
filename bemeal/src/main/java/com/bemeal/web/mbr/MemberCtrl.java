@@ -35,34 +35,18 @@ public class MemberCtrl {
 	public int add(@RequestBody Member mbr) {
 		mbr.getSsn();
 		Util.log.accept("add() :: 넘어온 정보 :: "+mbr);
-		HashMap<String, Object> r = new HashMap<>();
 		String ssn = String.valueOf(mbr.getSsn());
 		int age;
-		int Jssn = Integer.parseInt(ssn.substring(0,2));
-		if(Jssn<10) {
-			age = 2019 - (Jssn + 2000);
+		int jSsn = Integer.parseInt(ssn.substring(0,2));
+		if(jSsn<10) {
+			age = 2019 - (jSsn + 2000);
 		}else {
-			age = 2019 - (Jssn + 1900);
+			age = 2019 - (jSsn + 1900);
 		}
 		mbr.setAge(age);
 		String Gender = String.valueOf(ssn.charAt(7));
-		mbr.setGender((Gender.equals("1"))?"남":"여");
-		
-		r.put("memberId", mbr.getMemberId());
-		r.put("password", mbr.getPassword());
-		r.put("name", mbr.getName());
-		r.put("age", mbr.getAge());
-		r.put("ssn", mbr.getSsn());
-		r.put("gender", mbr.getGender());
-		r.put("address", mbr.getAddress());
-		r.put("eMail", mbr.getEMail());
-		r.put("phoneNum", mbr.getPhoneNum());
-		
-		System.out.println("r :: "+ r.toString());
-		Function<Member, Integer>f=x-> {
-			Member m = x;
-			return mbrMapper.post(r);
-		};
+		mbr.setGender((Gender.equals("1")||Gender.equals("3"))?"남":"여");
+		Function<Member, Integer>f=x->mbrMapper.post(x);
 		return f.apply(mbr);
 	}
 	@PostMapping("/remove")

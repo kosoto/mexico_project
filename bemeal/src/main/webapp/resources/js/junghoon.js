@@ -19,35 +19,64 @@ junghoon.member = (()=>{
 						);
 				
 				$('#join_to_login').click(e=>{
-					alert('안녕 안녕 안녕로봇');	
 					junghoon.member.login();
 				})
 				
 				$('#join_submit_btn').click(e=>{
-					console.log('email :: '+$('#eMail').val());
+					//validation
+					let id = $('#memberId').val();
+					let pw = $('#password').val();
+					let name = $('#name').val();
+					let ssn = $('#ssn').val();
+					let addr = $('#address').val();
+					let email = $('#eMail').val();
+					let phone = $('#phoneNum').val();
+					if(id===''){
+						alert('아이디를 입력하세요'); return;
+					}
+					if(pw===''){
+						alert('비밀번호를 입력하세요');return;
+					}
+					if(name===''){
+						alert('이름을 입력하세요');return;
+					}
+					if(ssn===''){
+						alert('주민번호를 입력하세요');return;
+					}
+					if(addr===''){
+						alert('주소를 입력하세요');return;
+					}
+					if(email===''){
+						alert('이메일을 입력하세요');return;
+					}
+					if(phone===''){
+						alert('전화번호를 입력하세요');return;
+					}
+					
 					$.ajax({
 						url:$.ctx()+'/mbr/add',
 						method:'post',
 						contentType:'application/json',
 						data:JSON.stringify({
-							
-							memberId:$('#memberId').val(),
-							password:$('#password').val(),
-							name:$('#name').val(),
-							ssn:$('#ssn').val(),
-							address:$('#address').val(),
-							eMail:$('#eMail').val(),
-							phoneNum:$('#phoneNum').val()
+							memberId:id,
+							password:pw,
+							name:name,
+							ssn:ssn,
+							address:addr,
+							email:email,
+							phoneNum:phone
 							
 						}),
-						
 						success:d=>{
-							
-								alert(d.toString());
-							},
+							if(d!=0){
+								junghoon.member.login();	
+							}else{
+								alert('회원가입에 실패했습니다.');
+							}
+						},
 						error:(x,y,z)=>{console.log('error :: '+z)}
 						
-					});
+					});//ajax end
 				});
 			})
 		})
@@ -56,7 +85,7 @@ junghoon.member = (()=>{
 	};
 	var login =x=>{
 		$.getScript($.script()+'/comp.js',()=>{
-			$.getScript($.script()+'/ui/j_login.js',()=>{
+			$.getScript($.script()+'/ui/login_sample.js',()=>{//j_login
 
 				$('header').remove();
 				$('#content').empty().append($(loginUI()));
@@ -487,6 +516,7 @@ junghoon.service = {
 					},
 				mypage : x => {
 			alert('mp');
+			$('header').remove();
 			$.getScript($.script()+'/ui/j_mbrupdate.js', ()=>{
 					$('#content').empty().html(modifyUI($.cookie('member')))
 				});

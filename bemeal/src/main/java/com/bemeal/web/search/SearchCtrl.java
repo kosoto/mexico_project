@@ -24,7 +24,6 @@ public class SearchCtrl {
 	
 	@GetMapping("/navSearch/{searchWord}")
 	public List<HashMap<String,Object>> navSearch(@PathVariable String searchWord){
-		logger.info("넘어온 searchWord {}",searchWord);
 		Function<String, List<HashMap<String,Object>>>f=x->searchMapper.navSearchList(x);
 		return f.apply("%"+searchWord+"%");
 	}
