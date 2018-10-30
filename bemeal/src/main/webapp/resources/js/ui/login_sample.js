@@ -1,5 +1,4 @@
 function loginUI(){
-	
 	return $('<form/>').attr({id:'login_form'}).addClass('login_form text-center').append(
 				$('<p/>').addClass('h4 mb-4').append(
 					$('<img/>').attr({src:$.img()+"/cmm/logo.png"})
