@@ -45,9 +45,9 @@
 		<property name="driverClassName"
 			value="org.mariadb.jdbc.Driver" />
 		<property name="url"
-			value="jdbc:mariadb://203.236.209.46:3306/mariadb" />
+			value="jdbc:mariadb://mariadb.cw9lghzj3xpv.ap-northeast-2.rds.amazonaws.com:3306/mariadb" />
 		<property name="username" value="mariadb" />
-		<property name="password" value="mariadb" />
+		<property name="password" value="mariadb1618" />
 	</bean>
 	
 	<bean id="transactionManager"
@@ -105,5 +105,6 @@
 		</mvc:interceptor>
 	</mvc:interceptors> -->
 	<tx:annotation-driven />
+	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 	
 </beans>
