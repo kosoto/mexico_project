@@ -29,18 +29,28 @@ public class SearchCtrl {
 		Function<String, List<HashMap<String,Object>>>f=x->searchMapper.navSearchList(x);
 		return f.apply("%"+searchWord+"%");
 	}
+	@SuppressWarnings("unchecked")
 	@PostMapping("/tagSearch")
-	public List<?> tagSearch(
+	public List<HashMap<String,Object>> tagSearch(
 			@RequestBody HashMap<String,Object> tagArr){
 		Util.log.accept("tag Search controller");
-		HashMap<String, String> r = new HashMap<>();
+		HashMap<String, Object> r = new HashMap<>();
 		Util.log.accept("item seq 값 ::"+tagArr.get("JtagArr"));
 		Util.log.accept("value Range 값 ::"+tagArr.get("valueRange"));
 		logger.info("넘어온 배열 {}",tagArr.toString());
-		
-		r.put("tag", String.valueOf(tagArr.get("JtagArr")));
+		@SuppressWarnings("unchecked")
+		List<HashMap<String,Object>> t = (List<HashMap<String, Object>>) tagArr.get("JtagArr"); 
+		Util.log.accept(t.toString());
+		r.put("tag", (List) tagArr.get("JtagArr"));
+		Util.log.accept(r.toString());
 		r.put("value", String.valueOf(tagArr.get("ValueRange")));
-		return null;//searchMapper.tagSearch(r);
+		/*Function<HashMap<String,Object>, List<HashMap<String, Object>>>f=x->searchMapper.tagSearch(x);
+		
+	HashMap<String,String> tt = new HashMap<>();
+		tt = (HashMap<String, String>) f.apply(r);
+		Util.log.accept("tt.get(\"tagArr\").toString() :: "+tt.get("tagArr").toString());*/
+		/*Util.log.accept((String) tt.get("value"));*/
+		return null;
 		
 		
 	}

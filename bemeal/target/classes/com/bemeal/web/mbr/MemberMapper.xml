@@ -14,7 +14,10 @@
            MEMBER_ID AS "MEMBERID",PASSWORD,NAME,AGE,SSN,GENDER,ADDRESS,E_MAIL AS "EMAIL",PHONE_NUM AS PHONENUM 
         FROM MEMBER
     </select>
-    
+    <select  id="idcheck" resultType="string">
+    	SELECT MEMBER_ID FROM MEMBER
+    	WHERE MEMBER_ID LIKE #{memberId}
+    </select>
     <select id="get" resultType="com.bemeal.web.mbr.Member">
     	SELECT 
     	MEMBER_ID AS memberId,

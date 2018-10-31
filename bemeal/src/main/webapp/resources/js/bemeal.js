@@ -222,7 +222,7 @@ bemeal.compo=(()=>{
 							$('<button/>').addClass('btn btn-outline-white btn-sm my-0').attr({style:'color:black!important',type:'button',id:'testSearch'}).text('tag').click(e=>{
 								e.preventDefault();
 								$.getScript($.script()+"/junghoon.js",()=>{
-									$(window).off('scroll.category');
+									$(window).off('scroll.category',"width=260, height=540");
 									junghoon.service.search();
 								})
 							})

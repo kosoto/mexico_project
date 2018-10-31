@@ -27,7 +27,22 @@ public class MemberCtrl {
 	@Autowired Member member;
 	@Autowired MemberMapper mbrMapper;
 	@Autowired HashMap<String, Object> map;
-	@Autowired BCryptPasswordEncoder passwordEncoder;
+	
+	@PostMapping("/idck")
+	public String idcheck(@RequestBody String mbr){
+		Util.log.accept("idck() :: 넘어온 정보 :: "+mbr);
+		Function<String, String>f=x->{
+			Util.log.accept("mbrMapper.idcheck(x) :: "+mbrMapper.idcheck(x));
+			if(mbrMapper.idcheck(x)==null) {
+				return "1";
+			}else {
+				return "0";
+			}
+			//			return mbrMapper.idcheck(mbr.toString());
+		};
+		
+		return f.apply(mbr);	
+	}
 	@PostMapping("/add")
 	public int add(@RequestBody Member mbr) {
 		//mbr.setPassword(passwordEncoder.encode(mbr.getPassword()));
@@ -63,6 +78,7 @@ public class MemberCtrl {
 		Function<Member, Member>f=x->mbrMapper.get(x);
 		return f.apply(member);
 	}
+	
 	@PostMapping("/modify")
 	public int modify(@RequestBody Member member) {
 		HashMap<String, Object> r = new HashMap<>();

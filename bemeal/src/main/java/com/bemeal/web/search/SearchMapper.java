@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SearchMapper {
 	public List<HashMap<String,Object>> navSearchList(String word);
-	public List<?> tagSearch(HashMap<String, String> r);
+	public List<HashMap<String,Object>> tagSearch(HashMap<String, Object> r);
 }

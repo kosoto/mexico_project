@@ -21,9 +21,32 @@ junghoon.member = (()=>{
 				$('#join_to_login').click(e=>{
 					junghoon.member.login();
 				})
-				
+				$('#idck').click(e=>{
+					alert('중복클릭');
+					
+					let id = $('#memberId').val();
+					alert("$('#memberId').val() :: "+$('#memberId').val());
+					$.ajax({
+						url:$.ctx()+'/mbr/idck',
+						method:'POST',
+						data:JSON.stringify({memberId:$('#memberId').val()}),
+						contentType:'application/json',
+					
+					success:d=>{
+						alert("aaaaaaaaaaaaaaa");
+						console.log("d :: "+d);
+					if(d=="0"){
+						alert("중복된 아이디입니다");
+					}else{
+						alert('사용할 수 있는 아이디입니다');
+					}
+					},
+					error:(x,y,z)=>{console.log('error :: '+z)}
+					})
+				})
 				$('#join_submit_btn').click(e=>{
 					//validation
+					
 					let id = $('#memberId').val();
 					let pw = $('#password').val();
 					let name = $('#name').val();
@@ -31,6 +54,7 @@ junghoon.member = (()=>{
 					let addr = $('#address').val();
 					let email = $('#eMail').val();
 					let phone = $('#phoneNum').val();
+					
 					if(id===''){
 						alert('아이디를 입력하세요'); return;
 					}
@@ -68,6 +92,7 @@ junghoon.member = (()=>{
 							
 						}),
 						success:d=>{
+							
 							if(d!=0){
 								junghoon.member.login();	
 							}else{
@@ -277,18 +302,7 @@ junghoon.service = {
 										+'<div class="col-md-3">'
 											+'<img src="/web/resources/img/junghoon/j_tag.jpg" height="100%" width="100%" margin="5px auto"/>'
 										+'</div>'
-										+'<div class="col-md-3">'
-											+'<img src="/web/resources/img/junghoon/j_search.jpg" id="tag2search" height="100%" width="100%" margin="x auto"/>'
-										+'</div>'
-										+'<div class="col-md-3">'
-											+'<img src="/web/resources/img/junghoon/j_search.jpg" id="tag2search" height="100%" width="100%" margin="x auto"/>'
-										+'</div>'
-										+'<div class="col-md-3">'
-										+'<img src="/web/resources/img/junghoon/j_search.jpg" id="tag2search" height="100%" width="100%" margin="x auto"/>'
-									+'</div>'
-									+'<div class="col-md-3">'
-									+'<img src="/web/resources/img/junghoon/j_search.jpg" id="tag2search" height="100%" width="100%" margin="x auto"/>'
-								+'</div>'
+										
 								
 									+'</div>'
 								+'<div class="mfp-container search-list rounded">'
@@ -298,7 +312,7 @@ junghoon.service = {
 											+'<div id="j_title_under">재료</div>'
 											+'<br/>'
 											+'<div class="row j_btn-group" data-toggle="buttons" >'
-												+'<div  class="btn btn-danger btn-rounded j_btn">'
+												+'<div style="margin:10px;font-size:12px" class="btn btn-danger btn-rounded j_btn">'
 													+'<input id="j_tag" class="j_scbox" type="checkbox" name="1" autocomplete="off"> 닭'
 												+'</div>&nbsp;'
 												+'<div class="btn btn-danger btn-rounded j_btn">'
@@ -477,7 +491,7 @@ junghoon.service = {
 										+'</tr>'
 									+'                  <div class="slidecontainer">'
 									+'		<p>가격 : <span id="sliderValue"></span></p>'
-									+'  <input type="range" max="50000" min="0" value:"25000" min="1"  class="slider" id="myRange">'
+									+'  <input type="range" max="10000" min="0" value:"5000" min="1"  class="slider" id="myRange">'
 									+'  <div class="row">'
 									+'  <button class="ss_btn">선택초기화</button>'
 									+'  <button id="search_submit" class="ss_btn">검색</button>'
@@ -512,8 +526,12 @@ junghoon.service = {
 							method:'post',
 							contentType:'application/json',
 							data:JSON.stringify({"JtagArr":tagArr,"valueRange":output.innerHTML}), // 리스트
-							success:d=>{                                      
-							alert('success');
+							success:d=>{
+								
+								if(tagArr==''){
+									alert('태그를 선택해주세요');
+								}
+							
 							},
 							error:(x,y,z)=>{
 								console.log('error :: '+z)
