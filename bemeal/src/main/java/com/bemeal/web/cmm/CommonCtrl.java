@@ -52,8 +52,8 @@ public class CommonCtrl {
 		pagination.excute(map);
 		Function<HashMap<String,Object>, ArrayList<HashMap<String,Object>>> f=x-> cmmMapper.evaluateList(x);
 		map.clear();
-		map.put("id", id);
 		map.put("pagination", pagination);
+		map.put("id", id);		
 		map.put("list", f.apply(map));
 		map.put("page", pageNum);
 		return map;

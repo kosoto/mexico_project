@@ -41,18 +41,18 @@
   		<result property="sum" column="SUM"/><!-- 갈사람 -->
   	</resultMap>
   	<insert id="post">
-  		INSERT INTO article(CONTENT,MEMBER_ID,ITEM_SEQ) 
+  		INSERT INTO ARTICLE(CONTENT,MEMBER_ID,ITEM_SEQ) 
   		VALUES(#{content},#{memberId},#{itemSeq});<!-- 오는사람 -->
   	</insert>
 
   	
    	<select id="get" resultMap="result">
-		SELECT atc.*,img.img
+		SELECT atc.*,img.IMG
 		FROM ARTICLE atc
 		JOIN IMAGE img
-			on atc.member_id like img.member_id
+			on atc.MEMBER_ID like img.MEMBER_ID
 		WHERE atc.ITEM_SEQ LIKE #{itemSeq}
-		ORDER BY atc.article_seq
+		ORDER BY atc.ARTICLE_SEQ
 <!-- 		SELECT B.*
 		FROM (
 				SELECT ROW_NUMBER() OVER() AS no,A.*
@@ -68,27 +68,27 @@
   	</select>
   	
   	<select id="retrieve" resultMap="result">
-		SELECT atc.*,img.img
+		SELECT atc.*,img.IMG
 		FROM ARTICLE atc
 		JOIN IMAGE img
-			on atc.member_id like img.member_id
+			on atc.MEMBER_ID like img.MEMBER_ID
 		WHERE atc.ARTICLE_SEQ = #{articleSeq}
   	</select> 	 	
   	
   	<update id="put">
   		UPDATE ARTICLE 
-		SET content = #{content} 
-		WHERE article_seq = #{articleSeq} 
-			and member_id = #{memberId}
+		SET CONTENT = #{content} 
+		WHERE ARTICLE_SEQ = #{articleSeq} 
+			and MEMBER_ID = #{memberId}
   	</update>
   	
   	<delete id="delete">
 		DELETE atc.*
 		FROM ARTICLE atc
-			JOIN MEMBER mb ON atc.member_id like mb.member_id
+			JOIN MEMBER mb ON atc.MEMBER_ID like mb.MEMBER_ID
 		WHERE atc.ARTICLE_SEQ like #{articleSeq}
-		and atc.member_id like #{memberId} 
-		and mb.password like #{password}
+		and atc.MEMBER_ID like #{memberId} 
+		and mb.PASSWORD like #{password}
   	</delete> 
   	
   </mapper>

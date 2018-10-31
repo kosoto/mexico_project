@@ -15,5 +15,6 @@ public interface MemberMapper {
 	public Integer count(Map<?,?>p);
 	public int modify(Map<String, Object> r);
 	public int delete(Member p);
+	public Member getKakao(String id);
 	public String idcheck(String mbr);
 }

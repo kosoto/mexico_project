@@ -23,26 +23,16 @@ junghoon.member = (()=>{
 				})
 				$('#idck').click(e=>{
 					alert('중복클릭');
-					
 					let id = $('#memberId').val();
 					alert("$('#memberId').val() :: "+$('#memberId').val());
-					$.ajax({
-						url:$.ctx()+'/mbr/idck',
-						method:'POST',
-						data:JSON.stringify({memberId:$('#memberId').val()}),
-						contentType:'application/json',
+					if(id!='' && id!=null){
+						$.getJSON($.ctx()+'/mbr/idck/'+id,d=>{
+							alert("aaaaaaaaaaaaaaa");
+							console.log("d :: "+d);
+							alert((d=="0")?"중복된 아이디입니다":'사용할 수 있는 아이디입니다')
+						});
+					}else alert('아이디를 입력해주세요');
 					
-					success:d=>{
-						alert("aaaaaaaaaaaaaaa");
-						console.log("d :: "+d);
-					if(d=="0"){
-						alert("중복된 아이디입니다");
-					}else{
-						alert('사용할 수 있는 아이디입니다');
-					}
-					},
-					error:(x,y,z)=>{console.log('error :: '+z)}
-					})
 				})
 				$('#join_submit_btn').click(e=>{
 					//validation
@@ -109,48 +99,87 @@ junghoon.member = (()=>{
 		
 	};
 	var login =x=>{
-		$.getScript($.script()+'/comp.js',()=>{
-			$.getScript($.script()+'/ui/login_sample.js',()=>{//j_login
-
-				$('header').remove();
-				$('#content').empty().append($(loginUI()));
-				
-				$('#login_to_join').click(e=>{
-					alert('잘가 잘가 잘가로봇');
-					junghoon.member.add();
+			$('header').remove();
+			$('#content').empty().append(
+				$('<form/>').attr({id:'login_form'}).addClass('login_form text-center').append(
+					$('<p/>').addClass('h4 mb-4').append(
+						$('<img/>').attr({src:$.img()+"/cmm/logo.png"})
+					),
+					$('<input/>').addClass('form-control mb-4').attr({id:'memberId',type:'text',placeholder:'아이디',style:'width:100%;'}),
+					$('<input/>').addClass('form-control mb-4').attr({id:'password',type:'password',placeholder:'비밀번호',style:'width:100%;'}),
+					$('<div/>').addClass('d-flex justify-content-around'),
+					$('<button/>').addClass('btn btn-warning btn-block my-4').attr({id:'login_submit_btn',type:'button'}).text('로그인'),
+					$('<p/>').text('계정이 없으신가요?').append(
+						$('<a/>').attr({id:'login_to_join',href:'#'}).text('회원가입')
+					),
+					$('<a/>').attr({id:'kakao_login_btn'})
+				   )
+			);
+			 
+			 Kakao.Auth.createLoginButton({
+			      container: '#kakao_login_btn',
+			      success: function(authObj) {
+			    	  Kakao.API.request({
+			    		  url:'/v2/user/me',
+			    		  success:res=>{
+			    			  $.ajax({
+			    				  url:$.ctx()+'/mbr/kakao/retrieve',
+			    				  method:'post',
+			    				  contentType:'application/json',
+			    				  data:JSON.stringify(res),
+			    				  success:d=>{
+			    					  console.log(d);
+			    					  $.cookie('member',d);
+			    					  console.log($.cookie('member'));
+			    					  bemeal.router.main();
+			    				  },
+			    				  error:(e1,e2,e3)=>{
+			    					  
+			    				  }
+			    			  });
+			    		  }
+			    	  });
+			      },
+			      fail: function(err) {
+			    	  console.log(err);
+			    	  console.log(JSON.stringify(err));
+			      }
+			    });
+			
+			$('#login_to_join').click(e=>{
+				alert('잘가 잘가 잘가로봇');
+				junghoon.member.add();
+			});
+			
+			$('#login_submit_btn').click(e=>{
+				let memberId = $('#memberId').val();
+				let password = $('#password').val();
+				if(memberId===''){
+					alert('아이디를 입력하세요')
+				}else if(password===''){
+					alert('비밀번호를 입력하세요')
+				}else{
+					$.ajax({
+						url : $.ctx()+'/mbr/login',
+						method : 'post',
+						contentType : 'application/json',
+						data : JSON.stringify({ memberId : memberId,
+												password : password}),
+						success : d => {
+							console.log(d);
+							if(d!=''){//로그인 성공
+								$.cookie("member", d);
+								//메인화면 보여주기
+								bemeal.router.main();
+							}else{//로그인 실패
+								alert('로그인에 실패했습니다.');
+							}
+							},//success end
+						error : (x,y,z)=>{console.log('error :: '+z)}
 				});
-				
-				$('#login_submit_btn').click(e=>{
-					let memberId = $('#memberId').val();
-					let password = $('#password').val();
-					if(memberId===''){
-						alert('아이디를 입력하세요')
-					}else if(password===''){
-						alert('비밀번호를 입력하세요')
-					}else{
-						$.ajax({
-							url : $.ctx()+'/mbr/login',
-							method : 'post',
-							contentType : 'application/json',
-							data : JSON.stringify({ memberId : memberId,
-													password : password}),
-							success : d => {
-								console.log(d);
-								if(d!=''){//로그인 성공
-									$.cookie("member", d);
-									//메인화면 보여주기
-									bemeal.router.main();
-								}else{//로그인 실패
-									alert('로그인에 실패했습니다.');
-								}
-								},//success end
-							error : (x,y,z)=>{console.log('error :: '+z)}
-					});
-					}
-					 //ajax end
-			}); //login_submit_btn end
-		}); //getScript end
-	});
+				}
+				 //ajax end
+		}); //login_submit_btn end
 	};
 	var remove =x=>{
 		
@@ -268,7 +297,7 @@ junghoon.service = {
 									+'</div>'
 								+'<div class="mfp-container search-list rounded">'
 									+'<table class="table" id="myTable">'             
-										+'<tr>'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+										+'<tr>'
 											+'<br/><br/>'
 											+'<div id="j_title_under">재료</div>'
 											+'<br/>'
