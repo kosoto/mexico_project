@@ -45,36 +45,36 @@
 		SELECT it.*,img.*
 		FROM
 			ITEM it
-			JOIN image img
-				on it.item_seq like img.item_seq
+			JOIN IMAGE img
+				ON it.ITEM_SEQ LIKE img.ITEM_SEQ
 		<where>
 			<if test="brand != null and category != null">
-				it.brand like #{brand} AND it.category like #{category}
+				it.BRAND like #{brand} AND it.CATEGORY like #{category}
 			</if>
 			<if test="brand != null and category == null">
-				it.brand like #{brand}
+				it.BRAND like #{brand}
 			</if>
 			<if test="brand == null and category != null">
-				it.category like #{category}
+				it.CATEGORY like #{category}
 			</if>
 		</where>
-		ORDER BY it.price DESC
+		ORDER BY it.PRICE DESC
   	</select>
  	<select id="listSomeCalorie" resultMap="result">
 		SELECT it.*,img.*
 		FROM
 			ITEM it
-			JOIN image img
-				on it.item_seq like img.item_seq
+			JOIN IMAGE img
+				on it.ITEM_SEQ like img.ITEM_SEQ
 		<where>
 			<if test="brand != null and category != null">
-				it.brand like #{brand} AND it.category like #{category}
+				it.BRAND like #{brand} AND it.CATEGORY like #{category}
 			</if>
 			<if test="brand != null and category == null">
-				it.brand like #{brand}
+				it.BRAND like #{brand}
 			</if>
 			<if test="brand == null and category != null">
-				it.category like #{category}
+				it.CATEGORY like #{category}
 			</if>
 		</where>
 		ORDER BY it.calorie DESC
@@ -83,20 +83,20 @@
 		SELECT it.*,img.*
 		FROM
 			ITEM it
-			JOIN image img
-				on it.item_seq like img.item_seq
+			JOIN IAMGE img
+				on it.ITEM_SEQ like img.ITEM_SEQ
 			JOIN taste t
-				on it.item_seq like t.item_seq
+				on it.ITEM_SEQ like t.ITEM_SEQ
 		<where>
-			t.flag like 'star'
+			t.FLAG like 'star'
 			<if test="brand != null and category != null">
-				AND it.brand like #{brand} AND it.category like #{category}
+				AND it.BRAND like #{brand} AND it.CATEGORY like #{category}
 			</if>
 			<if test="brand != null and category == null">
-				AND it.brand like #{brand}
+				AND it.BRAND like #{brand}
 			</if>
 			<if test="brand == null and category != null">
-				AND it.category like #{category}
+				AND it.CATEGORY like #{category}
 			</if>
 		</where>
 		ORDER BY t.grade DESC
@@ -107,16 +107,16 @@
 			count(*) as starCount
 		FROM
 			ITEM it
-			JOIN image img
-				on it.item_seq like img.item_seq
-			JOIN taste t
-				on it.item_seq like t.item_seq	
-		WHERE it.item_seq LIKE #{itemSeq} AND t.flag LIKE 'star'
+			JOIN IMAGE img
+				on it.ITEM_SEQ like img.ITEM_SEQ
+			JOIN TASTE t
+				on it.ITEM_SEQ like t.ITEM_SEQ	
+		WHERE it.ITEM_SEQ LIKE #{itemSeq} AND t.FLAG LIKE 'star'
   	</select>
   	<select id="tag" resultMap="result">
   		select tg.TAG_FLAG,tg.TAG_NAME
-		from tag_item tgi
-			join tag tg
+		from TAG_ITEM tgi
+			join TAG tg
 			on tgi.TAG_SEQ like tg.TAG_SEQ
 		where tgi.ITEM_SEQ like #{itemSeq};
   	</select>

@@ -67,7 +67,7 @@
   	SELECT COUNT(*)
 	FROM ITEM 
 	WHERE ITEM_SEQ NOT IN (
-		SELECT item_seq
+		SELECT ITEM_SEQ
 		FROM TASTE 
 		WHERE FLAG LIKE 'STAR'
 			AND MEMBER_ID LIKE #{id}
@@ -75,16 +75,16 @@
   	</select>
   	<select id="evaluateList" resultMap="result">
   	SELECT * 
-  	FROM image m join (
+  	FROM IMAGE m join (
 		SELECT *, row_number() over() as NO
 		FROM ITEM 
 		WHERE ITEM_SEQ NOT IN (
-			SELECT item_seq
+			SELECT ITEM_SEQ
 			FROM TASTE 
 			WHERE FLAG LIKE 'STAR'
 				AND MEMBER_ID LIKE #{id}
 		)
-	) t on m.item_seq like t.item_seq
+	) T on m.ITEM_SEQ like T.ITEM_SEQ
 	WHERE NO between #{pagination.beginRow} and #{pagination.endRow};
   	</select>
 	<insert id="insertGrade">
@@ -120,13 +120,13 @@
 			(SELECT ROW_NUMBER() OVER(ORDER BY A.avg DESC) as no,A.*
 			FROM
 				(SELECT 
-			  		 it.*,im.img,ROUND(AVG(t.grade),2) AS avg
+			  		 it.*,im.IMG,ROUND(AVG(t.grade),2) AS avg
 				FROM ITEM it
-					JOIN IMAGE im ON it.item_seq like im.item_seq
-					JOIN TASTE t ON it.item_seq like t.item_seq
-				WHERE T.FLAG LIKE 'STAR'
+					JOIN IMAGE im ON it.ITEM_SEQ like im.ITEM_SEQ
+					JOIN TASTE t ON it.ITEM_SEQ like t.ITEM_SEQ
+				WHERE t.FLAG LIKE 'STAR'
 				GROUP BY 
-					it.item_seq) A) B
+					it.ITEM_SEQ) A) B
 		WHERE NO &lt;= 20
 		ORDER BY NO
   	</select>
@@ -136,37 +136,37 @@
 			(SELECT ROW_NUMBER() OVER(ORDER BY A.SUM DESC) as no,A.*
 			FROM
 				(SELECT 
-			  		 it.*,im.img,SUM(t.QUANTITY) AS SUM
+			  		 it.*,im.IMG,SUM(t.QUANTITY) AS SUM
 				FROM ITEM it
-					JOIN IMAGE im ON it.item_seq like im.item_seq
-					JOIN TASTE t ON it.item_seq like t.item_seq
-				WHERE T.FLAG LIKE 'BUY'
+					JOIN IMAGE im ON it.ITEM_SEQ like im.ITEM_SEQ
+					JOIN TASTE t ON it.ITEM_SEQ like t.ITEM_SEQ
+				WHERE t.FLAG LIKE 'BUY'
 				GROUP BY 
-					it.item_seq) A) B
+					it.ITEM_SEQ) A) B
 		WHERE NO &lt;= 20
 		ORDER BY NO
   	</select>
  	<select id="wishList" resultMap="result">
 	  	SELECT *
 		FROM
-			(SELECT ROW_NUMBER() OVER(ORDER BY A.COUNT DESC) as no, A.*
+			(SELECT ROW_NUMBER() OVER(ORDER BY A.COUNT DESC) as NO, A.*
 			FROM
 				(SELECT 
-			  		 it.*,im.img,COUNT(t.TASTE_SEQ) AS COUNT
+			  		 it.*,im.IMG,COUNT(t.TASTE_SEQ) AS COUNT
 				FROM ITEM it
-					JOIN IMAGE im ON it.item_seq like im.item_seq
-					JOIN TASTE t ON it.item_seq like t.item_seq
-				WHERE T.FLAG LIKE 'COL'
-					AND T.DIR_NAME LIKE 'WISH'
+					JOIN IMAGE im ON it.ITEM_SEQ like im.ITEM_SEQ
+					JOIN TASTE t ON it.ITEM_SEQ like t.ITEM_SEQ
+				WHERE t.FLAG LIKE 'COL'
+					AND t.DIR_NAME LIKE 'WISH'
 				GROUP BY 
-					it.item_seq) A) B
+					it.ITEM_SEQ) A) B
 		WHERE NO &lt;= 20
 		ORDER BY NO
   	</select>
  	<select id="listByGender" resultMap="result">
 	  	SELECT * 
 	  	FROM
-			(SELECT ROW_NUMBER() OVER(ORDER BY A.COUNT DESC) as no,A.*
+			(SELECT ROW_NUMBER() OVER(ORDER BY A.COUNT DESC) as NO,A.*
 			FROM
 				(SELECT
 					IT.ITEM_SEQ,
@@ -178,7 +178,7 @@
 					JOIN TASTE T ON IT.ITEM_SEQ LIKE T.ITEM_SEQ
 				WHERE T.FLAG LIKE 'COL'
 					AND T.DIR_NAME LIKE 'WISH'
-					AND t.MEMBER_ID IN (
+					AND T.MEMBER_ID IN (
 						SELECT MEMBER_ID 
 						FROM MEMBER
 						WHERE GENDER LIKE #{gender})
@@ -202,7 +202,7 @@
 					JOIN TASTE T ON IT.ITEM_SEQ LIKE T.ITEM_SEQ
 				WHERE T.FLAG LIKE 'COL'
 					AND T.DIR_NAME LIKE 'WISH'
-					AND t.MEMBER_ID IN (
+					AND T.MEMBER_ID IN (
 						SELECT MEMBER_ID 
 						FROM MEMBER
 						WHERE AGE BETWEEN #{start} AND #{end})

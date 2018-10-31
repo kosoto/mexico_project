@@ -92,15 +92,7 @@ junghoon.member = (()=>{
 					),
 					$('<input/>').addClass('form-control mb-4').attr({id:'memberId',type:'text',placeholder:'아이디',style:'width:100%;'}),
 					$('<input/>').addClass('form-control mb-4').attr({id:'password',type:'password',placeholder:'비밀번호',style:'width:100%;'}),
-					$('<div/>').addClass('d-flex justify-content-around').append(
-						/*$('<div/>').append(
-							$('<div/>').addClass('custom-control custom-checkbox').append(
-								$('<input/>').addClass('custom-control-input').attr({id:'loginRemember',type:'checkbox'}),
-								$('<label/>').addClass('custom-control-label').attr({'for':'defaultLoginFormRemember'}).text('아이디 저장')
-							)
-						),
-						$('<a/>').attr({href:'#'}).text('비밀번호 찾기')*/
-					),
+					$('<div/>').addClass('d-flex justify-content-around'),
 					$('<button/>').addClass('btn btn-warning btn-block my-4').attr({id:'login_submit_btn',type:'button'}).text('로그인'),
 					$('<p/>').text('계정이 없으신가요?').append(
 						$('<a/>').attr({id:'login_to_join',href:'#'}).text('회원가입')
@@ -115,16 +107,16 @@ junghoon.member = (()=>{
 			    	  Kakao.API.request({
 			    		  url:'/v2/user/me',
 			    		  success:res=>{
-			    			  console.log(res);
-			    			  console.log(res['kakao_account']['age_range']);
-			    			  console.log(res['kakao_account']['gender']);
 			    			  $.ajax({
 			    				  url:$.ctx()+'/mbr/kakao/retrieve',
 			    				  method:'post',
 			    				  contentType:'application/json',
 			    				  data:JSON.stringify(res),
 			    				  success:d=>{
-			    					  console.log('성공');
+			    					  console.log(d);
+			    					  $.cookie('member',d);
+			    					  console.log($.cookie('member'));
+			    					  bemeal.router.main();
 			    				  },
 			    				  error:(e1,e2,e3)=>{
 			    					  

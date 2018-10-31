@@ -11,15 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -89,35 +83,23 @@ public class MemberCtrl {
 	
 	@SuppressWarnings("unchecked")
 	@PostMapping("/kakao/retrieve")
-	public int retrieveKakao(@RequestBody HashMap<String, Object>mbr) {
-		logger.info("넘어온 카카오 회원정보 {}",mbr);
-		String id = ((int) mbr.get("id"))+"";
-		logger.info("id::{}",id);
-		HashMap<String,Object> prop = (HashMap<String, Object>) mbr.get("properties");
-		logger.info("prop::{}",prop);
-		HashMap<String,Object> account = (HashMap<String, Object>) mbr.get("kakao_account");
-		logger.info("account::{}",account);
-		
-		map.clear();
-		map.put("memberId", id);
-		map.put("password", "kakao");
-		
-		logger.info(account.get("age_range")+"");
-		account.get("age_range");
-		map.put("age", "");
-		logger.info(account.get("email")+"");
-		account.get("email");
-		map.put("gender", "gender");
-		logger.info(account.get("gender")+"");
-		account.get("email");
-		map.put("eMail", "");
-		
-		return 0;
-	}
-	@PostMapping("/kakao/add")
-	public String addKakao(@RequestBody HashMap<String, Object> mbr) {
-		logger.info("넘어온 카카오 회원정보 {}",mbr);
-		return "";
+	public Member retrieveKakao(@RequestBody HashMap<String, Object>mbr) {
+		Function<HashMap<String, Object>, Member>f=x->{
+			Member kakao = mbrMapper.getKakao(((int)x.get("id"))+"");
+			if(kakao==null) {
+				member.setMemberId(((int)x.get("id"))+"");
+				member.setPassword("kakao");
+				member.setName(((HashMap<String, Object>)x.get("properties")).get("nickname")+"");
+				HashMap<String, Object> account__ = (HashMap<String, Object>) x.get("kakao_account");
+				if((boolean) account__.get("has_age_range")) member.setAge(Integer.parseInt((account__.get("age_range")+"").substring(0,2)));
+				if((boolean) account__.get("has_email")) member.setEMail((account__).get("email")+"");
+				if((boolean) account__.get("has_gender")) member.setGender(((account__.get("gender")+"").equals("male"))?"남":"여");
+				kakao = member;
+				mbrMapper.post(member);
+			}
+			return kakao;
+		};
+		return f.apply(mbr);
 	}
 }
 

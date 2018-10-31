@@ -43,7 +43,12 @@
 		UPDATE MEMBER SET PASSWORD = #{password}, ADDRESS = #{address}, E_MAIL = #{eMail}, PHONE_NUM = #{phoneNum}
 			WHERE MEMBER_ID LIKE #{memberId}
 	</update>
-	
+	<select id="getKakao" resultType="com.bemeal.web.mbr.Member">
+	SELECT 
+		MEMBER_ID AS memberId,
+		NAME,AGE,GENDER,E_MAIL AS EMAIL 
+	FROM MEMBER WHERE MEMBER_ID LIKE #{id}
+	</select>
 	
 	
   </mapper>

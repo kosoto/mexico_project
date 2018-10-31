@@ -113,8 +113,8 @@ FROM (SELECT G.TAG_NAME AS "ingre", AVG(T.GRADE) AS "ingreAvg", COUNT(T.GRADE) A
      SELECT it.*,img.*
            FROM
                 ITEM it
-                JOIN image img
-                on it.item_seq like img.item_seq
+                JOIN IMAGE img
+                on it.ITEM_SEQ like img.ITEM_SEQ
            <choose>
             <when test="delList.size != 0">
                 WHERE ITEM_SEQ IN
