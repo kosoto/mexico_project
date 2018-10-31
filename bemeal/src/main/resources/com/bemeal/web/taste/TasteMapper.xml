@@ -126,8 +126,15 @@
      </select>
      <insert id="postPay" parameterType="java.util.Map">
      INSERT INTO PURCHASE(MEMBER_ID) VALUES (#{id})
-           <selectKey keyProperty="PURCHASESEQ" resultType="Integer" order="AFTER">
-                SELECT LAST_INSERT_ID() AS PURCHASESEQ
+           <selectKey keyProperty="purchaseSeq" resultType="Integer" order="AFTER">
+                SELECT LAST_INSERT_ID() AS "purchaseSeq"
+     </selectKey>
+     </insert>
+     <insert id="postGift" parameterType="java.util.Map">
+     INSERT INT PURCHASE(MEMBER_ID,TO_ID,MESSAGE) 
+     VALUES(#{id},#{toId},#{msg})
+           <selectKey keyProperty="purchaseSeq" resultType="Integer" order="AFTER">
+                SELECT LAST_INSERT_ID() AS "purchaseSeq"
      </selectKey>
      </insert>
       <insert id="postTastePay" >

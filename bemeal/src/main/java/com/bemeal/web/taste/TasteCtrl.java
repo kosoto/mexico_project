@@ -50,7 +50,7 @@ public class TasteCtrl {
 		int result = tstMapper.postTaste(tmap);
 		return result;
 	}
-	@GetMapping("/taste/list/{id}/{flag}")//페이지no.star날짜 end날짜
+	@GetMapping("/taste/list/{id}/{flag}")
 	public ArrayList<Map<String, Object>>listCart(@PathVariable String id,
 												@PathVariable String flag){
 		tmap.clear();
@@ -64,7 +64,7 @@ public class TasteCtrl {
 		case "buy":
 			tlist = tstMapper.listPayHis(tmap);
 			break;
-		case "gift": //보낸선물함
+		case "gift": 
 			break;
 		default: 	
 			break;
@@ -91,16 +91,17 @@ public class TasteCtrl {
     @Transactional
     @PostMapping("/pay/post") 
     public int postPay(@RequestBody Map<String, Object> p){
-          tmap.clear();
-          tstMapper.postPay(p);           
-          tmap.put("purchaseSeq", p.get("purchaseSeq").toString());
-               System.out.println("p :"+p);
+          tmap.clear();           
           if(tmap.get("toId")!=null) {//선물하기
          	  logger.info("toID :  {}",tmap.get("toId"));
          	 tmap.put("flag", "gift");
+         	 tstMapper.postGift(p);
            }else {//구매하기
+        	   tstMapper.postPay(p);     
         	   tmap.put("flag", "buy");
            };
+           tmap.put("purchaseSeq", p.get("purchaseSeq").toString());
+           System.out.println("p :"+p);
           tmap.putAll(p);
                System.out.println("tmap : "+tmap);
           int result = tstMapper.postTastePay(tmap);
@@ -138,13 +139,9 @@ public class TasteCtrl {
 		System.out.println("맵: "+tmap);
 		return tmap;
 	}
-    @PostMapping("/gift/post") //cart 등록
+    @PostMapping("/gift/post") //받은선물함
     public int postGift(@RequestBody Map<String, Object> p){
-          //logger.info("id {} itemSeq {} quantity {}",p);
           tmap.clear();
-          //paypost와 같어 {flag}로 나눈다. 당연히 등록되는 flag도 gift는 gift로
-          //gift일때는 선물이 하나더 추가임
-          //문제는 taste가 가져와야한다는거얌
           return 0;
     }
 
