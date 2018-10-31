@@ -95,12 +95,21 @@ public class TasteCtrl {
           tstMapper.postPay(p);           
           tmap.put("purchaseSeq", p.get("purchaseSeq").toString());
                System.out.println("p :"+p);
-          tmap.put("flag", "buy");
+          if(tmap.get("toId")!=null) {//선물하기
+         	  logger.info("toID :  {}",tmap.get("toId"));
+         	 tmap.put("flag", "gift");
+           }else {//구매하기
+        	   tmap.put("flag", "buy");
+           };
           tmap.putAll(p);
                System.out.println("tmap : "+tmap);
           int result = tstMapper.postTastePay(tmap);
-          //★장바구니 삭제 : delList가 와야함 
-          int resultDel = tstMapper.deleteCart(tmap);
+          //delList가 있으면 장바구니에서 삭제됨
+          if(tmap.get("delList")!=null) {
+        	  System.out.println("delList : "+tmap.get("delList"));
+        	  int resultDel = tstMapper.deleteCart(tmap);
+        	  System.out.println(resultDel);
+          }
           return result; 
     } 
     

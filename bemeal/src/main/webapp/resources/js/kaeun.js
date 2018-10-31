@@ -304,11 +304,12 @@ kaeun.payments = {
 			$('#gift_submit').click(e=>{
 				//chkId가 true일때만!
 				//★ 보내려는 사람 아이디랑,메세지도 함께 넣어야하는데... 잘못하면 payList쿼리가 깨진다?
-				console.log('payList: '+x);
+				console.log('payList: '+x.payList);
 				console.log('toId: '+$('#gift_toId').val());
 				console.log('msg: '+$('#gift_msg').val());
-				kaeun.tastes.payList({payList:x,toId:$('#gift_toId').val(),msg:$('#gift_msg').val()});
-				
+				console.log('delList: '+x.delList);
+				kaeun.tastes.payList({payList:x.payList,delList:x.delList,toId:$('#gift_toId').val(),msg:$('#gift_msg').val()});
+				$('.mfp-close').click();
 			});
 			return false;
 		},
@@ -370,7 +371,14 @@ kaeun.tastes = { //kaeun.tastes.cartList()
                        +'<div class="item_header">상품금액</div>'
                        +'<div class="item_header">총액</div>'
                        +'<id="cart_header_end" class="item_header">내역</div></div>');    
+            //x {payList:x.payList,delList:x.delList,toId:$('#gift_toId').val(),msg:$('#gift_msg').val()};
             let payList = [];
+            let delList = (x.delList!==null)? x.delList : null;
+            let toId = (x.toId!==null)? x.toId : null;
+            let msg = (x.msg!==null)? x.msg : null;
+            console.log(delList);
+            console.log('msg:' +msg);
+            console.log('toId: '+toId);
             $.each(x.payList,(i,j)=>{
                  payList.push({itemSeq:j.itemSeq,quantity:j.quantity});
                  ui.grid_list({
@@ -392,11 +400,16 @@ kaeun.tastes = { //kaeun.tastes.cartList()
                             type: 'POST',
                             contentType : 'application/json',
                        data : JSON.stringify({id : $.cookie('member')["memberId"],
-                                                 payList:payList
+                                                 payList:payList,
+                                                 delList:delList,
+                                                 toId:toId,
+                                                 msg:msg
                                                  }),
                        success : d=>{
                             if(d>0){
-                                  alert('결제완료');
+                                  $('#k_content').html("결제가 완료되었습니다");
+                                 //구매완료페이지 ★버튼 2개 달기 장바구니로 구매함으로! 
+                                  //kaeun.payments.cart();
                             }else{
                                   alert('삽입실패');
                             }
@@ -437,7 +450,7 @@ kaeun.tastes = { //kaeun.tastes.cartList()
                         explains:d[i].explains,
                         img:d[i].img}];
 					let delList = [d[i].tasteSeq];
-					kaeun.tastes.payList({payList:payList});
+					kaeun.tastes.payList({payList:payList,delList:delList});
 				});
 				$('<br/>').appendTo($('#cart_btns'+i));
 				ui.btn({id:'cart_gift_btn'+i,size:'mini',color:'red',txt:'선물하기'}).appendTo($('#cart_btns'+i))
@@ -449,7 +462,8 @@ kaeun.tastes = { //kaeun.tastes.cartList()
                         price:d[i].price,
                         explains:d[i].explains,
                         img:d[i].img}];
-					kaeun.payments.giftPopup(payList);
+					let delList = [d[i].tasteSeq];
+					kaeun.payments.giftPopup({payList:payList,delList:delList});
 				});
 				$('<br/>').appendTo($('#cart_btns'+i));
 				ui.btn({id:'cart_delete_btn'+i,size:'mini',color:'white',txt:'삭제하기'}).appendTo($('#cart_btns'+i))
@@ -476,6 +490,7 @@ kaeun.tastes = { //kaeun.tastes.cartList()
 				$('#cart_gift_submit').click(e=>{
 					alert("선택상품들을 선물하시겠습니까?");
 					let payList = []; 
+					let delList = [];
 					for(let i=0;i<$('input:checkbox[name="cartchk"]').length-1;i++){
 						if($('input:checkbox[id="cart_chk'+i+'"]').is(":checked")){
 							payList.push({itemSeq:d[i].itemSeq,
@@ -484,9 +499,10 @@ kaeun.tastes = { //kaeun.tastes.cartList()
                                  price:d[i].price,
                                 explains:d[i].explains,
                                  img:d[i].img});
+							delList.push(d[i].tasteSeq);
 						}
 					}
-					kaeun.payments.giftPopup(payList);
+					kaeun.payments.giftPopup({payList:payList,delList:delList});
 				})
 				/*이벤트들 모음*/
 				$('#cart_all_chk').change(function () {
@@ -518,7 +534,7 @@ kaeun.tastes = { //kaeun.tastes.cartList()
 							delList.push(d[i].tasteSeq);
 						}
 					}
-					kaeun.tastes.payList({payList:payList});
+					kaeun.tastes.payList({payList:payList,delList:delList});
 				})//cart_order_submit 끝
 		}) //getjson끝		
 		},
@@ -980,8 +996,8 @@ kaeun.tastes = { //kaeun.tastes.cartList()
         	$('#k_header').append('테스트');
         	$('#k_header').append('<button id="testBtn" type="button" class="btn btn-default">cartAdd</button>')
  			$('#testBtn').click(e=>{
- 				let itemSeq = 5;	  //x.itemSequ 
- 				let quantity = 2;	  //x.quantity
+ 				let itemSeq = Math.floor((Math.random() * 100) + 1);	  //x.itemSequ 
+ 				let quantity = Math.random()+1;	  //x.quantity
  				let flag = 'cart';
  				kaeun.payments.putTaste({itemSeq:itemSeq,quantity:quantity,flag:'cart'});
  			});
