@@ -119,7 +119,7 @@ yoonho.service=(x=>{
 					});
 				}
 			})
-		return $section;
+	
 	};
 	var loadedPage=x=>{
 		console.log('하아:'+x.length+'/'+x.page);
