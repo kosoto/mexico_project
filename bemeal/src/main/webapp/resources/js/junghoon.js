@@ -23,26 +23,16 @@ junghoon.member = (()=>{
 				})
 				$('#idck').click(e=>{
 					alert('중복클릭');
-					
 					let id = $('#memberId').val();
 					alert("$('#memberId').val() :: "+$('#memberId').val());
-					$.ajax({
-						url:$.ctx()+'/mbr/idck',
-						method:'POST',
-						data:JSON.stringify({memberId:$('#memberId').val()}),
-						contentType:'application/json',
+					if(id!='' && id!=null){
+						$.getJSON($.ctx()+'/mbr/idck/'+id,d=>{
+							alert("aaaaaaaaaaaaaaa");
+							console.log("d :: "+d);
+							alert((d=="0")?"중복된 아이디입니다":'사용할 수 있는 아이디입니다')
+						});
+					}else alert('아이디를 입력해주세요');
 					
-					success:d=>{
-						alert("aaaaaaaaaaaaaaa");
-						console.log("d :: "+d);
-					if(d=="0"){
-						alert("중복된 아이디입니다");
-					}else{
-						alert('사용할 수 있는 아이디입니다');
-					}
-					},
-					error:(x,y,z)=>{console.log('error :: '+z)}
-					})
 				})
 				$('#join_submit_btn').click(e=>{
 					//validation

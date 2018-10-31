@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,8 +30,8 @@ public class MemberCtrl {
 	@Autowired MemberMapper mbrMapper;
 	@Autowired HashMap<String, Object> map;
 	
-	@PostMapping("/idck")
-	public String idcheck(@RequestBody String mbr){
+	@GetMapping("/idck/{mbr}")
+	public String idcheck(@PathVariable String mbr){
 		Util.log.accept("idck() :: 넘어온 정보 :: "+mbr);
 		Function<String, String>f=x->{
 			Util.log.accept("mbrMapper.idcheck(x) :: "+mbrMapper.idcheck(x));
