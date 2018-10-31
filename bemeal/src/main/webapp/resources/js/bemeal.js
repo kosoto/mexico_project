@@ -273,7 +273,7 @@ bemeal.compo=(()=>{
 						)
 					);
 		let $ol = $('<ol/>').addClass('carousel-indicators').appendTo($div);
-		let navi_size = x.arr.length/row_size;
+		let navi_size = arr.length/row_size;
 		for(let i=0;i<navi_size;i++) $('<li/>').attr({'data-target':"#"+x.id,'data-slide-to':i}).addClass((i==0)?'active':'').appendTo($ol);
 		
 		let $inner = $('<div/>').addClass('carousel-inner').appendTo($div);
@@ -356,6 +356,7 @@ bemeal.evaluate=(()=>{
 		let gradeCnt = 0;
 		let itemCnt = 0;
 		let width = 0;
+		let page = 1;
 		let id = $.cookie('member').memberId;
 		let message = '';
 		$.getJSON($.ctx()+'/grade/count/'+id,d=>{
@@ -370,105 +371,117 @@ bemeal.evaluate=(()=>{
 				)
 			);
 			$('<div/>').appendTo($('#content')).attr({style:'height:85px'});
-			let page = 1;
 			loadPage({
 				id:id,
 				page:page++,
 			});
 			let $window = $(window);
+			let scrolling = true;
 			$window.on('scroll.category',e=>{
-				if($window.scrollTop()+$window.height()+5>$(document).height()){
-					loadPage({
-						id:id,
-						page:page++,
-					});
+				if(scrolling&&$window.scrollTop()+$window.height()+30>$(document).height()){
+					scrolling = false;
+					setTimeout(() => {
+						loadPage({
+							id:id,
+							page:page++,
+						});
+						scrolling = true;
+					}, 500);
+					
 				}
+				
 			});//scroll event end
 		});
 		
 	};
 	var loadPage=x=>{
 		let memberId = x.id;
-		$.getJSON($.ctx()+'/evaluate/'+memberId+'/'+x.page,d=>{//id와 page를 가지고 평가 하지 않은 제품들을 가져오기
-			$.getScript($.script()+'/yoonho.js',()=>{
-				if(d.pagination.existNext){ //다음 페이지가 존재할때만 
-					let arr = d.list;
-					let index = 0;
-					let $content =  $('#content');
-					for(let i=1;i<=5;i++){
-						let $gift_slid = $('<div/>').addClass('card-group');
-						$content.append(
-								$('<div>').addClass('col').append(
-										$('<div/>').addClass('card_row').append(
-												$gift_slid
-										)
-								)
-						);
-						for(let j=1;j<=4;j++,index++){
-							$('<div/>').addClass('card gift_c').appendTo($gift_slid).append(
-								$('<div/>').addClass('gift_img').append(
-									$('<img/>').addClass('img-fluid').attr({src:arr[index].img})
-								),
-								$('<div/>').addClass('gift_details').append(
-									$('<h2/>').addClass('evaluative_title text-shadow-white').text(arr[index].itemName),
-									$('<div/>').attr({'data-seq':arr[index].itemSeq}).starRating({ //https://github.com/nashio/star-rating-svg
-												initialRating: 0, //초기값  
-												starSize: 32,  //width속성값
-												emptyColor : 'white',
-												hoverColor : 'orange',
-												activeColor : 'orange',
-												ratedColor : 'orange',
-												useGradient : false,
-												strokeColor: 'orange',  //border color
-												callback : (currentRating, $el)=>{
-													let $gradeCnt = $('#gradeCnt');
-													let $gradeWidth = $('#gradeWidth');
-													let cnt = $gradeCnt.text()*1;
-													let itemCnt = $gradeWidth.data('itemcnt')*1;
-													if(currentRating!=0){
-														let seq = $el.data('seq');
-														$.ajax({
-															url : $.ctx()+'/grade/evaluate',
-															method : 'post',
-															contentType : 'application/json',
-															data : JSON.stringify({
-																memberId:memberId,
-																seq:seq,
-																currentRating:currentRating*2
-															}),
-															success : r=>{
-																if(r==='add'){
-																	$gradeCnt.html(cnt+1);
-																	$gradeWidth.attr({style:'width:'+((cnt+1)/itemCnt)*580+'px'});
-																}else if(r==='remove'){
-																	$el.starRating('setRating', 0);
-																	$gradeCnt.html(cnt-1);
-																	$gradeWidth.attr({style:'width:'+((cnt-1)/itemCnt)*580+'px'});
-																}
-															},
-															error : (e1,e2,e3)=>{
-																
-															}
-														});
-												   }
-												} //callback end
-												}), //star-rating end	
-									$('<div/>').addClass('gift_msg').append(
-											$('<p/>').text(arr[index].explains),
-											$('<a/>').addClass('evaluateToRetrieve').text('상세보기').attr({href:'#','data-seq':arr[index].itemSeq})
-											.click(e=>{
-												e.preventDefault();
-												yoonho.service.retrieve(e.currentTarget.dataset.seq);
-											})
+		console.log('x.page::'+x.page);
+		$.getJSON($.ctx()+'/evaluate/'+memberId+'/'+((x.page)+""),d=>{//id와 page를 가지고 평가 하지 않은 제품들을 가져오기
+			setTimeout(() => {
+				let arr = d.list;
+				$.getScript($.script()+'/yoonho.js',()=>{
+					if(d.pagination.existNext){ //다음 페이지가 존재할때만 
+						
+						let index = 0;
+						let $content =  $('#content');
+						for(let i=1;i<=5;i++){
+							let $gift_slid = $('<div/>').addClass('card-group');
+							$content.append(
+									$('<div>').addClass('col').append(
+											$('<div/>').addClass('card_row').append(
+													$gift_slid
+											)
 									)
-								)
-						  );
-						} //inner for loop end
-					} //for loop end
-				}else $(window).off('scroll.category');
-				
-			});
-			
+							);
+							for(let j=1;j<=4;j++,index++){
+								$('<div/>').addClass('card gift_c').appendTo($gift_slid).append(
+									$('<div/>').addClass('gift_img').append(
+										$('<img/>').addClass('img-fluid').attr({src:arr[index].img})
+									),
+									$('<div/>').addClass('gift_details').append(
+										$('<h2/>').addClass('evaluative_title text-shadow-white').text(arr[index].itemName),
+										$('<div/>').attr({'data-seq':arr[index].itemSeq}).starRating({ //https://github.com/nashio/star-rating-svg
+													initialRating: 0, //초기값  
+													starSize: 32,  //width속성값
+													emptyColor : 'white',
+													hoverColor : 'orange',
+													activeColor : 'orange',
+													ratedColor : 'orange',
+													useGradient : false,
+													strokeColor: 'orange',  //border color
+													callback : (currentRating, $el)=>{
+														let $gradeCnt = $('#gradeCnt');
+														let $gradeWidth = $('#gradeWidth');
+														let cnt = $gradeCnt.text()*1;
+														let itemCnt = $gradeWidth.data('itemcnt')*1;
+														if(currentRating!=0){
+															let seq = $el.data('seq');
+															$.ajax({
+																url : $.ctx()+'/grade/evaluate',
+																method : 'post',
+																contentType : 'application/json',
+																data : JSON.stringify({
+																	memberId:memberId,
+																	seq:seq,
+																	currentRating:currentRating*2
+																}),
+																success : r=>{
+																	if(r==='add'){
+																		$gradeCnt.html(cnt+1);
+																		$gradeWidth.attr({style:'width:'+((cnt+1)/itemCnt)*580+'px'});
+																	}else if(r==='remove'){
+																		$el.starRating('setRating', 0);
+																		$gradeCnt.html(cnt-1);
+																		$gradeWidth.attr({style:'width:'+((cnt-1)/itemCnt)*580+'px'});
+																	}
+																},
+																error : (e1,e2,e3)=>{
+																	
+																}
+															});
+													   }
+													} //callback end
+													}), //star-rating end	
+										$('<div/>').addClass('gift_msg').append(
+												$('<p/>').text(arr[index].explains),
+												$('<a/>').addClass('evaluateToRetrieve').text('상세보기').attr({href:'#','data-seq':arr[index].itemSeq})
+												.click(e=>{
+													e.preventDefault();
+													yoonho.service.retrieve(e.currentTarget.dataset.seq);
+												})
+										)
+									)
+							  );
+							} //inner for loop end
+						} //for loop end
+					}else $(window).off('scroll.category');
+					
+				});
+			}, 1000);
+		}).fail((e1,e2)=>{
+			console.log(e1);
+			console.log(e2);
 		}); /* getJSON end*/
 	};
 	return {
