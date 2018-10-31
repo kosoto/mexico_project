@@ -16,4 +16,5 @@ public interface MemberMapper {
 	public int modify(Map<String, Object> r);
 	public int delete(Member p);
 	public Member getKakao(String id);
+	public String idcheck(String mbr);
 }
