@@ -5750,7 +5750,7 @@ INSERT INTO `MEMBER` (`MEMBER_ID`, `PASSWORD`, `NAME`, `AGE`, `SSN`, `GENDER`, `
 	(4312, 'trpbhue'),
 	(4324, 'wybow7m7');
 	
-	INSERT INTO `PURCHASE` (`PURCHASE_SEQ`,`MEMBER_ID`,`TO_ID`, `MASSAGE`) VALUES
+	INSERT INTO `PURCHASE` (`PURCHASE_SEQ`,`TO_ID`,`MEMBER_ID`, `MASSAGE`) VALUES
 	(4345, 'rm2to2yf','test1',   '국무회의는 정부의 권한에 속하는 중요한 정책을 심의한다. 헌법재판소는 법관의 자격을 가진 9인의 재판관으로 구성하며, 재판관은 대통령이 임명한다.'),
 	(4346, '64aha9e','test1',   '대법원장과 대법관이 아닌 법관의 임기는 10년으로 하며, 법률이 정하는 바에 의하여 연임할 수 있다.'),
 	(4347, 'gimoc1z4','test1',   '이 헌법공포 당시의 국회의원의 임기는 제1항에 의한 국회의 최초의 집회일 전일까지로 한다.'),

@@ -202,7 +202,7 @@ bemeal.compo=(()=>{
 								})
 							)
 						),
-						$('<form/>').addClass('form-inline').append(												// keydown은 키 입력하자마자, e.keyCode === 13 은 입력값이 enter이면 무시하기 위함
+						$('<form/>').addClass('form-inline').attr({id:'serchForm'}).append(												// keydown은 키 입력하자마자, e.keyCode === 13 은 입력값이 enter이면 무시하기 위함
 							$('<input/>').addClass('form-control mr-sm-2').attr({type:'text','aria-label':'Search',placeholder:'Search'}).keydown(e=>{if(e.keyCode === 13)e.preventDefault();}).keyup(e=>{
 								//검색하기
 								let searchWord = e.currentTarget.value; //현재 e.currentTarget은 현재 이벤트를 호출한 input태그 
@@ -219,11 +219,18 @@ bemeal.compo=(()=>{
 								}
 								
 							}),
-							$('<button/>').addClass('btn btn-outline-white btn-sm my-0').attr({style:'color:black!important',type:'button',id:'testSearch'}).text('tag').click(e=>{
+							$('<button/>').addClass('btn btn-outline-white btn-sm my-0').attr({'data-flag':'true',style:'color:black!important',type:'button',id:'testSearch'}).text('tag').click(e=>{
 								e.preventDefault();
 								$.getScript($.script()+"/junghoon.js",()=>{
-									$(window).off('scroll.category',"width=260, height=540");
-									junghoon.service.search();
+									$(window).off('scroll.category');
+									//junghoon.service.search();
+									if(e.currentTarget.dataset.flag=='true'){
+										e.currentTarget.dataset.flag = 'false';
+										bemeal.search.tagSearch();
+									}else{
+										e.currentTarget.dataset.flag = 'true';
+										$('#tagBox').remove();
+									}
 								})
 							})
 						),
@@ -396,13 +403,11 @@ bemeal.evaluate=(()=>{
 	};
 	var loadPage=x=>{
 		let memberId = x.id;
-		console.log('x.page::'+x.page);
 		$.getJSON($.ctx()+'/evaluate/'+memberId+'/'+((x.page)+""),d=>{//id와 page를 가지고 평가 하지 않은 제품들을 가져오기
 			setTimeout(() => {
 				let arr = d.list;
 				$.getScript($.script()+'/yoonho.js',()=>{
 					if(d.pagination.existNext){ //다음 페이지가 존재할때만 
-						
 						let index = 0;
 						let $content =  $('#content');
 						for(let i=1;i<=5;i++){
@@ -548,5 +553,75 @@ bemeal.search=(()=>{
 			}
 		}
 	};
-	return {list:list};
+	var tagSearch = x=>{
+		'<div style="margin:10px;font-size:12px" class="badge badge-danger">맛#느끼</div>'
+		'<div style="margin:10px;font-size:12px" class="badge badge-info">감성#빨간</div>'
+		'<div style="margin:10px;font-size:12px" class="badge badge-success">재료#오징어</div>'
+		$('<div/>').attr({id:'tagBox','data-toggle':'buttons'}).insertAfter($('#testSearch')).append(
+			$('<div/>').addClass('btn-group btn-group-toggle d-flex flex-column flex-md-row').append(// 재료:19개
+				$('<label/>').addClass('btn btn-success tagBoxItem').attr({}).append(
+					$('<span/>').text('닭'),
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'1',autocomplete:'off'})
+				),
+				$('<label/>').addClass('btn btn-success tagBoxItem').attr({}).append(
+					$('<span/>').text('오리'),
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'2',autocomplete:'off'})
+				),
+				$('<label/>').addClass('btn btn-success tagBoxItem').attr({}).text('오징어').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'3',autocomplete:'off'})
+				),
+				$('<label/>').addClass('btn btn-success tagBoxItem').attr({}).text('소고기').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'4',autocomplete:'off'})
+				),
+				$('<label/>').addClass('btn btn-success tagBoxItem').attr({}).text('버섯').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'5',autocomplete:'off'})
+				),
+				$('<label/>').addClass('btn btn-success tagBoxItem').attr({}).text('김치').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'6',autocomplete:'off'})
+				),
+				$('<div/>').addClass('btn btn-success tagBoxItem').attr({}).text('계란').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'7',autocomplete:'off'})
+				),
+				$('<div/>').addClass('btn btn-success tagBoxItem').attr({}).text('더덕').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'8',autocomplete:'off'})
+				),
+				$('<div/>').addClass('badge badge-success tagBoxItem').attr({}).text('새우').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'9',autocomplete:'off'})
+				),
+				$('<div/>').addClass('badge badge-success tagBoxItem').attr({}).text('고등어').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'10',autocomplete:'off'})
+				),
+				$('<div/>').addClass('badge badge-success tagBoxItem').attr({}).text('갈치').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'11',autocomplete:'off'})
+				),
+				$('<div/>').addClass('badge badge-success tagBoxItem').attr({}).text('문어').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'12',autocomplete:'off'})
+				),
+				$('<div/>').addClass('badge badge-success tagBoxItem').attr({}).text('장어').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'13',autocomplete:'off'})
+				),
+				$('<div/>').addClass('badge badge-success tagBoxItem').attr({}).text('감자').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'14',autocomplete:'off'})
+				),
+				$('<div/>').addClass('badge badge-success tagBoxItem').attr({}).text('고구마').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'15',autocomplete:'off'})
+				),
+				$('<div/>').addClass('badge badge-success tagBoxItem').attr({}).text('어묵').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'16',autocomplete:'off'})
+				),
+				$('<div/>').addClass('badge badge-success tagBoxItem').attr({}).text('소시지').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'17',autocomplete:'off'})
+				),
+				$('<div/>').addClass('badge badge-success tagBoxItem').attr({}).text('돼지').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'18',autocomplete:'off'})
+				),
+				$('<div/>').addClass('badge badge-success tagBoxItem').attr({}).text('치즈').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'19',autocomplete:'off'})
+				)
+			)
+		)
+		
+		;
+	};
+	return {list:list,tagSearch:tagSearch};
 })();

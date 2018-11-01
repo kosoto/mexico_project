@@ -34,23 +34,21 @@ public class SearchCtrl {
 	public List<HashMap<String,Object>> tagSearch(
 			@RequestBody HashMap<String,Object> tagArr){
 		Util.log.accept("tag Search controller");
-		HashMap<String, Object> r = new HashMap<>();
+		map.clear();
 		Util.log.accept("item seq 값 ::"+tagArr.get("JtagArr"));
 		Util.log.accept("value Range 값 ::"+tagArr.get("valueRange"));
 		logger.info("넘어온 배열 {}",tagArr.toString());
-		@SuppressWarnings("unchecked")
 		List<HashMap<String,Object>> t = (List<HashMap<String, Object>>) tagArr.get("JtagArr"); 
 		Util.log.accept(t.toString());
-		r.put("tag", (List) tagArr.get("JtagArr"));
-		Util.log.accept(r.toString());
-		r.put("value", String.valueOf(tagArr.get("ValueRange")));
-		/*Function<HashMap<String,Object>, List<HashMap<String, Object>>>f=x->searchMapper.tagSearch(x);
-		
-	HashMap<String,String> tt = new HashMap<>();
-		tt = (HashMap<String, String>) f.apply(r);
-		Util.log.accept("tt.get(\"tagArr\").toString() :: "+tt.get("tagArr").toString());*/
-		/*Util.log.accept((String) tt.get("value"));*/
-		return null;
+		map.put("tagArr", (List<HashMap<String,Object>>) tagArr.get("JtagArr"));
+		Util.log.accept(map.toString());
+		map.put("value", String.valueOf(tagArr.get("ValueRange")));
+		map.put("count", ((List<HashMap<String,Object>>) tagArr.get("JtagArr")).size());
+		Function<HashMap<String,Object>,List<HashMap<String,Object>>>f=x->{
+			return searchMapper.tagSearch(x);
+		};
+		logger.info(map.toString());
+		return f.apply(map);
 		
 		
 	}
