@@ -99,16 +99,11 @@ yoonho.service=(x=>{
 			page:page++,
 			arr:x
 		})
-		loadedPage({
-			length:length,
-			page:page++,
-			arr:x
-		})
 			$window.on('scroll.category',()=>{
 				if($window.scrollTop()+$window.height()+10>$document.height()){
 					loadedPage({
 						length:length,
-						page:page++,
+						page:page++,//++
 						arr:x
 					});
 				}
@@ -127,32 +122,37 @@ yoonho.service=(x=>{
 			$section = $('<section align="left"/>').addClass('text-center my-5').appendTo($('#yh_container'))//.attr({style:'font-family: \'Sunflower\', sans-serif;'})
 			$div_row = $('<div/>').addClass('row').appendTo($section)
 			if(d.pagi.existNext){
-				for(var j = 1;j<=6;j++){
-					$div_col = $('<div/>').addClass('col-lg-2 col-md-2 mb-lg-0 mb-2').appendTo($div_row).attr({style:'max-width:90%;max-height:100%;text-align:center'})
-					$div_card = $('<div/>').addClass('card collection-card z-depth-1-half').appendTo($div_col)
-					$div_view_zoom = $('<div/>').addClass('view zoom').appendTo($div_card)
-										.append($('<img/>').addClass('img-fluid').attr({src:x.arr[index].img})
-											.click(e=>{
-												yoonho.service.retrieve(x.arr[index].itemSeq);
-											})
-										)
-					$div_a_p = $('<div/>').addClass('stripe dark').appendTo($div_card)
-									.append($('<a/>').append($('<p/>').html(x.arr[index].itemName).append($('<i/>').addClass('fa fa-angle-right').html(x.arr[index].price+' 원'))))
-									index++;
-					console.log('index:'+index)
+					for(var j = 1;j<=6;j++){
+						$div_col = $('<div/>').addClass('col-lg-2 col-md-2 mb-lg-0 mb-2').appendTo($div_row).attr({style:'max-width:100%;max-height:100%;text-align:center'})
+						for(var k = 0;k<2;k++,index++){
+							$div_card = $('<div/>').addClass('card collection-card z-depth-1-half').appendTo($div_col)
+							$div_view_zoom = $('<div/>').addClass('view zoom').appendTo($div_card)
+												.append($('<img/>').addClass('img-fluid').attr({id:'item_click_'+x.arr[index].itemSeq,src:x.arr[index].img})
+													.click(e=>{
+														console.log(x.arr[index].itemSeq+'/'+x.arr[index].itemName+'/'+j)
+														yoonho.service.retrieve(x.arr[index].itemSeq);
+													})
+												)
+							$div_a_p = $('<div/>').addClass('stripe dark').appendTo($div_card)
+											.append($('<a/>').append($('<p/>').html(x.arr[index].itemName).append($('<i/>').addClass('fa fa-angle-right').html(x.arr[index].price+' 원'))))
+							console.log('x.arr[index].itemName::'+x.arr[index].itemName)
+							console.log('index:'+index)
+						}
 				}
 			}else{
 				$('<div/>').html('마지막 페이지입니다').appendTo($div_row)
 				$(window).off('scroll.category');
 			}
+			
 			console.log(d.pagi);
 		})
 		//return $div_col;
 	};
 
 	var retrieve = x=>{
+		alert('x::'+x)
 		$.getJSON($.ctx()+'/item/retrieve/'+x,d=>{
-			console.log('d.retrieve[0]::'+d.retrieve[0]+'//d.rtag[0]::'+d.rtag[0].TAG_NAME)
+			console.log('d.retrieve[0]::'+d.retrieve[0].itemSeq+'//d.rtag[0]::'+d.rtag[0].TAG_NAME)
 			$.magnificPopup.open({
 				closeBtnInside:true,
 				closeOnContentClick:false,
@@ -191,9 +191,8 @@ yoonho.service=(x=>{
 		let $div5 = $('<div/>').addClass('col-lg-8 text-center').attr({style:'margin-top: -300px;'})
 		.append($('<button/>').html('장바구니').addClass('btn btn-outline-warning').attr({style:'font-size:16px;', 'data-toggle':'collapse' , 'href':'#det_cart_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_cart_btn'}))
 		.append($('<button/>').html('결제하기').addClass('btn btn-outline-warning').attr({style:'font-size:16px;', 'data-toggle':'collapse' , 'href':'#det_pay_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_pay_btn'}))
-		.append($('<button/>').html('선물하기').addClass('btn btn-outline-warning').attr({style:'font-size:16px;', 'data-toggle':'tooltip', 'data-placement':'top', 'title':'구현되지 않은 기능입니다..'}))
-				//.attr({style:'font-size:16px;', 'data-toggle':'collapse' , 'href':'#det_gift_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_gift_btn'}))
-		.append($('<button/>').html('추천 도시락').addClass('btn btn-outline-warning').attr({style:'font-size:16px;', 'data-toggle':'collapse' , 'href':'#det_recom_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_recom_btn'}))
+		.append($('<button/>').html('선물하기').addClass('btn btn-warning').attr({style:'font-size:16px;', 'data-toggle':'collapse' , 'href':'#det_gift_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_gift_btn'}))
+		.append($('<button/>').html('추천 도시락').addClass('btn btn-warning').attr({style:'font-size:16px;', 'data-toggle':'collapse' , 'href':'#det_recom_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_recom_btn'}))
 		.appendTo($div4)
 		
 		
@@ -203,7 +202,7 @@ yoonho.service=(x=>{
 							.append(
 								$('<div/>').addClass('collapse').attr({id:'det_cart_btn'})
 								.append(
-									$('<div/>').addClass('card card-body').attr({id:'cart_card_body'})
+									$('<div/>').addClass('card card-body')
 									.append(
 										yoonho.contain.cart({rtrv:rtrv})//.appendTo($('#cart_card_body'))
 									)
@@ -239,7 +238,7 @@ yoonho.service=(x=>{
 							.append(
 								$('<div/>').addClass('collapse').attr({id:'det_pay_btn'})
 								.append(
-									$('<div/>').addClass('card card-body').attr({id:'cart_pay_body'})
+									$('<div/>').addClass('card card-body')
 									.append(
 										yoonho.contain.pay({rtrv:rtrv})//.appendTo($('#cart_card_body'))
 									)
@@ -258,9 +257,45 @@ yoonho.service=(x=>{
 											console.log('rtrv:'+x.retrieve[0]['quantity']+'/'+x.retrieve[0].quantity)
 											$.magnificPopup.close();//팝업창 끄는 효과 //우리는 멀티팝업 띄워야 함.
 											$.getScript($.script()+'/kaeun.js',()=>{
-												alert('보내주는 JSON 키값1 : x[0].quantity, 키값2 : x[0].itemSeq')
+												alert('보내주는 JSON 키값 : x[0].quantity,imgSeq,' )
 												alert('kaeun.payments.cart(파라미터가 비어있음..)')
-												kaeun.main.init();
+												kaeun.main.init();//x.retrieve 중괄호 안붙이고 보내야 받는 kaeun.js 에서 [] 쓰게 된다.;
+												//kaeun.payments.cart();//아님 kaeun.??.test에 해뒀다 하니 완성되고 띄워줄것//{quantity:rtrv.quantity,itemSeq:rtrv.itemSeq,flag:'cart'}
+											})
+										}
+									})
+								)
+							)
+						).appendTo($div5)
+						
+		var $col_gift = $('<div/>').addClass('row')
+						.append(
+							$('<div/>').addClass('col')
+							.append(
+								$('<div/>').addClass('collapse').attr({id:'det_gift_btn'})
+								.append(
+									$('<div/>').addClass('card card-body')
+									.append(
+										yoonho.contain.gift({rtrv:rtrv})
+									)
+								)
+								.append(
+									$('<button/>').html('선물하기').addClass('btn btn-outline-warning').attr({style:'font-size:16px;',type:'submit'})
+									.click(e=>{
+										var $item_gift_iptbx = $('#item_gift_iptbx').val()
+										if($.cookie('member')==null){
+											alert('로그인하세요.')
+										}else if($.cookie('member')!=null){
+											//rtrv.imgSeq,rtrv.itemName,rtrv.img,rtrv.price,rtrv.calorie,rtrv.category,rtrv.explains,rtrv.brand,rtrv.itemSeq
+											console.log('getJSON : /item/retrieve/'+rtrv.itemSeq)
+											console.log('$(\'#item_iptbx\').val() : '+$item_gift_iptbx)
+											rtrv['quantity']=$item_gift_iptbx
+											console.log('rtrv:'+x.retrieve[0]['quantity']+'/'+x.retrieve[0].quantity)
+											$.magnificPopup.close();//팝업창 끄는 효과 //우리는 멀티팝업 띄워야 함.
+											$.getScript($.script()+'/kaeun.js',()=>{
+												alert('보내주는 JSON 키값 : x[0].quantity,imgSeq,' )
+												alert('kaeun.giftments.cart(파라미터가 비어있음..)')
+												kaeun.main.init();//x.retrieve 중괄호 안붙이고 보내야 받는 kaeun.js 에서 [] 쓰게 된다.;
 												//kaeun.payments.cart();//아님 kaeun.??.test에 해뒀다 하니 완성되고 띄워줄것//{quantity:rtrv.quantity,itemSeq:rtrv.itemSeq,flag:'cart'}
 											})
 										}
@@ -341,11 +376,7 @@ yoonho.service=(x=>{
 				initialRating: 0, //초기값  
 				starSize: 20,  //width속성값
 				minRating : 0.5,
-<<<<<<< HEAD
-				emptyColor : '#eee',
-=======
 				emptyColor : 'grey',
->>>>>>> test
 				hoverColor : 'orange',
 				activeColor : 'orange',
 				ratedColor : 'orange',
@@ -477,18 +508,14 @@ yoonho.contain=(x=>{
 						.append($('<th/>').append($('<i/>').addClass('fa ').attr({'aria-hidden':'true',id:'input_res_bx',style:'font-weight: bold;font-size:20px;'}) ))
 					)
 				)
-					/*		    $('#item_iptbx').on('change', ()=> {
-							    	$('#input_res_bx').html( ($('#item_iptbx').val()*1) * (x.rtrv.price*1) +' 원')
-							    }); */
-
 		return $cart;
 	};
-	var pay=x=>{
+	var gift=x=>{
 		alert('들어와라')
-		let $pay;
-		$pay=$('<table/>').addClass('table')
+		let $gift;
+		$gift=$('<table/>').addClass('table')
 				.append(
-					$('<thead/>').attr({id:'pay_thead'})
+					$('<thead/>').attr({id:'gift_thead'})
 					.append(
 						$('<tr/>')
 						.append($('<th/>').append($('<i/>').addClass('fa fa-edit mr-2 ').attr({'aria-hidden':'true',style:'font-weight: bold;'}).html('제에품이름') ))//deep-purple-text
@@ -506,7 +533,45 @@ yoonho.contain=(x=>{
 						.append($('<th/>').append($('<i/>').addClass('fa grey-text').attr({'aria-hidden':'true'}).html(x.rtrv.price) ))
 						.append($('<th/>').append($('<i/>').addClass('fa grey-text').attr({'aria-hidden':'true'}).html(x.rtrv.category) ))
 						.append($('<th/>').append($('<i/>').addClass('fa grey-text').attr({'aria-hidden':'true'}).html(x.rtrv.brand) ))
-						.append($('<th/>').append($('<input type="number" value="1" aria-label="Search" class="form-control" style="width: 70px">').attr({id:'item_pay_iptbx'})
+						.append($('<th/>').append($('<input type="number" value="1" aria-label="Search" class="form-control" style="width: 70px">').attr({id:'item_gift_iptbx'})
+								.on('change', ()=> {
+							    	$('#input_gift_res_bx').html( ($('#item_gift_iptbx').val()*1) * (x.rtrv.price*1) +' 원')
+							    })))
+					)
+					.append(
+						$('<tr/>')
+						.append($('<th/>').append($('<i/>').addClass('fa grey-text').attr({'aria-hidden':'true'}) ))
+						.append($('<th/>').append($('<i/>').addClass('fa grey-text').attr({'aria-hidden':'true'}) ))
+						.append($('<th/>').append($('<i/>').addClass('fa grey-text').attr({'aria-hidden':'true'}) ))
+						.append($('<th/>').append($('<i/>').addClass('fa grey-text').attr({'aria-hidden':'true',style:'font-weight: bold;font-size:24px;'}).html('총 금액') ))
+						.append($('<th/>').append($('<i/>').addClass('fa ').attr({'aria-hidden':'true',id:'input_gift_res_bx',style:'font-weight: bold;font-size:20px;'}) ))
+					)
+				)
+		return $gift;
+	};
+	var pay=x=>{
+		let $pay;
+		$pay=$('<table/>').addClass('table')
+				.append(
+					$('<thead/>').attr({id:'pay_thead'})
+					.append(
+						$('<tr/>')
+						.append($('<th/>').append($('<i/>').addClass('fa fa-edit mr-2 ').attr({'aria-hidden':'true',style:'font-weight: bold;'}).html('제품 이름') ))//deep-purple-text
+						.append($('<th/>').append($('<i/>').addClass('fa fa-table mr-2  ').attr({'aria-hidden':'true',style:'font-weight: bold;'}).html('금액') ))//blue-text
+						.append($('<th/>').append($('<i/>').addClass('fa fa-diamond mr-2').attr({'aria-hidden':'true',style:'font-weight: bold;'}).html('도시락 종류') ))//teal-text
+						.append($('<th/>').append($('<i/>').addClass('fa fa-house mr-2').attr({'aria-hidden':'true',style:'font-weight: bold;'}).html('도시락 업체') ))// green-text
+						.append($('<th/>').append($('<i/>').addClass('fa fa-download mr-2').attr({'aria-hidden':'true',style:'font-weight: bold;'}).html('제품 수량') ))// indigo-text
+					)
+				)
+				.append(
+					$('<tbody/>')
+					.append(
+						$('<tr/>')
+						.append($('<th/>').append($('<i/>').addClass('fa grey-text').attr({'aria-hidden':'true'}).html(x.rtrv.itemName) ))
+						.append($('<th/>').append($('<i/>').addClass('fa grey-text').attr({'aria-hidden':'true'}).html(x.rtrv.price) ))
+						.append($('<th/>').append($('<i/>').addClass('fa grey-text').attr({'aria-hidden':'true'}).html(x.rtrv.category) ))
+						.append($('<th/>').append($('<i/>').addClass('fa grey-text').attr({'aria-hidden':'true'}).html(x.rtrv.brand) ))
+						.append($('<th/>').append($('<input type="number" value="1" aria-label="Search" class="form-control" style="width: 70px">').attr({id:'input_pay_res_bx'})
 								.on('change', ()=> {
 							    	$('#input_pay_res_bx').html( ($('#item_pay_iptbx').val()*1) * (x.rtrv.price*1) +' 원')
 							    })))
@@ -517,13 +582,9 @@ yoonho.contain=(x=>{
 						.append($('<th/>').append($('<i/>').addClass('fa grey-text').attr({'aria-hidden':'true'}) ))
 						.append($('<th/>').append($('<i/>').addClass('fa grey-text').attr({'aria-hidden':'true'}) ))
 						.append($('<th/>').append($('<i/>').addClass('fa grey-text').attr({'aria-hidden':'true',style:'font-weight: bold;font-size:24px;'}).html('총 금액') ))
-						.append($('<th/>').append($('<i/>').addClass('fa ').attr({'aria-hidden':'true',id:'input_pay_res_bx',style:'font-weight: bold;font-size:20px;'}) ))
+						.append($('<th/>').append($('<i/>').addClass('fa ').attr({'aria-hidden':'true',id:'input_res_bx',style:'font-weight: bold;font-size:20px;'}) ))
 					)
 				)
-					/*		    $('#item_iptbx').on('change', ()=> {
-							    	$('#input_res_bx').html( ($('#item_iptbx').val()*1) * (x.rtrv.price*1) +' 원')
-							    }); */
-
 		return $pay;
 	};
 	var recommend =x=>{
@@ -650,6 +711,7 @@ yoonho.contain=(x=>{
 										success:d=>{
 											alert('d.write'+[d.write.length-1]+'.articleSeq:'+d.write[d.write.length-1].articleSeq)
 											yoonho.contain.commentList(d.write[d.write.length-1]).attr({id:'modify_btn_'+d.write[d.write.length-1].articleSeq}).appendTo($('#section6_2'))
+											$('#item_r_comment').val('')
 										},
 										error:(m1,m2,m3)=>{
 											alert('게시글등록 실패'+m3)
@@ -658,6 +720,7 @@ yoonho.contain=(x=>{
 								}else if($.cookie("member")==null){
 									alert('로그인하세요')
 								}
+								
 							})
 						)
 					)
@@ -678,7 +741,7 @@ yoonho.contain=(x=>{
 							$('<a/>').addClass('font-weight-bold mt-0').attr({style:'font-size:18px;color:#007bff;'}).html(x.memberId).click(e=>{alert('회원retrieve')})//정훈정훈한테 물어보고 memberRetrieve 없으면 h4태그로 바꿀것
 					)
 					.append(
-						 	$('<h6/>').html(x.content+'/작성시간:'+x.ARTICLE_TIME)
+						 	$('<h6/>').html(x.content+'/작성시간:'+x.ARTICLE_TIME+'/작성날짜:'+x.date)
 					)
 				)
 			}else if($.cookie("member")!=null){
@@ -696,10 +759,23 @@ yoonho.contain=(x=>{
 								).appendTo($list)
 				if($.cookie("member").memberId==x.memberId){
 					let $a_update=$('<a role="button"/>').addClass('btn btn-outline-warning btn-sm').attr({id:'update_btn_'+x.articleSeq,style:'margin:10px;font-size:14px','data-toggle':'modal','data-target':'#modalModifyForm'}).html('수정').click(e=>{
-							yoonho.contain.commentUpdat(x).addClass('opacity .15s linear').attr({transition:'opacity .15s linear'}).appendTo($in_list)//$('#modify_btn_'+x.articleSeq)
+							if($('#remove_div')==null || $('#updat_div')==null){
+								yoonho.contain.commentUpdat(x).addClass('opacity .15s linear').attr({transition:'opacity .15s linear'}).appendTo($in_list)//$('#modify_btn_'+x.articleSeq)	
+							}else if($('#remove_div')!=null || $('#updat_div')!=null){
+								$('#remove_div').remove();
+								$('#updat_div').remove();
+								yoonho.contain.commentUpdat(x).addClass('opacity .15s linear').attr({transition:'opacity .15s linear'}).appendTo($in_list)//$('#modify_btn_'+x.articleSeq)	
+							}
+							
 					}).appendTo($in_list)
 					let $a_delete=$('<a role="button"/>').addClass('btn btn-outline-warning btn-sm').attr({id:'delete_btn_'+x.articleSeq,style:'margin:10px;font-size:14px','data-toggle':'modal','data-target':'#modalDeleteForm'}).html('삭제').click(e=>{
-							yoonho.contain.commentDel(x).appendTo($in_list);
+							if($('#remove_div')==null || $('#updat_div')==null){
+								yoonho.contain.commentDel(x).appendTo($in_list);
+							}else if($('#remove_div')!=null || $('#updat_div')!=null){
+								$('#remove_div').remove();
+								$('#updat_div').remove();
+								yoonho.contain.commentDel(x).appendTo($in_list);
+							}
 					}).appendTo($in_list)
 				}
 			}
@@ -707,6 +783,7 @@ yoonho.contain=(x=>{
 	}
 
 	var commentUpdat =x=>{
+
 		return $('<div/>').attr({id:'updat_div'})
 		.append(
 				$('<section/>').addClass('my-5')
@@ -754,7 +831,7 @@ yoonho.contain=(x=>{
 			);
 	}
 	var commentDel =x=>{//date,img,ARTICLE_TIME,title,articleSeq,itemSeq,content,url,memberId
-		return 	$('<div/>')
+		return 	$('<div/>').attr({id:'remove_div'})
 					.append(
 						$('<div/>').addClass('mb-1')
 						.append(
@@ -808,6 +885,7 @@ yoonho.contain=(x=>{
 	return {modal:modal,
 			cart:cart,
 			pay:pay,
+			gift:gift,
 			recommend:recommend,
 			commentWrite:commentWrite,
 			commentList:commentList,
