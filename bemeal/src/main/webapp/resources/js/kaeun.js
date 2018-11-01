@@ -9,16 +9,16 @@ kaeun.main=(()=>{
            setContentView();
            //navi btn 
      		$('#cart_btn').click(e=>{
-     			kaeun.payments.cart();
+     			kaeun.ui.cart();
      		});
      		$('#payHis_btn').click(e=>{	
      			kaeun.payments.payHis();
      		});
      		$('#gift_btn').click(e=>{	
-     			kaeun.payments.gift();
+     			kaeun.ui.gift();
      		});
      		$('#analysis_btn').click(e=>{	
-     			kaeun.tastes.analysis();
+     			kaeun.tastes.chart();
      		});
      		$('#collect_btn').click(e=>{	
      			kaeun.tastes.collect();
@@ -32,131 +32,133 @@ kaeun.main=(()=>{
 
      };
      var setContentView =()=>{ 
-    	 kaeun.lot.set();
+    	 kaeun.ui.setLayout();
     	 kaeun.ui.main();
      };
      return {init:init};
 })();
 
-//payment관련 해서 : cart, payHis,present
-kaeun.payment = (x=>{ //kaeun.payment(cart); kaeun.payment(payHis);
-	var ctx;
-	var init= ()=>{
-		onCreate();
-	};
-	var onCreate = ()=>{
-		setContentView();
-		//그린다음에 이벤트 
-	};
-	var setContentView=()=>{ //들어오는 값에 따라... 
-		
-	};
-	return{init:init};
-	})();
-
-kaeun.lot = {
-		set : ()=>{
-		   $('header').remove();	
-       	   $('footer').remove();
-       	   $('#content').html(
-       			  ui.div({id:"k_biglot",clazz:"k_biglot"}).html(
-       				ui.div({id:"k_leftlot",clazz:"k_leftlot"})
-       			  )
-       	   );
-       	   $('#k_biglot').append(
-   				ui.div({id:"k_contentlot",clazz:"k_contentlot"}),
-   				ui.div({id:"k_rightlot",clazz:"k_rightlot"})
-   		   );
-       	   $('#k_leftlot').append(
-       			  ui.div({id:"k_navi",clazz:"k_navi"}).html(
-       					  $('<div>').addClass("list-group").html(
-       							 ui.div({id:'k_home_btn',clazz:'navi_home'}).html("HOME")	
-       					  )
-       			  )
-       	   )
-       	   $('#k_navi').append(
-       			ui.div({id:"cart_btn",clazz:"button_base b01_simple_rollover"}).html("장바구니"),
-       			ui.div({id:"payHis_btn",clazz:"button_base b01_simple_rollover"}).html("구매함"),
-       			ui.div({id:"gift_btn",clazz:"button_base b01_simple_rollover"}).html("선물함"),
-       			ui.div({id:"analysis_btn",clazz:"button_base b01_simple_rollover"}).html("취향분석"),
-       			ui.div({id:"collect_btn",clazz:"button_base b01_simple_rollover"}).html("콜렉션"),
-       			ui.div({id:"test_btn",clazz:"button_base b01_simple_rollover"}).html("테스트")
-       	   )
-       	   $('#k_contentlot').append(
-       			$('<div>').addClass("container").append(
-       					ui.div({id:"k_header",clazz:"k_header"}),
-       					ui.div({id:"k_content",clazz:"k_content"}),
-       					ui.div({id:"k_footer",clazz:"k_footer"})
-       			)
-       	   )
-		},
-		setContent : ()=>{
-			
-		}
-};
 
 kaeun.ui = { 
 		  main : ()=>{
-      		//home화면
-      		 $('#k_content').html('<div class="accordian">'
-    				 +'        <ul>'
-    				 +'        <li>'
-    				 +'        <div class="image_title">'
-    				 +'          <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">장바구니</a>'
-    				 +'        </div> '
-    				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
-    				 +'          <img class="k_home_img" src="https://cdn.pixabay.com/photo/2014/08/14/14/21/shish-kebab-417994_960_720.jpg"/>'
-    				 +'        </a>'
-    				 +'        </li>'
-    				 +'        <li>'
-    				 +'        <div class="image_title">'
-    				 +'          <a href="">구매내역</a>'
-    				 +'        </div>'
-    				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
-    				 +'          <img class="k_home_img" src="https://images.pexels.com/photos/749353/pexels-photo-749353.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"/>'
-    				 +'        </a>'
-    				 +'        </li>'
-    				 +'        <li>'
-    				 +'        <div class="image_title">'
-    				 +'          <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">선물함</a>'
-    				 +'        </div>'
-    				 +'        <a href="">'
-    				 +'          <img class="k_home_img" src="https://images.pexels.com/photos/1050244/pexels-photo-1050244.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"/>'
-    				 +'        </a>'
-    				 +'        </li>'
-    				 +'        <li>'
-    				 +'        <div class="image_title">'
-    				 +'          <a href="#">취향분석</a>'
-    				 +'        </div>'
-    				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
-    				 +'          <img class="k_home_img" src="https://cdn.pixabay.com/photo/2014/12/08/11/49/love-560783_960_720.jpg"/>'
-    				 +'        </a>'
-    				 +'        </li>'
-    				 +'        <li>'
-    				 +'        <div class="image_title">'
-    				 +'          <a href="#">콜렉션</a>'
-    				 +'        </div>'
-    				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
-    				 +'           <img class="k_home_img" src="https://cdn.pixabay.com/photo/2017/04/05/01/16/food-2203732_960_720.jpg"/>'
-    				 +'        </a>'
-    				 +'        </li>'
-    				 +'        </ul>'
-    				 +'        </div>'); 
-		  }
-          };
+    		//home화면
+			  /*let $menu = $('<div/>').addClass("accordian")
+			  						.append(
+			  							$('<ul/>')
+			  								).appendTo($('#k_content'));
+			  let cart_img = $('<li/>').append(
+					  				);*/
+    		 $('#k_content').html('<div class="accordian">'
+  				 +'        <ul>'
+  				 +'        <li>'
+  				 +'        <div class="image_title">'
+  				 +'          <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">장바구니</a>'
+  				 +'        </div> '
+  				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
+  				 +'          <img class="k_home_img" src="https://cdn.pixabay.com/photo/2014/08/14/14/21/shish-kebab-417994_960_720.jpg"/>'
+  				 +'        </a>'
+  				 +'        </li>'
+  				 +'        <li>'
+  				 +'        <div class="image_title">'
+  				 +'          <a href="">구매내역</a>'
+  				 +'        </div>'
+  				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
+  				 +'          <img class="k_home_img" src="https://images.pexels.com/photos/749353/pexels-photo-749353.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"/>'
+  				 +'        </a>'
+  				 +'        </li>'
+  				 +'        <li>'
+  				 +'        <div class="image_title">'
+  				 +'          <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">선물함</a>'
+  				 +'        </div>'
+  				 +'        <a href="">'
+  				 +'          <img class="k_home_img" src="https://images.pexels.com/photos/1050244/pexels-photo-1050244.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"/>'
+  				 +'        </a>'
+  				 +'        </li>'
+  				 +'        <li>'
+  				 +'        <div class="image_title">'
+  				 +'          <a href="#">취향분석</a>'
+  				 +'        </div>'
+  				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
+  				 +'          <img class="k_home_img" src="https://cdn.pixabay.com/photo/2014/12/08/11/49/love-560783_960_720.jpg"/>'
+  				 +'        </a>'
+  				 +'        </li>'
+  				 +'        <li>'
+  				 +'        <div class="image_title">'
+  				 +'          <a href="#">콜렉션</a>'
+  				 +'        </div>'
+  				 +'        <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">'
+  				 +'           <img class="k_home_img" src="https://cdn.pixabay.com/photo/2017/04/05/01/16/food-2203732_960_720.jpg"/>'
+  				 +'        </a>'
+  				 +'        </li>'
+  				 +'        </ul>'
+  				 +'        </div>'); 
+		  },
+		  setLayout : ()=>{
+			  $('header').remove();	
+	       	   $('footer').remove();
+	       	   $('#content').html(
+	       			 ui.div({id:"k_biglot",clazz:"k_biglot"}).html(
+	       			 ui.div({id:"k_leftlot",clazz:"k_leftlot"})
+	       			  )
+	       	   );
+	       	   $('#k_biglot').append(
+	   				ui.div({id:"k_contentlot",clazz:"k_contentlot"}),
+	   				ui.div({id:"k_rightlot",clazz:"k_rightlot"})
+	   		   );
+	       	   $('#k_leftlot').append(
+	       			  ui.div({id:"k_navi",clazz:"k_navi"}).html(
+	       					  $('<div>').addClass("list-group").html(
+	       							 ui.div({id:'k_home_btn',clazz:'navi_home'}).html("HOME")	
+	       					  )
+	       			  )
+	       	   )
+	       	   $('#k_navi').append(
+	       			ui.div({id:"cart_btn",clazz:"button_base b01_simple_rollover"}).html("장바구니"),
+	       			ui.div({id:"payHis_btn",clazz:"button_base b01_simple_rollover"}).html("구매함"),
+	       			ui.div({id:"gift_btn",clazz:"button_base b01_simple_rollover"}).html("선물함"),
+	       			ui.div({id:"analysis_btn",clazz:"button_base b01_simple_rollover"}).html("취향분석"),
+	       			ui.div({id:"collect_btn",clazz:"button_base b01_simple_rollover"}).html("콜렉션"),
+	       			ui.div({id:"test_btn",clazz:"button_base b01_simple_rollover"}).html("테스트")
+	       	   )
+	       	   $('#k_contentlot').append(
+	       			$('<div>').addClass("container").append(
+	       					ui.div({id:"k_header",clazz:"k_header"}),
+	       					ui.div({id:"k_content",clazz:"k_content"}),
+	       					ui.div({id:"k_footer",clazz:"k_footer"})
+	       			)
+	       	   )
+		  }, //setLayout의 끝
+		  cart : ()=>{ //cart화면 
+					ui.newpage();
+					$('#k_header').addClass('cart_title').append('<h2>장바구니<h2>');
+					ui.checkbox({id:'cart_all_chk',txt:'선택'}).appendTo($('#k_content'));
+					ui.btn({id:'cart_delteall_btn',size:'mini',color:'white',txt:'선택삭제'}).appendTo($('#k_content'));
+					kaeun.payments.cartList();
+				},
+		 gift : ()=>{
+				 	ui.newpage();
+					$('#k_header').append('선물함');
+					$('#k_header').append('');    
+					// .append('<div class="col"><div id="gift_slid" class="card-group"/></div>'); //card-deck쓰면 떨어짐
+					let $select = $('<select/>').addClass("custom-select").attr({id:"select"}).appendTo($('#k_content'));
+					$('<option value="gift"/>').html("받은선물함").attr({id:'gift_option'}).appendTo($select);
+					$('<option value="giftto"/>').html("보낸선물함").attr({id:'giftto_option'}).appendTo($select);
+					let state = $('#select').val(); //또는 'giftto';
+					kaeun.tastes.giftList({state:state});
+					$('#select').change(()=>{
+							$('#gift_content').empty();
+							state = $('#select').val();
+							console.log(state);
+							kaeun.tastes.giftList({state:state});
+								})
+		 		},
+		 analysis : ()=>{
+			 			
+		 			}
+}; //kaeun.ui의 끝
 
-//cart,payHis,present
 kaeun.payments = {
-		cart : ()=>{ //cart List
-			ui.newpage();
-			$('#k_header').addClass('cart_title').append('<h2>장바구니<h2>');
-			ui.checkbox({id:'cart_all_chk',txt:'선택'}).appendTo($('#k_content'));
-			ui.btn({id:'cart_delteall_btn',size:'mini',color:'white',txt:'선택삭제'}).appendTo($('#k_content'));
-			kaeun.tastes.cartList();
-		}, 
-		payment : ()=>{ //payment 화면
-			
-		},
+		//var id = $.cookie('member')["memberId"];
 		payHis : ()=>{ //read some
 			//$('#k_contentlot').html('<h2>구매함</h2><br><div>날짜선택: 목록보기:(구매완료/사용중) </div><br>');
 			ui.newpage();
@@ -230,37 +232,6 @@ kaeun.payments = {
 			})
 			//flag:default가 buy+gift임 */
 		},
-		gift : ()=>{ //read some
-			ui.newpage();
-			$('#k_header').append('받은선물함');
-			$('#k_header').append('');    
-			$('#k_content').append('<div id="gift_content" class="container"/>')
-			// .append('<div class="col"><div id="gift_slid" class="card-group"/></div>'); //card-deck쓰면 떨어짐
-			for(let i=1;i<5;i++){
-				$('#gift_content').append($('<div>').addClass('col').append($('<div/>').addClass('card_row').append($('<div/>').attr({id:'gift_slid'+i}).addClass('card-group'))));
-				for(let j=1;j<5;j++){	
-					/*$('#gift_slid'+i).append(ui.img_card({url:'https://images.pexels.com/photos/884596/pexels-photo-884596.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-						txt:'From.★',id:'gift'+i+'_'+j}));*/
-				$('#gift_slid'+i).append(      '<div class="card gift_c">'
-						+'            <div class="gift_img"><img src="https://images.pexels.com/photos/884596/pexels-photo-884596.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"></div>'
-						+'            <div class="gift_details">'
-						+'                <h2>아이템이름 <br><span>From.★</span></h2>'
-						+'                <div class="gift_msg">'
-						+'                    <p>메세지 Lorem Ipsum has been the industrys standard</p>'
-						+'                </div>'
-						+'                <div class="gift_link">'
-						+'                    <h4>공유하기</h4>'
-						+'                    <ul>'
-						+'                        <li><img src="https://lh3.ggpht.com/yVfPv-yLjIuBjpKj41NLkLXmuVv8XzH0m2hf-_sz9lQDv9WB9SX0McB8Jn4bQe4w5Q=s180"></li>'
-						+'                        <li><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7RW2RsbPREvGOUDjo8tGC8maxYImJJ7n5v1HKnz6wmlTLlLhI"></li>'
-						+'                    </ul>'
-						+'                </div>'
-						+'            </div>'
-						+'        </div>');
-				}
-			}
-			// ★ 페이지네이션
-		},
 		giftPopup : x=>{
 			var toId = '';
 			var chkId = false;
@@ -308,7 +279,8 @@ kaeun.payments = {
 				console.log('toId: '+$('#gift_toId').val());
 				console.log('msg: '+$('#gift_msg').val());
 				console.log('delList: '+x.delList);
-				kaeun.tastes.payList({payList:x.payList,delList:x.delList,toId:$('#gift_toId').val(),msg:$('#gift_msg').val()});
+				kaeun.payments.payList({payList:x.payList,delList:x.delList,toId:$('#gift_toId').val(),msg:$('#gift_msg').val()});
+				
 				$('.mfp-close').click();
 			});
 			return false;
@@ -341,7 +313,7 @@ kaeun.payments = {
                 data : JSON.stringify({delList : x.delList}),
                 success : d=>{
                 	if(d>0){
-                		kaeun.tastes.cartList();
+                		kaeun.payments.cartList();
                 	}else{
                 		alert('삭제실패');
                 	}
@@ -349,20 +321,7 @@ kaeun.payments = {
                 error : (x,y,z)=>{}
 			})
 		},
-		listCart : x=>{
-			let testId = 'test1';
-			
-		},
-		update : ()=>{ //taste update
-			
-		},
-		del : ()=>{ //taste delete되는부분
-			
-		}
-};
-
-kaeun.tastes = { //kaeun.tastes.cartList()
-		payList : x=>{ //결제중 
+		payList: x=>{ //결제중 
             $('#cart_grid').remove();
             $('#k_content').append('<div id="cart_grid" class=list-grid-container>'
                        +'<div class="item_header">No</div>'
@@ -417,8 +376,9 @@ kaeun.tastes = { //kaeun.tastes.cartList()
                        error : (x,y,z)=>{}
                        }); //ajax 끝                   
             }) //click끝
+			
 		},
-		cartList : ()=>{ //장바구니
+		cartList : x=>{ //장바구니
 			$('#cart_grid').remove();
 			$('#k_content').append('<div id="cart_grid" class=list-grid-container>' 
 					+'<div class="item_headerinfo">상품정보</div>'
@@ -426,8 +386,8 @@ kaeun.tastes = { //kaeun.tastes.cartList()
 					+'<div class="item_header">상품금액</div>'
 					+'<div class="item_header">총액</div>'
 					+'<div id="cart_header_end" class="item_header">주문</div></div>');
-			let testId = $.cookie('member')["memberId"];
-			$.getJSON($.ctx()+'/taste/list/'+testId+'/cart',d=>{ //getjosn시작
+			let id = $.cookie('member')["memberId"];
+			$.getJSON($.ctx()+'/taste/list/'+id+'/cart',d=>{ //getjosn시작
 				
 				$.each(d,(i,j)=>{ //grid_list R
 					ui.grid_list({
@@ -450,7 +410,7 @@ kaeun.tastes = { //kaeun.tastes.cartList()
                         explains:d[i].explains,
                         img:d[i].img}];
 					let delList = [d[i].tasteSeq];
-					kaeun.tastes.payList({payList:payList,delList:delList});
+					kaeun.payments.payList({payList:payList,delList:delList});
 				});
 				$('<br/>').appendTo($('#cart_btns'+i));
 				ui.btn({id:'cart_gift_btn'+i,size:'mini',color:'red',txt:'선물하기'}).appendTo($('#cart_btns'+i))
@@ -534,10 +494,114 @@ kaeun.tastes = { //kaeun.tastes.cartList()
 							delList.push(d[i].tasteSeq);
 						}
 					}
-					kaeun.tastes.payList({payList:payList,delList:delList});
+					kaeun.payments.payList({payList:payList,delList:delList});
 				})//cart_order_submit 끝
 		}) //getjson끝		
-		},
+			
+		}
+};
+ 
+kaeun.tastes = { 
+		giftList : x=>{
+			$('#gift_content').remove();
+			$('#pageNation').remove();
+			let id = $.cookie('member')["memberId"];
+			let pageNo = (x.pageNo!=null)? x.pageNo:1;
+			console.log(pageNo);
+			$('#k_content').append('<div id="gift_content" class="container"/>');
+			$.getJSON($.ctx()+'/purchase/gift/'+id+'/'+x.state+'/'+pageNo,d=>{ //getjosn시작
+				let cnt = 0;
+				let row = (d.count>12)? 3 : Math.ceil(d.count/4); 
+				console.log('count : '+d.count);
+				console.log('row : '+row);
+				let gifts = d.tlist;
+				let option = (x==='gift')? 'From. ' : 'To. ';
+				let giftId;
+				for(let i=0;i<row;i++){ 
+					$('#gift_content').append(
+							$('<div>').addClass('col').append(
+									$('<div/>').addClass('card_row').append(
+											$('<div/>').attr({id:'gift_slid'+i}).addClass('card-group')
+									)
+							));
+					for(let j=0;j<4;j++){ 
+						if(cnt!=gifts.length){
+							$('<div/>').addClass("card gift_c").attr({id:'gift'+cnt})
+							   .append(
+									   $('<div/>').addClass("gift_img").html('<img src="'+gifts[cnt].img+'">')
+									   ).appendTo($('#gift_slid'+i));
+							let $detail =  $('<div/>').addClass("gift_details").appendTo($('#gift'+cnt));
+							let $item = $('<h2/>').html(
+											gifts[cnt].itemName+'<br>'
+												).appendTo($detail);
+							giftId = (x==='gift')? gifts[cnt].memberId : gifts[cnt].toId;
+							$('<span/>').html(option+giftId).appendTo($item);
+							$('<p/>').html(gifts[cnt].msg).appendTo($detail);
+							let $link = $('<div/>').addClass("gift_link")
+													.html(
+															$('<h4/>').html('공유하기')
+															).appendTo($detail);
+							let $ul = $('<ul/>').addClass("gift_link ul").appendTo($link)
+							$('<li/>').html('<img src="https://lh3.ggpht.com/yVfPv-yLjIuBjpKj41NLkLXmuVv8XzH0m2hf-_sz9lQDv9WB9SX0McB8Jn4bQe4w5Q=s180">')
+									  .addClass("gift_link ul li")
+									  .appendTo($ul)
+									  .click(e=>{
+										  alert("링크1 구현되지 않았습니다");
+										  });
+							$('<li/>').html('<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7RW2RsbPREvGOUDjo8tGC8maxYImJJ7n5v1HKnz6wmlTLlLhI">')
+									  .addClass("gift_link ul li")
+									  .appendTo($ul)
+									  .click(e=>{
+										  alert("링크2 구현되지 않았습니다");
+										  });	  
+							cnt++;
+						}else{
+							$('<div/>').addClass("card gift_c").attr({id:'gift_nocard'})
+							   .append(
+									   $('<div/>').addClass("gift_img").html('<img src="https://cdn.crowdpic.net/detail-thumb/thumb_d_E73BDCC8D588BCCE4D75AB9C0CD3FE30.jpg">')
+									   ).appendTo($('#gift_slid'+i));
+							let $detail =  $('<div/>').addClass("gift_details").appendTo($('#gift_nocard'));
+							let $item = $('<h2/>').html(
+												''
+												).appendTo($detail);
+						}		
+					}
+				}//for룹끝
+				//페이지네이션
+				$('<div/>').html('<ul id="pageNation" class="pagination pagination-sm"/>').appendTo($('#k_content'));
+        		let p = d.page;
+        		let prev = (p.existPrev)? '':'disabled';
+        		let next = (p.existNext)? '':'disabled';
+        		let begin = p.beginPage -1;
+        		let end = p.endPage+1;
+        		for(let i=begin;i<=end;i++){
+        			let y = (i==pageNo)? 'active' : 
+									(i == begin) ? prev : 
+										(i == end) ? next : '';
+        			$('<li/>')
+					.addClass('page-item '+y)
+					.append(
+							$('<a/>')
+							.attr('style','cursor:pointer')
+							.addClass('page-link')
+							.html(
+									(i == begin)
+										? 'Prev' : (i == end)
+														? 'Next' : i
+								)
+					).appendTo($('#pageNation'))
+					.click(function(e){
+						e.preventDefault();
+						if(i != begin && i != end){
+							$('li').removeClass('active');
+							$(this).addClass('active');
+						}
+					kaeun.tastes.giftList({state:x.state,pageNo:i+''});
+					});
+					$('.disabled').off("click");
+        		};//페이지네이션 포룹끝
+			}) //getjson의 끝		
+				},
 		payHisList : x=>{
 			//kaeun.tastes.payHisList({prevDate:prevDate,day:day,pageNo:pageNo,flag:flag,keyword:keyword});
 			$('#pay_list').remove();
@@ -550,7 +614,7 @@ kaeun.tastes = { //kaeun.tastes.cartList()
 					+'<div class="item_header">총액</div>'
 					+'<id="cart_header_end" class="item_header">내역</div></div>');
 			$.ajax({
-				url: $.ctx()+'/payhis/search',
+				url: $.ctx()+'/purchase/payhis',
 				type: 'POST',
 				contentType : 'application/json',
                 data : JSON.stringify({id : $.cookie('member')["memberId"],
@@ -618,18 +682,11 @@ kaeun.tastes = { //kaeun.tastes.cartList()
     						});
     						$('.disabled').off("click");
                 		}
-                		/*$('<div/>').html('<ul class="pagination pagination-sm">'
-        						+'<li class="page-item"><a class="page-link" href="#">Previous</a></li>'
-        						+'<li class="page-item"><a class="page-link" href="#">1</a></li>'
-        						+'<li class="page-item"><a class="page-link" href="#">2</a></li>'
-        						+'<li class="page-item"><a class="page-link" href="#">3</a></li>'
-        						+'<li class="page-item"><a class="page-link" href="#">Next</a></li>'
-        						+'</ul>').addClass("grid_footer").appendTo($('#k_content')); */
                 },
                 error : (x,y,z)=>{}
 			}); //ajax끝
 		},
-		analysis : ()=>{ //취향분석
+		chart : ()=>{ //취향분석
 			ui.newpage();
 			$('#k_header').append('취향분석'); 
 			$('#k_content').append('<div id="content_t" class=col><div class="taste-background">'
@@ -664,7 +721,7 @@ kaeun.tastes = { //kaeun.tastes.cartList()
  			$.getJSON($.ctx()+'/chart/'+testId,d=>{
  			google.charts.load('current', {'packages':['corechart']});
  		    google.charts.setOnLoadCallback(drawChart);
- 		   google.charts.setOnLoadCallback(drawStuff);
+ 		    google.charts.setOnLoadCallback(drawStuff);
  		   function drawChart() {  
  			   //별점 Chart
  			  var dataArea = google.visualization.arrayToDataTable([
@@ -1008,10 +1065,4 @@ kaeun.tastes = { //kaeun.tastes.cartList()
          }
 };
 
-kaeun.chart = {
-		loadArea : ()=>{
-		},
-		drawArea : ()=>{
-		}
-};
 

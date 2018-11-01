@@ -47,7 +47,7 @@
 		<property name="url"
 			value="jdbc:mariadb://mariadb.cw9lghzj3xpv.ap-northeast-2.rds.amazonaws.com:3306/mariadb" />
 		<property name="username" value="mariadb" />
-		<property name="password" value="mariadb1618" />
+		<property name="password" value="mariadb1638" />
 	</bean>
 	
 	<bean id="transactionManager"
