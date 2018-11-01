@@ -14,7 +14,7 @@ public class Member {
 	private String ssn;
 	private String gender;
 	private String address;
-	private String eMail;
+	private String email; 
 	private String phoneNum;
 	
 }

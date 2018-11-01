@@ -44,12 +44,12 @@ public class SearchCtrl {
 		r.put("tag", (List) tagArr.get("JtagArr"));
 		Util.log.accept(r.toString());
 		r.put("value", String.valueOf(tagArr.get("ValueRange")));
-		/*Function<HashMap<String,Object>, List<HashMap<String, Object>>>f=x->searchMapper.tagSearch(x);
-		
-	HashMap<String,String> tt = new HashMap<>();
+		Function<HashMap<String,Object>, List<HashMap<String, Object>>>f=x->searchMapper.tagSearch(x);
+													
+		HashMap<String,String> tt = new HashMap<>();
 		tt = (HashMap<String, String>) f.apply(r);
-		Util.log.accept("tt.get(\"tagArr\").toString() :: "+tt.get("tagArr").toString());*/
-		/*Util.log.accept((String) tt.get("value"));*/
+		Util.log.accept("tt.get(\"tagArr\").toString() :: "+tt.get("tagArr").toString());
+		//Util.log.accept((String) tt.get("value"));
 		return null;
 		
 		

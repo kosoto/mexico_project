@@ -128,6 +128,7 @@ junghoon.member = (()=>{
 			    				  contentType:'application/json',
 			    				  data:JSON.stringify(res),
 			    				  success:d=>{
+			    					 
 			    					  console.log(d);
 			    					  $.cookie('member',d);
 			    					  console.log($.cookie('member'));
@@ -147,7 +148,7 @@ junghoon.member = (()=>{
 			    });
 			
 			$('#login_to_join').click(e=>{
-				alert('잘가 잘가 잘가로봇');
+	
 				junghoon.member.add();
 			});
 			
@@ -168,8 +169,11 @@ junghoon.member = (()=>{
 						success : d => {
 							console.log(d);
 							if(d!=''){//로그인 성공
+									
+								alert('로그인 성공  넘어 온 d의  이메일 :: '+ d.email);
 								$.cookie("member", d);
 								//메인화면 보여주기
+								alert('쿠키에 저장된 이메일 :: '+$.cookie("member").email);
 								bemeal.router.main();
 							}else{//로그인 실패
 								alert('로그인에 실패했습니다.');
@@ -517,7 +521,7 @@ junghoon.service = {
 							contentType:'application/json',
 							data:JSON.stringify({"JtagArr":tagArr,"valueRange":output.innerHTML}), // 리스트
 							success:d=>{
-								
+											
 								if(tagArr==''){
 									alert('태그를 선택해주세요');
 								}
@@ -533,8 +537,12 @@ junghoon.service = {
 				mypage : x => {
 			alert('mp');
 			$.getScript($.script()+'/ui/j_mbrupdate.js', ()=>{
-					$('#content').empty().html(modifyUI($.cookie('member')))
-					$('#delete_submit_btn').click(e=>{
+				let t = $.cookie('member');
+				alert("t ::"+t.memberId);
+				$.getJSON(
+						$.ctx()+'/mbr/detail/'+t.memberId, d=>{
+						$('#content').empty().html(modifyUI(d))
+						$('#delete_submit_btn').click(e=>{
 						alert('삭제클릭');
 						$.ajax({
 							url : $.ctx()+'/mbr/remove',
@@ -551,26 +559,38 @@ junghoon.service = {
 								console.log('error:: '+z)
 							}
 						})
-					})
+					}),
 					
 					$('#modify_submit_btn').click(e=>{
 						alert('수정클릭');
-						alert($('#password').val()+"@@@"+$('#address').val()+"@@@"+$('#eMail').val()+"@@@"+$('#phoneNum').val()+"@@@")
+						
+						alert(" 넘어온 아이디  :: "+$('#memberId').val()+'\n'+
+							  "넘어온 비밀번호 :: "+$('#password').val()+'\n'+
+							  "넘어온 주소       :: "+$('#address').val()+'\n'+
+							  "넘어온 메일주소 :: "+$('#email').val()+'\n'+
+							  "넘어온 전화번호 :: "+$('#phoneNum').val());
+						
 						$.ajax({
 							url : $.ctx()+'/mbr/modify',
 							method :'post',
 							contentType:'application/json',
 							data:JSON.stringify({
-								
-								memberId:$('#memberId').val(),
 								password:$('#password').val(),
 								address:$('#address').val(),
-								eMail:$('#eMail').val(),
-								phoneNum:$('#phoneNum').val()}),
+								email:$('#email').val(),
+								phoneNum:$('#phoneNum').val(),
+								memberId:$('#memberId').val()
+							}),
 								
 								success:d=>{                                      
-								alert('success');
-								bemeal.main.init();
+								alert('success  숫자는  '+ d );
+								
+								$.getJSON($.ctx()+'/mbr/detail/'+$('#memberId').val(),d=>{
+									alert('겟제이슨 success  버뀐 이메일은   '+ d.email );
+									$('#content').empty().html(modifyUI(d))
+									//
+								});
+								
 								},
 								error:(x,y,z)=>{
 									console.log('error :: '+z)
@@ -578,6 +598,10 @@ junghoon.service = {
 								})
 						
 						})
+						});
+				
+					
+					
 
 				});
 	}
