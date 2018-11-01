@@ -113,7 +113,6 @@ yoonho.service=(x=>{
 					});
 				}
 			})
-		return $section;
 	};
 	var loadedPage=x=>{
 		console.log('하아:'+x.length+'/'+x.page);
@@ -342,7 +341,11 @@ yoonho.service=(x=>{
 				initialRating: 0, //초기값  
 				starSize: 20,  //width속성값
 				minRating : 0.5,
+<<<<<<< HEAD
 				emptyColor : '#eee',
+=======
+				emptyColor : 'grey',
+>>>>>>> test
 				hoverColor : 'orange',
 				activeColor : 'orange',
 				ratedColor : 'orange',

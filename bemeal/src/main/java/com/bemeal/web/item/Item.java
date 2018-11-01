@@ -19,7 +19,4 @@ public class Item {
 	private String explains;
 	private int calorie;
 	
-	
-	
-	
 }

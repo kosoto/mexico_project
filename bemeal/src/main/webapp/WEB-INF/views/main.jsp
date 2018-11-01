@@ -21,6 +21,8 @@
 <!-- MDB -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.11/css/mdb.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- kakao -->
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 <!-- our resources -->
 <script src="${context}/resources/js/bemeal.js"></script>
 <link rel="stylesheet/less" type="text/css" href="${context}/resources/css/bemeal.less">
@@ -45,6 +47,7 @@
 	<div id="wrapper"></div>
 	<script>
 		bemeal.init('${context}');
+		
 	</script> 
 </body>
 </html>

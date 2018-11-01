@@ -29,6 +29,7 @@ bemeal.main = (()=>{
 })();
 bemeal.router = {
 		init : x=>{
+			Kakao.init('6e4c0a585a61ab7dce05a93ff2582a90');
 			$.when(
 				$.getScript(x+"/resources/js/router.js",()=>{
 					$.extend(new Session(x));
@@ -201,7 +202,7 @@ bemeal.compo=(()=>{
 								})
 							)
 						),
-						$('<form/>').addClass('form-inline').append(												// keydown은 키 입력하자마자, e.keyCode === 13 은 입력값이 enter이면 무시하기 위함
+						$('<form/>').addClass('form-inline').attr({id:'serchForm'}).append(												// keydown은 키 입력하자마자, e.keyCode === 13 은 입력값이 enter이면 무시하기 위함
 							$('<input/>').addClass('form-control mr-sm-2').attr({type:'text','aria-label':'Search',placeholder:'Search'}).keydown(e=>{if(e.keyCode === 13)e.preventDefault();}).keyup(e=>{
 								//검색하기
 								let searchWord = e.currentTarget.value; //현재 e.currentTarget은 현재 이벤트를 호출한 input태그 
@@ -218,11 +219,18 @@ bemeal.compo=(()=>{
 								}
 								
 							}),
-							$('<button/>').addClass('btn btn-outline-white btn-sm my-0').attr({style:'color:black!important',type:'button',id:'testSearch'}).text('tag').click(e=>{
+							$('<button/>').addClass('btn btn-outline-white btn-sm my-0').attr({'data-flag':'true',style:'color:black!important',type:'button',id:'testSearch'}).text('tag').click(e=>{
 								e.preventDefault();
 								$.getScript($.script()+"/junghoon.js",()=>{
 									$(window).off('scroll.category');
-									junghoon.service.search();
+									//junghoon.service.search();
+									if(e.currentTarget.dataset.flag=='true'){
+										e.currentTarget.dataset.flag = 'false';
+										bemeal.search.tagSearch();
+									}else{
+										e.currentTarget.dataset.flag = 'true';
+										$('#tagBox').remove();
+									}
 								})
 							})
 						),
@@ -272,7 +280,7 @@ bemeal.compo=(()=>{
 						)
 					);
 		let $ol = $('<ol/>').addClass('carousel-indicators').appendTo($div);
-		let navi_size = x.arr.length/row_size;
+		let navi_size = arr.length/row_size;
 		for(let i=0;i<navi_size;i++) $('<li/>').attr({'data-target':"#"+x.id,'data-slide-to':i}).addClass((i==0)?'active':'').appendTo($ol);
 		
 		let $inner = $('<div/>').addClass('carousel-inner').appendTo($div);
@@ -355,6 +363,7 @@ bemeal.evaluate=(()=>{
 		let gradeCnt = 0;
 		let itemCnt = 0;
 		let width = 0;
+		let page = 1;
 		let id = $.cookie('member').memberId;
 		let message = '';
 		$.getJSON($.ctx()+'/grade/count/'+id,d=>{
@@ -369,105 +378,115 @@ bemeal.evaluate=(()=>{
 				)
 			);
 			$('<div/>').appendTo($('#content')).attr({style:'height:85px'});
-			let page = 1;
 			loadPage({
 				id:id,
 				page:page++,
 			});
 			let $window = $(window);
+			let scrolling = true;
 			$window.on('scroll.category',e=>{
-				if($window.scrollTop()+$window.height()+5>$(document).height()){
-					loadPage({
-						id:id,
-						page:page++,
-					});
+				if(scrolling&&$window.scrollTop()+$window.height()+30>$(document).height()){
+					scrolling = false;
+					setTimeout(() => {
+						loadPage({
+							id:id,
+							page:page++,
+						});
+						scrolling = true;
+					}, 500);
+					
 				}
+				
 			});//scroll event end
 		});
 		
 	};
 	var loadPage=x=>{
 		let memberId = x.id;
-		$.getJSON($.ctx()+'/evaluate/'+memberId+'/'+x.page,d=>{//id와 page를 가지고 평가 하지 않은 제품들을 가져오기
-			$.getScript($.script()+'/yoonho.js',()=>{
-				if(d.pagination.existNext){ //다음 페이지가 존재할때만 
-					let arr = d.list;
-					let index = 0;
-					let $content =  $('#content');
-					for(let i=1;i<=5;i++){
-						let $gift_slid = $('<div/>').addClass('card-group');
-						$content.append(
-								$('<div>').addClass('col').append(
-										$('<div/>').addClass('card_row').append(
-												$gift_slid
-										)
-								)
-						);
-						for(let j=1;j<=4;j++,index++){
-							$('<div/>').addClass('card gift_c').appendTo($gift_slid).append(
-								$('<div/>').addClass('gift_img').append(
-									$('<img/>').addClass('img-fluid').attr({src:arr[index].img})
-								),
-								$('<div/>').addClass('gift_details').append(
-									$('<h2/>').addClass('evaluative_title text-shadow-white').text(arr[index].itemName),
-									$('<div/>').attr({'data-seq':arr[index].itemSeq}).starRating({ //https://github.com/nashio/star-rating-svg
-												initialRating: 0, //초기값  
-												starSize: 32,  //width속성값
-												emptyColor : 'white',
-												hoverColor : 'orange',
-												activeColor : 'orange',
-												ratedColor : 'orange',
-												useGradient : false,
-												strokeColor: 'orange',  //border color
-												callback : (currentRating, $el)=>{
-													let $gradeCnt = $('#gradeCnt');
-													let $gradeWidth = $('#gradeWidth');
-													let cnt = $gradeCnt.text()*1;
-													let itemCnt = $gradeWidth.data('itemcnt')*1;
-													if(currentRating!=0){
-														let seq = $el.data('seq');
-														$.ajax({
-															url : $.ctx()+'/grade/evaluate',
-															method : 'post',
-															contentType : 'application/json',
-															data : JSON.stringify({
-																memberId:memberId,
-																seq:seq,
-																currentRating:currentRating*2
-															}),
-															success : r=>{
-																if(r==='add'){
-																	$gradeCnt.html(cnt+1);
-																	$gradeWidth.attr({style:'width:'+((cnt+1)/itemCnt)*580+'px'});
-																}else if(r==='remove'){
-																	$el.starRating('setRating', 0);
-																	$gradeCnt.html(cnt-1);
-																	$gradeWidth.attr({style:'width:'+((cnt-1)/itemCnt)*580+'px'});
-																}
-															},
-															error : (e1,e2,e3)=>{
-																
-															}
-														});
-												   }
-												} //callback end
-												}), //star-rating end	
-									$('<div/>').addClass('gift_msg').append(
-											$('<p/>').text(arr[index].explains),
-											$('<a/>').addClass('evaluateToRetrieve').text('상세보기').attr({href:'#','data-seq':arr[index].itemSeq})
-											.click(e=>{
-												e.preventDefault();
-												yoonho.service.retrieve(e.currentTarget.dataset.seq);
-											})
+		$.getJSON($.ctx()+'/evaluate/'+memberId+'/'+((x.page)+""),d=>{//id와 page를 가지고 평가 하지 않은 제품들을 가져오기
+			setTimeout(() => {
+				let arr = d.list;
+				$.getScript($.script()+'/yoonho.js',()=>{
+					if(d.pagination.existNext){ //다음 페이지가 존재할때만 
+						let index = 0;
+						let $content =  $('#content');
+						for(let i=1;i<=5;i++){
+							let $gift_slid = $('<div/>').addClass('card-group');
+							$content.append(
+									$('<div>').addClass('col').append(
+											$('<div/>').addClass('card_row').append(
+													$gift_slid
+											)
 									)
-								)
-						  );
-						} //inner for loop end
-					} //for loop end
-				}else $(window).off('scroll.category');
-				
-			});
-			
+							);
+							for(let j=1;j<=4;j++,index++){
+								$('<div/>').addClass('card gift_c').appendTo($gift_slid).append(
+									$('<div/>').addClass('gift_img').append(
+										$('<img/>').addClass('img-fluid').attr({src:arr[index].img})
+									),
+									$('<div/>').addClass('gift_details').append(
+										$('<h2/>').addClass('evaluative_title text-shadow-white').text(arr[index].itemName),
+										$('<div/>').attr({'data-seq':arr[index].itemSeq}).starRating({ //https://github.com/nashio/star-rating-svg
+													initialRating: 0, //초기값  
+													starSize: 32,  //width속성값
+													emptyColor : 'white',
+													hoverColor : 'orange',
+													activeColor : 'orange',
+													ratedColor : 'orange',
+													useGradient : false,
+													strokeColor: 'orange',  //border color
+													callback : (currentRating, $el)=>{
+														let $gradeCnt = $('#gradeCnt');
+														let $gradeWidth = $('#gradeWidth');
+														let cnt = $gradeCnt.text()*1;
+														let itemCnt = $gradeWidth.data('itemcnt')*1;
+														if(currentRating!=0){
+															let seq = $el.data('seq');
+															$.ajax({
+																url : $.ctx()+'/grade/evaluate',
+																method : 'post',
+																contentType : 'application/json',
+																data : JSON.stringify({
+																	memberId:memberId,
+																	seq:seq,
+																	currentRating:currentRating*2
+																}),
+																success : r=>{
+																	if(r==='add'){
+																		$gradeCnt.html(cnt+1);
+																		$gradeWidth.attr({style:'width:'+((cnt+1)/itemCnt)*580+'px'});
+																	}else if(r==='remove'){
+																		$el.starRating('setRating', 0);
+																		$gradeCnt.html(cnt-1);
+																		$gradeWidth.attr({style:'width:'+((cnt-1)/itemCnt)*580+'px'});
+																	}
+																},
+																error : (e1,e2,e3)=>{
+																	
+																}
+															});
+													   }
+													} //callback end
+													}), //star-rating end	
+										$('<div/>').addClass('gift_msg').append(
+												$('<p/>').text(arr[index].explains),
+												$('<a/>').addClass('evaluateToRetrieve').text('상세보기').attr({href:'#','data-seq':arr[index].itemSeq})
+												.click(e=>{
+													e.preventDefault();
+													yoonho.service.retrieve(e.currentTarget.dataset.seq);
+												})
+										)
+									)
+							  );
+							} //inner for loop end
+						} //for loop end
+					}else $(window).off('scroll.category');
+					
+				});
+			}, 1000);
+		}).fail((e1,e2)=>{
+			console.log(e1);
+			console.log(e2);
 		}); /* getJSON end*/
 	};
 	return {
@@ -534,5 +553,75 @@ bemeal.search=(()=>{
 			}
 		}
 	};
-	return {list:list};
+	var tagSearch = x=>{
+		'<div style="margin:10px;font-size:12px" class="badge badge-danger">맛#느끼</div>'
+		'<div style="margin:10px;font-size:12px" class="badge badge-info">감성#빨간</div>'
+		'<div style="margin:10px;font-size:12px" class="badge badge-success">재료#오징어</div>'
+		$('<div/>').attr({id:'tagBox','data-toggle':'buttons'}).insertAfter($('#testSearch')).append(
+			$('<div/>').addClass('btn-group btn-group-toggle d-flex flex-column flex-md-row').append(// 재료:19개
+				$('<label/>').addClass('btn btn-success tagBoxItem').attr({}).append(
+					$('<span/>').text('닭'),
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'1',autocomplete:'off'})
+				),
+				$('<label/>').addClass('btn btn-success tagBoxItem').attr({}).append(
+					$('<span/>').text('오리'),
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'2',autocomplete:'off'})
+				),
+				$('<label/>').addClass('btn btn-success tagBoxItem').attr({}).text('오징어').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'3',autocomplete:'off'})
+				),
+				$('<label/>').addClass('btn btn-success tagBoxItem').attr({}).text('소고기').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'4',autocomplete:'off'})
+				),
+				$('<label/>').addClass('btn btn-success tagBoxItem').attr({}).text('버섯').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'5',autocomplete:'off'})
+				),
+				$('<label/>').addClass('btn btn-success tagBoxItem').attr({}).text('김치').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'6',autocomplete:'off'})
+				),
+				$('<div/>').addClass('btn btn-success tagBoxItem').attr({}).text('계란').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'7',autocomplete:'off'})
+				),
+				$('<div/>').addClass('btn btn-success tagBoxItem').attr({}).text('더덕').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'8',autocomplete:'off'})
+				),
+				$('<div/>').addClass('badge badge-success tagBoxItem').attr({}).text('새우').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'9',autocomplete:'off'})
+				),
+				$('<div/>').addClass('badge badge-success tagBoxItem').attr({}).text('고등어').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'10',autocomplete:'off'})
+				),
+				$('<div/>').addClass('badge badge-success tagBoxItem').attr({}).text('갈치').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'11',autocomplete:'off'})
+				),
+				$('<div/>').addClass('badge badge-success tagBoxItem').attr({}).text('문어').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'12',autocomplete:'off'})
+				),
+				$('<div/>').addClass('badge badge-success tagBoxItem').attr({}).text('장어').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'13',autocomplete:'off'})
+				),
+				$('<div/>').addClass('badge badge-success tagBoxItem').attr({}).text('감자').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'14',autocomplete:'off'})
+				),
+				$('<div/>').addClass('badge badge-success tagBoxItem').attr({}).text('고구마').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'15',autocomplete:'off'})
+				),
+				$('<div/>').addClass('badge badge-success tagBoxItem').attr({}).text('어묵').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'16',autocomplete:'off'})
+				),
+				$('<div/>').addClass('badge badge-success tagBoxItem').attr({}).text('소시지').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'17',autocomplete:'off'})
+				),
+				$('<div/>').addClass('badge badge-success tagBoxItem').attr({}).text('돼지').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'18',autocomplete:'off'})
+				),
+				$('<div/>').addClass('badge badge-success tagBoxItem').attr({}).text('치즈').append(
+					$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:'19',autocomplete:'off'})
+				)
+			)
+		)
+		
+		;
+	};
+	return {list:list,tagSearch:tagSearch};
 })();
