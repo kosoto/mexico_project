@@ -45,8 +45,5 @@ public class SearchCtrl {
 		};
 		logger.info(map.toString());
 		return f.apply(map);
-		
-		
 	}
-	
 }
