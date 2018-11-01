@@ -33,7 +33,8 @@
 <!-- less compiler -->
 <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.7.1/less.min.js"></script>
 <!--  font -->
-<link href="https://fonts.googleapis.com/css?family=Do+Hyeon|Gothic+A1|Nanum+Pen+Script|Gugi" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Do+Hyeon|Gothic+A1|Nanum+Pen+Script" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Gugi" rel="stylesheet">
 <!-- star-rating-svg -->
 <script src="${context}/resources/js/jquery/star-rating-svg.js"></script>
 <link rel="stylesheet" type="text/css" href="${context}/resources/css/star-rating-svg.css">

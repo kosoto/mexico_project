@@ -2,8 +2,6 @@ package com.bemeal.web.cmm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.bemeal.web.item.Item;
 import com.bemeal.web.item.ItemMapper;
 import com.bemeal.web.mbr.Member;
@@ -95,15 +92,13 @@ public class CommonCtrl {
 	/* /Taste - grade*/
 	
 	@GetMapping("/item/list/{option}/{value}")
-	public @ResponseBody Map<String,Object> list(
+	public @ResponseBody HashMap<String,Object> list(
 			@PathVariable String option,
 			@PathVariable String value){
 		Function<HashMap<String,Object>,ArrayList<HashMap<String,Object>>> f = x->{
 			ArrayList<HashMap<String,Object>> temp = new ArrayList<>();
 			String opt = (String)x.get("option");
 			String val = (String)x.get("value");
-			logger.info("option::{}",x.get("option"));
-			logger.info("val::{}",val);
 			switch(opt) {
 			case "grade": 
 				temp = cmmMapper.gradList();	
@@ -118,15 +113,11 @@ public class CommonCtrl {
 				temp = cmmMapper.listByGender(val);
 				break;
 			case "age": 
-				logger.info("age case");
 				x.put("start", val);
 				x.put("end", Integer.parseInt(val)+9);
 				temp = cmmMapper.listByAge(x);
-				logger.info(x.toString());
-				logger.info(temp.toString());
 				break;
 			default : 
-				logger.info("default::val::{}",val);
 				temp = cmmMapper.tagSerchList(value);
 				break;
 			}

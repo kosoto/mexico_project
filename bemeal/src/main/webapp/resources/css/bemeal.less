@@ -49,9 +49,22 @@ header  {
 	padding-top : 80px;
 }
 
-.mainContent {
-	margin: 0 150px;
+@media only screen and (min-width: 1800px) {
+    .mainContent {
+	margin: 0 400px;
 }
+}
+@media only screen and (min-width: 1000px) and (max-width: 1799px) {
+    .mainContent {
+	margin: 0 300px;
+}
+}
+@media only screen and (min-width: 760px) and (max-width: 999px) {
+    .mainContent {
+	margin: 0 200px;
+}
+}
+
 /* /navi */
 
 /* 이미지위에 글씨 올리기 */
@@ -80,9 +93,8 @@ header  {
 .carousel-title {
 	font-size : 1.5em;
 	color : @gray;
-	margin-left:7%;
 	margin-top:0px;
-	margin-bottom:0px;
+	margin-bottom:10px;
 	font-weight:bold;
 	font-family:'Gugi',cursive;
 	
@@ -234,8 +246,8 @@ footer {
 #tagBox{
 	position:absolute;
 	margin-top:20px;
-	left:-39px;
-	top:19px;
+	left:-110px;
+	top:21px;
 	width:400px;
 	height:84px;
 	background-color:#000;
@@ -248,8 +260,8 @@ footer {
 .tagBoxItem{
 	text-align:justify;
 	background-repeat: no-repeat;
-	/* min-width:50px;
+	min-width:50px;
 	max-width:50px;
 	min-height:30px;
-	max-height:30px; */
+	max-height:30px;
 }

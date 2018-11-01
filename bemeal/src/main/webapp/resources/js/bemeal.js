@@ -558,23 +558,39 @@ bemeal.search=(()=>{
 			(()=>{
 				let $div = $('<div/>').attr({id:'flavorTagList','data-toggle':'buttons'}).addClass('btn-group btn-group-toggle d-flex flex-column flex-md-row');
 				for(let i=1;i<=19;i++){
-					$('<label/>').addClass('btn tagBoxItem').attr({id:'tag'+i,name:i,'data-img':'true',style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'.png")'}).append(
+					$('<label/>').addClass('btn btn-warning btn-lg tagBoxItem').attr({id:'tag'+i,name:i,'data-img':'true',style:'padding:0px;width:100px;height:50px;'}).text('#태그').append(
 							$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:i,autocomplete:'off'})
 						).click(e=>{
 							e.preventDefault();
 							let target = $(e.currentTarget);
 							if(target.data('img')==true){
 								target.data('img',false)
-								target.attr({style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'_.png")'})
+								//target.attr({style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'_.png")'})
 							}else{
 								target.data('img',true)
-								target.attr({style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'.png")'})
+								//target.attr({style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'.png")'})
 							}
 							setTimeout(() => {
 								tagSearchList();
 							}, 100);
 						}).appendTo($div);
-				}
+/*					$('<label/>').addClass('btn tagBoxItem').attr({id:'tag'+i,name:i,'data-img':'true',style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'.png")'}).append(
+							$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:i,autocomplete:'off'})
+					).click(e=>{
+						e.preventDefault();
+						let target = $(e.currentTarget);
+						if(target.data('img')==true){
+							target.data('img',false)
+							target.attr({style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'_.png")'})
+						}else{
+							target.data('img',true)
+							target.attr({style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'.png")'})
+						}
+						setTimeout(() => {
+							tagSearchList();
+						}, 100);
+					}).appendTo($div);
+*/				}
 				return $div.mousedown(e=>{
 							e.preventDefault();
 							let target = $('#flavorTagList');
