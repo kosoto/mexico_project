@@ -56,20 +56,21 @@ public class TasteCtrl {
 		tmap.clear();
 		tmap.put("id", id);
 		tmap.put("flag", flag);
-		ArrayList<Map<String, Object>> tlist = null;
-		switch (flag) {
+		ArrayList<Map<String, Object>> tlist = tstMapper.listCart(tmap);
+/*		switch (flag) {
 		case "cart":
-			tlist = tstMapper.listCart(tmap);
+		
 			break;
-		case "buy":
-			tlist = tstMapper.listPayHis(tmap);
-			break;
-		case "gift": 
+		case "gift": case "giftto": //받은선물함
+			tmap.put("id", id);
+			tmap.put("flag", "gift");
+			tmap.put("state", flag);
+			tlist = tstMapper.listGift(tmap);
 			break;
 		default: 	
 			break;
-		}
-		System.out.println(tlist);
+		}*/
+		System.out.println("tlist: "+tlist);
 		return tlist;
 	}
 	@PostMapping("/cart/delete") //cart 삭제
@@ -79,21 +80,13 @@ public class TasteCtrl {
 			logger.info("들어온여러개의값 {}, 리턴값 {}",p.get("delList"),result);
 		return result;
 	}
-    @GetMapping("/pay/list")//페이지no.star날짜 end날짜
-    public ArrayList<Map<String, Object>>listPay(){
-          tmap.clear();
-          System.out.println("test1");
-          ArrayList<Map<String, Object>> tlist = tstMapper.listPayHis(tmap); //listPay
-          System.out.println(tlist);
-          return tlist;
-    }
-    
+ 
     @Transactional
     @PostMapping("/pay/post") 
     public int postPay(@RequestBody Map<String, Object> p){
           tmap.clear();           
-          if(tmap.get("toId")!=null) {//선물하기
-         	  logger.info("toID :  {}",tmap.get("toId"));
+          if(p.get("toId")!=null) {//선물하기
+         	  logger.info("toID :  {}",p.get("toId"));
          	 tmap.put("flag", "gift");
          	 tstMapper.postGift(p);
            }else {//구매하기
@@ -114,15 +107,10 @@ public class TasteCtrl {
           return result; 
     } 
     
-	@PostMapping("/payhis/search") //cart 삭제
+    @Transactional
+	@PostMapping("/purchase/payhis") // payhis search
 	public Map<String, Object> searchList(@RequestBody HashMap<String, Object> p){
-		/*{id : $.cookie('member')["memberId"],
-			prevDay: x.prevDay,
-			day: x.day,
-			pageNo: x.pageNo,
-			flag : 
-			keyword : }*/
-			System.out.println("payHis들어옴");
+			System.out.println("/purchase/payhis들어옴");
 		tmap.clear();
 		tmap.putAll(p);
 		p.put("count", tstMapper.countTaste(p));
@@ -139,10 +127,30 @@ public class TasteCtrl {
 		System.out.println("맵: "+tmap);
 		return tmap;
 	}
-    @PostMapping("/gift/post") //받은선물함
-    public int postGift(@RequestBody Map<String, Object> p){
-          tmap.clear();
-          return 0;
-    }
+    @Transactional
+   	@GetMapping("/purchase/gift/{id}/{state}/{pageNo}") // gift list
+   	public Map<String, Object> giftList(@PathVariable String id,
+   										@PathVariable String state,
+   										@PathVariable String pageNo){
+   			System.out.println("/purchase/gift들어옴");
+   		tmap.clear();
+   		logger.info("state :  {}",state);
+   		tmap.put("id", id);
+		tmap.put("flag", "gift");
+		tmap.put("state", state);
+		tmap.put("count", tstMapper.countGift(tmap));
+		System.out.println("count "+tmap.get("count"));
+		tmap.put("pageNum", pageNo);
+   		tmap.put("pageSize", 12);
+   		tmap.put("blockSize", 5);
+   		page.excute(tmap);
+   		page.setBeginRow(page.getBeginRow()-1);
+   		tmap.put("page",page);
+   		logger.info("page :  {}",tmap.get("page"));
+		ArrayList<Map<String, Object>> tlist = tstMapper.listGift(tmap);
+   		tmap.put("tlist",tlist);
+   		System.out.println("맵: "+tmap);
+   		return tmap;
+   	}
 
 }

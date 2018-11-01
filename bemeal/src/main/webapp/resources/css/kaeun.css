@@ -241,7 +241,7 @@
 .taste-background {
   width: 100%;
   height: 1800px;
-  background-image: url(https://images.pexels.com/photos/940302/pexels-photo-940302.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);
+  /* background-image: url(https://images.pexels.com/photos/940302/pexels-photo-940302.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260); */
   /* linear-gradient(to right, rgba(30, 75, 115, 1), rgba(255, 255, 255, 0)); */
   background-size: 105%;
   background-repeat: repeat-y;
@@ -279,7 +279,6 @@
     background:#ffffff;
     overflow:hidden;
     box-shadow:0 5px 10px rgba(0,0,0,0.5);
-    font-family: 'Nanum Pen Script', cursive;!important;
 }
 .gift_c .gift_img {
     position:relative;
@@ -326,6 +325,7 @@
     margin:0;
     padding:0;
     font-size:30px;
+    font-boarder:2px;
 }
 .gift_details h2 span {  /*From.★*/
     font-size:26px;
@@ -365,6 +365,9 @@
     width:100%;
 }
 
+.custom-select{
+	width:200px	
+}
 
 /* 앨범 화면 */
 /*Now the styles*/
@@ -456,6 +459,6 @@ width: 640px;
 /* 앨범 화면 끝 */
 /* chart */
 #series_chart_div{
-	background: url('https://cdn.pixabay.com/photo/2017/03/16/20/44/galaxy-2150186_960_720.png') no-repeat;
+	/* ackground: url('https://cdn.pixabay.com/photo/2017/03/16/20/44/galaxy-2150186_960_720.png') no-repeat; 지도화면*/
 	background-size: 80%;
 }
