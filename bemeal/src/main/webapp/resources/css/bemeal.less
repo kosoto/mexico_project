@@ -1,5 +1,7 @@
 @main_color_red : #bb1d1e; //rgb(187, 29, 30)
 @main_color_yellow : #fdcf33;  //rgb(253, 207, 51)
+@gray : #727375;
+@white : #e9ecef;
 
 * {
 	overflow-style: none;
@@ -7,10 +9,10 @@
 
 .text-shadow-black {
 	text-shadow : 
-	-1px 0 #000,
-	0 1px #000, 
-	1px 0 #000, 
-	0 -1px #000;
+	-1px 0 @white,
+	0 1px @white, 
+	1px 0 @white, 
+	0 -1px @white;
 }
 
 .text-shadow-white {
@@ -66,19 +68,23 @@ header  {
 		position : absolute;
 		bottom:0%;
 		text-align : center;
-		color : @main_color_red;
+		color : #212529;
 		font-size : 20px;
 		z-index:51;
+		font-weight:900;
+		font-family:'Gugi',cursive;
 		}
 	}
 }
 
 .carousel-title {
 	font-size : 1.5em;
-	color : @main_color_red;
+	color : @gray;
 	margin-left:7%;
 	margin-top:0px;
 	margin-bottom:0px;
+	font-weight:bold;
+	font-family:'Gugi',cursive;
 	
 }
 
@@ -231,12 +237,17 @@ footer {
 	left:-39px;
 	top:19px;
 	width:400px;
-	height:300px;
+	height:84px;
 	background-color:#000;
 	opacity:0.5;
 }
+#flavorTagList,#feelTagList,#ingTagList{
+	display:inline;
+	overflow:scroll;
+}
 .tagBoxItem{
 	text-align:justify;
+	background-repeat: no-repeat;
 	/* min-width:50px;
 	max-width:50px;
 	min-height:30px;

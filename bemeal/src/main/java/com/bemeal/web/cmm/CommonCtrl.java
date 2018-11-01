@@ -98,9 +98,13 @@ public class CommonCtrl {
 	public @ResponseBody Map<String,Object> list(
 			@PathVariable String option,
 			@PathVariable String value){
-		Function<String,ArrayList<HashMap<String,Object>>> f = x->{
+		Function<HashMap<String,Object>,ArrayList<HashMap<String,Object>>> f = x->{
 			ArrayList<HashMap<String,Object>> temp = new ArrayList<>();
-			switch(x) {
+			String opt = (String)x.get("option");
+			String val = (String)x.get("value");
+			logger.info("option::{}",x.get("option"));
+			logger.info("val::{}",val);
+			switch(opt) {
 			case "grade": 
 				temp = cmmMapper.gradList();	
 				break;
@@ -111,23 +115,27 @@ public class CommonCtrl {
 				temp = cmmMapper.wishList();
 				break;
 			case "gender": 
-				temp = cmmMapper.listByGender(value);
+				temp = cmmMapper.listByGender(val);
 				break;
 			case "age": 
-				map.clear();
-				map.put("start", value);
-				map.put("end", Integer.parseInt(value)+9);
-				temp = cmmMapper.listByAge(map);
+				logger.info("age case");
+				x.put("start", val);
+				x.put("end", Integer.parseInt(val)+9);
+				temp = cmmMapper.listByAge(x);
+				logger.info(x.toString());
+				logger.info(temp.toString());
 				break;
 			default : 
-				if(x.substring(0,3).equals("tag"))temp = cmmMapper.tagSerchList(value);
+				logger.info("default::val::{}",val);
+				temp = cmmMapper.tagSerchList(value);
 				break;
 			}
 			return temp;
 		};
 		map.clear();
 		map.put("option", option);
-		map.put("list", f.apply(option));
+		map.put("value", value);
+		map.put("list", f.apply(map));
 		return map;
 	}
 	
