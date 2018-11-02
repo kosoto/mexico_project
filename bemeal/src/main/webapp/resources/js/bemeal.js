@@ -448,8 +448,8 @@ bemeal.evaluate=(()=>{
 																method : 'post',
 																contentType : 'application/json',
 																data : JSON.stringify({
-																	memberId:memberId,
-																	seq:seq,
+																	id:memberId,
+																	itemSeq:seq,
 																	currentRating:currentRating*2
 																}),
 																success : r=>{

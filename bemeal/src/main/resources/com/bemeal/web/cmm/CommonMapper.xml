@@ -91,7 +91,7 @@
 	INSERT INTO TASTE
 	(GRADE, FLAG, MEMBER_ID, ITEM_SEQ)
 	VALUES
-	(#{grade} , 'star', #{id}, #{itemSeq})
+	(#{currentRating} , 'star', #{id}, #{itemSeq})
 	</insert>
 	<delete id="removeGrade">
 	DELETE FROM TASTE
@@ -101,7 +101,7 @@
 	</delete>
 	<update id="modifyGrade">
 	UPDATE TASTE
-	SET GRADE = #{grade}
+	SET GRADE = #{currentRating}
 	WHERE FLAG LIKE 'star'
 		AND MEMBER_ID LIKE #{id}
 		AND ITEM_SEQ LIKE #{itemSeq}

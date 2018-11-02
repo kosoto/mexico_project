@@ -31,6 +31,7 @@ public class TasteCtrl {
 		tmap.clear();
 		logger.info("id {}",id);
 		tmap.put("id", id);
+		
 		tmap.put("area", tstMapper.chartArea(id));
 		tmap.put("ingre", tstMapper.chartIngre());
 		tmap.put("brand", tstMapper.chartBrand());

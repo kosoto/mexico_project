@@ -2,6 +2,7 @@ package com.bemeal.web.cmm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -41,52 +42,45 @@ public class CommonCtrl {
 			@PathVariable String id,
 			@PathVariable String pageNum){
 		map.clear();
+		map.put("id", id);
 		map.put("pageNum", pageNum);
-		Function<String, Integer> cnt=x-> cmmMapper.countUnRatingsById(x);
-		map.put("count", cnt.apply(id));
-		map.put("pageSize", 20);
-		map.put("blockSize", 1);
-		pagination.excute(map);
-		Function<HashMap<String,Object>, ArrayList<HashMap<String,Object>>> f=x-> cmmMapper.evaluateList(x);
-		map.clear();
-		map.put("pagination", pagination);
-		map.put("id", id);		
-		map.put("list", f.apply(map));
-		map.put("page", pageNum);
-		return map;
+		Function<HashMap<String,Object>, HashMap<String,Object>>f=x->{
+			x.put("count", cmmMapper.countUnRatingsById((String) x.get("id")));
+			x.put("pageSize", 20);
+			x.put("blockSize", 1);
+			pagination.excute(x);
+			x.put("pagination", pagination);
+			x.put("list", cmmMapper.evaluateList(x));
+			return x;
+		};
+		return f.apply(map);
 	}
 	@Transactional
 	@PostMapping("/grade/evaluate")
 	public String evaluateGrade(@RequestBody HashMap<String,Object>p) {
-		double currentRating = ((int) p.get("currentRating"))/2.0;
-		Function<HashMap<String,Object>,String>pr=x->cmmMapper.selectOneGrade(x);
-		map.clear();
-		map.put("id",p.get("memberId"));
-		map.put("itemSeq",p.get("seq"));
-		String temp = pr.apply(map);
-		double prevRating = (temp==null)?0.0:Double.parseDouble(temp);
-		Function<HashMap<String,Object>, String>ev=x->{
-			String result = "";
-			if((double)x.get("prevRating")==0.0) result = (cmmMapper.insertGrade(x)!=0)?"add":"fail";
-			else if((double)x.get("prevRating")==(double)x.get("currentRating")) result = (cmmMapper.removeGrade(x)!=0)?"remove":"fail";
-			else result = (cmmMapper.modifyGrade(x)!=0)?"update":"fail";
-			return result;
+		Function<HashMap<String,Object>, String>f=x->{
+			x.put("currentRating", ((int) x.get("currentRating"))/2.0);
+			String prevRating = cmmMapper.selectOneGrade(x);
+			if(prevRating==null) 
+				return (cmmMapper.insertGrade(x)!=0)?"add":"fail";
+			else if(prevRating.equals(x.get("currentRating")+"")) 
+				return (cmmMapper.removeGrade(x)!=0)?"remove":"fail";
+			else 
+				return (cmmMapper.modifyGrade(x)!=0)?"update":"fail";
 		};
-		map.put("prevRating", prevRating);
-		map.put("currentRating", currentRating);
-		map.put("grade", currentRating);
-		return ev.apply(map);
+		return f.apply(p);
 	}
 	@Transactional
 	@GetMapping("/grade/count/{id}")
 	public HashMap<String, Object> countGrade(@PathVariable String id){
-		map.clear();
-		Function<String, String> gradeCnt=x->cmmMapper.countGrade(x);
-		Supplier<Integer> itemCnt=()->cmmMapper.countItem();
-		String cnt = gradeCnt.apply(id);
-		map.put("gradeCnt", (cnt==null)?"0":cnt);
-		map.put("itemCnt", itemCnt.get());
-		return map;
+		Function<String, HashMap<String, Object>> f=x->{
+			String count = cmmMapper.countGrade(x);
+			map.clear();
+			map.put("gradeCnt", (count==null)?"0":count);
+			map.put("itemCnt", cmmMapper.countItem());
+			return map;
+		};
+		return f.apply(id);
 	}
 	
 	/* /Taste - grade*/
@@ -95,39 +89,38 @@ public class CommonCtrl {
 	public @ResponseBody HashMap<String,Object> list(
 			@PathVariable String option,
 			@PathVariable String value){
-		Function<HashMap<String,Object>,ArrayList<HashMap<String,Object>>> f = x->{
-			ArrayList<HashMap<String,Object>> temp = new ArrayList<>();
-			String opt = (String)x.get("option");
+		Function<HashMap<String,Object>,HashMap<String,Object>> f = x->{
+			ArrayList<HashMap<String,Object>> list;
 			String val = (String)x.get("value");
-			switch(opt) {
+			switch((String)x.get("option")) {
 			case "grade": 
-				temp = cmmMapper.gradList();	
+				list = cmmMapper.gradList();	
 				break;
 			case "buy": 
-				temp = cmmMapper.buyList();
+				list = cmmMapper.buyList();
 				break;
 			case "wish": 
-				temp = cmmMapper.wishList();
+				list = cmmMapper.wishList();
 				break;
 			case "gender": 
-				temp = cmmMapper.listByGender(val);
+				list = cmmMapper.listByGender(val);
 				break;
 			case "age": 
 				x.put("start", val);
 				x.put("end", Integer.parseInt(val)+9);
-				temp = cmmMapper.listByAge(x);
+				list = cmmMapper.listByAge(x);
 				break;
 			default : 
-				temp = cmmMapper.tagSerchList(value);
+				list = cmmMapper.tagSerchList(value);
 				break;
 			}
-			return temp;
+			x.put("list", list);
+			return x;
 		};
 		map.clear();
 		map.put("option", option);
 		map.put("value", value);
-		map.put("list", f.apply(map));
-		return map;
+		return f.apply(map);
 	}
 	
 	/*tag*/
