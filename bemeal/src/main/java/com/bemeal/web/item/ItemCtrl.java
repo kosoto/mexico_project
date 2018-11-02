@@ -73,17 +73,17 @@ public class ItemCtrl {
 			@PathVariable int count,
 			@PathVariable String pageNum
 			){
-		map.clear();
 		//logger.info("count:{}",count);
+		map.clear();
 		map.put("pageNum",pageNum);
 		map.put("count", count);
 		map.put("pageSize", 6);
 		map.put("blockSize", 1);
 		//logger.info("map::{}",map);
 		pagi.excute(map);
-		map.clear();
 		map.put("pagi", pagi);
-
+		
+		
 		logger.info("map.get(\"pagi\"):{}",map.get("pagi"));
 		return map;
 	}

@@ -53,22 +53,22 @@ yoonho.service=(x=>{
 
 		$.getJSON($.ctx()+'/item/list/'+$brand_menu+'/'+$category_menu+'/'+$sort_menu,d=>{
 			//이게 가장 맨처음 보이는 화면
-			row(d.listsm).appendTo($('#yh_container'))
-		})
-		//같은 getJSON이지만 묶어서 놓게 되면 오류발생 수정할 수 있게되면 할 것.
-		$.getJSON($.ctx()+'/item/list/'+$brand_menu+'/'+$category_menu+'/'+$sort_menu,d=>{
+			row(d.listsm)//.appendTo($('#yh_container'))
 			$('#brand_menu').change(()=>{
 				$('#yh_container').empty();
 				$brand_menu = brand_arr[$("#brand_menu").val()]
 				$.getJSON($.ctx()+'/item/list/'+$brand_menu+'/'+$category_menu+'/'+$sort_menu,d=>{
-					row(d.listsm).appendTo($('#yh_container'))	
+					var page = 1;
+						row(d.listsm)
+						page++;
+					//row().appendTo($('#yh_container'))	
 				})
 			})//메뉴카테고리
 			$('#category_menu').change(()=>{
 				$('#yh_container').empty();
 				$category_menu = category_arr[$("#category_menu").val()]
 				$.getJSON($.ctx()+'/item/list/'+$brand_menu+'/'+$category_menu+'/'+$sort_menu,d=>{
-					row(d.listsm).appendTo($('#yh_container'))
+						row(d.listsm)
 				})
 			})//브랜드
 			$('#sort_menu').change(()=>{
@@ -76,87 +76,98 @@ yoonho.service=(x=>{
 				$sort_menu = sort_arr[$("#sort_menu").val()]
 				alert('#sort_menu option:selected:'+$('#sort_menu').val())
 				$.getJSON($.ctx()+'/item/list/'+$brand_menu+'/'+$category_menu+'/'+$sort_menu,d=>{
-					alert('소트..:'+d.listsm[0].imgSeq)
-					row(d.listsm).appendTo($('#yh_container'))	
+						row(d.listsm)
 				})
 				alert('#sort_menu option:selected:'+$('#sort_menu option:selected').val());
 			})//정렬
 		})
+		//같은 getJSON이지만 묶어서 놓게 되면 오류발생 수정할 수 있게되면 할 것.
+			
 		return $content;
 	};
 	var row=x=>{
 		$('#yh_container').empty();
 		let titles = [];
 		let length = x.length
-		console.log('x::length:'+x.length)
+		//console.log('x::length:'+x.length)
 
 		let $window = $(window);
 		let $document = $(document);
 		let page=1;
-		loadedPage({
-			length:length,
-			page:page++,
-			arr:x
-		})
-		loadedPage({
-			length:length,
-			page:page++,
-			arr:x
-		})
+		if(page<2){
+			for(var i = 0; i<2;i++){
+				loadedPage({
+					length:length,
+					page:i,
+					arr:x
+				})
+			}
+			//console.log('loadedPage::page:'+page)
+			page++
+		}
+			let flag = true;
 			$window.on('scroll.category',()=>{
-				if($window.scrollTop()+$window.height()+10>$document.height()){
-					loadedPage({
-						length:length,
-						page:page++,//++
-						arr:x
-					});
+				if(flag&&$window.scrollTop()+$window.height()+30>$document.height()){
+					flag=false;
+					setTimeout(() => {
+						loadedPage({
+							length:length,
+							page:page++,//++
+							arr:x
+						});
+						flag = true;
+					}, 600);
 				}
 			})
 	};
 	var loadedPage=x=>{
-		console.log('하아:'+x.length+'/'+x.page);
+		//console.log('x.length / x.page : '+x.length+'/'+x.page);
 		let $section;
-		let $div_row
-		let $div_col
-		let $div_card
-		let $div_view_zoom
-		let $div_a_p
-		console.log('x.page::'+x.page)
+		let $div_row;
+		let $div_col;
+		let $div_card;
+		let $div_view_zoom;
+		let $div_a_p;
+		let index=x.page*6;
 		$.getJSON($.ctx()+'/item/pagi/'+x.length*1+'/'+(x.page+""),d=>{
 			$section = $('<section align="left"/>').addClass('text-center my-5').appendTo($('#yh_container'))//.attr({style:'font-family: \'Sunflower\', sans-serif;'})
 			if(d.pagi.existNext){
-				console.log('d.pagi::'+Object.keys(d.pagi)+'/'+d.pagi.beginRow+'/'+d.pagi.endRow)
-				$div_row = $('<div/>').addClass('row').appendTo($section)
-				for(var j = d.pagi.beginRow;j<=d.pagi.endRow;j++){
-					$div_col = $('<div/>').addClass('col-lg-2 col-md-2 mb-lg-0 mb-2').appendTo($div_row).attr({style:'max-width:100%;max-height:100%;text-align:center'})
+				//console.log('d.pagi::'+Object.keys(d.pagi)+'/'+d.pagi.beginRow+'/'+d.pagi.endRow)
+				$div_row = $('<div/>').addClass('row').appendTo($section).attr({id:'div_row',style:'justify-content:left;'})
+				for(var j = d.pagi.beginRow;j<=d.pagi.endRow;j++,index++){
+					if(index<d.pagi.count){
+						$div_col = $('<div/>').addClass('col-lg-2 col-md-2 mb-lg-0 mb-2').appendTo($div_row).attr({style:'max-width:100%;max-height:100%;text-align:center'})
 						$div_card = $('<div/>').addClass('card collection-card z-depth-1-half').appendTo($div_col)
 						//console.log('x.valueOf():'+Object.keys(x.length))
 						$div_view_zoom = $('<div/>').addClass('view zoom').appendTo($div_card)
 												.append(
-													$('<img/>').addClass('img-fluid').attr({href:'#','data-seq':x.arr[j].itemSeq,src:x.arr[j].img}).click(e=>{
+													$('<img/>').addClass('img-fluid').attr({href:'#','data-seq':x.arr[index].itemSeq,src:x.arr[index].img}).click(e=>{
 														e.preventDefault();
-														console.log('e.currentTarget'+e.currentTarget.dataset.seq)
+														//console.log('e.currentTarget'+e.currentTarget.dataset.seq)
 														yoonho.service.retrieve(e.currentTarget.dataset.seq)
 													})
 												)
-						console.log('item_click_'+x.arr[j].itemSeq)
 						$div_a_p = $('<div/>').addClass('stripe dark').appendTo($div_card)
-										.append($('<a/>').append($('<p/>').html(x.arr[j].itemName).append($('<i/>').addClass('fa fa-angle-right').html(x.arr[j].price+' 원'))))
+										.append($('<a/>').append($('<p/>').html(x.arr[index].itemName).append($('<i/>').addClass('fa fa-angle-right').html(x.arr[index].price+' 원'))))
+						//console.log('밑 index값')
+						//console.log(index)
+						//console.log(d.pagi.count)
+					}else if(index>=d.pagi.count){
+						//나머지 한 페이지(6으로 나눈 뒤 나머지 값들)
+						//$div_col.attr({style:'visibility:hidden;'})
+						$(window).off('scroll.category');
+						break;
+					}
 				}
-			}else{
-				$('<div/>').html('마지막 페이지입니다').appendTo($div_row)
-				$(window).off('scroll.category');
 			}
-			
-			console.log(d.pagi);
+			//console.log(d.pagi);
 		})
 		//return $div_col;
 	};
 
 	var retrieve = x=>{
-		alert('x::'+x)
 		$.getJSON($.ctx()+'/item/retrieve/'+x,d=>{
-			console.log('d.retrieve[0]::'+d.retrieve[0].itemSeq+'//d.rtag[0]::'+d.rtag[0].TAG_NAME)
+			//console.log('d.retrieve[0]::'+d.retrieve[0].itemSeq+'//d.rtag[0]::'+d.rtag[0].TAG_NAME)
 			$.magnificPopup.open({
 				closeBtnInside:true,
 				closeOnContentClick:false,
@@ -193,8 +204,8 @@ yoonho.service=(x=>{
 		$(()=>{$('[data-toggle="tooltip"]').tooltip()})
 		let $div4 = $('<div/>').addClass('mg0a').appendTo($div3);//  결제하기/선물하기/위시리스트
 		let $div5 = $('<div/>').addClass('col-lg-8 text-center').attr({style:'margin-top: -300px;'})
-		.append($('<button/>').html('장바구니').addClass('btn btn-outline-warning').attr({style:'font-size:16px;', 'data-toggle':'collapse' , 'href':'#det_cart_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_cart_btn'}))
-		.append($('<button/>').html('결제하기').addClass('btn btn-outline-warning').attr({style:'font-size:16px;', 'data-toggle':'collapse' , 'href':'#det_pay_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_pay_btn'}))
+		.append($('<button/>').html('장바구니').addClass('btn btn-warning').attr({style:'font-size:16px;', 'data-toggle':'collapse' , 'href':'#det_cart_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_cart_btn'}))
+		.append($('<button/>').html('결제하기').addClass('btn btn-warning').attr({style:'font-size:16px;', 'data-toggle':'collapse' , 'href':'#det_pay_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_pay_btn'}))
 		.append($('<button/>').html('선물하기').addClass('btn btn-warning').attr({style:'font-size:16px;', 'data-toggle':'collapse' , 'href':'#det_gift_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_gift_btn'}))
 		.append($('<button/>').html('추천 도시락').addClass('btn btn-warning').attr({style:'font-size:16px;', 'data-toggle':'collapse' , 'href':'#det_recom_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_recom_btn'}))
 		.appendTo($div4)
@@ -219,16 +230,18 @@ yoonho.service=(x=>{
 											alert('로그인하세요.')
 										}else if($.cookie('member')!=null){
 											//rtrv.imgSeq,rtrv.itemName,rtrv.img,rtrv.price,rtrv.calorie,rtrv.category,rtrv.explains,rtrv.brand,rtrv.itemSeq
-											console.log('getJSON : /item/retrieve/'+rtrv.itemSeq)
-											console.log('$(\'#item_cart_iptbx\').val() : '+$item_cart_iptbx)
-											rtrv['quantity']=$item_cart_iptbx
-											console.log('rtrv:'+rtrv['quantity']+'/'+rtrv.quantity)
-											$.magnificPopup.close();//팝업창 끄는 효과 //우리는 멀티팝업 띄워야 함.
+											rtrv['quantityC']=$item_cart_iptbx
+											$.magnificPopup.close();
 											$.getScript($.script()+'/kaeun.js',()=>{
-												alert('보내주는 JSON 키값1 : quantity, 키값2 : itemSeq')
-												alert('kaeun.payments.cart(파라미터가 비어있음..)')
 												kaeun.main.init();
-												//kaeun.payments.cart();아님 kaeun.??.test에 해뒀다 하니 완성되고 띄워줄것//{quantity:rtrv.quantity,itemSeq:rtrv.itemSeq,flag:'cart'}
+								                console.log('rtrv.quantityC밑에 뜸')
+								                console.log(rtrv.quantityC)
+												kaeun.payment.putTaste({
+																		itemSeq:rtrv.itemSeq,
+																		quantity:rtrv.quantityC,
+																		flag:'cart'
+																		});
+												kaeun.ui.cart();
 											})
 										}
 									})
@@ -255,16 +268,23 @@ yoonho.service=(x=>{
 											alert('로그인하세요.')
 										}else if($.cookie('member')!=null){
 											//rtrv.imgSeq,rtrv.itemName,rtrv.img,rtrv.price,rtrv.calorie,rtrv.category,rtrv.explains,rtrv.brand,rtrv.itemSeq
-											console.log('getJSON : /item/retrieve/'+rtrv.itemSeq)
-											console.log('$(\'#item_iptbx\').val() : '+$item_pay_iptbx)
-											rtrv['quantity']=$item_pay_iptbx
-											console.log('rtrv:'+x.retrieve[0]['quantity']+'/'+x.retrieve[0].quantity)
+											rtrv['quantityP']=$item_pay_iptbx
 											$.magnificPopup.close();//팝업창 끄는 효과 //우리는 멀티팝업 띄워야 함.
 											$.getScript($.script()+'/kaeun.js',()=>{
-												alert('보내주는 JSON 키값 : x[0].quantity,imgSeq,' )
-												alert('kaeun.payments.cart(파라미터가 비어있음..)')
-												kaeun.main.init();//x.retrieve 중괄호 안붙이고 보내야 받는 kaeun.js 에서 [] 쓰게 된다.;
-												//kaeun.payments.cart();//아님 kaeun.??.test에 해뒀다 하니 완성되고 띄워줄것//{quantity:rtrv.quantity,itemSeq:rtrv.itemSeq,flag:'cart'}
+												if(confirm('해당상품을 구매하시겠습니까?')){
+										               let payList =  [{itemSeq:rtrv.itemSeq,
+										                       quantity:rtrv.quantityP,
+										                       itemName:rtrv.itemName,
+										                       price:rtrv.price,
+										                       explains:rtrv.explains,
+										                       img:rtrv.img}];
+										               console.log('pay의 paylist 밑에 뜸')
+										               console.log(payList)
+										               let delList = null;
+										               kaeun.main.init();
+										               kaeun.payment.purchase({payList:payList,delList:delList});
+										               kaeun.payments.payHis();
+												}else{}
 											})
 										}
 									})
@@ -291,16 +311,23 @@ yoonho.service=(x=>{
 											alert('로그인하세요.')
 										}else if($.cookie('member')!=null){
 											//rtrv.imgSeq,rtrv.itemName,rtrv.img,rtrv.price,rtrv.calorie,rtrv.category,rtrv.explains,rtrv.brand,rtrv.itemSeq
-											console.log('getJSON : /item/retrieve/'+rtrv.itemSeq)
-											console.log('$(\'#item_iptbx\').val() : '+$item_gift_iptbx)
-											rtrv['quantity']=$item_gift_iptbx
-											console.log('rtrv:'+x.retrieve[0]['quantity']+'/'+x.retrieve[0].quantity)
+											rtrv['quantityG']=$item_gift_iptbx
 											$.magnificPopup.close();//팝업창 끄는 효과 //우리는 멀티팝업 띄워야 함.
 											$.getScript($.script()+'/kaeun.js',()=>{
-												alert('보내주는 JSON 키값 : x[0].quantity,imgSeq,' )
-												alert('kaeun.giftments.cart(파라미터가 비어있음..)')
-												kaeun.main.init();//x.retrieve 중괄호 안붙이고 보내야 받는 kaeun.js 에서 [] 쓰게 된다.;
-												//kaeun.payments.cart();//아님 kaeun.??.test에 해뒀다 하니 완성되고 띄워줄것//{quantity:rtrv.quantity,itemSeq:rtrv.itemSeq,flag:'cart'}
+												if(confirm('해당상품을 선물하시겠습니까?')){
+										               let payList =  [{itemSeq:rtrv.itemSeq,
+										                       quantity:rtrv.quantityG,
+										                       itemName:rtrv.itemName,
+										                       price:rtrv.price,
+										                       explains:rtrv.explains,
+										                       img:rtrv.img}];
+										               console.log('gift의 paylist 밑에 뜸')
+										               console.log(payList)
+										               let delList = null;
+										               kaeun.main.init();
+										               kaeun.payment.giftPopup({payList:payList,delList:delList});
+										               kaeun.ui.gift();
+										              }else{}
 											})
 										}
 									})
@@ -333,21 +360,8 @@ yoonho.service=(x=>{
 					}
 					$.getJSON($.ctx()+'/item/recommend/'+memid+'/'+rtrv.itemSeq,()=>{
 						$('<div/>').html(y_item_carouselUI(rtrv)).appendTo($('#det_recom_btn_te'))
-						//$('<div/>').append(yoonho.contain.recommend()).appendTo($('#det_recom_btn_te'))
 					})
 				})
-				
-
-		/*				$('<div/>').addClass('col-lg-8 mgt50 btn-group').attr({id:'detail_recom_div'})
-				$('<div/>').addClass('form-group').attr({id:'detail_d_recom'}).appendTo($('#detail_recom_div'))
-				$('<select/>').addClass('form-control').attr({id:'detail_s_recom'}).appendTo($('#detail_d_recom'))
-				for( i =0 ; i <detail_arr.length;i++){
-					$('<option value='+i+'/>').html(detail_arr[i]).attr({id:'detail_'+i+'_menu'}).appendTo($('#detail_s_recom'))
-				}
-				$('#detail_s_recom').change(()=>{
-					alert('몇번클릭?'+$detail_s_recom.val())
-				})*/
-
 		
 		let $div4_1 = $('<div/>').attr({id:'div4_1'}).addClass('col-lg-8 mgt50-mgb100').appendTo($div3)
 
@@ -361,7 +375,7 @@ yoonho.service=(x=>{
 						.append($('<div/>').addClass('card-header border-0 font-weight-bold').html('comments'))
 						
 									$.each(d.read,(i,j)=>{
-										console.log('j::'+j.memberId)
+										//console.log('j::'+j.memberId)
 										yoonho.contain.commentList(j).appendTo($section6_2)
 									})
 		})
@@ -515,7 +529,6 @@ yoonho.contain=(x=>{
 		return $cart;
 	};
 	var gift=x=>{
-		alert('들어와라')
 		let $gift;
 		$gift=$('<table/>').addClass('table')
 				.append(
@@ -575,7 +588,7 @@ yoonho.contain=(x=>{
 						.append($('<th/>').append($('<i/>').addClass('fa grey-text').attr({'aria-hidden':'true'}).html(x.rtrv.price) ))
 						.append($('<th/>').append($('<i/>').addClass('fa grey-text').attr({'aria-hidden':'true'}).html(x.rtrv.category) ))
 						.append($('<th/>').append($('<i/>').addClass('fa grey-text').attr({'aria-hidden':'true'}).html(x.rtrv.brand) ))
-						.append($('<th/>').append($('<input type="number" value="1" aria-label="Search" class="form-control" style="width: 70px">').attr({id:'input_pay_res_bx'})
+						.append($('<th/>').append($('<input type="number" value="1" aria-label="Search" class="form-control" style="width: 70px">').attr({id:'item_pay_iptbx'})
 								.on('change', ()=> {
 							    	$('#input_pay_res_bx').html( ($('#item_pay_iptbx').val()*1) * (x.rtrv.price*1) +' 원')
 							    })))
@@ -586,13 +599,12 @@ yoonho.contain=(x=>{
 						.append($('<th/>').append($('<i/>').addClass('fa grey-text').attr({'aria-hidden':'true'}) ))
 						.append($('<th/>').append($('<i/>').addClass('fa grey-text').attr({'aria-hidden':'true'}) ))
 						.append($('<th/>').append($('<i/>').addClass('fa grey-text').attr({'aria-hidden':'true',style:'font-weight: bold;font-size:24px;'}).html('총 금액') ))
-						.append($('<th/>').append($('<i/>').addClass('fa ').attr({'aria-hidden':'true',id:'input_res_bx',style:'font-weight: bold;font-size:20px;'}) ))
+						.append($('<th/>').append($('<i/>').addClass('fa ').attr({'aria-hidden':'true',id:'input_pay_res_bx',style:'font-weight: bold;font-size:20px;'}) ))
 					)
 				)
 		return $pay;
 	};
 	var recommend =x=>{
-		alert('들어옴 recommend')
 		return $('<div data-ride="carousel"/>').addClass('carousel slide carousel-fade').attr({id:'carousel-example-2'})//,'data-ride':'carousel'
 						.append(
 							$('<ol/>').addClass('carousel-indicators')
@@ -713,7 +725,6 @@ yoonho.contain=(x=>{
 												itemSeq:x.itemSeq
 										}),
 										success:d=>{
-											alert('d.write'+[d.write.length-1]+'.articleSeq:'+d.write[d.write.length-1].articleSeq)
 											yoonho.contain.commentList(d.write[d.write.length-1]).attr({id:'modify_btn_'+d.write[d.write.length-1].articleSeq}).appendTo($('#section6_2'))
 											$('#item_r_comment').val('')
 										},
@@ -732,7 +743,7 @@ yoonho.contain=(x=>{
 			);
 	};
 	var commentList =x=>{
-		console.log('commentList x:'+x.memberId)
+		//console.log('commentList x:'+x.memberId)
 		let $list;
 			if($.cookie("member")==null){
 				$list = $('<div/>').addClass('media d-block d-md-flex mt-4').attr({id:'cmm_'+x.articleSeq})
@@ -745,7 +756,7 @@ yoonho.contain=(x=>{
 							$('<a/>').addClass('font-weight-bold mt-0').attr({style:'font-size:18px;color:#007bff;'}).html(x.memberId).click(e=>{alert('회원retrieve')})//정훈정훈한테 물어보고 memberRetrieve 없으면 h4태그로 바꿀것
 					)
 					.append(
-						 	$('<h6/>').html(x.content+'/작성시간:'+x.ARTICLE_TIME+'/작성날짜:'+x.date)
+						 	$('<h6/>').html(x.content+'/작성시간:'+x.ARTICLE_TIME)
 					)
 				)
 			}else if($.cookie("member")!=null){
