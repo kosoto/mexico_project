@@ -1,16 +1,11 @@
 package com.bemeal.web.mbr;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -75,18 +70,8 @@ public class MemberCtrl {
 	}
 	@PostMapping("/login")
 	public Member login(@RequestBody Member member) {
-//		String pw = member.getPassword();
-//		String encodedPw = "";
 		Function<Member, Member>f=x->mbrMapper.get(x);
-		Member m = f.apply(member);
-		if(m == null) {
-			System.out.println("------------ 로그인 실패 -----------");
-		}else {
-			System.out.println("------------ 로그인 성공 -----------");
-			System.out.println("로그인 후의 값은 "+m.getEmail());
-		}
-		
-		return m;
+		return f.apply(member);
 	}
 	
 	@PostMapping("/modify")

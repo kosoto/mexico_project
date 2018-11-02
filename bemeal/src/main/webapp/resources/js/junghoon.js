@@ -167,13 +167,9 @@ junghoon.member = (()=>{
 						data : JSON.stringify({ memberId : memberId,
 												password : password}),
 						success : d => {
-							console.log(d);
 							if(d!=''){//로그인 성공
-									
-								alert('로그인 성공  넘어 온 d의  이메일 :: '+ d.email);
 								$.cookie("member", d);
 								//메인화면 보여주기
-								alert('쿠키에 저장된 이메일 :: '+$.cookie("member").email);
 								bemeal.router.main();
 							}else{//로그인 실패
 								alert('로그인에 실패했습니다.');
@@ -542,12 +538,11 @@ junghoon.service = {
 				;
 				},
 				mypage : x => {
+					$('header').remove();
 			alert('mp');
 			$.getScript($.script()+'/ui/j_mbrupdate.js', ()=>{
 				let t = $.cookie('member');
-				alert("t ::"+t.memberId);
-				$.getJSON(
-						$.ctx()+'/mbr/detail/'+t.memberId, d=>{
+				$.getJSON($.ctx()+'/mbr/detail/'+t.memberId, d=>{
 						$('#content').empty().html(modifyUI(d))
 						$('#delete_submit_btn').click(e=>{
 						alert('삭제클릭');

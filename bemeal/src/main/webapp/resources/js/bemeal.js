@@ -219,7 +219,7 @@ bemeal.compo=(()=>{
 								}
 								
 							}),
-							$('<button/>').addClass('btn btn-outline-white btn-sm my-0').attr({'data-flag':'true',style:'color:black!important',type:'button',id:'testSearch'}).text('tag').click(e=>{
+							$('<button/>').addClass('btn btn-outline-white btn-sm my-0').attr({'data-flag':'true',style:'color:black!important;font-size:14px;',type:'button',id:'testSearch'}).text('tag').click(e=>{
 								e.preventDefault();
 								$.getScript($.script()+"/junghoon.js",()=>{
 									$(window).off('scroll.category');
@@ -240,7 +240,7 @@ bemeal.compo=(()=>{
 							$('<a/>').addClass('nav-link dropdown-toggle').attr({id:'navbarDropdownMenuLink','data-toggle':'dropdown','aria-haspopup':'true','aria-expanded':'false'}).append(
 								$('<i/>').addClass('fa fa-user')
 							),
-							$('<div/>').addClass('dropdown-menu dropdown-menu-right dropdown-unique').attr({id:'info','aria-labelledby':'navbarDropdownMenuLink'}).append(
+							$('<div/>').addClass('dropdown-menu dropdown-menu-right dropdown-unique').attr({id:'info','aria-labelledby':'navbarDropdownMenuLink',style:'opacity:0.75'}).append(
 								$('<a/>').addClass('dropdown-item unAuth').attr({href:'#',id:'login'}).text('로그인').click(e=>{
 									e.preventDefault();
 									$.getScript($.script()+"/junghoon.js",(e)=>{
@@ -557,21 +557,24 @@ bemeal.search=(()=>{
 	var tagSearch = x=>{
 		$('<div/>').attr({id:'tagBox'}).insertAfter($('#testSearch')).append(
 			(()=>{
-				let $div = $('<div/>').attr({id:'ingTagList','data-toggle':'buttons'}).addClass('btn-group btn-group-toggle d-flex flex-column flex-md-row');
+				let $div = $('<div/>').attr({id:'ingTagList','data-toggle':'buttons','data-move':false}).addClass('btn-group btn-group-toggle d-flex flex-column flex-md-row');
 				let ingTagArr = ['닭','오리','오징어','소고기','버섯','김치','계란','더덕','새우','고등어','갈치','문어','장어','감자','고구마','어묵','소시지','돼지','치즈'];
 				for(let i=1;i<=19;i++){
 					$('<button/>').addClass('btn btn-outline-yellow waves-effect btn-rounded tagBoxItem').attr({'data-flag':true,type:'button',id:'tag'+i,name:i,style:'margin:5px;padding:0px;width:100px;height:50px;border-radius:10em;'}).text('#'+ingTagArr[i-1]).append(
 							$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:i,'data-name':ingTagArr[i-1],autocomplete:'off'})
 						).click(e=>{
-							let target = $(e.currentTarget);
-							if(target.data('flag') == true){
-								target.removeClass('btn-outline-yellow').addClass('btn-yellow');
-								target.data('flag',false);
-							}else{
-								target.removeClass('btn-yellow').addClass('btn-outline-yellow');
-								target.data('flag',true);
+							if($('#ingTagList').data('move') == false){
+								let target = $(e.currentTarget);
+								if(target.data('flag') == true){
+									target.removeClass('btn-outline-yellow').addClass('btn-yellow');
+									target.data('flag',false);
+								}else{
+									target.removeClass('btn-yellow').addClass('btn-outline-yellow');
+									target.data('flag',true);
+								}
+								setTimeout(() => {tagSearchList();}, 100);
 							}
-							setTimeout(() => {tagSearchList();}, 100);
+							
 						}).appendTo($div);
 				}
 				return $div.mousedown(e=>{
@@ -583,9 +586,13 @@ bemeal.search=(()=>{
 						})
 						.mousemove(e=>{
 							let target = $('#ingTagList');
+							target.data('move',true);
 							if(target.data('down')) target.scrollLeft(target.data('left') - e.pageX + target.data('x'));
 						})
-						.mouseup(e=>{$(e.currentTarget).data('down',false);});
+						.mouseup(e=>{
+							$(e.currentTarget).data('down',false);
+							$('#ingTagList').data('move',false);
+						});
 			})(),
 			(()=>{
 				let $div2 = $('<div/>').attr({id:'flavorTagList','data-toggle':'buttons'}).addClass('btn-group btn-group-toggle d-flex flex-column flex-md-row');

@@ -10,7 +10,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	<head>
 		<title>0hh Website Template | Home :: W3layouts</title>
 		<meta name="keywords" content="404 iphone web template, Android web template, Smartphone web template, free webdesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" />
-		<link href="/web/resources/css/404/style.css" rel="stylesheet" type="text/css"  media="all" />
+		<link href="/web/resources/css/error/404.css" rel="stylesheet" type="text/css"  media="all" />
 	</head>
 	<body>
 		<!--start-wrap--->
@@ -26,7 +26,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<div class="content">
 				<img src="/web/resources/img/404/error-img.png" title="error" />
 				<p><span><label>O</label>hh.....</span>You Requested the page that is no longer There.</p>
-				<a href="http://localhost:8080/web/WEB-INF/views/main.jsp">Back To Home</a>
+				<a href="http://203.236.209.46:8080/web">Back To Home</a>
 				<div class="copy-right">
 					<p>&copy; 2013 Ohh. All Rights Reserved | Design by <a href="http://w3layouts.com/">W3Layouts</a></p>
 				</div>
