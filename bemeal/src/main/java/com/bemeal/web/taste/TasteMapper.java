@@ -26,4 +26,5 @@ public interface TasteMapper {
 	public int postGift(Map<String, Object> p);
 	public int postTastePay(Map<String, Object> p);
 	public int countTaste(Map<String, Object> p);
+	public int countGift(Map<String, Object> p);
 }

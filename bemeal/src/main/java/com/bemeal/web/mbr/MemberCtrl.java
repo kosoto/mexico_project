@@ -40,7 +40,7 @@ public class MemberCtrl {
 			}else {
 				return "0";
 			}
-			//			return mbrMapper.idcheck(mbr.toString());
+			
 		};
 		
 		return f.apply(mbr);	
@@ -78,29 +78,51 @@ public class MemberCtrl {
 //		String pw = member.getPassword();
 //		String encodedPw = "";
 		Function<Member, Member>f=x->mbrMapper.get(x);
-		return f.apply(member);
+		Member m = f.apply(member);
+		if(m == null) {
+			System.out.println("------------ 로그인 실패 -----------");
+		}else {
+			System.out.println("------------ 로그인 성공 -----------");
+			System.out.println("로그인 후의 값은 "+m.getEmail());
+		}
+		
+		return m;
 	}
 	
 	@PostMapping("/modify")
 	public int modify(@RequestBody Member member) {
 		HashMap<String, Object> r = new HashMap<>();
+		String memberId, password, address, email, phoneNum;
+		memberId = member.getMemberId();
+		password = member.getPassword();
+		address = member.getAddress();
+		email = member.getEmail();
+		phoneNum = member.getPhoneNum();
 		
-		r.put("memberId", member.getMemberId());
-		r.put("password", member.getPassword());
-		r.put("address", member.getAddress());
-		r.put("eMail", member.getEMail());
-		r.put("phoneNum", member.getPhoneNum());
+		Util.log.accept("memberId :: "+memberId);
+		Util.log.accept("password :: "+password);
+		Util.log.accept(" address :: "+address);
+		Util.log.accept("   eMail :: "+email);
+		Util.log.accept("phoneNum :: "+phoneNum);
+		
+		
+		r.put("memberId", memberId);
+		r.put("password", password);
+		r.put("address", address);
+		r.put("email", email);
+		r.put("phoneNum", phoneNum);
 		
 		Util.log.accept("정보수정 자바 컨트롤러");
-		Function<Member, Integer>f=x->{
-			return mbrMapper.modify(r);
-		};
+		Function<Member, Integer>f=x-> {return mbrMapper.modify(r);};
 		Util.log.accept("정보수정 자바 컨트롤러2");
+		int a = f.apply(member);
+		Util.log.accept("결과 :: "+a);
+				
 		return f.apply(member);
 	}
 	
 	@SuppressWarnings("unchecked")
-	@PostMapping("/kakao/retrieve")
+	@PostMapping("/kakao/retrieve")	
 	public Member retrieveKakao(@RequestBody HashMap<String, Object>mbr) {
 		Function<HashMap<String, Object>, Member>f=x->{
 			Member kakao = mbrMapper.getKakao(((int)x.get("id"))+"");
@@ -110,7 +132,7 @@ public class MemberCtrl {
 				member.setName(((HashMap<String, Object>)x.get("properties")).get("nickname")+"");
 				HashMap<String, Object> account__ = (HashMap<String, Object>) x.get("kakao_account");
 				if((boolean) account__.get("has_age_range")) member.setAge(Integer.parseInt((account__.get("age_range")+"").substring(0,2)));
-				if((boolean) account__.get("has_email")) member.setEMail((account__).get("email")+"");
+				if((boolean) account__.get("has_email")) member.setEmail((account__).get("email")+"");
 				if((boolean) account__.get("has_gender")) member.setGender(((account__.get("gender")+"").equals("male"))?"남":"여");
 				kakao = member;
 				mbrMapper.post(member);
@@ -118,6 +140,17 @@ public class MemberCtrl {
 			return kakao;
 		};
 		return f.apply(mbr);
+	}
+	@GetMapping("/detail/{id}")	
+	public Member getMbr(@PathVariable String id) {
+		System.out.println("=========== 테스트 메소드로 진입함 ="
+				+ "============");
+		Member mbr = new Member();
+		mbr.setMemberId(id);
+		mbr = mbrMapper.get(mbr);
+		
+		System.out.println("수정 테스트용 이메일 : "+mbr.getEmail());
+		return mbr;
 	}
 }
 

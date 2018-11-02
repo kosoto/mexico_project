@@ -7,7 +7,7 @@
   		INSERT INTO MEMBER
   		(MEMBER_ID,PASSWORD,NAME,AGE,SSN,GENDER,ADDRESS,E_MAIL,PHONE_NUM)
   		VALUES
-	  	(#{memberId},#{password},#{name},#{age},#{ssn},#{gender},#{address},#{eMail},#{phoneNum})
+	  	(#{memberId},#{password},#{name},#{age},#{ssn},#{gender},#{address},#{email},#{phoneNum})
   	</insert>
   	<select id="listAll" resultType="com.bemeal.web.mbr.Member">
         SELECT 
@@ -25,8 +25,9 @@
     	AGE,
     	SSN,
     	GENDER,
+    	PASSWORD,
     	ADDRESS,
-    	E_MAIL AS eMail,
+    	E_MAIL AS email, 
     	PHONE_NUM AS phoneNum
     	FROM MEMBER
     	<where>
@@ -43,8 +44,9 @@
 		WHERE MEMBER_ID LIKE #{memberId}
 	</delete>
 	<update id="modify">
-		UPDATE MEMBER SET PASSWORD = #{password}, ADDRESS = #{address}, E_MAIL = #{eMail}, PHONE_NUM = #{phoneNum}
-			WHERE MEMBER_ID LIKE #{memberId}
+		UPDATE MEMBER SET PASSWORD = #{password}, ADDRESS = #{address},
+		E_MAIL = #{email}, PHONE_NUM = #{phoneNum}
+		WHERE MEMBER_ID LIKE #{memberId}
 	</update>
 	<select id="getKakao" resultType="com.bemeal.web.mbr.Member">
 	SELECT 
