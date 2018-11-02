@@ -86,14 +86,18 @@ yoonho.service=(x=>{
 	};
 	var row=x=>{
 		$('#yh_container').empty();
-		let num = 4;
 		let titles = [];
 		let length = x.length
 		console.log('x::length:'+x.length)
 
 		let $window = $(window);
 		let $document = $(document);
-		let page=0;
+		let page=1;
+		loadedPage({
+			length:length,
+			page:page++,
+			arr:x
+		})
 		loadedPage({
 			length:length,
 			page:page++,
@@ -117,27 +121,27 @@ yoonho.service=(x=>{
 		let $div_card
 		let $div_view_zoom
 		let $div_a_p
-		let index=x.page*6;
+		console.log('x.page::'+x.page)
 		$.getJSON($.ctx()+'/item/pagi/'+x.length*1+'/'+(x.page+""),d=>{
 			$section = $('<section align="left"/>').addClass('text-center my-5').appendTo($('#yh_container'))//.attr({style:'font-family: \'Sunflower\', sans-serif;'})
-			$div_row = $('<div/>').addClass('row').appendTo($section)
 			if(d.pagi.existNext){
-					for(var j = 1;j<=6;j++){
-						$div_col = $('<div/>').addClass('col-lg-2 col-md-2 mb-lg-0 mb-2').appendTo($div_row).attr({style:'max-width:100%;max-height:100%;text-align:center'})
-						for(var k = 0;k<2;k++,index++){
-							$div_card = $('<div/>').addClass('card collection-card z-depth-1-half').appendTo($div_col)
-							$div_view_zoom = $('<div/>').addClass('view zoom').appendTo($div_card)
-												.append($('<img/>').addClass('img-fluid').attr({id:'item_click_'+x.arr[index].itemSeq,src:x.arr[index].img})
-													.click(e=>{
-														console.log(x.arr[index].itemSeq+'/'+x.arr[index].itemName+'/'+j)
-														yoonho.service.retrieve(x.arr[index].itemSeq);
+				console.log('d.pagi::'+Object.keys(d.pagi)+'/'+d.pagi.beginRow+'/'+d.pagi.endRow)
+				$div_row = $('<div/>').addClass('row').appendTo($section)
+				for(var j = d.pagi.beginRow;j<=d.pagi.endRow;j++){
+					$div_col = $('<div/>').addClass('col-lg-2 col-md-2 mb-lg-0 mb-2').appendTo($div_row).attr({style:'max-width:100%;max-height:100%;text-align:center'})
+						$div_card = $('<div/>').addClass('card collection-card z-depth-1-half').appendTo($div_col)
+						//console.log('x.valueOf():'+Object.keys(x.length))
+						$div_view_zoom = $('<div/>').addClass('view zoom').appendTo($div_card)
+												.append(
+													$('<img/>').addClass('img-fluid').attr({href:'#','data-seq':x.arr[j].itemSeq,src:x.arr[j].img}).click(e=>{
+														e.preventDefault();
+														console.log('e.currentTarget'+e.currentTarget.dataset.seq)
+														yoonho.service.retrieve(e.currentTarget.dataset.seq)
 													})
 												)
-							$div_a_p = $('<div/>').addClass('stripe dark').appendTo($div_card)
-											.append($('<a/>').append($('<p/>').html(x.arr[index].itemName).append($('<i/>').addClass('fa fa-angle-right').html(x.arr[index].price+' 원'))))
-							console.log('x.arr[index].itemName::'+x.arr[index].itemName)
-							console.log('index:'+index)
-						}
+						console.log('item_click_'+x.arr[j].itemSeq)
+						$div_a_p = $('<div/>').addClass('stripe dark').appendTo($div_card)
+										.append($('<a/>').append($('<p/>').html(x.arr[j].itemName).append($('<i/>').addClass('fa fa-angle-right').html(x.arr[j].price+' 원'))))
 				}
 			}else{
 				$('<div/>').html('마지막 페이지입니다').appendTo($div_row)
