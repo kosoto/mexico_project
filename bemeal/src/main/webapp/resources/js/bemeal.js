@@ -92,10 +92,9 @@ bemeal.router = {
 				$.getJSON($.ctx()+'/tagList',d=>{
 					tags = d;
 					if(member!==undefined){
-						titles = {
-								gender:member['gender'],
-								age:(member['age']+"").substring(0,1)+"0"
-						};
+						titles = {};
+						if(member['gender']!==undefined) titles['gender'] = member['gender'];
+						if(member['age']!==undefined) titles['age'] = member['age'];
 					}
 					for(let i=1;i<=20;i++){
 						let temp = Math.floor(Math.random()*tags.length);
@@ -109,30 +108,31 @@ bemeal.router = {
 							age:'대가 좋아하는'
 					};
 					let $window = $(window);
+					let scrollFlag = true;
 					$window.on('scroll.category',e=>{ //스크롤로 데이터 불러오기
-							if(keySet.length!=0 && $window.scrollTop()+$window.height()+80>$(document).height()){
-								let key = keySet.shift();
-								let value = values.shift();
-								$.getJSON($.ctx()+"/item/list/"+key+"/"+value,d=>{
-									setTimeout(() => {
-										$carousels.append(
-												bemeal.compo.carousel({
-													id:'carousel'+key,
-													title:(x=>{
-														if(key==='gender') return value+'성이 좋아하는'
-														
-														if(key==='age')	return value+'대가 좋아하는'
-														
-														if(key.substring(0,3)==='tag') return '#'+value;
-														
-														return '';
-													})(),
-													arr:d.list,
-													row_size:5
-												})
-										);
-									}, 750);
-								}); 
+							if(scrollFlag && keySet.length!=0 && $window.scrollTop()+$window.height()+80>$(document).height()){
+								scrollFlag = false;
+									let key = keySet.shift();
+									let value = values.shift();
+									$.getJSON($.ctx()+"/item/list/"+key+"/"+value,d=>{
+											$carousels.append(
+													bemeal.compo.carousel({
+														id:'carousel'+key,
+														title:(x=>{
+															if(key==='gender') return value+'성이 좋아하는'
+															
+															if(key==='age')	return value+'대가 좋아하는'
+															
+															if(key.substring(0,3)==='tag') return '#'+value;
+															
+															return '';
+														})(),
+														arr:d.list,
+														row_size:5
+													})
+											);
+											scrollFlag = true;
+									});
 							}
 					});//scroll event end
 				}); //getJSON tagList end
@@ -202,7 +202,7 @@ bemeal.compo=(()=>{
 								})
 							)
 						),
-						$('<form/>').addClass('form-inline').append(												// keydown은 키 입력하자마자, e.keyCode === 13 은 입력값이 enter이면 무시하기 위함
+						$('<form/>').addClass('form-inline').attr({id:'serchForm'}).append(												// keydown은 키 입력하자마자, e.keyCode === 13 은 입력값이 enter이면 무시하기 위함
 							$('<input/>').addClass('form-control mr-sm-2').attr({type:'text','aria-label':'Search',placeholder:'Search'}).keydown(e=>{if(e.keyCode === 13)e.preventDefault();}).keyup(e=>{
 								//검색하기
 								let searchWord = e.currentTarget.value; //현재 e.currentTarget은 현재 이벤트를 호출한 input태그 
@@ -219,11 +219,19 @@ bemeal.compo=(()=>{
 								}
 								
 							}),
-							$('<button/>').addClass('btn btn-outline-white btn-sm my-0').attr({style:'color:black!important',type:'button',id:'testSearch'}).text('tag').click(e=>{
+							$('<button/>').addClass('btn btn-outline-white btn-sm my-0').attr({'data-flag':'true',style:'color:black!important',type:'button',id:'testSearch'}).text('tag').click(e=>{
 								e.preventDefault();
 								$.getScript($.script()+"/junghoon.js",()=>{
-									$(window).off('scroll.category',"width=260, height=540");
-									junghoon.service.search();
+									$(window).off('scroll.category');
+									//junghoon.service.search();
+									if(e.currentTarget.dataset.flag=='true'){
+										e.currentTarget.dataset.flag = 'false';
+										bemeal.search.tagSearch();
+									}else{
+										e.currentTarget.dataset.flag = 'true';
+										$('#tagBox').remove();
+										bemeal.router.main();
+									}
 								})
 							})
 						),
@@ -386,8 +394,7 @@ bemeal.evaluate=(()=>{
 							page:page++,
 						});
 						scrolling = true;
-					}, 500);
-					
+					}, 100);
 				}
 				
 			});//scroll event end
@@ -396,13 +403,11 @@ bemeal.evaluate=(()=>{
 	};
 	var loadPage=x=>{
 		let memberId = x.id;
-		console.log('x.page::'+x.page);
 		$.getJSON($.ctx()+'/evaluate/'+memberId+'/'+((x.page)+""),d=>{//id와 page를 가지고 평가 하지 않은 제품들을 가져오기
 			setTimeout(() => {
 				let arr = d.list;
 				$.getScript($.script()+'/yoonho.js',()=>{
 					if(d.pagination.existNext){ //다음 페이지가 존재할때만 
-						
 						let index = 0;
 						let $content =  $('#content');
 						for(let i=1;i<=5;i++){
@@ -548,5 +553,150 @@ bemeal.search=(()=>{
 			}
 		}
 	};
-	return {list:list};
+	var tagSearch = x=>{
+		$('<div/>').attr({id:'tagBox'}).insertAfter($('#testSearch')).append(
+			(()=>{
+				let $div = $('<div/>').attr({id:'flavorTagList','data-toggle':'buttons'}).addClass('btn-group btn-group-toggle d-flex flex-column flex-md-row');
+				for(let i=1;i<=19;i++){
+					$('<label/>').addClass('btn btn-warning tagBoxItem').attr({id:'tag'+i,name:i,'data-img':'true',style:'padding:0px;width:100px;height:50px;'}).text('#태그').append(
+							$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:i,autocomplete:'off'})
+						).click(e=>{
+							e.preventDefault();
+							let target = $(e.currentTarget);
+							if(target.data('img')==true){
+								target.data('img',false)
+								//target.attr({style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'_.png")'})
+							}else{
+								target.data('img',true)
+								//target.attr({style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'.png")'})
+							}
+							setTimeout(() => {
+								tagSearchList();
+							}, 100);
+						}).appendTo($div);
+/*					$('<label/>').addClass('btn tagBoxItem').attr({id:'tag'+i,name:i,'data-img':'true',style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'.png")'}).append(
+							$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:i,autocomplete:'off'})
+					).click(e=>{
+						e.preventDefault();
+						let target = $(e.currentTarget);
+						if(target.data('img')==true){
+							target.data('img',false)
+							target.attr({style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'_.png")'})
+						}else{
+							target.data('img',true)
+							target.attr({style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'.png")'})
+						}
+						setTimeout(() => {
+							tagSearchList();
+						}, 100);
+					}).appendTo($div);
+*/				}
+				return $div.mousedown(e=>{
+							e.preventDefault();
+							let target = $('#flavorTagList');
+							target.data('down',true);
+							target.data('x',e.pageX);
+							target.data('left',target.scrollLeft());
+						})
+						.mousemove(e=>{
+							let target = $('#flavorTagList');
+							if(target.data('down')) target.scrollLeft(target.data('left') - e.pageX + target.data('x'));
+						})
+						.mouseup(e=>{$(e.currentTarget).data('down',false);});
+			})(),
+			(()=>{
+				let $div2 = $('<div/>').attr({id:'feelTagList','data-toggle':'buttons'}).addClass('btn-group btn-group-toggle d-flex flex-column flex-md-row');
+				for(let i=20;i<=29;i++){
+					$('<label/>').addClass('btn tagBoxItem').attr({id:'tag'+i,name:i,'data-img':'true',style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'.png")'}).append(
+							$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:i,autocomplete:'off'})
+						).click(e=>{
+							let target = $(e.currentTarget);
+							if(target.data('img')==true){
+								target.data('img',false)
+								target.attr({style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'_.png")'})
+							}else{
+								target.data('img',true)
+								target.attr({style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'.png")'})
+							}
+							setTimeout(() => {
+								tagSearchList();
+							}, 100);
+						}).appendTo($div2);
+				}
+				return $div2.mousedown(e=>{
+							e.preventDefault();
+							let target = $('#feelTagList');
+							target.data('down',true);
+							target.data('x',e.pageX);
+							target.data('left',target.scrollLeft());
+						})
+						.mousemove(e=>{
+							let target = $('#feelTagList');
+							if(target.data('down')) target.scrollLeft(target.data('left') - e.pageX + target.data('x'));
+						})
+						.mouseup(e=>{$(e.currentTarget).data('down',false);});
+			})(),
+			(()=>{
+				let $div2 = $('<div/>').attr({id:'ingTagList','data-toggle':'buttons'}).addClass('btn-group btn-group-toggle d-flex flex-column flex-md-row');
+				for(let i=30;i<=53;i++){
+					$('<label/>').addClass('btn tagBoxItem').attr({id:'tag'+i,name:i,'data-img':'true',style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'.png")'}).append(
+							$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:i,autocomplete:'off'})
+					).click(e=>{
+						let target = $(e.currentTarget);
+						if(target.data('img')==true){
+							target.data('img',false);
+							target.attr({style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'_.png")'})
+						}else{
+							target.data('img',true);
+							target.attr({style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'.png")'})
+						}
+						setTimeout(() => {
+							tagSearchList();
+						}, 100);
+					}).appendTo($div2);
+				}
+				return $div2.mousedown(e=>{
+					e.preventDefault();
+					let target = $('#ingTagList');
+					target.data('down',true);
+					target.data('x',e.pageX);
+					target.data('left',target.scrollLeft());
+				})
+				.mousemove(e=>{
+					let target = $('#ingTagList');
+					if(target.data('down')) target.scrollLeft(target.data('left') - e.pageX + target.data('x'));
+				})
+				.mouseup(e=>{$(e.currentTarget).data('down',false);});
+			})()
+		);
+	};
+	var tagSearchList = ()=>{
+		let tagArr = [];
+		$.each($('.j_scbox:checked'),(i,j)=>{
+			tagArr.push(j.name);
+		});
+			if(tagArr.length==0){
+				bemeal.router.main();
+			}else{
+				$.ajax({
+					url : $.ctx()+'/tagSearch',
+					method:'post',
+					contentType:'application/json',
+					data:JSON.stringify({"JtagArr":tagArr}), // 리스트
+					success:d=>{
+						console.log('태그 검색 결과');
+						console.log(d);
+						bemeal.search.list({
+							word:'태그',
+							list:d
+						});
+					},
+					error:(x,y,z)=>{
+						console.log('error :: '+z)
+						}
+				})
+			}
+		
+	}
+	return {list:list,tagSearch:tagSearch,tagSearchList:tagSearchList};
 })();

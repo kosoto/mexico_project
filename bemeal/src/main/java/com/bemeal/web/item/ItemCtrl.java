@@ -38,7 +38,7 @@ public class ItemCtrl {
 	
 	
 	@GetMapping("/item/list/{brand}/{category}/{sort}")//   /{}
-	public @ResponseBody Map<String,Object> list(
+	public @ResponseBody HashMap<String,Object> list(
 			@PathVariable String brand,
 			@PathVariable String category,
 			@PathVariable String sort
@@ -57,6 +57,7 @@ public class ItemCtrl {
 			item.setBrand(brand);
 			item.setCategory(category);
 		}
+		
 		if(sort.equals("가격")) {
 			map.put("listsm", itemMapper.listSomePrice(item));
 		}else if(sort.equals("칼로리")){
@@ -87,18 +88,27 @@ public class ItemCtrl {
 		return map;
 	}
 	@GetMapping("/item/retrieve/{itemSeq}")
-	public @ResponseBody Map<String, Object> retrieve(@PathVariable String itemSeq ){
+	public @ResponseBody HashMap<String, Object> retrieve(@PathVariable String itemSeq ){
 		map.clear();
 		//logger.info("itemseq int:{}",Integer.parseInt(itemSeq));
 		item.setItemSeq(Integer.parseInt(itemSeq));
 //		logger.info("itemseq :{}",item);
 		itemMapper.retrieve(item);
 		itemMapper.tag(item);
-//		logger.info("item retrieve:{}",itemMapper.retrieve(item));
+		logger.info("item retrieve:{}",itemMapper.retrieve(item));
 //		logger.info("itemMapper.tag(item):{}",itemMapper.tag(item));
 		map.put("retrieve", itemMapper.retrieve(item));
 		map.put("rtag", itemMapper.tag(item));
 //		logger.info("rtag::{}",map.get("rtag").toString());
+		return map;
+	}
+	@GetMapping("/item/recommend/{memberId}/{itemSeq}")
+	public @ResponseBody HashMap<String, Object> recommend(
+			@PathVariable String memberId,
+			@PathVariable String itemSeq
+			){
+		logger.info("/item/relative/::{}",memberId);
+		logger.info("/item/relative/::{}",itemSeq);
 		return map;
 	}
 }

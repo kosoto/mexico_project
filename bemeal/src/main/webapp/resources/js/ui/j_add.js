@@ -19,7 +19,7 @@
 	+'      <input type="text" id="address" placeholder="상품을 받을 주소를 입력해주세요" ><br>'
 	
 	+'      <label for="eMail"><b>이메일 주소</b></label>'
-	+'      <input type="text" id="eMail" placeholder="이메일 주소를 입력해주세요"><br>'
+	+'      <input type="text" id="eMail" ptlaceholder="이메일 주소를 입력해주세요"><br>'
 	
 	+'      <label for="phoneNum"><b>전화번호</b></label>'
 	+'      <input type="text" id="phoneNum" placeholder="전화번호를 입력해주세요" ><br>'

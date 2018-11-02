@@ -1,4 +1,4 @@
-function y_item_carouselUI(){
+function y_item_carouselUI(x){
 	return '<!--Carousel Wrapper-->'
 	+'<div id="carousel-example-2" class="carousel slide carousel-fade" data-ride="carousel">'
 	+'  <!--Indicators-->'
@@ -12,7 +12,7 @@ function y_item_carouselUI(){
 	+'  <div class="carousel-inner" role="listbox">'
 	+'    <div class="carousel-item active">'
 	+'      <div class="view">'
-	+'        <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Slides/img%20(68).jpg" alt="First slide">'
+	+'        <img class="d-block w-100" src="'+x.img+'" alt="First slide">'
 	+'        <div class="mask rgba-black-light"></div>'
 	+'      </div>'
 	+'      <div class="carousel-caption">'
