@@ -6,12 +6,9 @@ ui = {
 			.addClass('btn-two '+x.color+' '+x.size)
 			.html(x.txt);
 		},
-		e_btn : x=>{ //efect 버튼
-			return '';
-		},
 		checkbox : x=>{ //kui.checkbox({id:'',txt:''})
 			let p = $('<span/>').addClass('form-check');
-			$('<input/>').attr({type:'checkbox', id:x.id, name:'cartchk'}).prop("checked", true)
+			$('<input/>').attr({type:'checkbox', id:x.id, name:'cartchk'}).prop("checked", false)
 			.addClass('form-check-input').appendTo(p);
 			$('<label/>').attr({type:'label'})
 			.addClass('form-check-label').html(x.txt+"　").appendTo(p);
@@ -28,8 +25,6 @@ ui = {
 				   +$('#k_header').empty()
 				   +$('#k_footer').empty();
 		},
-		stndlayout : x=>{
-		},
 		a_col : x=>{ //ui.a_col({claz:'',id:''});
 			return  '<div class="'+x.claz+'">'
 			+'<div class="row">'
@@ -39,10 +34,6 @@ ui = {
 			+'</div>'
 			+'</div>'
 			+'</div>';			
-			/*$('<div/>').addClass(x.claz).html(
-					$('<div/>').addClass("row").html(
-							$('<div/>').addClass("col").attr({id:x.id})
-							));*/
 		},
 		n_div : x=>{ // ui.n_div({clazz:'',html:'',to:''});
 			return $('<div/>').addClass(x.clazz).html(x.html).appendTo(x.to);
@@ -50,7 +41,8 @@ ui = {
 		div : x=>{// ui.div({id:"",clazz:""})
 			return $('<div/>').addClass(x.clazz).attr({id:x.id});
 			}, 
-		span : x=>{return $('<span/>').attr({id:x});}, // kui.span("id"};
+		span : x=>{
+			return $('<span/>').attr({id:x});}, // kui.span("id"};
 		grid_list : x=>{ //kui.cart_list({c1:"",c2:"",c3:"",c4:"",c5:"",c6:"",c7:""})
 			let t = x.to; 
 			return ui.n_div({clazz:'iteminfo',html:x.c1,to:t})

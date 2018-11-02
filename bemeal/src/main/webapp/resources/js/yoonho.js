@@ -11,7 +11,6 @@ yoonho.service=(x=>{
 			"미드미","바니스푼","명가","더큰","런치바스켓","바비박스","이마트"];
 		let category_arr=["카테고리전체","한식","중식","일식","양식","동남아식","다이어트식","건강식","분식"];
 		let sort_arr=["가격","칼로리","평점"];
-
 		let $content = $('#content')//.attr({style:'font-family: \'Sunflower\', sans-serif;'})
 		let $select = $('<div/>')
 		.html('<h2 class="h1-responsive font-weight-bold text-center my-5">Be meal::Our menu</h2>'

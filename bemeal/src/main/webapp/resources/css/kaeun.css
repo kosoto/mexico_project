@@ -237,6 +237,11 @@
 /* payHis */
 
 
+/* 페이지네이션 */
+#pageNation{
+	margin-left: 40%;
+}
+
 /* taste */
 .taste-background {
   width: 100%;
@@ -462,4 +467,27 @@ width: 640px;
 #series_chart_div{
 	/* ackground: url('https://cdn.pixabay.com/photo/2017/03/16/20/44/galaxy-2150186_960_720.png') no-repeat; 지도화면*/
 	background-size: 80%;
+}
+
+/*gift 팝업*/
+.val_o{
+	color: #008000;
+	font-size : 13px;
+}
+.val_x{
+	color: #c62f09;
+	font-size : 13px;
+}
+#counter {
+  background:rgba(255,0,0,0.5);
+  border-radius: 0.5em;
+  padding: 0 .5em 0 .5em;
+  font-size: 0.75em;
+}
+/*결제 */
+.pay_end{
+ margin-left : 40%;
+}
+.pay_end p{
+ margin-left : 5%;	
 }

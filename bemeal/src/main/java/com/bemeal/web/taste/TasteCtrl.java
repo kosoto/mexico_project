@@ -1,6 +1,8 @@
 package com.bemeal.web.taste;
 
 import java.util.*;
+import java.util.function.Function;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,18 +30,15 @@ public class TasteCtrl {
 	@Transactional
 	@GetMapping("/chart/{id}")
 	public Map<String,Object> chart(@PathVariable String id){
-		tmap.clear();
-		logger.info("id {}",id);
-		tmap.put("id", id);
-		tmap.put("area", tstMapper.chartArea(id));
-		tmap.put("ingre", tstMapper.chartIngre());
-		tmap.put("brand", tstMapper.chartBrand());
-		tmap.put("menu", tstMapper.chartMenu());
-	/*	tmap.put("taste", tstMapper.chartTaste());
-		tmap.put("emotion", tstMapper.chartEmotion());
-		*/
-		//	System.out.println(tmap.get("menu"));
-		return tmap;
+		Function<String, Map<String,Object>> f=x->{
+			tmap.clear();
+			tmap.put("area", tstMapper.chartArea(x));
+			tmap.put("ingre", tstMapper.chartIngre(x));
+			tmap.put("brand", tstMapper.chartBrand(x));
+			tmap.put("menu", tstMapper.chartMenu(x));
+			return tmap;
+		};
+		return f.apply(id);
 	}
 	
 	@PostMapping("/cart/post") //cart 등록
