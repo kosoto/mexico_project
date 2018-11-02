@@ -265,10 +265,9 @@ yoonho.service=(x=>{
 										if($.cookie('member')==null){
 											alert('로그인하세요.')
 										}else if($.cookie('member')!=null){
-											$('#content').removeClass('mainContent');
+											$('#content').removeClass('mainContent')
 											//rtrv.imgSeq,rtrv.itemName,rtrv.img,rtrv.price,rtrv.calorie,rtrv.category,rtrv.explains,rtrv.brand,rtrv.itemSeq
 											rtrv['quantityP']=$item_pay_iptbx
-											$.magnificPopup.close();//팝업창 끄는 효과 //우리는 멀티팝업 띄워야 함.
 											$.getScript($.script()+'/kaeun.js',()=>{
 												if(confirm('해당상품을 구매하시겠습니까?')){
 										               let payList =  [{itemSeq:rtrv.itemSeq,

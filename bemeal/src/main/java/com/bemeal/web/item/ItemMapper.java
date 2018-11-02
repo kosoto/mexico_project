@@ -13,7 +13,7 @@ public interface ItemMapper {
 	public List<Item> listSomePrice(Item p);
 	public List<Item> listSomeCalorie(Item p);
 	public List<Item> listSomeScore(Item p);
-	public int listCount(Map<?, ?> p);
+	//public int listCount(Map<?, ?> p);
 	public List<Item> retrieve(Item p);
 	public List<Item> tag(Item p);
 }
