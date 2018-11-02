@@ -39,8 +39,9 @@
     		</if>
     	</where>
     </select>
+    
     <delete id="delete">
-		DELETE FROM MEMBER
+      	DELETE FROM MEMBER
 		WHERE MEMBER_ID LIKE #{memberId}
 	</delete>
 	<update id="modify">
