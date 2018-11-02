@@ -63,11 +63,14 @@ public class MemberCtrl {
 	}
 	@PostMapping("/remove")
 	public int delete(@RequestBody Member member) {
+		HashMap<String, Object> r = new HashMap<>();
 		Util.log.accept("delete 넘어온 아이디 값 :: "+member.getMemberId());
-		member.setMemberId(member.getMemberId());
+		r.put("memberId", member.getMemberId());
+		Util.log.accept("삭제쿼리 들어감");
 		Function<Member, Integer>f=x->
-			{return mbrMapper.delete(member);
+			{return mbrMapper.delete(x);
 		};
+		Util.log.accept("삭제쿼리 갔다옴");
 		return f.apply(member);
 	}
 	@PostMapping("/login")
