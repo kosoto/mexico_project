@@ -232,7 +232,6 @@ yoonho.service=(x=>{
 											rtrv['quantityC']=$item_cart_iptbx
 											$.magnificPopup.close();
 											$.getScript($.script()+'/kaeun.js',()=>{
-												kaeun.main.init();
 								                console.log('rtrv.quantityC밑에 뜸')
 								                console.log(rtrv.quantityC)
 												kaeun.payment.putTaste({
@@ -240,7 +239,6 @@ yoonho.service=(x=>{
 																		quantity:rtrv.quantityC,
 																		flag:'cart'
 																		});
-												kaeun.ui.cart();
 											})
 										}
 									})
@@ -280,9 +278,7 @@ yoonho.service=(x=>{
 										               console.log('pay의 paylist 밑에 뜸')
 										               console.log(payList)
 										               let delList = null;
-										               kaeun.main.init();
-										               kaeun.payment.purchase({payList:payList,delList:delList});
-										               kaeun.payments.payHis();
+										               kaeun.payment.purchase({payList:payList,delList:delList});   
 												}else{}
 											})
 										}
@@ -311,7 +307,7 @@ yoonho.service=(x=>{
 										}else if($.cookie('member')!=null){
 											//rtrv.imgSeq,rtrv.itemName,rtrv.img,rtrv.price,rtrv.calorie,rtrv.category,rtrv.explains,rtrv.brand,rtrv.itemSeq
 											rtrv['quantityG']=$item_gift_iptbx
-											$.magnificPopup.close();//팝업창 끄는 효과 //우리는 멀티팝업 띄워야 함.
+											//팝업창 끄는 효과 //우리는 멀티팝업 띄워야 함.
 											$.getScript($.script()+'/kaeun.js',()=>{
 												if(confirm('해당상품을 선물하시겠습니까?')){
 										               let payList =  [{itemSeq:rtrv.itemSeq,
@@ -323,9 +319,7 @@ yoonho.service=(x=>{
 										               console.log('gift의 paylist 밑에 뜸')
 										               console.log(payList)
 										               let delList = null;
-										               kaeun.main.init();
 										               kaeun.payment.giftPopup({payList:payList,delList:delList});
-										               kaeun.ui.gift();
 										              }else{}
 											})
 										}

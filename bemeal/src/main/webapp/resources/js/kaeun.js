@@ -368,6 +368,7 @@ kaeun.payment=(()=>{
     var purchase = x=>{ //☆구매중
     	// kaeun.payment.purchase();
     	kaeun.ui.setLayout();
+    	ui.newpage();
 		$('#k_header').addClass('cart_title').append('<h2>결제중<h2>');
         $('#k_content').append('<div id="cart_grid" class=list-grid-container>'
                    +'<div class="item_header">No</div>'
