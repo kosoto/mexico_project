@@ -230,6 +230,7 @@ bemeal.compo=(()=>{
 									}else{
 										e.currentTarget.dataset.flag = 'true';
 										$('#tagBox').remove();
+										$('.nav-item').removeClass('active');
 										bemeal.router.main();
 									}
 								})
@@ -546,7 +547,7 @@ bemeal.search=(()=>{
 									)
 							);
 				if(!flag){
-					$gift_c.attr('style','visibility: hidden;');
+					$gift_c.attr({'style':'visibility: hidden;'});
 				}
 				$gift_slid.append($gift_c);
 				index++;
@@ -556,114 +557,94 @@ bemeal.search=(()=>{
 	var tagSearch = x=>{
 		$('<div/>').attr({id:'tagBox'}).insertAfter($('#testSearch')).append(
 			(()=>{
-				let $div = $('<div/>').attr({id:'flavorTagList','data-toggle':'buttons'}).addClass('btn-group btn-group-toggle d-flex flex-column flex-md-row');
+				let $div = $('<div/>').attr({id:'ingTagList','data-toggle':'buttons'}).addClass('btn-group btn-group-toggle d-flex flex-column flex-md-row');
+				let ingTagArr = ['닭','오리','오징어','소고기','버섯','김치','계란','더덕','새우','고등어','갈치','문어','장어','감자','고구마','어묵','소시지','돼지','치즈'];
 				for(let i=1;i<=19;i++){
-					$('<label/>').addClass('btn btn-warning tagBoxItem').attr({id:'tag'+i,name:i,'data-img':'true',style:'padding:0px;width:100px;height:50px;'}).text('#태그').append(
-							$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:i,autocomplete:'off'})
+					$('<button/>').addClass('btn btn-outline-yellow waves-effect btn-rounded tagBoxItem').attr({'data-flag':true,type:'button',id:'tag'+i,name:i,style:'margin:5px;padding:0px;width:100px;height:50px;border-radius:10em;'}).text('#'+ingTagArr[i-1]).append(
+							$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:i,'data-name':ingTagArr[i-1],autocomplete:'off'})
 						).click(e=>{
-							e.preventDefault();
 							let target = $(e.currentTarget);
-							if(target.data('img')==true){
-								target.data('img',false)
-								//target.attr({style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'_.png")'})
+							if(target.data('flag') == true){
+								target.removeClass('btn-outline-yellow').addClass('btn-yellow');
+								target.data('flag',false);
 							}else{
-								target.data('img',true)
-								//target.attr({style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'.png")'})
+								target.removeClass('btn-yellow').addClass('btn-outline-yellow');
+								target.data('flag',true);
 							}
-							setTimeout(() => {
-								tagSearchList();
-							}, 100);
+							setTimeout(() => {tagSearchList();}, 100);
 						}).appendTo($div);
-/*					$('<label/>').addClass('btn tagBoxItem').attr({id:'tag'+i,name:i,'data-img':'true',style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'.png")'}).append(
-							$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:i,autocomplete:'off'})
-					).click(e=>{
-						e.preventDefault();
-						let target = $(e.currentTarget);
-						if(target.data('img')==true){
-							target.data('img',false)
-							target.attr({style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'_.png")'})
-						}else{
-							target.data('img',true)
-							target.attr({style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'.png")'})
-						}
-						setTimeout(() => {
-							tagSearchList();
-						}, 100);
-					}).appendTo($div);
-*/				}
+				}
 				return $div.mousedown(e=>{
 							e.preventDefault();
-							let target = $('#flavorTagList');
+							let target = $('#ingTagList');
 							target.data('down',true);
 							target.data('x',e.pageX);
 							target.data('left',target.scrollLeft());
 						})
 						.mousemove(e=>{
-							let target = $('#flavorTagList');
+							let target = $('#ingTagList');
 							if(target.data('down')) target.scrollLeft(target.data('left') - e.pageX + target.data('x'));
 						})
 						.mouseup(e=>{$(e.currentTarget).data('down',false);});
 			})(),
 			(()=>{
-				let $div2 = $('<div/>').attr({id:'feelTagList','data-toggle':'buttons'}).addClass('btn-group btn-group-toggle d-flex flex-column flex-md-row');
+				let $div2 = $('<div/>').attr({id:'flavorTagList','data-toggle':'buttons'}).addClass('btn-group btn-group-toggle d-flex flex-column flex-md-row');
+				let flavorTagArr = ['고소','달달','짭짤','달콤','매콤','새콤','씁쓸','감칠맛','담백','느끼'];
 				for(let i=20;i<=29;i++){
-					$('<label/>').addClass('btn tagBoxItem').attr({id:'tag'+i,name:i,'data-img':'true',style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'.png")'}).append(
-							$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:i,autocomplete:'off'})
+					$('<button/>').addClass('btn btn-outline-red waves-effect btn-rounded tagBoxItem').attr({'data-flag':true,type:'button',id:'tag'+i,name:i,style:'margin:5px;padding:0px;width:100px;height:50px;border-radius:10em;'}).text('#'+flavorTagArr[i-20]).append(
+							$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:i,'data-name':flavorTagArr[i-20],autocomplete:'off'})
 						).click(e=>{
 							let target = $(e.currentTarget);
-							if(target.data('img')==true){
-								target.data('img',false)
-								target.attr({style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'_.png")'})
+							if(target.data('flag') == true){
+								target.removeClass('btn-outline-red').addClass('btn-red');
+								target.data('flag',false);
 							}else{
-								target.data('img',true)
-								target.attr({style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'.png")'})
+								target.removeClass('btn-red').addClass('btn-outline-red');
+								target.data('flag',true);
 							}
-							setTimeout(() => {
-								tagSearchList();
-							}, 100);
+							setTimeout(() => {tagSearchList();}, 100);
 						}).appendTo($div2);
 				}
 				return $div2.mousedown(e=>{
 							e.preventDefault();
-							let target = $('#feelTagList');
+							let target = $('#flavorTagList');
 							target.data('down',true);
 							target.data('x',e.pageX);
 							target.data('left',target.scrollLeft());
 						})
 						.mousemove(e=>{
-							let target = $('#feelTagList');
+							let target = $('#flavorTagList');
 							if(target.data('down')) target.scrollLeft(target.data('left') - e.pageX + target.data('x'));
 						})
 						.mouseup(e=>{$(e.currentTarget).data('down',false);});
 			})(),
 			(()=>{
-				let $div2 = $('<div/>').attr({id:'ingTagList','data-toggle':'buttons'}).addClass('btn-group btn-group-toggle d-flex flex-column flex-md-row');
+				let $div3 = $('<div/>').attr({id:'feelTagList','data-toggle':'buttons'}).addClass('btn-group btn-group-toggle d-flex flex-column flex-md-row');
+				let feelTagArr = ['빨간','얼큰한','얼얼한','봄','여름','가을','겨울','둘이서','엄마','건강한','야식','아침','점심','저녁','말랑한','야들한','부드런','말캉한','샤르르','찐한','힐링','알콜','맥주','푸짐한'];
 				for(let i=30;i<=53;i++){
-					$('<label/>').addClass('btn tagBoxItem').attr({id:'tag'+i,name:i,'data-img':'true',style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'.png")'}).append(
-							$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:i,autocomplete:'off'})
+					$('<button/>').addClass('btn btn-outline-white waves-effect btn-rounded tagBoxItem').attr({'data-flag':true,type:'button',id:'tag'+i,name:i,style:'margin:5px;padding:0px;width:100px;height:50px;border-radius:10em;'}).text('#'+feelTagArr[i-30]).append(
+							$('<input/>').addClass('j_scbox').attr({type:'checkbox',name:i,'data-name':feelTagArr[i-30],autocomplete:'off'})
 					).click(e=>{
 						let target = $(e.currentTarget);
-						if(target.data('img')==true){
-							target.data('img',false);
-							target.attr({style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'_.png")'})
+						if(target.data('flag') == true){
+							target.removeClass('btn-outline-white').addClass('btn-white');
+							target.data('flag',false);
 						}else{
-							target.data('img',true);
-							target.attr({style:'background-image:url("/web/resources/img/cmm/tag/tag'+i+'.png")'})
+							target.removeClass('btn-white').addClass('btn-outline-white');
+							target.data('flag',true);
 						}
-						setTimeout(() => {
-							tagSearchList();
-						}, 100);
-					}).appendTo($div2);
+						setTimeout(() => {tagSearchList();}, 100);
+					}).appendTo($div3);
 				}
-				return $div2.mousedown(e=>{
+				return $div3.mousedown(e=>{
 					e.preventDefault();
-					let target = $('#ingTagList');
+					let target = $('#feelTagList');
 					target.data('down',true);
 					target.data('x',e.pageX);
 					target.data('left',target.scrollLeft());
 				})
 				.mousemove(e=>{
-					let target = $('#ingTagList');
+					let target = $('#feelTagList');
 					if(target.data('down')) target.scrollLeft(target.data('left') - e.pageX + target.data('x'));
 				})
 				.mouseup(e=>{$(e.currentTarget).data('down',false);});
@@ -672,7 +653,9 @@ bemeal.search=(()=>{
 	};
 	var tagSearchList = ()=>{
 		let tagArr = [];
+		let tagNameArr = '';
 		$.each($('.j_scbox:checked'),(i,j)=>{
+			tagNameArr += '#'+j.dataset.name+' ';
 			tagArr.push(j.name);
 		});
 			if(tagArr.length==0){
@@ -684,10 +667,8 @@ bemeal.search=(()=>{
 					contentType:'application/json',
 					data:JSON.stringify({"JtagArr":tagArr}), // 리스트
 					success:d=>{
-						console.log('태그 검색 결과');
-						console.log(d);
 						bemeal.search.list({
-							word:'태그',
+							word:tagNameArr,
 							list:d
 						});
 					},

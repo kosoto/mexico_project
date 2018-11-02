@@ -90,7 +90,7 @@ header  {
 	}
 }
 
-.carousel-title {
+.carousel-title, .search_page_head {
 	font-size : 1.5em;
 	color : @gray;
 	margin-top:0px;
@@ -246,22 +246,59 @@ footer {
 #tagBox{
 	position:absolute;
 	margin-top:20px;
-	left:-110px;
-	top:21px;
-	width:400px;
-	height:84px;
+	left:-127px;
+	top:22px;
+	width:421px;
+	height:139px;
 	background-color:#000;
-	opacity:0.5;
+	opacity:0.8;
+	border-radius:20px;
 }
 #flavorTagList,#feelTagList,#ingTagList{
 	display:inline;
 	overflow:scroll;
+	border-radius:0px;
 }
 .tagBoxItem{
-	text-align:justify;
+	text-align:center;
 	background-repeat: no-repeat;
-	min-width:50px;
-	max-width:50px;
-	min-height:30px;
-	max-height:30px;
+	min-width:60px;
+	max-width:60px;
+	min-height:37px;
+	max-height:37px;  
+	font-size:15px;
+	
+}
+
+.btn-outline-white {
+	border: 2px solid @white!important;
+    background-color: transparent!important;
+    color: @white!important;
+    background-image: none;
+}
+.btn-white {
+	background-color: @white!important;
+    color: #000!important;
+    
+}
+
+.btn-outline-red {
+	border: 2px solid @main_color_red!important;
+    background-color: transparent!important;
+    color: @main_color_red!important;
+    background-image: none;
+}
+.btn-red {
+	background-color: @main_color_red!important;
+    color: #000!important;
+}
+.btn-outline-yellow {
+	border: 2px solid @main_color_yellow!important;
+    background-color: transparent!important;
+    color: @main_color_yellow!important;
+    background-image: none;
+}
+.btn-yellow {
+	background-color: @main_color_yellow!important;
+    color: #000!important;
 }
