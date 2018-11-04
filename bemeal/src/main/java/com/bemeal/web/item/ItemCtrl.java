@@ -1,28 +1,19 @@
 package com.bemeal.web.item;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bemeal.web.cmm.CommonMapper;
 import com.bemeal.web.cmm.Pagination;
 import com.bemeal.web.img.Image;
-import com.bemeal.web.tx.TxService;
 
 
 @RestController
@@ -33,7 +24,6 @@ public class ItemCtrl {
 	@Autowired ItemMapper itemMapper;
 	@Autowired CommonMapper cmmMapper;
 	@Autowired Pagination pagi;
-	@Autowired TxService tx;
 	@Autowired HashMap<String,Object> map;
 	
 	
@@ -77,30 +67,42 @@ public class ItemCtrl {
 		map.clear();
 		map.put("pageNum",pageNum);
 		map.put("count", count);
-		map.put("pageSize", 6);
+		
+		/*map.put("pageSize", 6);
 		map.put("blockSize", 1);
 		//logger.info("map::{}",map);
 		pagi.excute(map);
 		map.put("pagi", pagi);
+		logger.info("map.get(\"pagi\"):{}",map.get("pagi"));*/
 		
+		Function<HashMap<String, Object>, HashMap<String, Object>>f=x->{
+			x.put("pageSize", 6);
+			x.put("blockSize", 1);
+			pagi.excute(x);
+			x.put("pagi", pagi);
+			return x;
+		};
 		
-		logger.info("map.get(\"pagi\"):{}",map.get("pagi"));
-		return map;
+		return f.apply(map);
 	}
 	@GetMapping("/item/retrieve/{itemSeq}")
 	public @ResponseBody HashMap<String, Object> retrieve(@PathVariable String itemSeq ){
-		map.clear();
-		//logger.info("itemseq int:{}",Integer.parseInt(itemSeq));
+		/*map.clear();
 		item.setItemSeq(Integer.parseInt(itemSeq));
-//		logger.info("itemseq :{}",item);
 		itemMapper.retrieve(item);
 		itemMapper.tag(item);
-		logger.info("item retrieve:{}",itemMapper.retrieve(item));
-//		logger.info("itemMapper.tag(item):{}",itemMapper.tag(item));
 		map.put("retrieve", itemMapper.retrieve(item));
-		map.put("rtag", itemMapper.tag(item));
-//		logger.info("rtag::{}",map.get("rtag").toString());
-		return map;
+		map.put("rtag", itemMapper.tag(item));*/
+		Function<String, HashMap<String, Object>>f=x->{
+			map.clear();
+			item.setItemSeq(Integer.parseInt(x));
+			itemMapper.retrieve(item);
+			itemMapper.tag(item);
+			map.put("retrieve", itemMapper.retrieve(item));
+			map.put("rtag", itemMapper.tag(item));
+			return map;
+		};
+		return f.apply(itemSeq);
 	}
 	@GetMapping("/item/recommend/{memberId}/{itemSeq}")
 	public @ResponseBody HashMap<String, Object> recommend(
