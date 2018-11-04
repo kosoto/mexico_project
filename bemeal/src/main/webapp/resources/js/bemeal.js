@@ -34,7 +34,6 @@ bemeal.router = {
 				$.getScript(x+"/resources/js/router.js",()=>{
 					$.extend(new Session(x));
 				}),
-				$.getScript(x+"/resources/js/util.js"),
 				$.getScript(x+"/resources/js/comp.js"),
 				$.Deferred(y=>{
 					$(y.resolve);
