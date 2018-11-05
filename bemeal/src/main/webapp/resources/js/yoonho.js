@@ -230,14 +230,15 @@ yoonho.service=(x=>{
 											rtrv['quantityP']=$item_pay_iptbx
 											$.getScript($.script()+'/kaeun.js',()=>{
 												if(confirm('해당상품을 구매하시겠습니까?')){
-										               let payList =  [{itemSeq:rtrv.itemSeq,
-										                       quantity:rtrv.quantityP,
-										                       itemName:rtrv.itemName,
-										                       price:rtrv.price,
-										                       explains:rtrv.explains,
-										                       img:rtrv.img}];
-										               let delList = null;
-										               kaeun.payment.purchase({payList:payList,delList:delList});   
+												   $.magnificPopup.close();
+									               let payList =  [{itemSeq:rtrv.itemSeq,
+									                       quantity:rtrv.quantityP,
+									                       itemName:rtrv.itemName,
+									                       price:rtrv.price,
+									                       explains:rtrv.explains,
+									                       img:rtrv.img}];
+									               let delList = null;
+									               kaeun.payment.purchase({payList:payList,delList:delList});   
 												}else{}
 											})
 										}
@@ -270,15 +271,15 @@ yoonho.service=(x=>{
 											//팝업창 끄는 효과 //우리는 멀티팝업 띄워야 함.
 											$.getScript($.script()+'/kaeun.js',()=>{
 												if(confirm('해당상품을 선물하시겠습니까?')){
-										               let payList =  [{itemSeq:rtrv.itemSeq,
-										                       quantity:rtrv.quantityG,
-										                       itemName:rtrv.itemName,
-										                       price:rtrv.price,
-										                       explains:rtrv.explains,
-										                       img:rtrv.img}];
-										               let delList = null;
-										               kaeun.payment.giftPopup({payList:payList,delList:delList});
-										              }else{}
+									                let payList =  [{itemSeq:rtrv.itemSeq,
+									                       quantity:rtrv.quantityG,
+									                       itemName:rtrv.itemName,
+									                       price:rtrv.price,
+									                       explains:rtrv.explains,
+									                       img:rtrv.img}];
+									                let delList = null;
+									                kaeun.payment.giftPopup({payList:payList,delList:delList});
+								               }else{}
 											})
 										}
 									})

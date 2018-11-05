@@ -89,7 +89,6 @@ public class ItemCtrl {
 	
 	@PostMapping("/item/grade")
 	public String retrieveGrade(@RequestBody HashMap<String,Object>p) {
-		logger.info(p.toString());
 		Function<HashMap<String,Object>, String>f=x->{
 			if(x.get("memberId").equals("")) {
 				return "0.0";

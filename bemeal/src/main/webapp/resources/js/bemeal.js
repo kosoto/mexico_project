@@ -62,10 +62,13 @@ bemeal.router = {
 						arr:[{image:"/web/resources/img/cmm/banner/banner1.jpg"},{image:"/web/resources/img/cmm/banner/banner2.jpg"}]
 					})
 				),					
-				$('<div/>').attr({id:'content'}).addClass('mainContent')
+				$('<div/>').attr({id:'content'})
 			);
 			let $content = $('#content');
-			let $carousels = $('<div/>').appendTo($content);
+			let $subContent = $('<div/>').attr({id:'subContent'}).addClass('mainContent').appendTo($content);
+			
+			let $carousels = $('<div/>').appendTo($subContent);
+			//let $carousels = $('<div/>').appendTo($content);
 			let arr = [
 				{category:'grade',title:'가장 평점이 높은'},
 				{category:'buy',title:'가장 판매량이 높은'},
