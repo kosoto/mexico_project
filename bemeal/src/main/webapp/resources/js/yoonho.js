@@ -153,40 +153,21 @@ yoonho.service=(x=>{
 		let $div5 = $('<div/>').addClass('col-lg-8 text-center').attr({style:'margin-top: -300px;'})
 		.append($('<button/>').html('장바구니').addClass('btn btn-warning').attr({style:'font-size:16px;', 'data-toggle':'collapse' ,'href':'#det_cart_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_cart_btn'})
 				.click(e=>{
-/*					$('#det_cart_btn').collapse({
-						show: true
-					});
-					$('#det_pay_btn').collapse({
-						dispose: true
-					});
-					$('#det_gift_btn').collapse({
-						dispose: true
-					});
-						*/
+					$('#det_cart_btn').collapse('show');
+					$('#det_pay_btn').collapse('hide');
+					$('#det_gift_btn').collapse('hide');
 				}))
 		.append($('<button/>').html('결제하기').addClass('btn btn-warning ').attr({style:'font-size:16px;', 'data-toggle':'collapse' , 'href':'#det_pay_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_pay_btn'})
 				.click(e=>{
-					/*$('#det_cart_btn').collapse({
-						dispose: true
-					});
-					$('#det_pay_btn').collapse({
-						show: true
-					});
-					$('#det_gift_btn').collapse({
-						dispose: true
-					});*/
+					$('#det_cart_btn').collapse('hide');
+					$('#det_pay_btn').collapse('show');
+					$('#det_gift_btn').collapse('hide');
 				}))
 		.append($('<button/>').html('선물하기').addClass('btn btn-warning').attr({style:'font-size:16px;', 'data-toggle':'collapse' , 'href':'#det_gift_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_gift_btn'})
 				.click(e=>{
-					/*$('#det_cart_btn').collapse({
-						dispose: true
-					});
-					$('#det_pay_btn').collapse({
-						dispose: true
-					});
-					$('#det_gift_btn').collapse({
-						show: true
-					});*/
+					$('#det_cart_btn').collapse('hide');
+					$('#det_pay_btn').collapse('hide');
+					$('#det_gift_btn').collapse('show');
 				}))
 		.appendTo($div4)
 
@@ -487,6 +468,8 @@ yoonho.contain=(x=>{
 	};
 	var cart=x=>{
 		let $cart;
+			$('#det_pay').remove();
+			$('#det_gift').remove();
 		$cart=$('<table/>').addClass('table')
 				.append(
 					$('<thead/>').attr({id:'cart_thead'})
@@ -525,6 +508,8 @@ yoonho.contain=(x=>{
 	};
 	var gift=x=>{
 		let $gift;
+		$('#det_cart').remove();
+		$('#det_pay').remove();
 		$gift=$('<table/>').addClass('table')
 				.append(
 					$('<thead/>').attr({id:'gift_thead'})
@@ -563,6 +548,8 @@ yoonho.contain=(x=>{
 	};
 	var pay=x=>{
 		let $pay;
+		$('#det_cart').remove();
+		$('#det_gift').remove();
 		$pay=$('<table/>').addClass('table')
 				.append(
 					$('<thead/>').attr({id:'pay_thead'})
@@ -597,7 +584,6 @@ yoonho.contain=(x=>{
 						.append($('<th/>').append($('<i/>').addClass('fa ').attr({'aria-hidden':'true',id:'input_pay_res_bx',style:'font-weight: bold;font-size:20px;'}) ))
 					)
 				)
-				
 		return $pay;
 	};
 	var commentWrite=x=>{
