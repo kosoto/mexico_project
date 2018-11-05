@@ -10,36 +10,47 @@
 .k_biglot > div {
   /* padding: 20px 0; */
 }
-.k_leftlot { grid-area: menu;
-            display:inline;
-              width: 100%;
-  height: 100vh;
-            }
-
 .k_contentlot { grid-area: main;
 				/* background-color: #fdd734; */
 				font-family: 'Gothic A1', sans-serif; 
 				}
 .k_rightlot { grid-area: right; 
-				/* background-color: #fdd734; */}
+				/* background-color: #fdd734; */
+				width: 150px;}
+				
+.k_leftlot { grid-area: menu;
+            display:block;
+             width: 150px;
+ 		 	height: 100vh;
+            }
 
 /*  navi */
+
 .k_navi{
-  display: inline;
+  display: block;
   text-align: center;
   margin-top : 10%;
-  margin-left : 5%;
+   font-family: 'Do Hyeon', sans-serif;
+  /* font-size : 20px;  */
   /* text-align: center; */
+  
 }
 
-.navi_home{
+
+#k_navi_menu{
+	margin-top: 5%;
+	position : fixed;
+	margin-left : 2%;
+}
+
+#k_navi_menu home{
+	}
 	
-}
-
 .b01_simple_rollover {
     color: #000000;
     padding: 10px;
     background-color: none;
+    width: 100%;
 }
 
 .b01_simple_rollover:hover {
@@ -48,7 +59,9 @@
 }
 
 
-.k_header {grid-area: header;}
+.k_header {
+	grid-area: header;
+	}
 .k_content {grid-area: main,
 			background-color: 'none'}
 .grid_title_l { grid-area: title_l;}
@@ -97,44 +110,80 @@
 }
 .item_header {
   text-align: center;
-  background-color: rgb(191, 191, 191);
+ background-color: rgb(191, 191, 191); 
   color:  #ffffff;
+  font-family: 'Do Hyeon', sans-serif;
 }
 .item_headerinfo {
   grid-column-start: 1;
   grid-column-end: 5;
   text-align: center;
-  background-color: rgb(191, 191, 191);
+   background-color: rgb(191, 191, 191); 
   color:  #ffffff;
+  font-family: 'Do Hyeon', sans-serif;
 }
 .item_headerinfo_pay {
   grid-column-start: 2;
   grid-column-end: 5;
-   text-align: center;
-  background-color: rgb(191, 191, 191);
+  text-align: center;
+  background-color: rgb(191, 191, 191); 
   color:  #ffffff;
+  font-family: 'Do Hyeon', sans-serif;   
 }
 .itemname {
     text-align: center;
     grid-column-start: 3;
-      grid-column-end: 5;
+    grid-column-end: 5;
+    font-size : 14px;
+    margin-top : 10px;
 }
 .iteminfo, .iteminfo1 {
     text-align: center;
+    margin-top : 10px;
+    font-size : 14px;
 }
-
+.iteminfo p{
+	font-family: 'Do Hyeon', sans-serif;
+	font-size : 17px;
+	text-shadow: 0 0 2px #808080;
+	-moz-text-shadow: 0 0 2px #808080;
+	-webkit-text-shadow: 0 0 2px #808080;
+}
 .cart_img{
     border: 1px solid #ddd;
     border-radius: 4px;
     padding: 1px;
-    width: 150px;
+    width: 120px;
 }
-/* 장바구니 title-결제-완료 */
+
+/* ★장바구니 title*/
 .cart_title{
-    background-color: 'none';
+    /* background: url(https://images.pexels.com/photos/952356/pexels-photo-952356.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260) no-repeat; */
+    background-color : #bb1d1e;
+    opacity: 0.8;
+    background-size: 100%;
     margin-top: 10px;
-    color : white;
+    padding: 2%;
+    /* color : white; */
 }
+.title_yellow{
+	background-color : #fdcf33;
+	opacity: 0.8;
+    background-size: 100%;
+    margin-top: 10px;
+    padding: 2%;
+}
+.title_yellow p, .cart_title p{
+	color : #fff;
+	font-size : 3rem;
+	margin-left : 40%;
+	text-shadow: 0 0 2px #808080;
+	-moz-text-shadow: 0 0 2px #808080;
+	-webkit-text-shadow: 0 0 2px #808080;
+	font-family: 'Do Hyeon', sans-serif;
+}
+
+
 .bs-wizard {margin-top: 0px;
             margin-left: 30%;}
 
@@ -185,6 +234,7 @@
 .btn-two.yellowp {background-color: #ffd633;}
 .btn-two.blue     {background-color: #7fccde;}
 .btn-two.redp {background-color: #ea7b7b;}
+.btn-two.red2 {background-color: #bb1d1e;}
 .btn-two.greenp {background-color: #ffe066;}
 .btn-two.purple {background-color: #cb99c5;}
 .btn-two.yellow {background-color: #fdcf33;}
@@ -193,10 +243,12 @@
 .btn-two.mini{
   padding: 4px 11px;  
   font-size: 11px;
+  font-family: 'Do Hyeon', sans-serif;
 }
 .btn-two.big{
   padding: 5px 20px
     font-size: 20px;
+    font-family: 'Do Hyeon', sans-serif;
 }
 .btn-two {
     margin-top : 1px;
@@ -241,7 +293,9 @@
 #pageNation{
 	margin-left: 40%;
 }
-
+.pagination .page-item.active .page-link{
+	background-color:#bb1d1e !important;
+}
 /* taste */
 .taste-background {
   width: 100%;
@@ -263,10 +317,19 @@
 
 .anlyz_form{
   margin-top: 20px;
-  margin-left: 10%;
   background-color: rgba(255,255,255,0.6);
-  width: 90%;
- /*  font: 30px; */ 
+  width : 800px;
+  height: 400px;
+   border:2px solid #c0c0c0;
+   margin-left: 5%;
+}
+
+.anlyz_form p{
+	font-size: 15px;
+	margin-top : 15px;
+	margin-left : 20px;
+	color : #808080;
+
 }
 
 /* gift 선물함 */
@@ -285,6 +348,7 @@
     overflow:hidden;
     box-shadow:0 5px 10px rgba(0,0,0,0.5);
     font-family: 'Nanum Pen Script', cursive;
+    
 }
 .gift_c .gift_img {
     position:relative;
@@ -317,7 +381,7 @@
     padding:20px;
     width:100%;
     height:100%;
-    bottom:-152px;
+    bottom:-170px;
     left:0;
     box-sizing:border-box;
     transition:0.5s;
@@ -327,15 +391,23 @@
     bottom:23px;
 }
 .gift_details h2 { /*아이템이름*/
-    color:#fff;
+    color:#000;
     margin:0;
     padding:0;
-    font-size:30px;
+    font-size:24px;
     font-boarder:2px;
+    font-family: 'Do Hyeon', sans-serif;
+    text-shadow: 0 0 2px #ffffff;
+	-moz-text-shadow: 0 0 2px #ffffff;
+	-webkit-text-shadow: 0 0 2px #ffffff;
 }
 .gift_details h2 span {  /*From.★*/
-    font-size:26px;
+    font-size:22px;
     color:#000;
+    font-family: 'Nanum Pen Script', cursive;
+    text-shadow: 0 0 0px #808080;
+	-moz-text-shadow: 0 0 0px #808080;
+	-webkit-text-shadow: 0 0 0px #808080;
 }
 
 .gift_msg {
@@ -465,8 +537,8 @@ width: 640px;
 /* 앨범 화면 끝 */
 /* chart */
 #series_chart_div{
-	/* ackground: url('https://cdn.pixabay.com/photo/2017/03/16/20/44/galaxy-2150186_960_720.png') no-repeat; 지도화면*/
-	background-size: 80%;
+	 background: url('/web/resources/img/kaeun/worldmap.png') no-repeat;
+	 background-size: 80%; 
 }
 
 /*gift 팝업*/

@@ -28,7 +28,7 @@ public class TasteCtrl {
 	@Autowired Pagination page;
 	
 	@Transactional
-	@GetMapping("/chart/{id}")
+	@GetMapping("/chart/{id}") //chart
 	public Map<String,Object> chart(@PathVariable String id){
 		Function<String, Map<String,Object>> f=x->{
 			tmap.clear();
@@ -49,30 +49,17 @@ public class TasteCtrl {
 		int result = tstMapper.postTaste(tmap);
 		return result;
 	}
-	@GetMapping("/taste/list/{id}/{flag}")
+	@GetMapping("/taste/list/{id}/{flag}") //장바구니 등록
 	public ArrayList<Map<String, Object>>listCart(@PathVariable String id,
 												@PathVariable String flag){
 		tmap.clear();
 		tmap.put("id", id);
 		tmap.put("flag", flag);
 		ArrayList<Map<String, Object>> tlist = tstMapper.listCart(tmap);
-/*		switch (flag) {
-		case "cart":
-		
-			break;
-		case "gift": case "giftto": //받은선물함
-			tmap.put("id", id);
-			tmap.put("flag", "gift");
-			tmap.put("state", flag);
-			tlist = tstMapper.listGift(tmap);
-			break;
-		default: 	
-			break;
-		}*/
-		System.out.println("tlist: "+tlist);
+		System.out.println("장바구니 tlist: "+tlist);
 		return tlist;
 	}
-	@PostMapping("/cart/delete") //cart 삭제
+	@PostMapping("/cart/delete") //장바구니 삭제
 	public int deleteCart(@RequestBody Map<String, Object> p){
 			tmap.put("delList", p.get("delList"));
 			int result = tstMapper.deleteCart(tmap);
@@ -81,7 +68,7 @@ public class TasteCtrl {
 	}
  
     @Transactional
-    @PostMapping("/pay/post") 
+    @PostMapping("/pay/post")  //선물하기, 구매하기
     public int postPay(@RequestBody Map<String, Object> p){
           tmap.clear();           
           if(p.get("toId")!=null) {//선물하기
@@ -107,7 +94,7 @@ public class TasteCtrl {
     } 
     
     @Transactional
-	@PostMapping("/purchase/payhis") // payhis search
+	@PostMapping("/purchase/payhis") //구매함 리스트, 검색
 	public Map<String, Object> searchList(@RequestBody HashMap<String, Object> p){
 			System.out.println("/purchase/payhis들어옴");
 		tmap.clear();
@@ -127,7 +114,7 @@ public class TasteCtrl {
 		return tmap;
 	}
     @Transactional
-   	@GetMapping("/purchase/gift/{id}/{state}/{pageNo}") // gift list
+   	@GetMapping("/purchase/gift/{id}/{state}/{pageNo}") //선물함 리스트
    	public Map<String, Object> giftList(@PathVariable String id,
    										@PathVariable String state,
    										@PathVariable String pageNo){
