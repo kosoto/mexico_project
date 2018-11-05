@@ -1,0 +1,310 @@
+@charset "UTF-8";
+/* Full-width input fields */
+#login_form input[type=text],
+input[type=password] {
+  width: 50%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+#join_form hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+#join_form input {
+  width: 50%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+#join_form input :focus {
+  background-color: #ddd;
+  outline: none;
+}
+#memberModify hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+#memberModify input {
+  width: 50%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+#memberModify input :focus {
+  background-color: #ddd;
+  outline: none;
+}
+.btn-group {
+  margin: 0 auto;
+  border-radius: 20px;
+  text-align: center;
+}
+.j_btn {
+  display: inline_block;
+  font-weight: bolder;
+}
+.j_btn-group {
+  display: flex;
+  justify-content: center;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+/* Set a style for all buttons */
+.j_button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 50%;
+}
+.j_red_button {
+  background-color: #FF0000;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 50%;
+}
+.ss_btn {
+  background-color: #bb1d1e;
+  color: white;
+  padding: 15px;
+  margin: 0px auto;
+  border: none;
+  cursor: pointer;
+  width: 44%;
+  overflow: hidden;
+}
+.search_submit {
+  background-color: #bb1d1e;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+.ss_btn:hover {
+  opacity: 0.8;
+}
+.j_button:hover {
+  opacity: 0.8;
+}
+.j_commentbtn {
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 5%;
+}
+/* Center the image and position the close button */
+#j_comment body {
+  padding-top: 30px;
+}
+#j_comment .widget .panel-body {
+  padding: 0px;
+}
+#j_comment .widget .list-group {
+  margin-bottom: 0;
+}
+#j_comment .widget .panel-title {
+  display: inline;
+}
+#j_comment .widget .label-info {
+  float: right;
+}
+#j_comment .widget li.list-group-item {
+  border-radius: 0;
+  border: 0;
+  border-top: 1px solid #ddd;
+}
+#j_comment .widget li.list-group-item:hover {
+  background-color: rgba(86, 61, 124, 0.1);
+}
+#j_comment .widget .mic-info {
+  color: #666666;
+  font-size: 11px;
+}
+#j_comment .widget .action {
+  margin-top: 5px;
+}
+#j_comment .widget .comment-text {
+  font-size: 12px;
+}
+#j_comment .widget .btn-block {
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+#j_comment input {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+#j_comment input :focus {
+  background-color: #ddd;
+  outline: none;
+}
+.active-amber-textarea-2 textarea.md-textarea {
+  border-bottom: 1px solid #ffa000;
+  box-shadow: 0 1px 0 0 #ffa000;
+}
+.active-amber-textarea-2.md-form label.active {
+  color: #ffa000;
+}
+.active-amber-textarea-2.md-form label {
+  color: #ffa000;
+}
+.md-textarea form-control {
+  width: 90%;
+}
+.search-table {
+  padding: 10%;
+  margin-top: -6%;
+  overflow: hidden;
+}
+.j_scbox {
+  display: none;
+  margin: 5%;
+  padding-left: 5px;
+}
+#j_title_under {
+  font-size: 20px;
+  font-family: "나눔고딕", "NanumGothic", "돋움", "Dotum";
+}
+#j_bbb {
+  font-size: 100px;
+  font-family: "나눔고딕", "NanumGothic", "돋움", "Dotum";
+}
+.rounded {
+  border-radius: 10px;
+}
+.search-box {
+  background: #fdcf33;
+  border: 2px solid #fdcf33;
+  padding: 2%;
+  width: 50%;
+}
+.search-box input:focus {
+  box-shadow: none;
+  border: 1px solid #eeeeee;
+}
+.search-list {
+  background: #fff;
+  border: 1px solid #ababab;
+  border-top: none;
+  margin-top: 1px;
+  width: 50%;
+}
+.search_title {
+  text-align: center;
+  color: #bb1d1e;
+  font-family: sans-serif;
+}
+.j_goSearch {
+  float: right;
+}
+.search-list h3 {
+  background: #eee;
+  padding: 3%;
+  margin-bottom: 0%;
+}
+.j_sbtn {
+  width: 160px;
+}
+.search-keyword {
+  justify-content: center;
+}
+.slidecontainer {
+  width: 80%;
+  /* Width of the outside container */
+  margin: 0 auto;
+}
+.j.mfp-container {
+  text-align: center;
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  left: 0;
+  top: 0;
+  padding: 0 8px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+/* The slider itself */
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1;
+  /* Fully shown on mouse-over */
+}
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  /* Override default look */
+  appearance: none;
+  width: 25px;
+  /* Set a specific slider handle width */
+  height: 25px;
+  /* Slider handle height */
+  background: #bb1d1e;
+  /* Green background */
+  cursor: pointer;
+  /* Cursor on hover */
+}
+.slider::-moz-range-thumb {
+  width: 25px;
+  /* Set a specific slider handle width */
+  height: 25px;
+  /* Slider handle height */
+  background: #4CAF50;
+  /* Green background */
+  cursor: pointer;
+  /* Cursor on hover */
+}
+.j_bt7n {
+  background-color: white;
+}
+.j_img {
+  float: right;
+}
+.active-pink-2 input[type=text]:focus:not([readonly]) {
+  border-bottom: 1px solid #f48fb1;
+  box-shadow: 0 1px 0 0 #f48fb1;
+}
+.active-pink input[type=text] {
+  border-bottom: 1px solid #f48fb1;
+  box-shadow: 0 1px 0 0 #f48fb1;
+}
+.j_form-control {
+  width: 100%;
+}
+.y_form-control {
+  width: 90%	;
+}
