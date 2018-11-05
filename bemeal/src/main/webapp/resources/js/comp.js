@@ -21,9 +21,16 @@ ui = {
 					  +'</div>');
 		},
 		newpage : ()=>{
-			return $('#k_content').empty()
-				   +$('#k_header').empty()
-				   +$('#k_footer').empty();
+			return $('#k_content').remove()
+				   +$('#k_header').remove()
+				   +$('#k_footer').remove()
+				   + $('#k_contentlot').append(
+			       			$('<div>').addClass("container").append(
+			       					ui.div({id:"k_header",clazz:"k_header"}),
+			       					ui.div({id:"k_content",clazz:"k_content"}),
+			       					ui.div({id:"k_footer",clazz:"k_footer"})
+			       			)
+			       	   );
 		},
 		a_col : x=>{ //ui.a_col({claz:'',id:''});
 			return  '<div class="'+x.claz+'">'

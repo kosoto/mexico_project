@@ -31,12 +31,14 @@
 <link rel="stylesheet" type="text/css" href="${context}/resources/css/sam.css">
 <!--  font -->
 <link href="https://fonts.googleapis.com/css?family=Do+Hyeon|Gothic+A1|Nanum+Pen+Script" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Gugi" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Gp" rel="stylesheet">
 <!-- star-rating-svg -->
 <script src="${context}/resources/js/jquery/star-rating-svg.js"></script>
 <link rel="stylesheet" type="text/css" href="${context}/resources/css/star-rating-svg.css">
 <!-- kaeun chart -->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<!-- kaeun icon  -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 </head>
 <body>
 <!-- MDB -->
