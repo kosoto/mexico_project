@@ -186,16 +186,14 @@ yoonho.service=(x=>{
 									)
 								)
 								.append(
-									$('<button/>').html('장바구니 추가').addClass('btn btn-outline-warning').attr({style:'font-size:16px;',type:'submit'})
+									$('<button/>').html('장바구니 추가').addClass('btn btn-outline-warning').attr({style:'font-size:16px;',type:'button'})
 									.click(e=>{
 										var $item_cart_iptbx = $('#item_cart_iptbx').val()
 										if($.cookie('member')==null){
 											alert('로그인하세요.')
 										}else if($.cookie('member')!=null){
-											$('#content').removeClass('mainContent');
 											//rtrv.imgSeq,rtrv.itemName,rtrv.img,rtrv.price,rtrv.calorie,rtrv.category,rtrv.explains,rtrv.brand,rtrv.itemSeq
 											rtrv['quantityC']=$item_cart_iptbx
-											$.magnificPopup.close();
 											$.getScript($.script()+'/kaeun.js',()=>{
 												kaeun.payment.putTaste({
 																		itemSeq:rtrv.itemSeq,

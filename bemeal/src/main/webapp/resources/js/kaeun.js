@@ -331,6 +331,8 @@ kaeun.payment=(()=>{
             success : d=>{
             	if(d>0){
             		if(confirm('장바구니로 이동하시겠습니까?')){
+            			$('#content').removeClass('mainContent');
+            			$.magnificPopup.close();
             			kaeun.ui.cart();
             		}else{}
             	}else{
