@@ -344,7 +344,8 @@ yoonho.service=(x=>{
 			method : 'post',
 			contentType : 'application/json',
 			data : JSON.stringify({
-				memberId:$.cookie('member')['memberId'],
+				memberId:(()=>{ return ($.cookie('member')!=undefined)?$.cookie('member')['memberId']:'';
+				})(),
 				itemSeq:rtrv.itemSeq
 			}),
 			success : d=>{
