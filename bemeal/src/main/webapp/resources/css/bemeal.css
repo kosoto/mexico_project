@@ -93,7 +93,7 @@ header {
 /* evaluate page */
 .evaluate_progress {
   position: fixed;
-  top: 60px;
+  top: 75px;
   padding-top: 15px;
   left: 0;
   right: 0;

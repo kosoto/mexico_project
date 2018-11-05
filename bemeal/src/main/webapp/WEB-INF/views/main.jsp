@@ -31,7 +31,7 @@
 <link rel="stylesheet" type="text/css" href="${context}/resources/css/sam.css">
 <!--  font -->
 <link href="https://fonts.googleapis.com/css?family=Do+Hyeon|Gothic+A1|Nanum+Pen+Script" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Gp" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Gugi" rel="stylesheet">
 <!-- star-rating-svg -->
 <script src="${context}/resources/js/jquery/star-rating-svg.js"></script>
 <link rel="stylesheet" type="text/css" href="${context}/resources/css/star-rating-svg.css">
