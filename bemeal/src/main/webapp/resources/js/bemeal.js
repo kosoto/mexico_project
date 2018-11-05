@@ -135,7 +135,7 @@ bemeal.router = {
 bemeal.compo=(()=>{
 	var nav = ()=>{
 		return $('<nav/>').addClass('navbar fixed-top navbar-expand-lg navbar-light lighten-5 scrolling-navbar').append(
-					$('<a/>').addClass('navbar-brand').attr({href:'#',id:'logo'}).append($('<strong/>').append($('<img/>').attr({src:$.img()+"/cmm/logo.png"}))).click(e=>{
+					$('<a/>').addClass('navbar-brand').attr({href:'#',id:'logo'}).append($('<strong/>').append($('<img/>').attr({src:$.img()+"/cmm/logo.png",style:'height:55px;'}))).click(e=>{
 						e.preventDefault();
 						$(window).off('scroll.category'); //main과 menu 화면에 걸려있는 무한 스크롤 이벤트 제거
 						$('.nav-item').removeClass('active'); //네비 버튼들에 걸려있는 하일라이트 효과 제거
@@ -185,7 +185,7 @@ bemeal.compo=(()=>{
 								})
 							),
 							$('<li/>').addClass('nav-item').append(
-								$('<a/>').addClass('nav-link auth').attr({href:'#',id:'evaluate'}).text('평가하기').click(e=>{
+								$('<a/>').addClass('nav-link auth').attr({href:'#',id:'evaluate'}).text('RATE').click(e=>{
 									e.preventDefault();
 									$('.nav-item').removeClass('active');
 									$('#evaluate').parent().addClass('active');

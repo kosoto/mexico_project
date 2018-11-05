@@ -25,10 +25,10 @@ div::-webkit-scrollbar {
   }
 }
 header {
-  padding-top: 62px;
+  padding-top: 79px;
 }
 #content {
-  padding-top: 80px;
+  padding-top: 90px;
 }
 @media only screen and (min-width: 1800px) {
   .mainContent {
@@ -192,7 +192,6 @@ footer {
 .login_form {
   max-width: 400px;
   margin: auto;
-  margin-top: 100px;
 }
 #serchForm {
   position: relative;
