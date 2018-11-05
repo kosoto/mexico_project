@@ -324,13 +324,15 @@ kaeun.payment=(()=>{
 			url: $.ctx()+'/cart/post',
 			type: 'POST',
 			contentType : 'application/json',
-            data : JSON.stringify({id : id,
+            data : JSON.stringify({id : $.cookie('member')['memberId'],
 			                	itemSeq: x.itemSeq,
 			                	quantity: x.quantity,
 			                	flag: x.flag}),
             success : d=>{
             	if(d>0){
             		if(confirm('장바구니로 이동하시겠습니까?')){
+            			$('#content').removeClass('mainContent');
+            			$.magnificPopup.close();
             			kaeun.ui.cart();
             		}else{}
             	}else{
@@ -446,7 +448,7 @@ kaeun.payment=(()=>{
 				+'<div class="item_header">　상품금액　</div>'
 				+'<div class="item_header">　총액　</div>'
 				+'<div id="cart_header_end" class="item_header">　주문　</div></div>');
-		$.getJSON($.ctx()+'/taste/list/'+id+'/cart',d=>{	
+		$.getJSON($.ctx()+'/taste/list/'+id+'/cart',d=>{
 			let total = 0;
 			let sum_price = 0;
 			$.each(d,(i,j)=>{ 

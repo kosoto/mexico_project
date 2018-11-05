@@ -186,16 +186,14 @@ yoonho.service=(x=>{
 									)
 								)
 								.append(
-									$('<button/>').html('장바구니 추가').addClass('btn btn-outline-warning').attr({style:'font-size:16px;',type:'submit'})
+									$('<button/>').html('장바구니 추가').addClass('btn btn-outline-warning').attr({style:'font-size:16px;',type:'button'})
 									.click(e=>{
 										var $item_cart_iptbx = $('#item_cart_iptbx').val()
 										if($.cookie('member')==null){
 											alert('로그인하세요.')
 										}else if($.cookie('member')!=null){
-											//$('#content').removeClass('mainContent');
 											//rtrv.imgSeq,rtrv.itemName,rtrv.img,rtrv.price,rtrv.calorie,rtrv.category,rtrv.explains,rtrv.brand,rtrv.itemSeq
 											rtrv['quantityC']=$item_cart_iptbx
-											/*$.magnificPopup.close();*/
 											$.getScript($.script()+'/kaeun.js',()=>{
 												kaeun.payment.putTaste({
 																		itemSeq:rtrv.itemSeq,
@@ -231,16 +229,15 @@ yoonho.service=(x=>{
 											rtrv['quantityP']=$item_pay_iptbx
 											$.getScript($.script()+'/kaeun.js',()=>{
 												if(confirm('해당상품을 구매하시겠습니까?')){
-													  //$('#content').removeClass('mainContent');
-													  $.magnificPopup.close();
-										               let payList =  [{itemSeq:rtrv.itemSeq,
-										                       quantity:rtrv.quantityP,
-										                       itemName:rtrv.itemName,
-										                       price:rtrv.price,
-										                       explains:rtrv.explains,
-										                       img:rtrv.img}];
-										               let delList = null;
-										               kaeun.payment.purchase({payList:payList,delList:delList});   
+												   $.magnificPopup.close();
+									               let payList =  [{itemSeq:rtrv.itemSeq,
+									                       quantity:rtrv.quantityP,
+									                       itemName:rtrv.itemName,
+									                       price:rtrv.price,
+									                       explains:rtrv.explains,
+									                       img:rtrv.img}];
+									               let delList = null;
+									               kaeun.payment.purchase({payList:payList,delList:delList});   
 												}else{}
 											})
 										}
@@ -267,21 +264,20 @@ yoonho.service=(x=>{
 										if($.cookie('member')==null){
 											alert('로그인하세요.')
 										}else if($.cookie('member')!=null){
-											//$('#content').removeClass('mainContent');
 											//rtrv.imgSeq,rtrv.itemName,rtrv.img,rtrv.price,rtrv.calorie,rtrv.category,rtrv.explains,rtrv.brand,rtrv.itemSeq
 											rtrv['quantityG']=$item_gift_iptbx
 											//팝업창 끄는 효과 //우리는 멀티팝업 띄워야 함.
 											$.getScript($.script()+'/kaeun.js',()=>{
 												if(confirm('해당상품을 선물하시겠습니까?')){
-										               let payList =  [{itemSeq:rtrv.itemSeq,
-										                       quantity:rtrv.quantityG,
-										                       itemName:rtrv.itemName,
-										                       price:rtrv.price,
-										                       explains:rtrv.explains,
-										                       img:rtrv.img}];
-										               let delList = null;
-										               kaeun.payment.giftPopup({payList:payList,delList:delList});
-										              }else{}
+									                let payList =  [{itemSeq:rtrv.itemSeq,
+									                       quantity:rtrv.quantityG,
+									                       itemName:rtrv.itemName,
+									                       price:rtrv.price,
+									                       explains:rtrv.explains,
+									                       img:rtrv.img}];
+									                let delList = null;
+									                kaeun.payment.giftPopup({payList:payList,delList:delList});
+								               }else{}
 											})
 										}
 									})
@@ -347,7 +343,8 @@ yoonho.service=(x=>{
 			method : 'post',
 			contentType : 'application/json',
 			data : JSON.stringify({
-				memberId:$.cookie('member')['memberId'],
+				memberId:(()=>{ return ($.cookie('member')!=undefined)?$.cookie('member')['memberId']:'';
+				})(),
 				itemSeq:rtrv.itemSeq
 			}),
 			success : d=>{
