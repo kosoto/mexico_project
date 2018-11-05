@@ -42,11 +42,11 @@
   	</resultMap>
   	
   	 <select id="tagSearch" resultMap="result" >
-         <!-- SELECT * FROM
+         SELECT * FROM
         (SELECT 
           B.*
         FROM
-        (SELECT A.*, ROW_NUMBER() OVER()        
+        (SELECT A.*, ROW_NUMBER() OVER()
         (SELECT 
           ITEM_SEQ,ITEM_NAME,EXPLAINS
         (SELECT 
@@ -61,39 +61,11 @@
             )
               AND PRICE &lt; #{value} A ) B
             WHERE NO &lt;= 20) C
-              JOIN IMAGE IM ON IM.ITEM_SEQ LIKE C.ITEM_SEQ -->
-        SELECT
-			U.*, IM.IMG
-		FROM
-			(SELECT
-				ITEM_SEQ,ITEM_NAME
-			FROM
-				(SELECT 
-					ITEM_SEQ,ITEM_NAME,COUNT(ITEM_SEQ) AS COUNT
-				FROM
-				(SELECT
-					*
-				FROM
-					(SELECT
-					   X.*, T.TAG_NAME
-					FROM        
-						(SELECT 
-							IT.ITEM_SEQ,IT.ITEM_NAME,IT.EXPLAINS,TI.TAG_SEQ 
-						FROM ITEM IT
-							JOIN TAG_ITEM TI ON IT.ITEM_SEQ LIKE TI.ITEM_SEQ) X
-						JOIN TAG T ON T.TAG_SEQ LIKE X.TAG_SEQ) Y
-				WHERE TAG_SEQ IN 
-				<foreach item="tag" collection="tagArr" separator="," open="(" close=")">
-					#{tag}
-				</foreach>
-					) Z
-				GROUP BY ITEM_SEQ) W
-			WHERE COUNT &gt;=#{count}) U
-			JOIN IMAGE IM ON IM.ITEM_SEQ LIKE U.ITEM_SEQ     
-              
+              JOIN IMAGE IM ON IM.ITEM_SEQ LIKE C.ITEM_SEQ
      </select>   
   	
-  	<select id="navSearchList" resultMap="result">  
+  	<select id="navSearchList" resultMap="result">
+  	
 	SELECT * FROM
 		(SELECT 
 			B.*
@@ -103,13 +75,11 @@
 				(SELECT 
 					ITEM_SEQ,ITEM_NAME,EXPLAINS
 				FROM
+					(SELECT X.*,T.TAG_NAME FROM
 					(SELECT 
-						X.*,T.TAG_NAME 
-					FROM
-						(SELECT 
-							IT.ITEM_SEQ,IT.ITEM_NAME,IT.EXPLAINS,TI.TAG_SEQ
-						FROM ITEM IT 
-							JOIN TAG_ITEM TI ON TI.ITEM_SEQ LIKE IT.ITEM_SEQ) X
+						IT.ITEM_SEQ,IT.ITEM_NAME,IT.EXPLAINS,TI.TAG_SEQ
+					FROM ITEM IT 
+						JOIN TAG_ITEM TI ON TI.ITEM_SEQ LIKE IT.ITEM_SEQ) X
 						JOIN TAG T ON T.TAG_SEQ LIKE X.TAG_SEQ) Y
 				WHERE TAG_NAME LIKE #{word}
 				GROUP BY ITEM_NAME
@@ -122,28 +92,6 @@
 			JOIN IMAGE IM ON IM.ITEM_SEQ LIKE C.ITEM_SEQ
   	</select>
 
- <select id="tagSearch" resultMap="result" >
-  		 SELECT * FROM
-        (SELECT 
-          B.*
-        FROM
-        (SELECT A.*, ROW_NUMBER() OVER()
-        (SELECT 
-          ITEM_SEQ,ITEM_NAME,EXPLAINS
-        (SELECT 
-						IT.ITEM_SEQ,IT.ITEM_NAME,IT.EXPLAINS,TI.TAG_SEQ
-					FROM ITEM IT 
-						JOIN TAG_ITEM TI ON TI.ITEM_SEQ LIKE IT.ITEM_SEQ) X
-           JOIN TAG T ON T.TAG_SEQ LIKE X.TAG_SEQ) Y
-          WHERE 1 = 1   
-           <foreach collection="tagArr" item="item" index="index" separator="," open="(" close=")">
-           	AND TAG_SEQ LIKE #{tagArr}
-           		</foreach>
-            )
-              AND PRICE &lt; #{value} A ) B
-            WHERE NO &lt;= 20) C
-              JOIN IMAGE IM ON IM.ITEM_SEQ LIKE C.ITEM_SEQ
-  	</select>  
    
   </mapper>
   
