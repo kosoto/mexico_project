@@ -4,8 +4,6 @@ import java.util.*;
 
 import org.springframework.stereotype.Repository;
 
-import com.bemeal.web.img.Image;
-
 @Repository
 public interface ItemMapper {
 	public void post(Item p);
