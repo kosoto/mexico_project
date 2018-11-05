@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bemeal.web.cmm.Pagination;
@@ -103,7 +102,6 @@ public class TasteCtrl {
 		page.excute(p);
 		page.setBeginRow(page.getBeginRow()-1);
 		tmap.put("page",page);
-			logger.info("page :  {}",tmap.get("page"));
 		ArrayList<Map<String, Object>> tlist = tstMapper.listPayHis(tmap);
 		tmap.put("tlist",tlist);
 		return tmap;

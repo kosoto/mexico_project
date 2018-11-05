@@ -130,7 +130,7 @@ yoonho.service=(x=>{
 				type:'inline'
 				}); 
 			$('.btn').on('click',function(){
-				//alert('$(\'#code\').val()'+$('#code').val());
+				
 			});
 		})
 		return false;
@@ -216,8 +216,6 @@ yoonho.service=(x=>{
 											rtrv['quantityC']=$item_cart_iptbx
 											$.magnificPopup.close();
 											$.getScript($.script()+'/kaeun.js',()=>{
-								                console.log('rtrv.quantityC밑에 뜸')
-								                console.log(rtrv.quantityC)
 												kaeun.payment.putTaste({
 																		itemSeq:rtrv.itemSeq,
 																		quantity:rtrv.quantityC,
@@ -259,8 +257,6 @@ yoonho.service=(x=>{
 										                       price:rtrv.price,
 										                       explains:rtrv.explains,
 										                       img:rtrv.img}];
-										               console.log('pay의 paylist 밑에 뜸')
-										               console.log(payList)
 										               let delList = null;
 										               kaeun.payment.purchase({payList:payList,delList:delList});   
 												}else{}
@@ -301,8 +297,6 @@ yoonho.service=(x=>{
 										                       price:rtrv.price,
 										                       explains:rtrv.explains,
 										                       img:rtrv.img}];
-										               console.log('gift의 paylist 밑에 뜸')
-										               console.log(payList)
 										               let delList = null;
 										               kaeun.payment.giftPopup({payList:payList,delList:delList});
 										              }else{}
@@ -353,7 +347,6 @@ yoonho.service=(x=>{
 						.append($('<div/>').addClass('card-header border-0 font-weight-bold').html('comments'))
 						
 									$.each(d.read,(i,j)=>{
-										//console.log('j::'+j.memberId)
 										yoonho.contain.commentList(j).appendTo($section6_2)
 									})
 		})
@@ -662,7 +655,7 @@ yoonho.contain=(x=>{
 				.append(
 					$('<div/>').addClass('media-body text-center text-md-left ml-md-3 ml-0').attr({id:'m_u_btn_'+x.articleSeq})
 					.append(
-							$('<a/>').addClass('font-weight-bold mt-0').attr({style:'font-size:18px;color:#007bff;'}).html(x.memberId).click(e=>{alert('회원retrieve')})//정훈정훈한테 물어보고 memberRetrieve 없으면 h4태그로 바꿀것
+							$('<a/>').addClass('font-weight-bold mt-0').attr({style:'font-size:18px;color:#007bff;'}).html(x.memberId).click(e=>{/*alert('회원retrieve')*/})//정훈정훈한테 물어보고 memberRetrieve 없으면 h4태그로 바꿀것
 					)
 					.append(
 						 	$('<h6/>').html(x.content+'/작성시간:'+x.ARTICLE_TIME)
@@ -676,7 +669,7 @@ yoonho.contain=(x=>{
 				
 				let $in_list = $('<div/>').addClass('media-body text-center text-md-left ml-md-3 ml-0').attr({id:'m_u_btn'})
 								.append(
-										$('<a/>').addClass('font-weight-bold mt-0').attr({style:'font-size:18px;color:#007bff;'}).html(x.memberId).click(e=>{alert('회원retrieve')})//정훈정훈한테 물어보고 memberRetrieve 없으면 h4태그로 바꿀것
+										$('<a/>').addClass('font-weight-bold mt-0').attr({style:'font-size:18px;color:#007bff;'}).html(x.memberId).click(e=>{/*alert('회원retrieve')*/})//정훈정훈한테 물어보고 memberRetrieve 없으면 h4태그로 바꿀것
 								)
 								.append(
 									 	$('<h6/>').html(x.content+'/작성시간:'+x.ARTICLE_TIME)
@@ -787,9 +780,7 @@ yoonho.contain=(x=>{
 												}),
 												success:d=>{
 													alert('게시글이 삭제되었습니다..')
-													//alert('d.articleSeq::'+d.modify[0].articleSeq)
 													$('#cmm_'+x.articleSeq).remove();
-													//$('#cmm_'+x.articleSeq).html(yoonho.contain.commentList(d.modify[0]))
 												},
 												error:(m1,m2,m3)=>{
 													alert('비밀번호를 정확히 입력해주세요.'+m3)

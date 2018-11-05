@@ -157,7 +157,6 @@ junghoon.service = {
 							memberId :$('#memberId').val()
 						}),
 						success:d=>{
-							alert('success');
 							$.removeCookie('member');
 							bemeal.router.main();
 						},
