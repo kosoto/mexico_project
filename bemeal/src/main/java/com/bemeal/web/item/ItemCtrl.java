@@ -90,6 +90,9 @@ public class ItemCtrl {
 	@PostMapping("/item/grade")
 	public String retrieveGrade(@RequestBody HashMap<String,Object>p) {
 		Function<HashMap<String,Object>, String>f=x->{
+			if(x.get("memberId").equals("")) {
+				return "0.0";
+			}
 			String temp = itemMapper.retrieveGrade(x);
 			return (temp==null)?"0.0":temp;
 		};

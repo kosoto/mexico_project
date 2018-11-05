@@ -62,10 +62,13 @@ bemeal.router = {
 						arr:[{image:"/web/resources/img/cmm/banner/banner1.jpg"},{image:"/web/resources/img/cmm/banner/banner2.jpg"}]
 					})
 				),					
-				$('<div/>').attr({id:'content'}).addClass('mainContent')
+				$('<div/>').attr({id:'content'})
 			);
 			let $content = $('#content');
-			let $carousels = $('<div/>').appendTo($content);
+			let $subContent = $('<div/>').attr({id:'subContent'}).addClass('mainContent').appendTo($content);
+			
+			let $carousels = $('<div/>').appendTo($subContent);
+			//let $carousels = $('<div/>').appendTo($content);
 			let arr = [
 				{category:'grade',title:'가장 평점이 높은'},
 				{category:'buy',title:'가장 판매량이 높은'},
@@ -138,8 +141,7 @@ bemeal.compo=(()=>{
 					$('<a/>').addClass('navbar-brand').attr({href:'#',id:'logo'}).append($('<strong/>').append($('<img/>').attr({src:$.img()+"/cmm/logo.png",style:'height:55px;'}))).click(e=>{
 						e.preventDefault();
 						$(window).off('scroll.category'); //main과 menu 화면에 걸려있는 무한 스크롤 이벤트 제거
-						$('.nav-item').removeClass('active'); //네비 버튼들에 걸려있는 하일라이트 효과 제거
-						$('#content').removeClass('mainContent'); //main화면의 content에만 추가한 css 제거
+						$('.nav-item').removeClass('active'); //네비 버튼들에 걸려있는 하일라이트 효과 제거						
 						bemeal.router.main();  //메인화면 보여주기
 					}),
 					$('<button/>').addClass('navbar-toggler').attr({
@@ -153,7 +155,7 @@ bemeal.compo=(()=>{
 									e.preventDefault();
 									$('.nav-item').removeClass('active');
 									$(window).off('scroll.category');
-									$('#content').removeClass('mainContent');
+									
 									$('#menu').parent().addClass('active'); //nav에 menu 버튼 하일라이트 효과주기
 									$.getScript($.script()+"/yoonho.js",()=>{
 										yoonho.service.list(); //menu화면 보여주기
@@ -165,7 +167,7 @@ bemeal.compo=(()=>{
 									e.preventDefault();
 									$('.nav-item').removeClass('active');
 									$(window).off('scroll.category');
-									$('#content').removeClass('mainContent');
+									
 									$('#join').parent().addClass('active');
 									$.getScript($.script()+"/junghoon.js",()=>{
 										junghoon.member.add(); //회원가입 화면 보여주기
@@ -178,7 +180,7 @@ bemeal.compo=(()=>{
 									$('.nav-item').removeClass('active');
 									$('#taste').parent().addClass('active');
 									$(window).off('scroll.category');
-									$('#content').removeClass('mainContent');
+									
 									$.getScript($.script()+"/kaeun.js",()=>{
 										kaeun.main.init(); //취향 페이지 보여주기
 									})
@@ -190,7 +192,7 @@ bemeal.compo=(()=>{
 									$('.nav-item').removeClass('active');
 									$('#evaluate').parent().addClass('active');
 									$(window).off('scroll.category');
-									$('#content').removeClass('mainContent');
+								
 									bemeal.evaluate.main();  //평가 페이지 보여주기
 								})
 							)
@@ -237,7 +239,7 @@ bemeal.compo=(()=>{
 									e.preventDefault();
 									$.getScript($.script()+"/junghoon.js",(e)=>{
 										$(window).off('scroll.category');
-										$('#content').removeClass('mainContent');
+										
 										junghoon.member.login();
 									})
 								}),
@@ -245,7 +247,7 @@ bemeal.compo=(()=>{
 									e.preventDefault();
 									$.getScript($.script()+"/junghoon.js",(e)=>{
 										$(window).off('scroll.category');
-										$('#content').removeClass('mainContent');
+										
 										junghoon.service.mypage();
 									})
 								}),
