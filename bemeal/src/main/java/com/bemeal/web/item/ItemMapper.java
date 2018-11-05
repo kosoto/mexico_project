@@ -14,4 +14,9 @@ public interface ItemMapper {
 	//public int listCount(Map<?, ?> p);
 	public List<Item> retrieve(Item p);
 	public List<Item> tag(Item p);
+	public List<HashMap<String, Object>> menuListPrice(HashMap<String, Object>p);
+	public List<HashMap<String, Object>> menuListCal(HashMap<String, Object>p);
+	public int menuCount(HashMap<String, Object>p);
+	public String retrieveGrade(HashMap<String,Object>p);
+	
 }

@@ -1,3 +1,23 @@
+.height-fix-200 { height: 200px;}
+.height-fix-200 .view.zoom { height: 65%; }
+.height-fix-200 .view.zoom img { height: 100%; width:100%; }
+.height-fix-200 .collection-card { height : 100%; }
+.height-fix-200 .stripe.dark p { margin-top:1rem; }
+
+@media screen and ( min-width:1440px ){
+   .height-fix-200 { flex: 0 0 16.666667%;}
+   #yh_container section {
+      margin-bottom: 3rem!important;
+      margin-top: 3rem!important;
+   }
+}
+@media screen and ( max-width: 992px ) {
+   .mobile-break {width:33.333%}
+   .mobile-break .form-group { width: 100%;}
+   .height-fix-200 { flex : 33.33%; margin-top: 4%;}
+   #yh_container section { margin : 0!important; }
+}
+
 .detail-main {
 	height:60%; 
 	width:60%; /* The width is 60%, by default */

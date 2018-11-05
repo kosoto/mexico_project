@@ -43,11 +43,12 @@ public class TasteCtrl {
 	
 	@PostMapping("/cart/post") //cart 등록
 	public int postCart(@RequestBody Map<String, Object> p){
-		logger.info("id {} itemSeq {} quantity {}",p);
-		tmap.clear();
-		tmap.putAll(p);
-		int result = tstMapper.postTaste(tmap);
-		return result;
+		Function<Map<String, Object>, Integer>f=x->{
+			tmap.clear();
+			tmap.putAll(x);
+			return tstMapper.postTaste(tmap);
+		};
+		return f.apply(p);
 	}
 	@GetMapping("/taste/list/{id}/{flag}") //장바구니 등록
 	public ArrayList<Map<String, Object>>listCart(@PathVariable String id,
@@ -55,16 +56,18 @@ public class TasteCtrl {
 		tmap.clear();
 		tmap.put("id", id);
 		tmap.put("flag", flag);
-		ArrayList<Map<String, Object>> tlist = tstMapper.listCart(tmap);
-		System.out.println("장바구니 tlist: "+tlist);
-		return tlist;
+		Function<Map<String, Object>, ArrayList<Map<String, Object>>>f=x-> tstMapper.listCart(x);
+		return f.apply(tmap);
 	}
+	
 	@PostMapping("/cart/delete") //장바구니 삭제
 	public int deleteCart(@RequestBody Map<String, Object> p){
-			tmap.put("delList", p.get("delList"));
-			int result = tstMapper.deleteCart(tmap);
-			logger.info("들어온여러개의값 {}, 리턴값 {}",p.get("delList"),result);
-		return result;
+			Function<Map<String, Object> , Integer>f=x->{
+				tmap.clear();
+				tmap.put("delList", x.get("delList"));
+				return tstMapper.deleteCart(tmap);
+			};
+		return f.apply(p);
 	}
  
     @Transactional
@@ -72,7 +75,6 @@ public class TasteCtrl {
     public int postPay(@RequestBody Map<String, Object> p){
           tmap.clear();           
           if(p.get("toId")!=null) {//선물하기
-         	  logger.info("toID :  {}",p.get("toId"));
          	 tmap.put("flag", "gift");
          	 tstMapper.postGift(p);
            }else {//구매하기
@@ -80,15 +82,11 @@ public class TasteCtrl {
         	   tmap.put("flag", "buy");
            };
            tmap.put("purchaseSeq", p.get("purchaseSeq").toString());
-           System.out.println("p :"+p);
           tmap.putAll(p);
-               System.out.println("tmap : "+tmap);
           int result = tstMapper.postTastePay(tmap);
           //delList가 있으면 장바구니에서 삭제됨
           if(tmap.get("delList")!=null) {
-        	  System.out.println("delList : "+tmap.get("delList"));
         	  int resultDel = tstMapper.deleteCart(tmap);
-        	  System.out.println(resultDel);
           }
           return result; 
     } 
@@ -96,7 +94,6 @@ public class TasteCtrl {
     @Transactional
 	@PostMapping("/purchase/payhis") //구매함 리스트, 검색
 	public Map<String, Object> searchList(@RequestBody HashMap<String, Object> p){
-			System.out.println("/purchase/payhis들어옴");
 		tmap.clear();
 		tmap.putAll(p);
 		p.put("count", tstMapper.countTaste(p));
@@ -107,10 +104,8 @@ public class TasteCtrl {
 		page.setBeginRow(page.getBeginRow()-1);
 		tmap.put("page",page);
 			logger.info("page :  {}",tmap.get("page"));
-			System.out.println("tmap : "+tmap);
 		ArrayList<Map<String, Object>> tlist = tstMapper.listPayHis(tmap);
 		tmap.put("tlist",tlist);
-		System.out.println("맵: "+tmap);
 		return tmap;
 	}
     @Transactional
@@ -118,24 +113,19 @@ public class TasteCtrl {
    	public Map<String, Object> giftList(@PathVariable String id,
    										@PathVariable String state,
    										@PathVariable String pageNo){
-   			System.out.println("/purchase/gift들어옴");
    		tmap.clear();
-   		logger.info("state :  {}",state);
    		tmap.put("id", id);
 		tmap.put("flag", "gift");
 		tmap.put("state", state);
 		tmap.put("count", tstMapper.countGift(tmap));
-		System.out.println("count "+tmap.get("count"));
 		tmap.put("pageNum", pageNo);
    		tmap.put("pageSize", 12);
    		tmap.put("blockSize", 5);
    		page.excute(tmap);
    		page.setBeginRow(page.getBeginRow()-1);
    		tmap.put("page",page);
-   		logger.info("page :  {}",tmap.get("page"));
 		ArrayList<Map<String, Object>> tlist = tstMapper.listGift(tmap);
    		tmap.put("tlist",tlist);
-   		System.out.println("맵: "+tmap);
    		return tmap;
    	}
 
