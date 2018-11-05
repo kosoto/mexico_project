@@ -36,14 +36,13 @@ public class ItemCtrl {
 	@Autowired TxService tx;
 	@Autowired HashMap<String,Object> map;
 	
-	
-	@GetMapping("/item/list/{brand}/{category}/{sort}")//   /{}
+	@GetMapping("/item/list/{brand}/{category}/{sort}/{pageNum}")//   /{}
 	public @ResponseBody HashMap<String,Object> list(
 			@PathVariable String brand,
 			@PathVariable String category,
-			@PathVariable String sort
-			){
-		map.clear();
+			@PathVariable String sort,
+			@PathVariable String pageNum){
+		/*map.clear();
 		if(brand.equals("브랜드전체") && category.equals("카테고리전체")) {
 			item.setBrand(null);
 			item.setCategory(null);	
@@ -62,31 +61,46 @@ public class ItemCtrl {
 			map.put("listsm", itemMapper.listSomePrice(item));
 		}else if(sort.equals("칼로리")){
 			map.put("listsm", itemMapper.listSomeCalorie(item));
-		}/*else {
-			map.put("listsm", itemMapper.listSomeScore(item));
-		}*///그냥평점으로하면 한 아이템당 여러 아이디가 평가한 평점들을 나열하기 때문에  평균평점으로 sort해야함
-		logger.info("itemMapper:map.get(\"listsm\"):{}",map.get("listsm"));
-		return map;
-	}
-	@GetMapping("/item/pagi/{count}/{pageNum}")// /{pageNum}/{pageSize}/{blockSize}
-	public @ResponseBody HashMap<String, Object> pagination(
-			@PathVariable int count,
-			@PathVariable String pageNum
-			){
-		//logger.info("count:{}",count);
+		}*/
+		//
+		logger.info("list 진입");
+		logger.info("brand {}",brand);
+		logger.info("category {}",category);
+		logger.info("sort {}",sort);
 		map.clear();
+		if(brand.equals("브랜드전체") && category.equals("카테고리전체")) {
+			map.put("brand", null);
+			map.put("category", null);
+		}else if(brand.equals("브랜드전체")) {
+			map.put("brand", null);
+			map.put("category", category);
+		}else if(category.equals("카테고리전체")) {
+			map.put("category", null);
+			map.put("brand", brand);
+		}else {
+			map.put("brand", brand);
+			map.put("category", category);
+		}
+		map.put("sort", sort);
 		map.put("pageNum",pageNum);
-		map.put("count", count);
-		map.put("pageSize", 6);
-		map.put("blockSize", 1);
-		//logger.info("map::{}",map);
-		pagi.excute(map);
-		map.put("pagi", pagi);
-		
-		
-		logger.info("map.get(\"pagi\"):{}",map.get("pagi"));
-		return map;
+		Function<HashMap<String,Object>, HashMap<String,Object>>f=x->{
+			x.put("count", itemMapper.menuCount(x));
+			x.put("pageSize", 12);
+			x.put("blockSize", 1);
+			pagi.excute(map);
+			x.put("pagi", pagi);
+			if((x.get("sort")+"").equals("가격")) {
+				x.put("listsm", itemMapper.menuListPrice(x));
+			}else if((x.get("sort")+"").equals("칼로리")){
+				x.put("listsm", itemMapper.menuListCal(x));
+			}
+			logger.info("x::{}",x);
+			return x;
+		};
+		logger.info("map :{}",map);
+		return f.apply(map);
 	}
+	
 	@GetMapping("/item/retrieve/{itemSeq}")
 	public @ResponseBody HashMap<String, Object> retrieve(@PathVariable String itemSeq ){
 		map.clear();
@@ -110,5 +124,14 @@ public class ItemCtrl {
 		logger.info("/item/relative/::{}",memberId);
 		logger.info("/item/relative/::{}",itemSeq);
 		return map;
+	}
+	
+	@PostMapping("/item/grade")
+	public String retrieveGrade(@RequestBody HashMap<String,Object>p) {
+		Function<HashMap<String,Object>, String>f=x->{
+			String temp = itemMapper.retrieveGrade(x);
+			return (temp==null)?"0.0":temp;
+		};
+		return f.apply(p);
 	}
 }

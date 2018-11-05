@@ -70,6 +70,7 @@ public class CommonCtrl {
 		};
 		return f.apply(p);
 	}
+	
 	@Transactional
 	@GetMapping("/grade/count/{id}")
 	public HashMap<String, Object> countGrade(@PathVariable String id){
