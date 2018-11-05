@@ -11,8 +11,8 @@ yoonho.service=(x=>{
 			"미드미","바니스푼","명가","더큰","런치바스켓","바비박스","이마트"];
 		let category_arr=["카테고리전체","한식","중식","일식","양식","동남아식","다이어트식","건강식","분식"];
 		let sort_arr=["가격","칼로리","평점"];
-		let $content = $('#content').attr({style:'font-family: \'Gugi\', cursive'})
-		let $select = $('<div/>')
+		let $content = $('#content')
+		let $select = $('<div/>').attr({style:'font-family: \'Gugi\', cursive'})
 		.html('<h2 class="h1-responsive font-weight-bold text-center my-5">Be meal::Our menu</h2>'
 				+'<p class="grey-text text-center w-responsive mx-auto mb-5">다양한 메뉴를 즐겨보세요 </p>')
 		.addClass('container')
@@ -153,40 +153,21 @@ yoonho.service=(x=>{
 		let $div5 = $('<div/>').addClass('col-lg-8 text-center').attr({style:'margin-top: -300px;'})
 		.append($('<button/>').html('장바구니').addClass('btn btn-warning').attr({style:'font-size:16px;', 'data-toggle':'collapse' ,'href':'#det_cart_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_cart_btn'})
 				.click(e=>{
-/*					$('#det_cart_btn').collapse({
-						show: true
-					});
-					$('#det_pay_btn').collapse({
-						dispose: true
-					});
-					$('#det_gift_btn').collapse({
-						dispose: true
-					});
-						*/
+					$('#det_cart_btn').collapse('show');
+					$('#det_pay_btn').collapse('hide');
+					$('#det_gift_btn').collapse('hide');
 				}))
 		.append($('<button/>').html('결제하기').addClass('btn btn-warning ').attr({style:'font-size:16px;', 'data-toggle':'collapse' , 'href':'#det_pay_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_pay_btn'})
 				.click(e=>{
-					/*$('#det_cart_btn').collapse({
-						dispose: true
-					});
-					$('#det_pay_btn').collapse({
-						show: true
-					});
-					$('#det_gift_btn').collapse({
-						dispose: true
-					});*/
+					$('#det_cart_btn').collapse('hide');
+					$('#det_pay_btn').collapse('show');
+					$('#det_gift_btn').collapse('hide');
 				}))
 		.append($('<button/>').html('선물하기').addClass('btn btn-warning').attr({style:'font-size:16px;', 'data-toggle':'collapse' , 'href':'#det_gift_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_gift_btn'})
 				.click(e=>{
-					/*$('#det_cart_btn').collapse({
-						dispose: true
-					});
-					$('#det_pay_btn').collapse({
-						dispose: true
-					});
-					$('#det_gift_btn').collapse({
-						show: true
-					});*/
+					$('#det_cart_btn').collapse('hide');
+					$('#det_pay_btn').collapse('hide');
+					$('#det_gift_btn').collapse('show');
 				}))
 		.appendTo($div4)
 
@@ -494,6 +475,8 @@ yoonho.contain=(x=>{
 	};
 	var cart=x=>{
 		let $cart;
+			$('#det_pay').remove();
+			$('#det_gift').remove();
 		$cart=$('<table/>').addClass('table')
 				.append(
 					$('<thead/>').attr({id:'cart_thead'})
@@ -532,6 +515,8 @@ yoonho.contain=(x=>{
 	};
 	var gift=x=>{
 		let $gift;
+		$('#det_cart').remove();
+		$('#det_pay').remove();
 		$gift=$('<table/>').addClass('table')
 				.append(
 					$('<thead/>').attr({id:'gift_thead'})
@@ -570,6 +555,8 @@ yoonho.contain=(x=>{
 	};
 	var pay=x=>{
 		let $pay;
+		$('#det_cart').remove();
+		$('#det_gift').remove();
 		$pay=$('<table/>').addClass('table')
 				.append(
 					$('<thead/>').attr({id:'pay_thead'})
@@ -604,7 +591,6 @@ yoonho.contain=(x=>{
 						.append($('<th/>').append($('<i/>').addClass('fa ').attr({'aria-hidden':'true',id:'input_pay_res_bx',style:'font-weight: bold;font-size:20px;'}) ))
 					)
 				)
-				
 		return $pay;
 	};
 	var commentWrite=x=>{
