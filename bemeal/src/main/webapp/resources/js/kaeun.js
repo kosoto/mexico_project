@@ -675,7 +675,7 @@ kaeun.tastes = {
 					.append(
 							$('<a/>')
 							.attr({style:'cursor:pointer'})
-							.addClass('page-link red')
+							.addClass('page-link')
 							.html(
 									(i == begin)
 										? 'Prev' : (i == end)
