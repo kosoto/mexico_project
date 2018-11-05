@@ -34,7 +34,6 @@ bemeal.router = {
 				$.getScript(x+"/resources/js/router.js",()=>{
 					$.extend(new Session(x));
 				}),
-				$.getScript(x+"/resources/js/util.js"),
 				$.getScript(x+"/resources/js/comp.js"),
 				$.Deferred(y=>{
 					$(y.resolve);
@@ -54,95 +53,89 @@ bemeal.router = {
 				$('.unAuth').show();
 			}
 			/*메인화면 header, content 그리기*/
-				$('header').remove();
-				$('#content').remove();
-				$('#wrapper')
-				.append(
-					$('<header/>').append(
-							bemeal.compo.banner({
-								id:'banner',
-								arr:[{image:"/web/resources/img/cmm/banner/banner1.jpg"},{image:"/web/resources/img/cmm/banner/banner2.jpg"}]
+			$('header').remove();
+			$('#content').remove();
+			$('#wrapper').append(
+				$('<header/>').append(
+					bemeal.compo.banner({
+						id:'banner',
+						arr:[{image:"/web/resources/img/cmm/banner/banner1.jpg"},{image:"/web/resources/img/cmm/banner/banner2.jpg"}]
+					})
+				),					
+				$('<div/>').attr({id:'content'}).addClass('mainContent')
+			);
+			let $content = $('#content');
+			let $carousels = $('<div/>').appendTo($content);
+			let arr = [
+				{category:'grade',title:'가장 평점이 높은'},
+				{category:'buy',title:'가장 판매량이 높은'},
+				{category:'wish',title:'가장 인기 있는'}
+			];
+			$.each(arr,(i,j)=>{ 
+				$.getJSON($.ctx()+"/item/list/"+j.category+'/null',d=>{
+					$carousels.append(
+							bemeal.compo.carousel({
+								id:'carousel'+i,
+								title:j.title,
+								arr:d.list,
+								row_size:5
 							})
-					),					
-					$('<div/>').attr({id:'content'}).addClass('mainContent')
-				);
-				let $content = $('#content');
-				let $carousels = $('<div/>').appendTo($content);
-				let arr = [
-					{category:'grade',title:'가장 평점이 높은'},
-					{category:'buy',title:'가장 판매량이 높은'},
-					{category:'wish',title:'가장 인기 있는'}
-				];
-				$.each(arr,(i,j)=>{ 
-					$.getJSON($.ctx()+"/item/list/"+j.category+'/null',d=>{
-						$carousels.append(
+					);
+				});
+			}); //$.each end
+			let num = 0;
+			let titles = {};
+			let member = $.cookie('member');
+			$.getJSON($.ctx()+'/tagList',d=>{
+				tags = d;
+				if(member!==undefined){
+					if(member['gender']!==undefined) titles['gender'] = member['gender'];
+					if(member['age']!==undefined) titles['age'] = member['age'];
+				}
+				for(let i=1;i<=20;i++){
+					let temp = Math.floor(Math.random()*tags.length);
+					titles['tag'+i] = tags[temp];
+					tags.splice(temp,1);
+				}
+				let keySet = Object.keys(titles);
+				let values = Object.values(titles);
+				let p = {
+						gender:'자가 좋아하는',
+						age:'대가 좋아하는'
+				};
+				let $window = $(window);
+				let scrollFlag = true;
+				$window.on('scroll.category',e=>{ //스크롤로 데이터 불러오기
+					if(scrollFlag && keySet.length!=0 && $window.scrollTop()+$window.height()+80>$(document).height()){
+						scrollFlag = false;
+						let key = keySet.shift();
+						let value = values.shift();
+						$.getJSON($.ctx()+"/item/list/"+key+"/"+value,d=>{
+							$carousels.append(
 								bemeal.compo.carousel({
-									id:'carousel'+i,
-									title:j.title,
+									id:'carousel'+key,
+									title:(x=>{
+										if(key==='gender') return value+'성이 좋아하는'
+										if(key==='age')	return value+'대가 좋아하는'
+										if(key.substring(0,3)==='tag') return '#'+value;
+										return '';
+									})(),
 									arr:d.list,
 									row_size:5
 								})
-						);
-					});
-				}); //$.each end
-
-				let num = 0;
-				let titles = {};
-				let member = $.cookie('member');
-				$.getJSON($.ctx()+'/tagList',d=>{
-					tags = d;
-					if(member!==undefined){
-						titles = {};
-						if(member['gender']!==undefined) titles['gender'] = member['gender'];
-						if(member['age']!==undefined) titles['age'] = member['age'];
+							);
+							scrollFlag = true;
+						});
 					}
-					for(let i=1;i<=20;i++){
-						let temp = Math.floor(Math.random()*tags.length);
-						titles['tag'+i] = tags[temp];
-						tags.splice(temp,1);
-					}
-					let keySet = Object.keys(titles);
-					let values = Object.values(titles);
-					let p = {
-							gender:'자가 좋아하는',
-							age:'대가 좋아하는'
-					};
-					let $window = $(window);
-					let scrollFlag = true;
-					$window.on('scroll.category',e=>{ //스크롤로 데이터 불러오기
-							if(scrollFlag && keySet.length!=0 && $window.scrollTop()+$window.height()+80>$(document).height()){
-								scrollFlag = false;
-									let key = keySet.shift();
-									let value = values.shift();
-									$.getJSON($.ctx()+"/item/list/"+key+"/"+value,d=>{
-											$carousels.append(
-													bemeal.compo.carousel({
-														id:'carousel'+key,
-														title:(x=>{
-															if(key==='gender') return value+'성이 좋아하는'
-															
-															if(key==='age')	return value+'대가 좋아하는'
-															
-															if(key.substring(0,3)==='tag') return '#'+value;
-															
-															return '';
-														})(),
-														arr:d.list,
-														row_size:5
-													})
-											);
-											scrollFlag = true;
-									});
-							}
-					});//scroll event end
-				}); //getJSON tagList end
+				});//scroll event end
+			}); //getJSON tagList end
 		}
 };
 
 bemeal.compo=(()=>{
 	var nav = ()=>{
 		return $('<nav/>').addClass('navbar fixed-top navbar-expand-lg navbar-light lighten-5 scrolling-navbar').append(
-					$('<a/>').addClass('navbar-brand').attr({href:'#',id:'logo'}).append($('<strong/>').append($('<img/>').attr({src:$.img()+"/cmm/logo.png"}))).click(e=>{
+					$('<a/>').addClass('navbar-brand').attr({href:'#',id:'logo'}).append($('<strong/>').append($('<img/>').attr({src:$.img()+"/cmm/logo.png",style:'height:55px;'}))).click(e=>{
 						e.preventDefault();
 						$(window).off('scroll.category'); //main과 menu 화면에 걸려있는 무한 스크롤 이벤트 제거
 						$('.nav-item').removeClass('active'); //네비 버튼들에 걸려있는 하일라이트 효과 제거
@@ -192,7 +185,7 @@ bemeal.compo=(()=>{
 								})
 							),
 							$('<li/>').addClass('nav-item').append(
-								$('<a/>').addClass('nav-link auth').attr({href:'#',id:'evaluate'}).text('평가하기').click(e=>{
+								$('<a/>').addClass('nav-link auth').attr({href:'#',id:'evaluate'}).text('RATE').click(e=>{
 									e.preventDefault();
 									$('.nav-item').removeClass('active');
 									$('#evaluate').parent().addClass('active');
@@ -217,7 +210,6 @@ bemeal.compo=(()=>{
 								}else{//검색어가 없으면 다시 메인 보여주기
 									bemeal.router.main();
 								}
-								
 							}),
 							$('<button/>').addClass('btn btn-outline-white btn-sm my-0').attr({'data-flag':'true',style:'color:black!important;font-size:14px;',type:'button',id:'testSearch'}).text('tag').click(e=>{
 								e.preventDefault();
@@ -249,7 +241,7 @@ bemeal.compo=(()=>{
 										junghoon.member.login();
 									})
 								}),
-								$('<a/>').addClass('dropdown-item auth').attr({href:'#',id:'login_form'}).text('마이페이지').click(e=>{
+								$('<a/>').addClass('dropdown-item auth').attr({href:'#'}).text('마이페이지').click(e=>{
 									e.preventDefault();
 									$.getScript($.script()+"/junghoon.js",(e)=>{
 										$(window).off('scroll.category');
@@ -261,7 +253,6 @@ bemeal.compo=(()=>{
 									e.preventDefault();
 									$.getScript($.script()+"/junghoon.js",(e)=>{
 										$(window).off('scroll.category');
-										//$('#content').removeClass('mainContent');
 										$('.auth').hide();
 										$('.unAuth').show();
 										$.removeCookie('member');
@@ -291,7 +282,7 @@ bemeal.compo=(()=>{
 			let $span = $('<span/>').appendTo($temp);
 			for(let j=i*row_size;j<(i+1)*row_size;j++){
 				$('<div/>').addClass('text-shadow-black').text(arr[j].itemName).appendTo($span);
-				$('<img/>').addClass('img-fluid').attr({
+				$('<img/>').addClass('img-fluid img_hover').appendTo($span).attr({
 					src:arr[j].img,
 					alt:arr[j].itemName,
 					style:"width:"+(100/row_size)+"%;height:150px"
@@ -300,9 +291,7 @@ bemeal.compo=(()=>{
 					$.getScript($.script()+"/yoonho.js",()=>{
 						yoonho.service.retrieve(arr[j].itemSeq);
 					});
-				})
-				.addClass('img_hover')
-				.appendTo($span);
+				});
 			}
 		}
 		let arrows = ['prev','next'];
@@ -319,7 +308,7 @@ bemeal.compo=(()=>{
 						    if (direction == 'right') $(this).carousel('prev');
 						  },
 						  allowPageScroll:"vertical"
-						});
+					});
 	};
 	var banner = x=>{ /* x.id, x.arr 배너에 보여줄 이미지들*/
 		let $div = $('<div/>').attr({id:x.id,'data-ride':'carousel'}).addClass('carousel slide')

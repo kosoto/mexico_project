@@ -11,5 +11,5 @@ public interface BoardMapper {
 	public List<Board> retrieve(Map<?,?> p);
 	public List<Board> get(Map<?,?> p);
 	public void put(Map<?, ?>p);
-	public void delete(Map<?, ?> p);
+	public int delete(Map<?, ?> p);
 }

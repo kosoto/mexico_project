@@ -169,7 +169,6 @@ kaeun.ui = {
 					$('#select').change(()=>{
 							$('#gift_content').empty();
 							state = $('#select').val();
-							console.log(state);
 							kaeun.tastes.giftList({state:state});
 								})
 		 		},
@@ -240,7 +239,6 @@ kaeun.ui = {
 					flag = ($('#pay_status option:selected').val()==='선물')? ["gift"] :
 									($('#pay_status option:selected').val()==='구매완료')? ["buy"] : ["buy","gift"];
 					keyword = ($('#keyword').val()!=='')? '%'+$('#keyword').val()+'%' : null;
-					console.log('시작: '+prevDate + ' 끝: ' + day + ' flag: '+flag+' keyword: '+keyword+' pageNo: '+pageNo);
 					kaeun.tastes.payHisList({prevDate:prevDate,day:day,pageNo:pageNo,flag:flag,keyword:keyword});
 				})
 				//flag:default가 buy+gift임 */
@@ -288,10 +286,8 @@ kaeun.payment=(()=>{
 		$('#gift_toId').keydown(e=>{if(e.keyCode === 13)e.preventDefault();})
 		.keyup(e=>{
 			  let toId = e.currentTarget.value;
-			  console.log(toId);
 			  if(toId!==''){
 				  $.getJSON($.ctx()+'/mbr/idck/'+toId,d=>{
-					  console.log(d);
 					  if(d=="0"){ 
 							  chkId = true;
 							  let msg = '선물 가능한 ID입니다';
@@ -300,7 +296,6 @@ kaeun.payment=(()=>{
 					  }else{
 						  $('#chk_result').html($('<p/>').addClass("val_x").text("없는 ID입니다"));
 					  }
-					  console.log(chkId);
 				  })
 			  }
 			});
@@ -313,10 +308,6 @@ kaeun.payment=(()=>{
 		$('#gift_submit').click(e=>{
 			//chkId가 true일때만!
 			//★ 보내려는 사람 아이디랑,메세지도 함께 넣어야하는데... 잘못하면 payList쿼리가 깨진다?
-			console.log('payList: '+x.payList);
-			console.log('toId: '+$('#gift_toId').val());
-			console.log('msg: '+$('#gift_msg').val());
-			console.log('delList: '+x.delList);
 			kaeun.payment.purchase(
 					{payList:x.payList,
 						delList:x.delList,
@@ -339,7 +330,6 @@ kaeun.payment=(()=>{
 			                	flag: x.flag}),
             success : d=>{
             	if(d>0){
-            		console.log('삽입성공');
             		if(confirm('장바구니로 이동하시겠습니까?')){
             			kaeun.ui.cart();
             		}else{}
@@ -385,9 +375,6 @@ kaeun.payment=(()=>{
         let msg = (x.msg!==null)? x.msg : null;
         let total = 0;
         let sum_price = 0;
-        console.log(delList);
-        console.log('msg:' +msg);
-        console.log('toId: '+toId);
         $.each(x.payList,(i,j)=>{
         	total += j.quantity;
         	sum_price += j.price;
@@ -615,13 +602,10 @@ kaeun.tastes = {
 			$('#pageNation').remove();
 			let id = $.cookie('member')["memberId"];
 			let pageNo = (x.pageNo!=null)? x.pageNo:1;
-			console.log(pageNo);
 			$('#k_content').append('<div id="gift_content" class="container"/>');
 			$.getJSON($.ctx()+'/purchase/gift/'+id+'/'+x.state+'/'+pageNo,d=>{ //getjosn시작
 				let cnt = 0;
 				let row = (d.count>12)? 3 : Math.ceil(d.count/4); 
-				console.log('count : '+d.count);
-				console.log('row : '+row);
 				let gifts = d.tlist;
 				let option = (x.state!=='gift')?  'To. ' : 'From. ';
 				let giftId;
@@ -904,7 +888,6 @@ kaeun.tastes = {
 		        let int = 0;
 		        $.each(d.menu,(i,j)=>{
 		        	int += 1;
-	            	console.log(j.menu,j.menuAvg,j.menuCnt);
 	            	data.addRow([j.menu+' ', arrX[i]*1, arrY[i]*1, j.menu+'', j.menuCnt*1]);
 	            }); //each문
 		        var options = {
@@ -1087,7 +1070,6 @@ kaeun.tastes = {
 					.mouseup(e=>{down2 = false;});
 			let arr = ['wish','dir1','dir2','dir3','dir4','dir5','dir6','dir7','dir8'] ; /* 해당 유저의 dir_name들을 getJSON으로가져오기 */
 			$.each(arr,(i,j)=>{
-				console.log(j)
 				$('<div/>').addClass('card col_card').appendTo($card_group_dir).append(
 					$('<div/>').addClass('view overlay').append(
 						$('<img/>').addClass('card-img-top').attr({src:$.img()+'/cmm/item/dosiroc (1).jpg'/*img 넣기*/,alt:'Card image cap',style:'pointer-events:none'}),

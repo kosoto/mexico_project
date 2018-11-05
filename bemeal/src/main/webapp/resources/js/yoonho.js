@@ -11,24 +11,24 @@ yoonho.service=(x=>{
 			"미드미","바니스푼","명가","더큰","런치바스켓","바비박스","이마트"];
 		let category_arr=["카테고리전체","한식","중식","일식","양식","동남아식","다이어트식","건강식","분식"];
 		let sort_arr=["가격","칼로리","평점"];
-		let $content = $('#content')//.attr({style:'font-family: \'Sunflower\', sans-serif;'})
-		let $select = $('<div/>')
+		let $content = $('#content')
+		let $select = $('<div/>').attr({style:'font-family: \'Gugi\', cursive'})
 		.html('<h2 class="h1-responsive font-weight-bold text-center my-5">Be meal::Our menu</h2>'
 				+'<p class="grey-text text-center w-responsive mx-auto mb-5">다양한 메뉴를 즐겨보세요 </p>')
 		.addClass('container')
-			.append($('<span/>').addClass('col-lg-2 mgt50 btn-group')
+			.append($('<span/>').addClass('col-lg-2 mgt50 btn-group mobile-break')
 				.append($('<div/>').addClass('form-group')
-					.append($('<select/>').addClass('form-control').attr({'id':'brand_menu','role':'menu'}))
+					.append($('<select/>').addClass('form-control menuDropBox').attr({'id':'brand_menu','role':'menu'}))
 				)
 			)
-			.append($('<span/>').addClass('col-lg-2 mgt50 btn-group')
+			.append($('<span/>').addClass('col-lg-2 mgt50 btn-group mobile-break')
 				.append($('<div/>').addClass('form-group')
-					.append($('<select/>').addClass('form-control').attr({'id':'category_menu','role':'menu'}))
+					.append($('<select/>').addClass('form-control menuDropBox').attr({'id':'category_menu','role':'menu'}))
 				)
 			)
-			.append($('<span style="float:right"/>').addClass('col-lg-2 mgt50 btn-group')
+			.append($('<span style="float:right"/>').addClass('col-lg-2 mgt50 btn-group mobile-break')
 				.append($('<div/>').addClass('form-group')
-					.append($('<select/>').addClass('form-control').attr({'id':'sort_menu','role':'menu'}))
+					.append($('<select/>').addClass('form-control menuDropBox').attr({'id':'sort_menu','role':'menu'}))
 				)
 			).appendTo($content)
 			
@@ -49,124 +49,72 @@ yoonho.service=(x=>{
 		let $brand_menu = brand_arr[$("#brand_menu").val()]
 		let $category_menu = category_arr[$('#category_menu').val()]
 		let $sort_menu = sort_arr[$('#sort_menu').val()]
-
-		$.getJSON($.ctx()+'/item/list/'+$brand_menu+'/'+$category_menu+'/'+$sort_menu,d=>{
-			//이게 가장 맨처음 보이는 화면
-			row(d.listsm)//.appendTo($('#yh_container'))
-			$('#brand_menu').change(()=>{
-				$('#yh_container').empty();
-				$brand_menu = brand_arr[$("#brand_menu").val()]
-				$.getJSON($.ctx()+'/item/list/'+$brand_menu+'/'+$category_menu+'/'+$sort_menu,d=>{
-					var page = 1;
-						row(d.listsm)
-						page++;
-					//row().appendTo($('#yh_container'))	
-				})
-			})//메뉴카테고리
-			$('#category_menu').change(()=>{
-				$('#yh_container').empty();
-				$category_menu = category_arr[$("#category_menu").val()]
-				$.getJSON($.ctx()+'/item/list/'+$brand_menu+'/'+$category_menu+'/'+$sort_menu,d=>{
-						row(d.listsm)
-				})
-			})//브랜드
-			$('#sort_menu').change(()=>{
-				$('#yh_container').empty();
-				$sort_menu = sort_arr[$("#sort_menu").val()]
-				alert('#sort_menu option:selected:'+$('#sort_menu').val())
-				$.getJSON($.ctx()+'/item/list/'+$brand_menu+'/'+$category_menu+'/'+$sort_menu,d=>{
-						row(d.listsm)
-				})
-				alert('#sort_menu option:selected:'+$('#sort_menu option:selected').val());
-			})//정렬
-		})
-		//같은 getJSON이지만 묶어서 놓게 되면 오류발생 수정할 수 있게되면 할 것.
+		let page = 1;
+		$.getJSON($.ctx()+'/item/list/'+$brand_menu+'/'+$category_menu+'/'+$sort_menu+'/'+page,d=>{
+			loadedPage(d);
+			page++;
+		});	
+		$('.menuDropBox').change(()=>{
+			page = 1;
+			flag=true;
+			nextPage = true;
+			$('#yh_container').empty();
+			$brand_menu = brand_arr[$("#brand_menu").val()];
+			$category_menu = category_arr[$("#category_menu").val()];
+			$sort_menu = sort_arr[$("#sort_menu").val()];
+			$.getJSON($.ctx()+'/item/list/'+$brand_menu+'/'+$category_menu+'/'+$sort_menu+'/'+page,d=>{
+				loadedPage(d);
+				page++;
+			});
 			
-		return $content;
-	};
-	var row=x=>{
-		$('#yh_container').empty();
-		let titles = [];
-		let length = x.length
-		//console.log('x::length:'+x.length)
-
+		});
+		
+		let flag=true;
+		let nextPage = true;
 		let $window = $(window);
-		let $document = $(document);
-		let page=1;
-		if(page<2){
-			for(var i = 0; i<2;i++){
-				loadedPage({
-					length:length,
-					page:i,
-					arr:x
-				})
-			}
-			//console.log('loadedPage::page:'+page)
-			page++
-		}
-			let flag = true;
-			$window.on('scroll.category',()=>{
-				if(flag&&$window.scrollTop()+$window.height()+30>$document.height()){
-					flag=false;
-					setTimeout(() => {
-						loadedPage({
-							length:length,
-							page:page++,//++
-							arr:x
-						});
+		$window.on('scroll.category',()=>{
+			if(flag&&nextPage&&$window.scrollTop()+$window.height()+30>$(document).height()){
+				flag=false;
+				setTimeout(() => {
+					$.getJSON($.ctx()+'/item/list/'+$brand_menu+'/'+$category_menu+'/'+$sort_menu+'/'+page,d=>{
+						loadedPage(d);
+						page++;
 						flag = true;
-					}, 600);
-				}
-			})
-	};
+						if(!d.pagi.existNext) nextPage = false;
+					});
+				}, 300);
+			}
+		});
+	}; 
+	
 	var loadedPage=x=>{
-		//console.log('x.length / x.page : '+x.length+'/'+x.page);
 		let $section;
 		let $div_row;
 		let $div_col;
 		let $div_card;
 		let $div_view_zoom;
 		let $div_a_p;
-		let index=x.page*6;
-		$.getJSON($.ctx()+'/item/pagi/'+x.length*1+'/'+(x.page+""),d=>{
-			$section = $('<section align="left"/>').addClass('text-center my-5').appendTo($('#yh_container'))//.attr({style:'font-family: \'Sunflower\', sans-serif;'})
-			if(d.pagi.existNext){
-				//console.log('d.pagi::'+Object.keys(d.pagi)+'/'+d.pagi.beginRow+'/'+d.pagi.endRow)
-				$div_row = $('<div/>').addClass('row').appendTo($section).attr({id:'div_row',style:'justify-content:left;'})
-				for(var j = d.pagi.beginRow;j<=d.pagi.endRow;j++,index++){
-					if(index<d.pagi.count){
-						$div_col = $('<div/>').addClass('col-lg-2 col-md-2 mb-lg-0 mb-2').appendTo($div_row).attr({style:'max-width:100%;max-height:100%;text-align:center'})
-						$div_card = $('<div/>').addClass('card collection-card z-depth-1-half').appendTo($div_col)
-						//console.log('x.valueOf():'+Object.keys(x.length))
-						$div_view_zoom = $('<div/>').addClass('view zoom').appendTo($div_card)
-												.append(
-													$('<img/>').addClass('img-fluid').attr({href:'#','data-seq':x.arr[index].itemSeq,src:x.arr[index].img}).click(e=>{
-														e.preventDefault();
-														//console.log('e.currentTarget'+e.currentTarget.dataset.seq)
-														yoonho.service.retrieve(e.currentTarget.dataset.seq)
-													})
-												)
-						$div_a_p = $('<div/>').addClass('stripe dark').appendTo($div_card)
-										.append($('<a/>').append($('<p/>').html(x.arr[index].itemName).append($('<i/>').addClass('fa fa-angle-right').html(x.arr[index].price+' 원'))))
-						//console.log('밑 index값')
-						//console.log(index)
-						//console.log(d.pagi.count)
-					}else if(index>=d.pagi.count){
-						//나머지 한 페이지(6으로 나눈 뒤 나머지 값들)
-						//$div_col.attr({style:'visibility:hidden;'})
-						$(window).off('scroll.category');
-						break;
-					}
-				}
-			}
-			//console.log(d.pagi);
-		})
-		//return $div_col;
+		let arr = x.listsm;
+		let index=0;
+		$section = $('<section align="left"/>').addClass('text-center my-5').appendTo($('#yh_container')).attr({style:'font-family: \'Gugi\', cursive'})
+		$div_row = $('<div/>').addClass('row').appendTo($section).attr({id:'div_row',style:'justify-content:left;'})
+		for(let j = 1;j<=12,arr[index]!=undefined;j++,index++){
+			$div_col = $('<div/>').addClass('col-lg-2 col-md-2 mb-lg-0 mb-2').appendTo($div_row).attr({style:'max-width:100%;max-height:100%;text-align:center'})
+			$div_card = $('<div/>').addClass('card collection-card z-depth-1-half').appendTo($div_col)
+			$div_view_zoom = $('<div/>').addClass('view zoom').appendTo($div_card)
+									.append(
+										$('<img/>').addClass('img-fluid').attr({href:'#','data-seq':arr[index].itemSeq,src:arr[index].img}).click(e=>{
+											e.preventDefault();
+											yoonho.service.retrieve(e.currentTarget.dataset.seq)
+										})
+									)
+			$div_a_p = $('<div/>').addClass('stripe dark').appendTo($div_card)
+							.append($('<a/>').append($('<p/>').html(arr[index].itemName).append($('<i/>').addClass('fa').html(':'+arr[index].price+' 원').attr({style:'font-family: \'Gugi\', cursive'}))))
+		}
 	};
 
 	var retrieve = x=>{
 		$.getJSON($.ctx()+'/item/retrieve/'+x,d=>{
-			//console.log('d.retrieve[0]::'+d.retrieve[0].itemSeq+'//d.rtag[0]::'+d.rtag[0].TAG_NAME)
 			$.magnificPopup.open({
 				closeBtnInside:true,
 				closeOnContentClick:false,
@@ -182,7 +130,7 @@ yoonho.service=(x=>{
 				type:'inline'
 				}); 
 			$('.btn').on('click',function(){
-				//alert('$(\'#code\').val()'+$('#code').val());
+				
 			});
 		})
 		return false;
@@ -203,14 +151,30 @@ yoonho.service=(x=>{
 		$(()=>{$('[data-toggle="tooltip"]').tooltip()})
 		let $div4 = $('<div/>').addClass('mg0a').appendTo($div3);//  결제하기/선물하기/위시리스트
 		let $div5 = $('<div/>').addClass('col-lg-8 text-center').attr({style:'margin-top: -300px;'})
-		.append($('<button/>').html('장바구니').addClass('btn btn-warning').attr({style:'font-size:16px;', 'data-toggle':'collapse' , 'href':'#det_cart_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_cart_btn'}))
-		.append($('<button/>').html('결제하기').addClass('btn btn-warning').attr({style:'font-size:16px;', 'data-toggle':'collapse' , 'href':'#det_pay_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_pay_btn'}))
-		.append($('<button/>').html('선물하기').addClass('btn btn-warning').attr({style:'font-size:16px;', 'data-toggle':'collapse' , 'href':'#det_gift_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_gift_btn'}))
-		.append($('<button/>').html('추천 도시락').addClass('btn btn-warning').attr({style:'font-size:16px;', 'data-toggle':'collapse' , 'href':'#det_recom_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_recom_btn'}))
+		.append($('<button/>').html('장바구니').addClass('btn btn-warning').attr({style:'font-size:16px;', 'data-toggle':'collapse' ,'href':'#det_cart_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_cart_btn'})
+				.click(e=>{
+					$('#det_cart_btn').collapse('show');
+					$('#det_pay_btn').collapse('hide');
+					$('#det_gift_btn').collapse('hide');
+				}))
+		.append($('<button/>').html('결제하기').addClass('btn btn-warning ').attr({style:'font-size:16px;', 'data-toggle':'collapse' , 'href':'#det_pay_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_pay_btn'})
+				.click(e=>{
+					$('#det_cart_btn').collapse('hide');
+					$('#det_pay_btn').collapse('show');
+					$('#det_gift_btn').collapse('hide');
+				}))
+		.append($('<button/>').html('선물하기').addClass('btn btn-warning').attr({style:'font-size:16px;', 'data-toggle':'collapse' , 'href':'#det_gift_btn' , 'role':'button' , 'aria-expanded':'false','aria-controls':'det_gift_btn'})
+				.click(e=>{
+					$('#det_cart_btn').collapse('hide');
+					$('#det_pay_btn').collapse('hide');
+					$('#det_gift_btn').collapse('show');
+				}))
 		.appendTo($div4)
+
+			
 		
 		
-		var $col_cart = $('<div/>').addClass('row')
+		var $col_cart = $('<div/>').addClass('row').attr({id:'det_cart'})
 						.append(
 							$('<div/>').addClass('col')
 							.append(
@@ -233,8 +197,6 @@ yoonho.service=(x=>{
 											rtrv['quantityC']=$item_cart_iptbx
 											$.magnificPopup.close();
 											$.getScript($.script()+'/kaeun.js',()=>{
-								                console.log('rtrv.quantityC밑에 뜸')
-								                console.log(rtrv.quantityC)
 												kaeun.payment.putTaste({
 																		itemSeq:rtrv.itemSeq,
 																		quantity:rtrv.quantityC,
@@ -247,7 +209,7 @@ yoonho.service=(x=>{
 							)
 						).appendTo($div5)
 						
-		var $col_pay = $('<div/>').addClass('row')
+		var $col_pay = $('<div/>').addClass('row').attr({id:'det_pay'})
 						.append(
 							$('<div/>').addClass('col')
 							.append(
@@ -276,8 +238,6 @@ yoonho.service=(x=>{
 										                       price:rtrv.price,
 										                       explains:rtrv.explains,
 										                       img:rtrv.img}];
-										               console.log('pay의 paylist 밑에 뜸')
-										               console.log(payList)
 										               let delList = null;
 										               kaeun.payment.purchase({payList:payList,delList:delList});   
 												}else{}
@@ -288,7 +248,7 @@ yoonho.service=(x=>{
 							)
 						).appendTo($div5)
 						
-		var $col_gift = $('<div/>').addClass('row')
+		var $col_gift = $('<div/>').addClass('row').attr({id:'det_gift'})
 						.append(
 							$('<div/>').addClass('col')
 							.append(
@@ -318,8 +278,6 @@ yoonho.service=(x=>{
 										                       price:rtrv.price,
 										                       explains:rtrv.explains,
 										                       img:rtrv.img}];
-										               console.log('gift의 paylist 밑에 뜸')
-										               console.log(payList)
 										               let delList = null;
 										               kaeun.payment.giftPopup({payList:payList,delList:delList});
 										              }else{}
@@ -370,7 +328,6 @@ yoonho.service=(x=>{
 						.append($('<div/>').addClass('card-header border-0 font-weight-bold').html('comments'))
 						
 									$.each(d.read,(i,j)=>{
-										//console.log('j::'+j.memberId)
 										yoonho.contain.commentList(j).appendTo($section6_2)
 									})
 		})
@@ -384,83 +341,107 @@ yoonho.service=(x=>{
 						.append($('<h2 style="font-size:28px;"/>').addClass('text-center font-weight-bold').html(rtrv.itemName))
 						.append($('<p/>').addClass('text-center').html(rtrv.category))
 						.appendTo($div4_4);
-		let $star = $('<div/>').addClass('my-rating').attr({id:'my-rating'})
-			.starRating({ //https://github.com/nashio/star-rating-svg
-				initialRating: 0, //초기값  
-				starSize: 20,  //width속성값
-				minRating : 0.5,
-				emptyColor : 'grey',
-				hoverColor : 'orange',
-				activeColor : 'orange',
-				ratedColor : 'orange',
-				useGradient : false,
-				strokeColor: 'orange',  //border color
-				callback : (currentRating, $el)=>{
-					alert(currentRating);
-					let flag = false; //평점을 준적이 없으면 false 있으면 true
-					/*getJSON($.ctx()+'/',()=>{//id와 item_seq를 넘겨줌
-						
-					})*/
-					
-				}
-			}).appendTo($div5_4)
-			let $p6_4_1 = $('<div/>').addClass('text-left').html(rtrv.starCount+'명이 별점평가 했어요!')
-						.appendTo($div5_4)
-			let $tag = $('<div/>').appendTo($p6_4_1)
-			$.each(x.rtag, (i,j)=>{
-				if(j.TAG_FLAG=='맛'){
-					$('<div/>').attr({style:'margin:10px;font-size:12px'}).addClass('badge badge-danger').html(j.TAG_FLAG+'#'+j.TAG_NAME).appendTo($tag);
-				}else if(j.TAG_FLAG=='감성'){
-					$('<div/>').attr({style:'margin:10px;font-size:12px'}).addClass('badge badge-info').html(j.TAG_FLAG+'#'+j.TAG_NAME).appendTo($tag);
-				}else if(j.TAG_FLAG=='재료'){
-					$('<div/>').attr({style:'margin:10px;font-size:12px'}).addClass('badge badge-success').html(j.TAG_FLAG+'#'+j.TAG_NAME).appendTo($tag);
-				}
+		$.ajax({
+			url : $.ctx()+'/item/grade',
+			method : 'post',
+			contentType : 'application/json',
+			data : JSON.stringify({
+				memberId:$.cookie('member')['memberId'],
+				itemSeq:rtrv.itemSeq
+			}),
+			success : d=>{
+				let $star = $('<div/>').addClass('my-rating').attr({id:'my-rating'})
+				.starRating({ //https://github.com/nashio/star-rating-svg
+					initialRating: d*1, //초기값  
+					starSize: 20,  //width속성값
+					emptyColor : 'grey',
+					hoverColor : 'orange',
+					activeColor : 'orange',
+					ratedColor : 'orange',
+					useGradient : false,
+					strokeColor: 'orange',  //border color
+					callback : (currentRating, $el)=>{
+						if(currentRating!=0){
+							$.ajax({
+								url : $.ctx()+'/grade/evaluate',
+								method : 'post',
+								contentType : 'application/json',
+								data : JSON.stringify({
+									id:$.cookie('member')['memberId'],
+									itemSeq:rtrv.itemSeq,
+									currentRating:currentRating*2
+								}),
+								success : r=>{
+									if(r === 'remove') $el.starRating('setRating', 0.0);
+								},
+								error : (e1,e2,e3)=>{
+									
+								}
+							});
+					   }
+					} //callback end
+				}).appendTo($div5_4);
+				let $p6_4_1 = $('<div/>').addClass('text-left').html(rtrv.starCount+'명이 별점평가 했어요!')
+				.appendTo($div5_4)
+	let $tag = $('<div/>').appendTo($p6_4_1)
+	$.each(x.rtag, (i,j)=>{
+		if(j.TAG_FLAG=='맛'){
+			$('<div/>').attr({style:'margin:10px;font-size:12px'}).addClass('badge badge-danger').html(j.TAG_FLAG+'#'+j.TAG_NAME).appendTo($tag);
+		}else if(j.TAG_FLAG=='감성'){
+			$('<div/>').attr({style:'margin:10px;font-size:12px'}).addClass('badge badge-info').html(j.TAG_FLAG+'#'+j.TAG_NAME).appendTo($tag);
+		}else if(j.TAG_FLAG=='재료'){
+			$('<div/>').attr({style:'margin:10px;font-size:12px'}).addClass('badge badge-success').html(j.TAG_FLAG+'#'+j.TAG_NAME).appendTo($tag);
+		}
+		
+	})
+	
+
+	//rtrv.imgSeq,rtrv.itemName,rtrv.img,rtrv.price,rtrv.calorie,rtrv.category,rtrv.explains,rtrv.brand,rtrv.itemSeq
+	let $div4_5 = $('<div/>').addClass('row').appendTo($div3_4)
+	let $div5_5 = $('<div/>').addClass('col-lg-12').appendTo($div4_5)
+
+	//md-accordion accordion-1
+	let $aNav = $('<div/>').addClass('accordion').attr({'id':'accordionEx23','role':'tablist'}).appendTo($div3_4)
+	let $aNav_crd = $('<div/>').addClass('card').appendTo($aNav)
+	let $aNav_crd_hd = $('<div/>').addClass('card-header blue lighten-3 z-depth-1').attr({'id':'heading96','role':'tab'}).appendTo($aNav_crd)
+	let $aNav_crd_hd_t = $('<h5/>').addClass('text-uppercase mb-0 py-1').appendTo($aNav_crd_hd)
+	let $aNav_crd_hd_t_a = $('<a href="#collapse96"/>').html('도시락 정보').addClass('white-text font-weight-bold').attr({'data-toggle':'collapse', 'aria-expanded':'true', 'aria-controls':'collapse96'}).appendTo($aNav_crd_hd_t)
+	
+	let $aNav_crd_ctn = $('<div/>').addClass('collapse show').attr({'id':'collapse96','role':'tabpanel','aria-labelledby':'heading96','data-parent':'#accordionEx23'}).appendTo($aNav_crd)
+	let $aNav_crd_ctn_bd = $('<div/>').addClass('card-body').appendTo($aNav_crd_ctn)
+	let $aNav_crd_ctn_r = $('<div/>').addClass('row my-4').appendTo($aNav_crd_ctn_bd)
+	
+	let $aNav_crd_ctn_c = $('<div/>').addClass('col-md-12').appendTo($aNav_crd_ctn_r)
+	//md-accordion accordion-1 end
+	
+	let $tbl6_5 = $('<div/>').addClass('row').appendTo($aNav_crd_ctn_c)
+	let $tbody7_5 = $('<div/>').html('업체').addClass('col-sm text-left mgt10-mgb10').attr({style:'font-weight: bold;'}).appendTo($tbl6_5)
+	let $tbody7_5_1 = $('<div/>').html(rtrv.brand).addClass('col-sm  mgt10-mgb10').appendTo($tbl6_5)
+
+	
+	let $tbl6_6 = $('<div/>').addClass('row').appendTo($aNav_crd_ctn_c)
+	let $tbody7_6 = $('<div/>').html('칼로리').addClass('col-sm text-left mgt10-mgb10').attr({style:'font-weight: bold;'}).appendTo($tbl6_6)
+	let $tbody7_6_1 = $('<div/>').html(rtrv.calorie+' Kcal').addClass('col-sm  mgt10-mgb10').appendTo($tbl6_6)
+	
+	let $tbl6_7 = $('<div/>').addClass('row').appendTo($aNav_crd_ctn_c)
+	let $tbody7_7 = $('<div/>').html('가격').addClass('col-sm text-left mgt10-mgb10').attr({style:'font-weight: bold;'}).appendTo($tbl6_7)
+	let $tbody7_7_1 = $('<div/>').html(rtrv.price+' 원').addClass('col-sm mgt10-mgb10').attr({style:'font-weight: bold;'}).appendTo($tbl6_7)
+	
+	
+	let $tbl6_9 = $('<div/>').addClass('row')
+					.appendTo($aNav_crd_ctn_c)
+	let $tbody7_9 = $('<div/>').append($('<p/>').attr({style:'font-size:14px;'}).html(rtrv.explains)).addClass('col-sm text-left mgt10-mgb10').appendTo($tbl6_9)
+			},
+			error : (e1,e2)=>{
 				
-			})
-			
-
-			//rtrv.imgSeq,rtrv.itemName,rtrv.img,rtrv.price,rtrv.calorie,rtrv.category,rtrv.explains,rtrv.brand,rtrv.itemSeq
-			let $div4_5 = $('<div/>').addClass('row').appendTo($div3_4)
-			let $div5_5 = $('<div/>').addClass('col-lg-12').appendTo($div4_5)
-
-			//md-accordion accordion-1
-			let $aNav = $('<div/>').addClass('accordion').attr({'id':'accordionEx23','role':'tablist'}).appendTo($div3_4)
-			let $aNav_crd = $('<div/>').addClass('card').appendTo($aNav)
-			let $aNav_crd_hd = $('<div/>').addClass('card-header blue lighten-3 z-depth-1').attr({'id':'heading96','role':'tab'}).appendTo($aNav_crd)
-			let $aNav_crd_hd_t = $('<h5/>').addClass('text-uppercase mb-0 py-1').appendTo($aNav_crd_hd)
-			let $aNav_crd_hd_t_a = $('<a href="#collapse96"/>').html('도시락 정보').addClass('white-text font-weight-bold').attr({'data-toggle':'collapse', 'aria-expanded':'true', 'aria-controls':'collapse96'}).appendTo($aNav_crd_hd_t)
-			
-			let $aNav_crd_ctn = $('<div/>').addClass('collapse show').attr({'id':'collapse96','role':'tabpanel','aria-labelledby':'heading96','data-parent':'#accordionEx23'}).appendTo($aNav_crd)
-			let $aNav_crd_ctn_bd = $('<div/>').addClass('card-body').appendTo($aNav_crd_ctn)
-			let $aNav_crd_ctn_r = $('<div/>').addClass('row my-4').appendTo($aNav_crd_ctn_bd)
-			
-			let $aNav_crd_ctn_c = $('<div/>').addClass('col-md-12').appendTo($aNav_crd_ctn_r)
-			//md-accordion accordion-1 end
-			
-			let $tbl6_5 = $('<div/>').addClass('row').appendTo($aNav_crd_ctn_c)
-			let $tbody7_5 = $('<div/>').html('업체').addClass('col-sm text-left mgt10-mgb10').attr({style:'font-weight: bold;'}).appendTo($tbl6_5)
-			let $tbody7_5_1 = $('<div/>').html(rtrv.brand).addClass('col-sm  mgt10-mgb10').appendTo($tbl6_5)
-
-			
-			let $tbl6_6 = $('<div/>').addClass('row').appendTo($aNav_crd_ctn_c)
-			let $tbody7_6 = $('<div/>').html('칼로리').addClass('col-sm text-left mgt10-mgb10').attr({style:'font-weight: bold;'}).appendTo($tbl6_6)
-			let $tbody7_6_1 = $('<div/>').html(rtrv.calorie+' Kcal').addClass('col-sm  mgt10-mgb10').appendTo($tbl6_6)
-			
-			let $tbl6_7 = $('<div/>').addClass('row').appendTo($aNav_crd_ctn_c)
-			let $tbody7_7 = $('<div/>').html('가격').addClass('col-sm text-left mgt10-mgb10').attr({style:'font-weight: bold;'}).appendTo($tbl6_7)
-			let $tbody7_7_1 = $('<div/>').html(rtrv.price+' 원').addClass('col-sm mgt10-mgb10').attr({style:'font-weight: bold;'}).appendTo($tbl6_7)
-			
-			
-			let $tbl6_9 = $('<div/>').addClass('row')
-							.appendTo($aNav_crd_ctn_c)
-			let $tbody7_9 = $('<div/>').append($('<p/>').attr({style:'font-size:14px;'}).html(rtrv.explains)).addClass('col-sm text-left mgt10-mgb10').appendTo($tbl6_9)
+			}
+		});
 
 		return $div1;
 	};
 
 	return {
 		list:list,
-		row:row,
 		loadedPage:loadedPage,
 		retrieve:retrieve,
 		popup:popup
@@ -487,6 +468,8 @@ yoonho.contain=(x=>{
 	};
 	var cart=x=>{
 		let $cart;
+			$('#det_pay').remove();
+			$('#det_gift').remove();
 		$cart=$('<table/>').addClass('table')
 				.append(
 					$('<thead/>').attr({id:'cart_thead'})
@@ -525,6 +508,8 @@ yoonho.contain=(x=>{
 	};
 	var gift=x=>{
 		let $gift;
+		$('#det_cart').remove();
+		$('#det_pay').remove();
 		$gift=$('<table/>').addClass('table')
 				.append(
 					$('<thead/>').attr({id:'gift_thead'})
@@ -563,6 +548,8 @@ yoonho.contain=(x=>{
 	};
 	var pay=x=>{
 		let $pay;
+		$('#det_cart').remove();
+		$('#det_gift').remove();
 		$pay=$('<table/>').addClass('table')
 				.append(
 					$('<thead/>').attr({id:'pay_thead'})
@@ -598,99 +585,6 @@ yoonho.contain=(x=>{
 					)
 				)
 		return $pay;
-	};
-	var recommend =x=>{
-		return $('<div data-ride="carousel"/>').addClass('carousel slide carousel-fade').attr({id:'carousel-example-2'})//,'data-ride':'carousel'
-						.append(
-							$('<ol/>').addClass('carousel-indicators')
-							.append($('<li/>').addClass('active').attr({'data-target':'#carousel-example-2', 'data-slide-to':'0'}))
-							.append($('<li/>').attr({'data-target':'#carousel-example-2', 'data-slide-to':'1'}))
-							.append($('<li/>').attr({'data-target':'#carousel-example-2', 'data-slide-to':'2'}))
-						)
-						.append(
-							$('<div/>').addClass('carousel-inner').attr({'role':'listbox'})
-							.append(
-								$('<div/>').addClass('carousel-item active')
-								.append(
-									$('<div/>').addClass('view')
-									.append(
-										$('<img/>').addClass('d-block w-100').attr({'src':'https://mdbootstrap.com/img/Photos/Slides/img%20(68).jpg', 'alt':'First slide'})
-									)
-									.append(
-										$('<div/>').addClass('mask rgba-black-light')
-									)
-								)
-								.append(
-									$('<div/>').addClass('carousel-caption')
-									.append(
-										$('<h3/>').addClass('h3-responsive').html('Light Mask')
-									)
-									.append(
-										$('<p/>').html('First text')
-									)
-								)
-							)
-							.append(
-								$('<div/>').addClass('carousel-item')
-								.append(
-									$('<div/>').addClass('view')
-									.append(
-										$('<img/>').addClass('d-block w-100').attr({'src':'https://mdbootstrap.com/img/Photos/Slides/img%20(6).jpg','alt':'Second slide'})	
-									)
-									.append(
-										$('<div/>').addClass('mask rgba-black-strong')
-									)
-								)
-								.append(
-									$('<div/>').addClass('carousel-caption')
-									.append(
-										$('<h3/>').addClass('h3-responsive').html('Strong mask')
-									)
-									.append(
-										$('<p/>').addClass('h3-responsive').html('Secondary text')
-									)
-								)
-							)
-							.append(
-								$('<div/>').addClass('carousel-item')
-								.append(
-									$('<div/>').addClass('view')
-									.append(
-										$('<img/>').addClass('d-block w-100').attr({'src':'https://mdbootstrap.com/img/Photos/Slides/img%20(9).jpg','alt':'Third slide'})	
-									)
-									.append(
-										$('<div/>').addClass('mask rgba-black-slight')
-									)
-								)
-								.append(
-									$('<div/>').addClass('carousel-caption')
-									.append(
-										$('<h3/>').addClass('h3-responsive').html('Slight mask')
-									)
-									.append(
-										$('<p/>').addClass('h3-responsive').html('Third text')
-									)
-								)
-							)
-						)
-						.append(
-							$('<a/>').addClass('carousel-control-prev').href('#carousel-example-2').role('button').attr({'data-slide':'prev'})
-							.append(
-								$('<span/>').addClass('carousel-control-prev-icon').attr({'aria-hidden':'true'})
-							)
-							.append(
-								$('<span/>').addClass('sr-only').html('Previous')
-							)
-						)
-						.append(
-							$('<a/>').addClass('carousel-control-prev').href('#carousel-example-2').role('button').attr({'data-slide':'next'})
-							.append(
-								$('<span/>').addClass('carousel-control-prev-icon').attr({'aria-hidden':'true'})
-							)
-							.append(
-								$('<span/>').addClass('sr-only').html('Next')
-							)
-						)
 	};
 	var commentWrite=x=>{
 		return $('<div/>')
@@ -738,7 +632,6 @@ yoonho.contain=(x=>{
 			);
 	};
 	var commentList =x=>{
-		//console.log('commentList x:'+x.memberId)
 		let $list;
 			if($.cookie("member")==null){
 				$list = $('<div/>').addClass('media d-block d-md-flex mt-4').attr({id:'cmm_'+x.articleSeq})
@@ -748,7 +641,7 @@ yoonho.contain=(x=>{
 				.append(
 					$('<div/>').addClass('media-body text-center text-md-left ml-md-3 ml-0').attr({id:'m_u_btn_'+x.articleSeq})
 					.append(
-							$('<a/>').addClass('font-weight-bold mt-0').attr({style:'font-size:18px;color:#007bff;'}).html(x.memberId).click(e=>{alert('회원retrieve')})//정훈정훈한테 물어보고 memberRetrieve 없으면 h4태그로 바꿀것
+							$('<a/>').addClass('font-weight-bold mt-0').attr({style:'font-size:18px;color:#007bff;'}).html(x.memberId).click(e=>{/*alert('회원retrieve')*/})//정훈정훈한테 물어보고 memberRetrieve 없으면 h4태그로 바꿀것
 					)
 					.append(
 						 	$('<h6/>').html(x.content+'/작성시간:'+x.ARTICLE_TIME)
@@ -762,7 +655,7 @@ yoonho.contain=(x=>{
 				
 				let $in_list = $('<div/>').addClass('media-body text-center text-md-left ml-md-3 ml-0').attr({id:'m_u_btn'})
 								.append(
-										$('<a/>').addClass('font-weight-bold mt-0').attr({style:'font-size:18px;color:#007bff;'}).html(x.memberId).click(e=>{alert('회원retrieve')})//정훈정훈한테 물어보고 memberRetrieve 없으면 h4태그로 바꿀것
+										$('<a/>').addClass('font-weight-bold mt-0').attr({style:'font-size:18px;color:#007bff;'}).html(x.memberId).click(e=>{/*alert('회원retrieve')*/})//정훈정훈한테 물어보고 memberRetrieve 없으면 h4태그로 바꿀것
 								)
 								.append(
 									 	$('<h6/>').html(x.content+'/작성시간:'+x.ARTICLE_TIME)
@@ -873,9 +766,7 @@ yoonho.contain=(x=>{
 												}),
 												success:d=>{
 													alert('게시글이 삭제되었습니다..')
-													//alert('d.articleSeq::'+d.modify[0].articleSeq)
 													$('#cmm_'+x.articleSeq).remove();
-													//$('#cmm_'+x.articleSeq).html(yoonho.contain.commentList(d.modify[0]))
 												},
 												error:(m1,m2,m3)=>{
 													alert('비밀번호를 정확히 입력해주세요.'+m3)
@@ -896,7 +787,6 @@ yoonho.contain=(x=>{
 			cart:cart,
 			pay:pay,
 			gift:gift,
-			recommend:recommend,
 			commentWrite:commentWrite,
 			commentList:commentList,
 			commentUpdat:commentUpdat,

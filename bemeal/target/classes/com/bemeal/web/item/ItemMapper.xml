@@ -41,6 +41,73 @@
   		VALUES
 	  	(#{itemSeq},#{itemName},#{brand},#{category},#{price},#{calorie},#{explains})
   	</insert>
+  	<!-- aaaa -->
+  	<select id="menuCount" resultType="int">
+  	SELECT COUNT(*) AS COUNT
+  	FROM ITEM
+  	<where>
+		<if test="brand != null and category != null">
+			BRAND like #{brand} AND CATEGORY like #{category}
+		</if>
+		<if test="brand != null and category == null">
+			BRAND like #{brand}
+		</if>
+		<if test="brand == null and category != null">
+			CATEGORY like #{category}
+		</if>
+	</where>
+  	</select>
+	<select id="menuListPrice" resultMap="result">
+	SELECT C.*, IMG.IMG
+	FROM
+		(SELECT * 
+		FROM
+			(SELECT  A.*, ROW_NUMBER() OVER(ORDER BY A.PRICE DESC) AS NO
+			FROM
+				(SELECT 
+					ITEM_SEQ, ITEM_NAME,BRAND,CATEGORY,PRICE,EXPLAINS,CALORIE
+				FROM ITEM 
+				<where>
+					<if test="brand != null and category != null">
+						BRAND like #{brand} AND CATEGORY like #{category}
+					</if>
+					<if test="brand != null and category == null">
+						BRAND like #{brand}
+					</if>
+					<if test="brand == null and category != null">
+						CATEGORY like #{category}
+					</if>
+				</where>
+				) A) B
+		WHERE NO BETWEEN #{pagi.beginRow} AND #{pagi.endRow}) C
+		JOIN IMAGE IMG ON IMG.ITEM_SEQ LIKE C.ITEM_SEQ
+	</select>  	
+	<select id="menuListCal" resultMap="result">
+	SELECT C.*, IMG.IMG
+	FROM
+		(SELECT * 
+		FROM
+			(SELECT  A.*, ROW_NUMBER() OVER(ORDER BY A.CALORIE DESC) AS NO
+			FROM
+				(SELECT 
+					ITEM_SEQ, ITEM_NAME,BRAND,CATEGORY,PRICE,EXPLAINS,CALORIE
+				FROM ITEM
+				<where>
+					<if test="brand != null and category != null">
+						BRAND like #{brand} AND CATEGORY like #{category}
+					</if>
+					<if test="brand != null and category == null">
+						BRAND like #{brand}
+					</if>
+					<if test="brand == null and category != null">
+						CATEGORY like #{category}
+					</if>
+				</where>
+				) A) B
+		WHERE NO BETWEEN #{pagi.beginRow} AND #{pagi.endRow}) C
+		JOIN IMAGE IMG ON IMG.ITEM_SEQ LIKE C.ITEM_SEQ
+	</select>  
+  	<!-- aaaa -->
  	<select id="listSomePrice" resultMap="result">
 		SELECT it.*,img.*
 		FROM
@@ -120,7 +187,13 @@
 			on tgi.TAG_SEQ like tg.TAG_SEQ
 		where tgi.ITEM_SEQ like #{itemSeq};
   	</select>
-
+	<select id="retrieveGrade" resultType="string">
+	SELECT GRADE
+	FROM TASTE
+	WHERE FLAG LIKE 'STAR'
+		AND MEMBER_ID LIKE #{memberId} 
+		AND ITEM_SEQ LIKE #{itemSeq}
+	</select>
   	
 
   </mapper>

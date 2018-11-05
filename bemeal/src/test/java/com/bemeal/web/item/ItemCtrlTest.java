@@ -1,25 +1,19 @@
 package com.bemeal.web.item;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.bemeal.web.img.Image;
-import com.bemeal.web.tx.TxService;
 
 public class ItemCtrlTest {
 	private static final Logger logger = LoggerFactory.getLogger(ItemCtrlTest.class);
 	@Autowired Map<String, Object> map;
 	@Autowired Item item;
 	@Autowired Image img;
-	@Autowired TxService tx;
 	@Autowired ItemMapper itemMapper;
 	
 	@Test
