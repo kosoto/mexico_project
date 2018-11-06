@@ -384,7 +384,7 @@ kaeun.payment=(()=>{
              ui.grid_list({
                    to: $('#cart_grid'),
                    c1:'No.'+(i+1),
-                   c2:'<img class="cart_img" src="'+$.img()+'/cmm/item/'+j.img+'">',
+                   c2:'<img class="cart_img" src="'+j.img+'">',
                    c3:j.itemName+'<br/>'+j.explains,
                    c4:j.quantity,
                    c5:j.price,
