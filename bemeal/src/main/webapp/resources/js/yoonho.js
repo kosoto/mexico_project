@@ -359,7 +359,10 @@ yoonho.service=(x=>{
 					useGradient : false,
 					strokeColor: 'orange',  //border color
 					callback : (currentRating, $el)=>{
-						if(currentRating!=0){
+						if($.cookie('member')==undefined){
+							alert('로그인이 필요합니다')
+							$star.starRating('setRating', 0.0);
+						}else if(currentRating!=0){
 							$.ajax({
 								url : $.ctx()+'/grade/evaluate',
 								method : 'post',
