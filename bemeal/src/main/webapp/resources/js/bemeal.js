@@ -59,7 +59,7 @@ bemeal.router = {
 				$('<header/>').append(
 					bemeal.compo.banner({
 						id:'banner',
-						arr:[{image:"/web/resources/img/cmm/banner/banner1.jpg"},{image:"/web/resources/img/cmm/banner/banner2.jpg"}]
+						arr:[{image:$.img()+"/cmm/banner/banner1.jpg"},{image:$.img()+"/cmm/banner/banner2.jpg"}]
 					})
 				),					
 				$('<div/>').attr({id:'content'})
@@ -285,7 +285,7 @@ bemeal.compo=(()=>{
 			for(let j=i*row_size;j<(i+1)*row_size;j++){
 				$('<div/>').addClass('text-shadow-black').text(arr[j].itemName).appendTo($span);
 				$('<img/>').addClass('img-fluid img_hover').appendTo($span).attr({
-					src:arr[j].img,
+					src:$.img()+'/cmm/item/'+arr[j].img,
 					alt:arr[j].itemName,
 					style:"width:"+(100/row_size)+"%;height:150px"
 				})
@@ -414,7 +414,7 @@ bemeal.evaluate=(()=>{
 							for(let j=1;j<=4;j++,index++){
 								$('<div/>').addClass('card gift_c').appendTo($gift_slid).append(
 									$('<div/>').addClass('gift_img').append(
-										$('<img/>').addClass('img-fluid').attr({src:arr[index].img})
+										$('<img/>').addClass('img-fluid').attr({src:$.img()+'/cmm/item/'+arr[index].img})
 									),
 									$('<div/>').addClass('gift_details').append(
 										$('<h2/>').addClass('evaluative_title text-shadow-white').text(arr[index].itemName),
@@ -519,7 +519,7 @@ bemeal.search=(()=>{
 				let flag = (arr[index]!==undefined);
 				let $gift_c = $('<div/>').addClass('card gift_c').append(
 									$('<div/>').addClass('gift_img').append(
-										(()=>{return (flag)?$('<img/>').attr({src:arr[index].img}):$('<img/>');})()
+										(()=>{return (flag)?$('<img/>').attr({src:$.img()+'/cmm/item/'+arr[index].img}):$('<img/>');})()
 									),
 									$('<div/>').addClass('gift_details').append(
 										$('<h2/>').addClass('evaluative_title').text((flag)?arr[index].itemName:''),

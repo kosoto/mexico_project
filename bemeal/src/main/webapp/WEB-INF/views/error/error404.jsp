@@ -24,7 +24,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<!---End-header---->
 			<!--start-content------>
 			<div class="content">
-				<img src="/web/resources/img/404/error-img.png" title="error" />
+				<img src="${context}/resources/img/404/error-img.png" title="error" />
 				<p><span><label>O</label>hh.....</span>You Requested the page that is no longer There.</p>
 				<a href="http://203.236.209.46:8080/web">Back To Home</a>
 				<div class="copy-right">

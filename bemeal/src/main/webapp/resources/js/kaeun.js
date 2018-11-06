@@ -29,7 +29,7 @@ kaeun.ui = {
 			 					 
 			 					});
 			 $('<a href="#"/>').append(
-					 $('<img/>').attr("src", "/web/resources/img/kaeun/k_main2.jpg")
+					 $('<img/>').attr("src", $.img()+"/kaeun/k_main2.jpg")
 					 .addClass("k_home_img")
 					 ).appendTo($page1)
 					 .click(e=>{
@@ -42,7 +42,7 @@ kaeun.ui = {
 			 					 
 			 					});
 			 $('<a href="#"/>').append(
-					 $('<img/>').attr("src", "/web/resources/img/kaeun/k_main5.jpeg")
+					 $('<img/>').attr("src", $.img()+"/kaeun/k_main5.jpeg")
 					 .addClass("k_home_img")
 					 ).appendTo($page2)
 					 .click(e=>{
@@ -55,7 +55,7 @@ kaeun.ui = {
 			 					
 			 					});
 			 $('<a href="#"/>').append(
-					 $('<img/>').attr("src", "/web/resources/img/kaeun/k_main4.jpeg")
+					 $('<img/>').attr("src", $.img()+"/kaeun/k_main4.jpeg")
 					 .addClass("k_home_img")
 					 ).appendTo($page3)
 					 .click(e=>{
@@ -68,7 +68,7 @@ kaeun.ui = {
 			 					 
 			 					});
 			 $('<a href="#"/>').append(
-					 $('<img/>').attr("src", "/web/resources/img/kaeun/k_main1.jpg")
+					 $('<img/>').attr("src", $.img()+"/kaeun/k_main1.jpg")
 					 .addClass("k_home_img")
 					 ).appendTo($page4)
 					 .click(e=>{
@@ -81,7 +81,7 @@ kaeun.ui = {
 			 					  
 			 					});
 			 $('<a href="#"/>').append(
-					 $('<img/>').attr("src", "/web/resources/img/kaeun/k_main3.jpeg")
+					 $('<img/>').attr("src", $.img()+"/kaeun/k_main3.jpeg")
 					 .addClass("k_home_img")
 					 ).appendTo($page5)
 					 .click(e=>{
@@ -384,7 +384,7 @@ kaeun.payment=(()=>{
              ui.grid_list({
                    to: $('#cart_grid'),
                    c1:'No.'+(i+1),
-                   c2:'<img class="cart_img" src="'+j.img+'">',
+                   c2:'<img class="cart_img" src="'+$.img()+'/cmm/item/'+j.img+'">',
                    c3:j.itemName+'<br/>'+j.explains,
                    c4:j.quantity,
                    c5:j.price,
@@ -457,7 +457,7 @@ kaeun.payment=(()=>{
 				ui.grid_list({
 					to: $('#cart_grid'),
 					c1:ui.checkbox({id:'cart_chk'+i,txt:''}),
-					c2:'<img class="cart_img" src="'+d[i].img+'">',
+					c2:'<img class="cart_img" src="'+$.img()+'/cmm/item/'+d[i].img+'">',
 					c3:d[i].itemName+'<br/>'+d[i].explains,
 					c4:d[i].quantity,
 					c5:d[i].price,
@@ -472,7 +472,7 @@ kaeun.payment=(()=>{
 	                    itemName:d[i].itemName,
 	                    price:d[i].price,
 	                    explains:d[i].explains,
-	                    img:d[i].img}];
+	                    img:$.img()+'/cmm/item/'+d[i].img}];
 					let delList = [d[i].tasteSeq];
 					kaeun.payment.purchase({payList:payList,delList:delList});
 		         }else{}	
@@ -487,7 +487,7 @@ kaeun.payment=(()=>{
 	                    itemName:d[i].itemName,
 	                    price:d[i].price,
 	                    explains:d[i].explains,
-	                    img:d[i].img}];
+	                    img:$.img()+'/cmm/item/'+d[i].img}];
 					let delList = [d[i].tasteSeq];
 					kaeun.payment.giftPopup({payList:payList,delList:delList});
 	           }else{}
@@ -525,7 +525,7 @@ kaeun.payment=(()=>{
                             itemName:d[i].itemName,
                              price:d[i].price,
                             explains:d[i].explains,
-                             img:d[i].img});
+                             img:$.img()+'/cmm/item/'+d[i].img});
 						delList.push(d[i].tasteSeq);
 					}
 				}
@@ -581,7 +581,7 @@ kaeun.payment=(()=>{
                             itemName:d[i].itemName,
                              price:d[i].price,
                             explains:d[i].explains,
-                             img:d[i].img});
+                             img:$.img()+'/cmm/item/'+d[i].img});
 						delList.push(d[i].tasteSeq);
 					}
 				}
@@ -622,7 +622,7 @@ kaeun.tastes = {
 						if(cnt!=gifts.length){
 							$('<div/>').addClass("card gift_c").attr({id:'gift'+cnt})
 							   .append(
-									   $('<div/>').addClass("gift_img").html('<img src="'+gifts[cnt].img+'">')
+									   $('<div/>').addClass("gift_img").html('<img src="'+$.img()+'/cmm/item/'+gifts[cnt].img+'">')
 									   ).appendTo($('#gift_slid'+i));
 							let $detail =  $('<div/>').addClass("gift_details").appendTo($('#gift'+cnt));
 							let $item = $('<h2/>').html(
@@ -728,7 +728,7 @@ kaeun.tastes = {
         					ui.grid_list({
         						to: $('#pay_list'),
         						c1:	paySeq,
-        						c2:'<img class="cart_img" src="'+d.tlist[i].img+'">',
+        						c2:'<img class="cart_img" src="'+$.img()+'/cmm/item/'+d.tlist[i].img+'">',
         						c3:d.tlist[i].itemName+'<br/>'+d.tlist[i].explains,
         						c4:d.tlist[i].quantity,
         						c5:d.tlist[i].price,
@@ -869,8 +869,16 @@ kaeun.tastes = {
 		          bar: { groupWidth: "90%" },
 		          colors: ['#fdcf33']
 		        };
-		        var chart = new google.charts.Bar(document.getElementById('top_x_div'));
-		        chart.draw(data, google.charts.Bar.convertOptions(options));
+		        //var chart = new google.charts.Bar(document.getElementById('top_x_div'));
+		        var chart;
+		        try{
+		        	chart = new google.charts.Bar(document.getElementById('top_x_div'));
+		        	chart.draw(data, google.charts.Bar.convertOptions(options));
+
+		        	}catch(e){
+
+		        	}
+		        
 		      }; //drawStuff 끝
 		   //menu 차트
 		    google.charts.load('current', {'packages':['corechart']});
@@ -906,14 +914,14 @@ kaeun.tastes = {
  		 $('#anlyz2').append('<p>선호국가<p/>');
  		  $('#anlyz2').append('<div id="series_chart_div" style="width: 700px; height:370px;"></div>');
  		 $('#anlyz3').append('<p>나의 Top재료 8<p/>');
- 		  $('#anlyz3').append('<div id="top_x_div" style="width: 800px; height: 300px;"></div>');
+ 		  $('#anlyz3').append('<div id="top_x_div" style="width: 700px; height: 300px;"></div>');
  		 $('#anlyz4').append('<p>나의 Top브랜드 5<p/>');
  		  $('#anlyz4').append('<div id="donutchart" style="width: 800px; height: 400px;"></div>');
  			}); //getjson끝 차트의끝
 		},
          collect : ()=>{ //콜렉션
         	alert('아직 구현되지 않았습니다.');
-        	ui.newpage();
+        	/*ui.newpage();
 			$('#k_header').addClass("title_yellow").append('<p>::콜렉션::</p>');
 			let $k_content = $('#k_content');
 			var down,x,left; // 콜렉션 폴더들 x축 scroll에 필요한 변수들
@@ -943,7 +951,7 @@ kaeun.tastes = {
 												//이안은 샘플소스 
 												$('<div/>').addClass('card col_card').append(
 													$('<div/>').addClass('view overlay').append(
-														$('<img/>').addClass('card-img-top').attr({src:$.img()+'/cmm/item/dosiroc (1).jpg'/*img 넣기*/,alt:'Card image cap',style:'pointer-events:none'}),
+														$('<img/>').addClass('card-img-top').attr({src:$.img()+'/cmm/item/dosiroc (1).jpg'img 넣기,alt:'Card image cap',style:'pointer-events:none'}),
 														$('<a/>').attr({href:'#','data-name':j}).append(
 															$('<div/>').addClass('mask rgba-white-slight')
 														).click(e=>{
@@ -958,11 +966,11 @@ kaeun.tastes = {
 																parent:$('#card_group_dir'),
 																list:list
 															});
-															 /*아래 리스트에 해당 콜랙션에 담긴 리스트 보여주기 */
+															 아래 리스트에 해당 콜랙션에 담긴 리스트 보여주기 
 														})
 													),
 													$('<div/>').addClass('card-body').append(
-														$('<h4/>').addClass('card-title').text(j /*dir_name*/ )
+														$('<h4/>').addClass('card-title').text(j dir_name )
 														// <p class="card-text">Some quick example text to build on the card title and make up the bulk of the cards content.</p>
 														// <button type="button" class="btn btn-primary btn-md">Read more</button>
 													)
@@ -1010,7 +1018,7 @@ kaeun.tastes = {
 												$.each(d,(i,j)=>{
 													$('<div/>').addClass('card col_card').appendTo($('#searched_list')).append(
 														$('<div/>').addClass('view overlay').append(
-																$('<img/>').addClass('card-img-top').attr({src:j.img/*img 넣기*/,alt:'Card image cap',style:'pointer-events:none'}),
+																$('<img/>').addClass('card-img-top').attr({src:$.img()+'/cmm/item/'+j.imgimg 넣기,alt:'Card image cap',style:'pointer-events:none'}),
 																$('<a/>').attr({'data-itemSeq':j.itemSeq}).append(
 																	$('<div/>').addClass('mask rgba-white-slight')
 																).click(evt=>{
@@ -1021,7 +1029,7 @@ kaeun.tastes = {
 																	//클릭한 아이템의 seq. 값이 안찍히면 evt.currentTarget.data('itemSeq') 해보기
 																	
 																	//getJSON uri 정하고 주석풀기
-																	/*$.getJSON($.ctx()+'/???/'+dir+'/'+item_seq,data=>{
+																	$.getJSON($.ctx()+'/???/'+dir+'/'+item_seq,data=>{
 																		//DB에 저장한후 실시간으로 리스트에 추가하기..
 																		$('#card_group_list').append(
 																			$('<div/>').addClass('card col_card').append(
@@ -1041,12 +1049,12 @@ kaeun.tastes = {
 																					)
 																				)	
 																		)
-																	});*/
+																	});
 																	
 																})
 															),
 															$('<div/>').addClass('card-body').append(
-																$('<h4/>').addClass('card-title').text(j.itemName /*item_name*/ )
+																$('<h4/>').addClass('card-title').text(j.itemName item_name )
 																// <p class="card-text">Some quick example text to build on the card title and make up the bulk of the cards content.</p>
 																// <button type="button" class="btn btn-primary btn-md">Read more</button>
 															)
@@ -1070,11 +1078,11 @@ kaeun.tastes = {
 						if(down2) {$card_group_list.scrollLeft(left2 - e.pageX + x2);};
 					})
 					.mouseup(e=>{down2 = false;});
-			let arr = ['wish','dir1','dir2','dir3','dir4','dir5','dir6','dir7','dir8'] ; /* 해당 유저의 dir_name들을 getJSON으로가져오기 */
+			let arr = ['wish','dir1','dir2','dir3','dir4','dir5','dir6','dir7','dir8'] ;  해당 유저의 dir_name들을 getJSON으로가져오기 
 			$.each(arr,(i,j)=>{
 				$('<div/>').addClass('card col_card').appendTo($card_group_dir).append(
 					$('<div/>').addClass('view overlay').append(
-						$('<img/>').addClass('card-img-top').attr({src:$.img()+'/cmm/item/dosiroc (1).jpg'/*img 넣기*/,alt:'Card image cap',style:'pointer-events:none'}),
+						$('<img/>').addClass('card-img-top').attr({src:$.img()+'/cmm/item/dosiroc (1).jpg'img 넣기,alt:'Card image cap',style:'pointer-events:none'}),
 						$('<a/>').attr({href:'#','data-name':j}).append(
 							$('<div/>').addClass('mask rgba-white-slight')
 						).click(e=>{
@@ -1089,11 +1097,11 @@ kaeun.tastes = {
 								parent:$card_group_list,
 								list:list
 							});
-							 /*아래 리스트에 해당 콜랙션에 담긴 리스트 보여주기 */
+							 아래 리스트에 해당 콜랙션에 담긴 리스트 보여주기 
 						})
 					),
 					$('<div/>').addClass('card-body').append(
-						$('<h4/>').addClass('card-title').text(j /*dir_name*/ )
+						$('<h4/>').addClass('card-title').text(j dir_name )
 						// <p class="card-text">Some quick example text to build on the card title and make up the bulk of the cards content.</p>
 						// <button type="button" class="btn btn-primary btn-md">Read more</button>
 					)
@@ -1107,14 +1115,14 @@ kaeun.tastes = {
 				dir:'wish',
 				parent:$card_group_list,
 				list:list
-			});
+			});*/
          },
 		 collection_list:d=>{
 			 $('#col_title').text(d.dir);
 			 $.each(d.list,(x,y)=>{
 					$('<div/>').addClass('card col_card').appendTo(d.parent).append(
 						$('<div/>').addClass('view overlay').append(
-							$('<img/>').addClass('card-img-top').attr({src:y.img/*img 넣기*/,alt:'Card image cap',style:'pointer-events:none'}),
+							$('<img/>').addClass('card-img-top').attr({src:$.img()+'/cmm/item/'+y.img/*img 넣기*/,alt:'Card image cap',style:'pointer-events:none'}),
 							$('<a/>').append(
 								$('<div/>').addClass('mask rgba-white-slight')
 							).click(e=>{

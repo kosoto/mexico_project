@@ -103,7 +103,7 @@ yoonho.service=(x=>{
 			$div_card = $('<div/>').addClass('card collection-card z-depth-1-half').appendTo($div_col)
 			$div_view_zoom = $('<div/>').addClass('view zoom').appendTo($div_card)
 									.append(
-										$('<img/>').addClass('img-fluid').attr({href:'#','data-seq':arr[index].itemSeq,src:arr[index].img}).click(e=>{
+										$('<img/>').addClass('img-fluid').attr({href:'#','data-seq':arr[index].itemSeq,src:$.img()+'/cmm/item/'+arr[index].img}).click(e=>{
 											e.preventDefault();
 											yoonho.service.retrieve(e.currentTarget.dataset.seq)
 										})
@@ -142,7 +142,7 @@ yoonho.service=(x=>{
 		let $div1 = $('<div/>').attr({id:'y_item_detailUI'}).addClass('container yh-mfp-wrap yh-white-popup')//             .attr({style:'font-family: \'Sunflower\', sans-serif;'});
 		let $div2 = $('<div/>').addClass('mfp-container detail-main')//
 					.append($('<span/>').addClass('col')
-						.append($('<img/>').attr({src:rtrv.img}).addClass('rounded y_img_popup')))
+						.append($('<img/>').attr({src:$.img()+'/cmm/item/'+rtrv.img}).addClass('rounded y_img_popup')))
 		.appendTo($div1);// div2 end
 		
 	
@@ -235,7 +235,7 @@ yoonho.service=(x=>{
 									                       itemName:rtrv.itemName,
 									                       price:rtrv.price,
 									                       explains:rtrv.explains,
-									                       img:rtrv.img}];
+									                       img:$.img()+'/cmm/item/'+rtrv.img}];
 									               let delList = null;
 									               kaeun.payment.purchase({payList:payList,delList:delList});   
 												}else{}
@@ -274,7 +274,7 @@ yoonho.service=(x=>{
 									                       itemName:rtrv.itemName,
 									                       price:rtrv.price,
 									                       explains:rtrv.explains,
-									                       img:rtrv.img}];
+									                       img:$.img()+'/cmm/item/'+rtrv.img}];
 									                let delList = null;
 									                kaeun.payment.giftPopup({payList:payList,delList:delList});
 								               }else{}
@@ -637,7 +637,7 @@ yoonho.contain=(x=>{
 			if($.cookie("member")==null){
 				$list = $('<div/>').addClass('media d-block d-md-flex mt-4').attr({id:'cmm_'+x.articleSeq})
 				.append(
-					$('<img/>').addClass('card-img-64 d-flex mx-auto mb-3 rounded-circle').attr({'src':x.img,'alt':'Generic placeholder image'})
+					$('<img/>').addClass('card-img-64 d-flex mx-auto mb-3 rounded-circle').attr({'src':$.img()+'/member/'+x.img,'alt':'Generic placeholder image'})
 				)
 				.append(
 					$('<div/>').addClass('media-body text-center text-md-left ml-md-3 ml-0').attr({id:'m_u_btn_'+x.articleSeq})
@@ -651,7 +651,7 @@ yoonho.contain=(x=>{
 			}else if($.cookie("member")!=null){
 				$list = $('<div/>').addClass('media d-block d-md-flex mt-4').attr({id:'cmm_'+x.articleSeq})
 				.append(
-					$('<img/>').addClass('card-img-64 d-flex mx-auto mb-3 rounded-circle').attr({'src':x.img,'alt':'Generic placeholder image'})
+					$('<img/>').addClass('card-img-64 d-flex mx-auto mb-3 rounded-circle').attr({'src':$.img()+'/member/'+x.img,'alt':'Generic placeholder image'})
 				)
 				
 				let $in_list = $('<div/>').addClass('media-body text-center text-md-left ml-md-3 ml-0').attr({id:'m_u_btn'})
