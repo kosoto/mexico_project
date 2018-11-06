@@ -537,7 +537,7 @@ width: 640px;
 /* 앨범 화면 끝 */
 /* chart */
 #series_chart_div{
-	 background: url('//usr//local//apache-tomcat-9.0.12//webapps//ROOT//resources//img//kaeun//worldmap.png') no-repeat;
+	 background: url('/resources/img/kaeun/worldmap.png') no-repeat;
 	 /* background: url('/web/resources/img/kaeun/worldmap.png') no-repeat; */
 	 background-size: 80%; 
 }
