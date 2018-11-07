@@ -19,7 +19,6 @@ import com.bemeal.web.item.Item;
 import com.bemeal.web.item.ItemMapper;
 import com.bemeal.web.mbr.Member;
 
-
 @RestController
 public class BoardCtrl {
 	private static final Logger logger = LoggerFactory.getLogger(BoardCtrl.class);

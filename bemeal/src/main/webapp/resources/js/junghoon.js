@@ -69,8 +69,8 @@ junghoon.member = (()=>{
 				$('<p/>').addClass('h4 mb-4').append(
 					$('<img/>').attr({src:$.img()+"/cmm/logo.png"})
 				),
-				$('<input/>').addClass('form-control mb-4').attr({id:'memberId',type:'text',placeholder:'아이디',style:'width:100%;'}),
-				$('<input/>').addClass('form-control mb-4').attr({id:'password',type:'password',placeholder:'비밀번호',style:'width:100%;'}),
+				$('<input/>').addClass('form-control mb-4').attr({id:'memberId',type:'text',placeholder:'test1',value:'test1',style:'width:100%;'}),
+				$('<input/>').addClass('form-control mb-4').attr({id:'password',type:'password',placeholder:'1',value:'1',style:'width:100%;'}),
 				$('<div/>').addClass('d-flex justify-content-around'),
 				$('<button/>').addClass('btn btn-warning btn-block my-4').attr({id:'login_submit_btn',type:'button'}).text('로그인'),
 				$('<p/>').text('계정이 없으신가요?').append(
