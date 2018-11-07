@@ -52,7 +52,7 @@ public class ItemCtrl {
 		map.put("pageNum",pageNum);
 		Function<HashMap<String,Object>, HashMap<String,Object>>f=x->{
 			x.put("count", itemMapper.menuCount(x));
-			x.put("pageSize", 12);
+			x.put("pageSize", 18);
 			x.put("blockSize", 1);
 			pagi.excute(map);
 			x.put("pagi", pagi);
