@@ -12,7 +12,7 @@ function y_item_carouselUI(x){
 	+'  <div class="carousel-inner" role="listbox">'
 	+'    <div class="carousel-item active">'
 	+'      <div class="view">'
-	+'        <img class="d-block w-100" src="'+x.img+'" alt="First slide">'
+	+'        <img class="d-block w-100" src="'+$.img()+'/cmm/item/'+x.img+'" alt="First slide">'
 	+'        <div class="mask rgba-black-light"></div>'
 	+'      </div>'
 	+'      <div class="carousel-caption">'
